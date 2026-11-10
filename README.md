@@ -58,4 +58,8 @@ Biến môi trường cho kiểm thử/preview: `TERMINAL_HTTP_PORT`, `TERMINAL_
 
 Repo đích: https://github.com/CODENOPRO/TradingViewPremium . Sau mỗi đợt sửa đã kiểm tra: ghi tiếp `AGENTS.md`, commit, push; không force-push. Cache thị trường, metadata, backup, file tạm và secrets không được commit.
 
+Mời người khác: mở repo → **Settings → Collaborators & teams → Add people**, nhập username GitHub và gửi lời mời. Sau khi họ chấp nhận, họ có thể chọn **Code → Download ZIP** hoặc `git clone` bằng tài khoản được cấp quyền.
+
+Repo cá nhân private không có vai trò collaborator chỉ đọc: collaborator có cả quyền push. Nếu chỉ muốn chia sẻ quyền xem/tải, dùng repo Organization với vai trò **Read**, hoặc public để mọi người đọc/tải mà không cần mời. Không tự đổi visibility hoặc gửi lời mời thay người dùng. Tham khảo [GitHub repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository).
+
 Lightweight Charts vendored giữ thông báo giấy phép và attribution của TradingView. Chưa đưa source Pine người dùng đính kèm hoặc thư viện ENIGMA vào repo.

@@ -246,6 +246,16 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Git: đã khởi tạo main, origin đúng repo chỉ định, identity local CODENOPRO noreply; GCM có account CODENOPRO. ls-remote ban đầu repo rỗng; public API 404 nhưng authenticated Git đọc được nên không coi repo là public. Không thay đổi visibility/quyền truy cập.
 - Thứ tự kết thúc đợt: stage file liên quan, diff/check/tests, commit và push bình thường; xác minh HEAD remote. Không stage cache, backup, secrets hoặc tài liệu phát sinh ngoài đợt sửa chưa được review.
 
+### 2026-11-11 — Push GitHub lần đầu và hướng dẫn chia sẻ
+
+- Đã commit code refactor: c0ba64a, `Refactor terminal data bridge, persistent workspace and drawing settings`.
+- Đã push thành công main lên https://github.com/CODENOPRO/TradingViewPremium.git và thiết lập upstream origin/main; không cần đăng nhập lại vì GCM đã có CODENOPRO.
+- Thay đổi đợt này: chỉ README.md và AGENTS.md, ghi kết quả push và hướng dẫn Settings → Collaborators & teams → Add people, chấp nhận invite rồi Code → Download ZIP.
+- Giới hạn quyền: theo GitHub Docs, personal private collaborator có Write; muốn chỉ đọc cần Organization Read hoặc public. Không tự đổi quyền/visibility và không gửi invite vì chưa có danh tính người được mời.
+- Kiểm chứng code trước push: 14 test (5 Python + 9 Node), syntax/diff checks và live snapshot NQ/ES/YM. Đợt tài liệu này không đổi mã ứng dụng nên không chạy lại test.
+- Tài liệu TRADINGVIEW_DATA_EXTRACTION_SPEC.md ngoài đợt sửa vẫn giữ nguyên và chưa stage; cache/metadata/backup được gitignore.
+- Bản port QT+ và các giới hạn còn lại giữ nguyên như README; push không có nghĩa toàn bộ backlog đã hoàn thành.
+
 <!-- Mẫu nối nhật ký:
 ### YYYY-MM-DD — Tên đợt sửa
 - Yêu cầu/quyết định:
