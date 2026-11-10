@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Terminal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Desktop chart toolbar -->
+  <header id="topbar">
+    <div class="topbar-left">
+      <!-- User Avatar -->
+      <div class="user-avatar" title="Account">U</div>
+
+      <!-- Active Symbol Pill with '100' Badge & Compare Button -->
+      <div id="btn-symbol-search" class="symbol-selector-pill" title="Click để tìm kiếm / Đổi mã (NQ1!, ES1!, YM1!, CL1!)">
+        <span class="badge-circle">100</span>
+        <span id="active-symbol-title" style="font-size: 13px; font-weight: 700; color: #fff;">NQ1!</span>
+
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Buy / Sell Execution Pill -->
+      <div class="tv-trade-pill">
+        <div id="btn-trade-sell" class="trade-sell" title="Click để vào lệnh BÁN (Paper Short)">
+          <span style="font-size: 10px;">SELL</span>
+          <span id="price-sell" style="margin-left: 4px;">—</span>
+        </div>
+        <div id="trade-spread" class="trade-spread" title="Giá last từ nguồn, không phải bid/ask">LAST</div>
+        <div id="btn-trade-buy" class="trade-buy" title="Click để vào lệnh MUA (Paper Long)">
+          <span id="price-buy" style="margin-right: 4px;">—</span>
+          <span style="font-size: 10px;">BUY</span>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Real Working Timeframe Buttons -->
+      <div class="timeframe-group">
+        <button class="tf-btn active" data-tf="1m">1m</button>
+        <button class="tf-btn" data-tf="5m">5m</button>
+        <button class="tf-btn" data-tf="15m">15m</button>
+        <button class="tf-btn" data-tf="1h">1h</button>
+        <button class="tf-btn" data-tf="4h">4h</button>
+        <button class="tf-btn" data-tf="D">D</button>
+        <button class="tf-btn" data-tf="W">W</button>
+        <button id="btn-refresh-htf" class="btn-icon" style="padding: 2px 6px; font-size: 11px; margin-left: 2px;" title="Đọc lại dữ liệu đang có trên TradingView, không đổi timeframe gốc">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span id="htf-sync-pill" style="font-size: 11px; font-weight: 500; color: #787b86;">Refresh</span>
+        </button>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Indicators Button with 'fx' icon -->
+      <button id="btn-indicator" class="btn-icon" title="Indicators & Strategies">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"></path>
+          <polyline points="4 15 9 9 14 15 19 9"></polyline>
+        </svg>
+        <span>Indicators</span>
+      </button>
+
+      <select id="session-mode" aria-label="Phiên giao dịch" title="RTH dựng từ nến 1m đã tải; không dùng nến HTF ETH để giả RTH"><option value="ETH">ETH</option><option value="RTH">RTH</option></select>
+      <!-- Alert Button -->
+      <button id="btn-alert" class="btn-icon" title="Create Price Alert">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span>Alert</span>
+      </button>
+
+      <!-- Replay Button -->
+      <button id="btn-replay" class="btn-icon" title="Bar Replay Mode">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 19 2 12 11 5 11 19"></polygon>
+          <polygon points="22 19 13 12 22 5 22 19"></polygon>
+        </svg>
+        <span>Replay</span>
+      </button>
+    </div>
+
+    <div class="topbar-right">
+      <button id="btn-paper" class="btn-icon" title="Tài khoản mô phỏng">Paper Trading</button>
+      <!-- Sync Button -->
+      <button id="btn-sync" class="btn-icon active" title="Time & Crosshair Sync">
+        <span>🔗 Sync: ON</span>
+      </button>
+
+      <!-- 9-Layout Selector Button -->
+      <button id="btn-layout" class="btn-icon" title="Select Multi-chart Layout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="18" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="8" rx="1"></rect>
+          <rect x="14" y="13" width="7" height="8" rx="1"></rect>
+        </svg>
+        <span>Layout</span>
+      </button>
+
+      <!-- Settings Cog -->
+      <button id="btn-settings" class="btn-icon" title="Chart Properties & Colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+
+      <!-- Fullscreen -->
+      <button id="btn-fullscreen" class="btn-icon" title="Fullscreen Mode (F11)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 9-LAYOUT POPOVER (MATCHING USER SCREENSHOT) -->
+  <div id="layout-popover">
+    <div class="layout-row">
+      <span class="layout-row-num">1</span>
+      <div class="layout-icons-container">
+        <button class="layout-icon-btn" data-layout="layout-1" title="Single Chart">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+        </button>
+      </div>
+    </div>
+    <div class="layout-row">
+      <span class="layout-row-num">2</span>
+      <div class="layout-icons-container">
+        <button class="layout-icon-btn" data-layout="layout-2-v" title="2 Vertical Split">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="1"></rect><rect x="13" y="3" width="8" height="18" rx="1"></rect></svg>
+        </button>
+        <button class="layout-icon-btn" data-layout="layout-2-h" title="2 Horizontal Split">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="1"></rect><rect x="3" y="13" width="18" height="8" rx="1"></rect></svg>
+        </button>
+      </div>
+    </div>
+    <div class="layout-row">
+      <span class="layout-row-num">3</span>
+      <div class="layout-icons-container">
+        <button class="layout-icon-btn active" data-layout="layout-3-v" title="3 Columns">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1"></rect><rect x="9.5" y="3" width="5" height="18" rx="1"></rect><rect x="16" y="3" width="5" height="18" rx="1"></rect></svg>
+        </button>
+        <button class="layout-icon-btn" data-layout="layout-3-h" title="3 Rows">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="5" rx="1"></rect><rect x="3" y="9.5" width="18" height="5" rx="1"></rect><rect x="3" y="16" width="18" height="5" rx="1"></rect></svg>
+        </button>
+        <button class="layout-icon-btn" data-layout="layout-3-1l-2r" title="1 Left, 2 Right">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="1"></rect><rect x="13" y="3" width="8" height="8" rx="1"></rect><rect x="13" y="13" width="8" height="8" rx="1"></rect></svg>
+        </button>
+        <button class="layout-icon-btn" data-layout="layout-3-2l-1r" title="2 Left, 1 Right">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"></rect><rect x="3" y="13" width="8" height="8" rx="1"></rect><rect x="13" y="3" width="8" height="18" rx="1"></rect></svg>
+        </button>
+        <button class="layout-icon-btn" data-layout="layout-3-2t-1b" title="2 Top, 1 Bottom">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"></rect><rect x="13" y="3" width="8" height="8" rx="1"></rect><rect x="3" y="13" width="18" height="8" rx="1"></rect></svg>
+        </button>
+        <button class="layout-icon-btn" data-layout="layout-3-1t-2b" title="1 Top, 2 Bottom">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="1"></rect><rect x="3" y="13" width="8" height="8" rx="1"></rect><rect x="13" y="13" width="8" height="8" rx="1"></rect></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP BODY: LEFT SIDEBAR + MAIN CHARTS -->
+  <div id="app-body">
+    <!-- Drawing toolbar -->
+    <aside id="left-sidebar">
+      <div class="user-avatar sidebar-avatar" title="Account / Profile">U</div>
+
+      <!-- 1. Crosshair Tool -->
+      <button class="tool-btn active" data-tool="crosshair" title="Con trỏ Crosshair (+)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+
+      <!-- 2. Trendline Tool -->
+      <button class="tool-btn" data-tool="line" title="Kẻ Trendline (Alt + T)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="20" x2="20" y2="4"></line>
+        </svg>
+      </button>
+
+      <!-- 3. Rectangle Box Tool -->
+      <button class="tool-btn" data-tool="box" title="Vẽ Box Order Block / Range (Alt + B)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+        </svg>
+      </button>
+
+      <div class="tool-separator"></div>
+
+      <!-- 4. Text Note Tool -->
+      <button class="tool-btn" data-tool="text" title="Ghi chú Text (Alt + N)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="4 7 4 4 20 4 20 7"></polyline>
+          <line x1="9" y1="20" x2="15" y2="20"></line>
+          <line x1="12" y1="4" x2="12" y2="20"></line>
+        </svg>
+      </button>
+
+      <!-- 5. Fibonacci Retracement Tool -->
+      <button class="tool-btn" data-tool="fib" title="Fibonacci Retracement (Alt + F)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 22 22 22"></polygon>
+        </svg>
+      </button>
+
+      <!-- 6. Long / Short Position Tool -->
+      <button class="tool-btn" data-tool="position" title="Vị thế Long / Short Risk-Reward (Alt + P)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+      </button>
+
+      <!-- 7. Ruler / Measure Tool -->
+      <button class="tool-btn" data-tool="measure" title="Thước đo khoảng giá & số nến (Shift + Click)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4Z"></path>
+        </svg>
+      </button>
+
+      <div class="tool-separator"></div>
+
+      <!-- 8. Magnet Mode Toggle -->
+      <button class="tool-btn" data-tool="magnet" title="Chế độ Hút Nam Châm (Snap to Wicks / OHLC)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m6 15-4-4 6.7-6.7a7.8 7.8 0 0 1 11 11L13 22l-4-4 4.7-4.7a3.8 3.8 0 0 0-5.4-5.4L6 15Z"></path>
+        </svg>
+      </button>
+
+      <button class="tool-btn" data-tool="lock" title="Khóa bản vẽ" aria-label="Khóa bản vẽ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button>
+      <button class="tool-btn" data-tool="eye" title="Ẩn/hiện bản vẽ" aria-label="Ẩn/hiện bản vẽ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <!-- 9. Trash / Clear Drawings -->
+      <button class="tool-btn" data-tool="trash" title="Xóa toàn bộ hình vẽ (Phím Delete)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
+    </aside>
+
+    <!-- CONTENT WRAPPER -->
+    <div id="content-wrapper">
+      <!-- MAIN MULTI-CHART GRID CONTAINER -->
+      <main id="chart-grid" class="layout-3-h">
+        <!-- Chart Box 1 (NQ1!) -->
+        <div id="box-1" class="chart-wrapper active">
+          <div class="chart-legend"></div>
+
+          <div class="chart-nav-controls">
+            <button class="nav-btn btn-zoom-out" title="Thu nhỏ (-)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button class="nav-btn btn-zoom-in" title="Phóng to (+)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button class="nav-btn btn-scroll-left" title="Kéo lùi quá khứ (<)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="nav-btn btn-scroll-right" title="Tua về hiện tại (>)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button class="nav-btn btn-reset" title="Reset Chart (Alt + R hoặc Double Click)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart Box 2 (ES1!) -->
+        <div id="box-2" class="chart-wrapper">
+          <div class="chart-legend"></div>
+
+          <div class="chart-nav-controls">
+            <button class="nav-btn btn-zoom-out" title="Thu nhỏ (-)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button class="nav-btn btn-zoom-in" title="Phóng to (+)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button class="nav-btn btn-scroll-left" title="Kéo lùi quá khứ (<)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="nav-btn btn-scroll-right" title="Tua về hiện tại (>)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button class="nav-btn btn-reset" title="Reset Chart (Alt + R hoặc Double Click)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart Box 3 (YM1! / CL1!) -->
+        <div id="box-3" class="chart-wrapper">
+          <div class="chart-legend"></div>
+
+          <div class="chart-nav-controls">
+            <button class="nav-btn btn-zoom-out" title="Thu nhỏ (-)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button class="nav-btn btn-zoom-in" title="Phóng to (+)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button class="nav-btn btn-scroll-left" title="Kéo lùi quá khứ (<)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="nav-btn btn-scroll-right" title="Tua về hiện tại (>)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button class="nav-btn btn-reset" title="Reset Chart (Alt + R hoặc Double Click)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <section id="paper-panel" aria-label="Paper Trading">
+        <div class="paper-heading"><strong>Paper Trading</strong><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" class="btn-secondary">+ Tài khoản</button><span id="paper-balance"></span></div>
+        <div class="order-ticket">
+          <label>Loại<select id="order-type"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select></label>
+          <label>Số lượng<input id="order-qty" type="number" min="1" step="1" value="1"></label>
+          <label>Giá lệnh<input id="order-price" type="number" step="any" placeholder="Limit / Stop"></label>
+          <label>Stop Loss<input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label>
+          <label>Take Profit<input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label>
+          <span class="editor-help">Bấm BUY / SELL trên chart đang chọn.</span>
+        </div>
+        <div id="paper-positions"></div>
+      </section>
+
+      <!-- BAR REPLAY TOOLBAR (SLIDES UP FROM BOTTOM IN REPLAY MODE) -->
+      <div id="replay-toolbar" class="replay-bar">
+        <span class="replay-badge">REPLAY</span><span id="replay-position"></span>
+        <button id="btn-replay-prev" class="replay-btn" title="Lùi 1 nến">⏮</button>
+        <button id="btn-replay-play" class="replay-btn" title="Play / Pause">▶ Play</button>
+        <button id="btn-replay-next" class="replay-btn" title="Tiến 1 nến (F10)">⏭ Next</button>
+        <button id="btn-replay-exit" class="replay-btn replay-exit" title="Thoát Replay">&times; Exit</button>
+      </div>
+
+      <!-- BOTTOM BAR (RANGES, TIMEZONE, WATERMARK) -->
+      <footer id="bottombar">
+        <div class="bottom-ranges"><span id="connection-status" role="status" data-state="connecting">Đang kết nối…</span>
+          <button class="range-btn">1D</button>
+          <button class="range-btn">5D</button>
+          <button class="range-btn">1M</button>
+          <button class="range-btn">3M</button>
+          <button class="range-btn">6M</button>
+          <button class="range-btn">YTD</button>
+          <button class="range-btn">1Y</button>
+          <button class="range-btn">5Y</button>
+          <button class="range-btn">ALL</button>
+        </div>
+
+        <div class="bottom-meta"><span id="indicator-status" role="status">Chưa có indicator</span>
+          <span id="live-clock">New York</span>
+          <div class="bottom-scale-toggles">
+            <button class="scale-toggle">%</button>
+            <button class="scale-toggle">log</button>
+            <button class="scale-toggle" style="color: #2962ff; font-weight: 700;">auto</button>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- SYMBOL SEARCH MODAL -->
+  <div id="symbol-modal" class="modal">
+    <div class="modal-content" style="width: 500px;">
+      <div class="modal-header">
+        <span>Tìm kiếm Mã Giao Dịch (Symbol Search)</span>
+        <button id="close-symbol" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="symbol-search-input" placeholder="Tìm NQ1!, ES1!, YM1!, CL1!…" class="search-input">
+        <div class="symbol-list">
+          <div class="symbol-item" data-sym="NQ1!">
+            <span class="badge-circle">100</span>
+            <div class="symbol-info">
+              <span class="symbol-name">NQ1!</span>
+              <span class="symbol-desc">Nasdaq 100 E-mini Futures · CME</span>
+            </div>
+            <span class="symbol-cat">Futures</span>
+          </div>
+          <div class="symbol-item" data-sym="ES1!">
+            <span class="badge-circle" style="background:#ff9800;">500</span>
+            <div class="symbol-info">
+              <span class="symbol-name">ES1!</span>
+              <span class="symbol-desc">S&P 500 E-mini Futures · CME</span>
+            </div>
+            <span class="symbol-cat">Futures</span>
+          </div>
+          <div class="symbol-item" data-sym="YM1!">
+            <span class="badge-circle" style="background:#e91e63;">30</span>
+            <div class="symbol-info">
+              <span class="symbol-name">YM1!</span>
+              <span class="symbol-desc">Dow Jones ($5) E-mini Futures · CBOT</span>
+            </div>
+            <span class="symbol-cat">Futures</span>
+          </div>
+          <div class="symbol-item" data-sym="CL1!">
+            <span class="badge-circle" style="background:#4caf50;">OIL</span>
+            <div class="symbol-info">
+              <span class="symbol-name">CL1!</span>
+              <span class="symbol-desc">Crude Oil Futures · NYMEX</span>
+            </div>
+            <span class="symbol-cat">Futures</span>
+          </div>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User scripts only. No bundled indicators or Pine compatibility claims. -->
+  <div id="indicator-modal" class="modal">
+    <div class="modal-content script-dialog">
+      <div class="modal-header"><span>Indicators · My scripts</span><button id="close-indicator-modal" class="modal-close" aria-label="Đóng">×</button></div>
+      <div class="modal-body script-body">
+        <div class="script-actions">
+          <input id="indicator-name" class="search-input" aria-label="Tên indicator" placeholder="Tên indicator">
+          <label class="btn-secondary file-button">Nhập file .js<input id="indicator-file" type="file" accept=".js,.txt" hidden></label>
+        </div>
+        <p class="editor-help">JavaScript · calculate(bars, context) → { series, drawings, tables }. Chạy trong Worker riêng. Pine cần chuyển đổi trước.</p>
+        <textarea id="indicator-code" class="code-area" aria-label="Mã nguồn indicator" placeholder="Dán mã JavaScript indicator của bạn…" spellcheck="false"></textarea>
+        <label class="settings-label" for="indicator-settings">Thông số (JSON)</label>
+        <textarea id="indicator-settings" class="code-area settings-code" spellcheck="false">{}</textarea>
+      </div>
+      <div class="modal-footer"><button id="remove-indicator" class="btn-secondary">Gỡ indicator</button><button id="apply-indicator" class="btn-primary">Lưu &amp; chạy</button></div>
+    </div>
+  </div>
+
+  <div id="account-modal" class="modal">
+    <div class="modal-content" style="width:440px">
+      <div class="modal-header"><span>Tạo tài khoản demo</span><button class="modal-close" aria-label="Đóng">×</button></div>
+      <div class="modal-body">
+        <label class="setting-row">Tên tài khoản<input id="account-name" class="search-input" value="Demo" maxlength="80"></label>
+        <label class="setting-row">Balance (USD)<input id="account-balance" class="num-input" type="number" min="1" value="100000"></label>
+        <label class="setting-row">Margin (% giá trị hợp đồng)<input id="account-margin" class="num-input" type="number" min="0.01" max="100" step="0.01" value="5"></label>
+        <p class="editor-help">Margin do bạn chọn. Giá khớp mô phỏng dùng giá last quan sát được; không phải broker thật.</p>
+      </div>
+      <div class="modal-footer"><button id="create-account" class="btn-primary">Tạo tài khoản</button></div>
+    </div>
+  </div>
+
+  <!-- ALERT MODAL -->
+  <div id="alert-modal" class="modal">
+    <div class="modal-content" style="width: 400px;">
+      <div class="modal-header">
+        <span>Tạo Cảnh Báo Giá (Create Alert)</span>
+        <button id="close-alert" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <span>Mã giao dịch:</span>
+          <strong id="alert-sym-label">NQ1!</strong>
+        </div>
+        <div class="setting-row">
+          <span>Điều kiện:</span>
+          <select id="alert-condition" class="select-input">
+            <option value="cross">Cắt qua mức giá</option>
+            <option value="greater">Lớn hơn hoặc bằng (&ge;)</option>
+            <option value="less">Nhỏ hơn hoặc bằng (&le;)</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <span>Mức giá mục tiêu:</span>
+          <input type="number" id="alert-price-input" step="0.25" class="num-input">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-save-alert" class="btn-primary">Đặt Cảnh Báo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANDLE & CHART SETTINGS MODAL -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Cài đặt màu nến & Giao diện</span>
+        <button id="close-settings" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <span>Thân nến Tăng / Giảm (Body)</span>
+          <div class="color-picker-pair">
+            <input type="color" id="set-body-up" value="#e8e4dc">
+            <input type="color" id="set-body-down" value="#211f1d">
+          </div>
+        </div>
+        <div class="setting-row">
+          <span>Viền nến Tăng / Giảm (Borders)</span>
+          <div class="color-picker-pair">
+            <input type="color" id="set-border-up" value="#211f1d">
+            <input type="color" id="set-border-down" value="#211f1d">
+          </div>
+        </div>
+        <div class="setting-row">
+          <span>Râu nến Tăng / Giảm (Wicks)</span>
+          <div class="color-picker-pair">
+            <input type="color" id="set-wick-up" value="#211f1d">
+            <input type="color" id="set-wick-down" value="#211f1d">
+          </div>
+        </div>
+        <div class="setting-row">
+          <span>Màu nền biểu đồ (Background)</span>
+          <input type="color" id="set-bg" value="#c2baae">
+        </div>
+        <div class="setting-row">
+          <span>Đường lưới tọa độ (Grid lines)</span>
+          <input type="color" id="set-grid" value="#a8a194">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="save-settings" class="btn-primary">Lưu cài đặt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <!-- Official TradingView Lightweight Charts Engine -->
+  <script src="js/lightweight-charts.standalone.production.js"></script>
+  <script src="js/workspace.js"></script>
+  <script src="js/market_data.js"></script>
+  <script src="js/drawing_model.js"></script>
+  <script src="js/chart_engine.js"></script>
+  <script src="js/drawing_settings.js"></script>
+  <script src="js/drawing_editor.js"></script>
+  <script src="js/drawing_tools.js"></script>
+  <script src="js/sync_controller.js"></script>
+  <script src="js/indicator_runner.js"></script>
+  <script src="js/paper_trading.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

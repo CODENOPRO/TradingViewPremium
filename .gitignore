@@ -1,0 +1,14 @@
+.backups/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+node_modules/
+backend/market_history*.json*
+backend/market_metadata.json*
+backend/*.tmp
+*.log
+crop.png
+diff_mask.png
+scratch_*.py
