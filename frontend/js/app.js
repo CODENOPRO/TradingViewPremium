@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function toast(message, type = 'info') {
     const el = document.createElement('div'); el.className = `tv-toast ${type}`; el.textContent = message;
-    $('toast-container').appendChild(el); setTimeout(() => el.remove(), 5000);
+    $('toast-container').appendChild(el); if(type!=='alert'||active?.appearance?.hideToasts!==false)setTimeout(() => el.remove(), 5000); else {el.tabIndex=0;el.title='Click to dismiss';el.onclick=()=>el.remove();el.onkeydown=e=>{if(e.key==='Enter')el.remove();};}
   }
   window.showToast = toast;
   window.addEventListener('storage-error', event => toast(event.detail, 'alert'));
@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeModal(modal) { modal.classList.remove('show'); $(modal.dataset.opener)?.focus(); }
   document.querySelectorAll('.modal').forEach(modal => {
     modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true');
-    modal.addEventListener('click', event => { if (event.target === modal) closeModal(modal); });
-    modal.querySelector('.modal-close')?.addEventListener('click', () => closeModal(modal));
+    modal.addEventListener('click', event => { if (modal.id!=='settings-modal' && event.target === modal) closeModal(modal); });
+    if(modal.id!=='settings-modal')modal.querySelector('.modal-close')?.addEventListener('click', () => closeModal(modal));
   });
   function live(symbol) {
     const bar = cache.get(symbol)?.['1m']?.at(-1);
@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function activate(chart) {
     active = chart; window.currentActiveChart = chart;
     chart.container.appendChild(document.querySelector('.tv-trade-pill'));
+    document.querySelector('.tv-trade-pill').hidden=chart.appearance?.buySell===false;
     charts.forEach(c => c.container.classList.toggle('active', c === chart));
     updateHeader(); saveWorkspace();
   }
@@ -133,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.symbol-item').forEach(item => item.addEventListener('click', () => {
     stopReplay(); drawing.saveDrawings(active); drawing.setTool('crosshair');
     drawing.editor.clear(); active.runner.stop(); active.clearCustomSeries(); active.symbol = item.dataset.sym; active.clearData();
-    drawing.loadDrawings(active); hydrate(active);
+    drawing.loadDrawings(active); hydrate(active);refreshAlertLines();renderPaper();
     const script = Workspace.read(`indicator_${active.id}`, null); if (script?.code) active.runner.load(script.code, script.settings,script.view);
     closeModal($('symbol-modal')); updateHeader(); saveWorkspace();
   }));
@@ -203,14 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-save-alert').addEventListener('click', () => {
     const price = Number($('alert-price-input').value); if (!Number.isFinite(price) || !$('alert-price-input').value) return toast('Nhập giá hợp lệ', 'alert');
     alerts.push({ symbol: active.symbol, price, condition: $('alert-condition').value, triggered: false });
-    Workspace.write('terminal_alerts_v1', alerts); closeModal($('alert-modal')); toast('Đã lưu cảnh báo giá');
+    Workspace.write('terminal_alerts_v1', alerts); refreshAlertLines(); closeModal($('alert-modal')); toast('Đã lưu cảnh báo giá');
   });
+  function refreshAlertLines(){charts.forEach(c=>{c.priceAlerts=alerts.filter(a=>a.symbol===c.symbol);c.renderDrawings();});}
   function checkAlerts(symbol, price) {
     const previous = previousPrices.get(symbol); previousPrices.set(symbol, price);
     for (const alert of alerts) {
       if (alert.symbol !== symbol || alert.triggered) continue;
       const hit = alert.condition === 'greater' ? price >= alert.price : alert.condition === 'less' ? price <= alert.price : previous !== undefined && previous !== price && ((previous < alert.price && price >= alert.price) || (previous > alert.price && price <= alert.price));
-      if (hit) { alert.triggered = true; toast(`${symbol} chạm ${alert.price}`, 'alert'); Workspace.write('terminal_alerts_v1', alerts); }
+      if (hit) { alert.triggered = true; toast(`${symbol} chạm ${alert.price}`, 'alert'); Workspace.write('terminal_alerts_v1', alerts); refreshAlertLines(); }
     }
   }
 
@@ -235,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const row = document.createElement('div'); row.className = 'paper-row'; row.textContent = `${order.type.toUpperCase()} ${order.side.toUpperCase()} ${order.qty} ${order.symbol} @ ${order.price}`;
       const cancel = document.createElement('button'); cancel.textContent = 'Hủy'; cancel.addEventListener('click', () => { paper.cancel(order.id); renderPaper(); }); row.appendChild(cancel); list.appendChild(row);
     }
-    charts.forEach(c => { c.positions = (a?.positions || []).filter(p => p.symbol === c.symbol).map(p => ({ ...p, type: p.side })); c.renderDrawings(); });
+    charts.forEach(c => { c.pendingOrders=(a?.orders||[]).filter(p=>p.symbol===c.symbol); c.positions = (a?.positions || []).filter(p => p.symbol === c.symbol).map(p => ({ ...p, type: p.side })); c.renderDrawings(); });
   }
   $('paper-account').addEventListener('change', event => { paper.state.active = event.target.value; paper.save(); renderPaper(); });
   $('btn-new-account').addEventListener('click', () => showModal('account-modal'));
@@ -254,14 +256,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPaper();
 
   // Settings and scale controls.
-  const colorInputs = { 'body-up': 'bodyUp', 'body-down': 'bodyDown', 'border-up': 'borderUp', 'border-down': 'borderDown', 'wick-up': 'wickUp', 'wick-down': 'wickDown', bg: 'bg', grid: 'grid' };
-  $('btn-settings').addEventListener('click', () => { Object.entries(colorInputs).forEach(([id, key]) => $(`set-${id}`).value = colors[key]); showModal('settings-modal'); });
-  $('save-settings').addEventListener('click', () => {
-    Object.entries(colorInputs).forEach(([id, key]) => colors[key] = $(`set-${id}`).value);
-    Workspace.write('tv_candle_config', colors);
-    charts.forEach(c => { c.config = { ...colors }; c.chart.applyOptions({ layout: { background: { color: colors.bg } }, grid: { vertLines: { color: colors.grid }, horzLines: { color: colors.grid } } }); c.series.applyOptions({ upColor: colors.bodyUp, downColor: colors.bodyDown, borderUpColor: colors.borderUp, borderDownColor: colors.borderDown, wickUpColor: colors.wickUp, wickDownColor: colors.wickDown }); });
-    closeModal($('settings-modal'));
+  const appearanceStore=Workspace.read('terminal_chart_settings_v1',{});
+  charts.forEach(c=>ChartAppearance.apply(c,{...ChartAppearance.defaults(colors),...(appearanceStore[c.id]||{})}));
+  const chartSettings=new ChartSettings(()=>active,(chart,settings)=>{
+    const next={...Workspace.read('terminal_chart_settings_v1',{}),[chart.id]:settings};
+    if(!Workspace.write('terminal_chart_settings_v1',next))return false;
+    Object.assign(appearanceStore,next);ChartAppearance.apply(chart,settings);
+    if(chart.sessionMode!==settings.session){stopReplay();chart.sessionMode=settings.session;chart.renderCurrentTimeframe();saveWorkspace();}
+    updateHeader();return true;
   });
+  $('btn-settings').addEventListener('click',()=>chartSettings.open());
   document.querySelectorAll('.scale-toggle').forEach(button => button.addEventListener('click', () => {
     if (button.textContent.trim() === 'auto') active.chart.priceScale('right').applyOptions({ autoScale: true });
     else { const mode = button.textContent.trim() === '%' ? LightweightCharts.PriceScaleMode.Percentage : LightweightCharts.PriceScaleMode.Logarithmic; active.chart.priceScale('right').applyOptions({ mode: button.classList.contains('active') ? 0 : mode }); document.querySelectorAll('.scale-toggle').forEach(b => { if (b !== button) b.classList.remove('active'); }); button.classList.toggle('active'); }
@@ -278,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('connection-status').dataset.state = stale ? 'stale' : bridge.state;
     $('connection-status').textContent = stale ? 'Nguồn chậm · dữ liệu cũ' : bridge.state === 'connected' ? 'TradingView · đã kết nối' : bridge.state === 'connecting' ? 'Đang kết nối…' : 'Mất nguồn · dữ liệu đã lưu';
     $('connection-status').title = bridge.message || '';
+    charts.forEach(c=>{c.marketLive=live(c.symbol);if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));c.updateCountdown?.();});
     updateHeader();
   }
   function receive(message) {
@@ -315,8 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.onclose = () => { bridge = { ...bridge, state: 'disconnected' }; statusText(); reconnect = setTimeout(connect, retry); retry = Math.min(retry * 2, 15000); };
   }
   $('btn-refresh-htf').addEventListener('click', () => { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ action: 'refresh' })); else toast('Backend chưa kết nối', 'alert'); });
-  connect();
-  setInterval(() => { $('live-clock').textContent = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date()) + ' New York'; statusText(); }, 1000);
+  refreshAlertLines();connect();
+  setInterval(() => { const zone=active.appearance?.timezone||'America/New_York';$('live-clock').textContent = new Intl.DateTimeFormat('en-US', { timeZone:zone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12:active.appearance?.hourFormat==='12-hours' }).format(new Date())+' '+zone.split('/').at(-1).replaceAll('_',' ');statusText(); }, 1000);
   window.addEventListener('beforeunload', () => {
     clearTimeout(saveTimer);
     Workspace.write('terminal_workspace_v1', { active: active.id, layout: grid.className, charts: charts.map(c => ({ symbol: c.symbol, timeframe: c.currentTimeframe, sessionMode: c.sessionMode, range: c.savedRange || c.chart.timeScale().getVisibleLogicalRange() })) });

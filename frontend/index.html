@@ -484,47 +484,13 @@
     </div>
   </div>
 
-  <!-- CANDLE & CHART SETTINGS MODAL -->
-  <div id="settings-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span>Cài đặt màu nến & Giao diện</span>
-        <button id="close-settings" class="modal-close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="setting-row">
-          <span>Thân nến Tăng / Giảm (Body)</span>
-          <div class="color-picker-pair">
-            <input type="color" id="set-body-up" value="#e8e4dc">
-            <input type="color" id="set-body-down" value="#211f1d">
-          </div>
-        </div>
-        <div class="setting-row">
-          <span>Viền nến Tăng / Giảm (Borders)</span>
-          <div class="color-picker-pair">
-            <input type="color" id="set-border-up" value="#211f1d">
-            <input type="color" id="set-border-down" value="#211f1d">
-          </div>
-        </div>
-        <div class="setting-row">
-          <span>Râu nến Tăng / Giảm (Wicks)</span>
-          <div class="color-picker-pair">
-            <input type="color" id="set-wick-up" value="#211f1d">
-            <input type="color" id="set-wick-down" value="#211f1d">
-          </div>
-        </div>
-        <div class="setting-row">
-          <span>Màu nền biểu đồ (Background)</span>
-          <input type="color" id="set-bg" value="#c2baae">
-        </div>
-        <div class="setting-row">
-          <span>Đường lưới tọa độ (Grid lines)</span>
-          <input type="color" id="set-grid" value="#a8a194">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="save-settings" class="btn-primary">Lưu cài đặt</button>
-      </div>
+  <!-- Chart properties, matched against the open TradingView Desktop settings. -->
+  <div id="settings-modal" class="modal chart-settings-modal" role="dialog" aria-modal="true" aria-labelledby="chart-settings-title">
+    <div class="modal-content chart-settings-dialog">
+      <div class="modal-header"><span id="chart-settings-title">Settings</span><button id="close-settings" class="modal-close" aria-label="Close settings">×</button></div>
+      <div class="chart-settings-layout"><nav class="chart-settings-nav" role="tablist" aria-label="Settings categories"></nav><div class="chart-settings-body" role="tabpanel"></div></div>
+      <p class="chart-settings-error" role="alert"></p>
+      <div class="modal-footer"><select id="chart-template" aria-label="Chart template"><option value="">Template</option><option value="save">Save template</option><option value="load">Apply template</option><option value="reset">Reset settings</option></select><button id="cancel-settings" class="btn-secondary">Cancel</button><button id="save-settings" class="btn-primary">Ok</button></div>
     </div>
   </div>
 
@@ -546,6 +512,7 @@
   <script src="js/indicator_runner.js"></script>
   <script src="js/indicator_settings.js"></script>
   <script src="js/paper_trading.js"></script>
+  <script src="js/chart_settings.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

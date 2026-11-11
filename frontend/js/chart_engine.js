@@ -227,7 +227,7 @@ class ChartEngine {
     const previous = this.chart.timeScale().getVisibleLogicalRange();
     const available = this.getBarsForTimeframe(this.currentTimeframe);
     this.bars = this.replayMode ? available.slice(0, this.replayIndex) : available;
-    this.series.setData(this.bars);
+    this.series.setData(this.appearance?ChartAppearance.candleData(this,this.bars):this.bars);
     if (reset && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(previous);
     this.updateLegend(this.bars[this.bars.length - 1]);
@@ -238,10 +238,12 @@ class ChartEngine {
 
   setTimeframe(tf) {
     if (!TF_MAP[tf]) return;
+    const visible=this.appearance?.keepLeft?this.chart.timeScale().getVisibleRange():null;
     this.currentTimeframe = tf;
     this.tfSeconds = TF_MAP[tf];
     this.replayMode = false;
     this.renderCurrentTimeframe();
+    if(visible&&this.bars.length){const from=this.bars.findIndex(b=>b.time>=visible.from),range=this.chart.timeScale().getVisibleLogicalRange();if(from>=0&&range)this.chart.timeScale().setVisibleLogicalRange({from,to:from+range.to-range.from});}
   }
 
   setData(values) {
@@ -265,8 +267,8 @@ class ChartEngine {
     const tail = next[next.length - 1];
     const historical = last && bar.time < last.time;
     this.bars = next;
-    if (tail && (!last || tail.time >= last.time) && !historical) this.series.update(tail);
-    else this.series.setData(next);
+    if (tail && (!last || tail.time >= last.time) && !historical) this.series.update(this.appearance?ChartAppearance.candleData(this,next.slice(-2)).at(-1):tail);
+    else this.series.setData(this.appearance?ChartAppearance.candleData(this,next):next);
     this.updateLegend(tail);
     this.renderDrawings();
     this.onDataChange?.();
@@ -287,8 +289,9 @@ class ChartEngine {
     for (const series of this.customSeries) this.chart.removeSeries(series);
     this.customSeries = [];
     this.indicatorDrawings = [];
-    if(this.indicatorCandleColors?.size) this.series.setData(this.bars);
+    const hadCandleColors=!!this.indicatorCandleColors?.size;
     this.indicatorCandleColors=new Map();
+    if(hadCandleColors)this.series.setData(this.appearance?ChartAppearance.candleData(this,this.bars):this.bars);
     this.indicatorPane = null;
     this.paneCanvas?.remove(); this.paneCanvas=null;
     this.paneHeader?.remove();this.paneHeader=null;this.paneSeparator?.remove();this.paneSeparator=null;
@@ -308,14 +311,14 @@ class ChartEngine {
       const options = { color: descriptor.color || '#2962ff', lineWidth: Math.max(1, Math.min(4, Math.round(descriptor.width || 1))),
         title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false };
       const series = this.customSeries[i] || this.addSeries(descriptor.type==='histogram'?'Histogram':'Line',options);
-      series._indicatorType=descriptor.type||'line'; series.applyOptions(options);
+      series._indicatorType=descriptor.type||'line'; series.applyOptions({...options,lastValueVisible:this.appearance?.indicatorValues==='Value'});
       series.setData(descriptor.data);
       this.customSeries[i]=series;
     });
     this.indicatorDrawings = result.drawings || [];
     if(result.candleColors?.length || this.indicatorCandleColors?.size) {
       this.indicatorCandleColors=new Map((result.candleColors||[]).map(x=>[x.time,x.color]));
-      this.series.setData(this.bars.map(b=>this.indicatorCandleColors.has(b.time)?{...b,color:this.indicatorCandleColors.get(b.time)}:b));
+      this.series.setData(this.appearance?ChartAppearance.candleData(this,this.bars):this.bars.map(b=>this.indicatorCandleColors.has(b.time)?{...b,color:this.indicatorCandleColors.get(b.time)}:b));
     }
     const hadPane=!!this.indicatorPane;
     this.indicatorPane=result.pane||null;
@@ -589,21 +592,27 @@ class ChartEngine {
     if (!legendEl) return;
     if (!bar) { legendEl.textContent = this.symbol + ' · Chưa có dữ liệu'; return; }
 
-    const diff = bar.close - bar.open;
-    const diffPct = (diff / bar.open) * 100;
-    const isUp = diff >= 0;
-    const diffStr = `${diff >= 0 ? '+' : ''}${diff.toFixed(2)} (${diffPct.toFixed(2)}%)`;
+    const s=this.appearance,precision=s?.precision==='Default'||!s?2:Number(s.precision),format=n=>Number(n).toFixed(precision);
+    const index=this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
+    const diff=bar.close-previous,diffPct=previous?diff/previous*100:0;
+    legendEl.replaceChildren();legendEl.style.color=s?.textColor||this.config.textColor;
+    const add=(text,className)=>{const span=document.createElement('span');span.className=className||'';span.textContent=text;legendEl.appendChild(span);};
+    if(s?.logo)add(this.symbol.slice(0,1),'legend-logo');
+    if(s?.title!==false){const description=this.metadata?.description||this.symbol;const title=s?.titleMode==='Name'?description:s?.titleMode==='Name and ticker'?description+' · '+this.symbol:this.symbol;add(`${title} · ${this.currentTimeframe} · ${this.sessionMode||'ETH'}`,'legend-symbol');}
+    if(s?.marketStatus)add(this.marketLive?'● Live':'○ Stale','legend-market');
+    if(s?.chartValues!==false)add(`O ${format(bar.open)}  H ${format(bar.high)}  L ${format(bar.low)}  C ${format(bar.close)}`,'legend-ohlc');
+    if(s?.barChange!==false)add(`${diff>=0?'+':''}${format(diff)} (${diffPct.toFixed(2)}%)`,diff>=0?'price-up':'price-down');
+    if(s?.volume)add(`Vol ${Number(bar.volume||0).toLocaleString('en-US')}`,'legend-volume');
+  }
 
-    legendEl.innerHTML = `
-      <span class="legend-symbol">${this.symbol} · ${this.currentTimeframe} · ${this.sessionMode || 'ETH'}</span>
-      <span class="legend-ohlc">
-        <span class="legend-title">O</span><span>${bar.open.toFixed(2)}</span>
-        <span class="legend-title">H</span><span>${bar.high.toFixed(2)}</span>
-        <span class="legend-title">L</span><span>${bar.low.toFixed(2)}</span>
-        <span class="legend-title">C</span><span>${bar.close.toFixed(2)}</span>
-        <span class="${isUp ? 'price-up' : 'price-down'}">${diffStr}</span>
-      </span>
-    `;
+  updateCountdown(){
+    if(!this.appearance?.countdown){this.countdownLabel?.remove();this.countdownLabel=null;return;}
+    if(!this.countdownLabel){this.countdownLabel=document.createElement('div');this.countdownLabel.className='chart-countdown';this.container.appendChild(this.countdownLabel);}
+    const b=this.bars.at(-1),seconds=b?Math.ceil(b.time+this.tfSeconds-Date.now()/1000):0;
+    // Calendar-sized bars are not fixed-length exchange sessions; do not invent a countdown.
+    this.countdownLabel.hidden=!b||seconds<0||this.tfSeconds>=86400||this.replayMode||!this.marketLive;
+    this.countdownLabel.textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
+    const y=b?this.series.priceToCoordinate(b.close):null;this.countdownLabel.style.top=Math.max(0,Math.min(this.plotHeight-42,(y??0)+10))+'px';
   }
 
   // MAGNET HELPER (SNAP TO CANDLE OHLC)
@@ -641,12 +650,13 @@ class ChartEngine {
     const rect = this.container.getBoundingClientRect();
     ctx.clearRect(0, 0, rect.width, rect.height);
 
+    if(this.appearance)ChartAppearance.draw(this,ctx,rect);
     // 1. Render Active Paper Positions (Entry line + Live PnL)
-    if (this.positions && this.positions.length) {
+    if (this.appearance?.positions!==false && this.positions && this.positions.length) {
       const currentPrice = this.bars.length ? this.bars[this.bars.length - 1].close : 0;
       for (const pos of this.positions) {
         const y = this.series.priceToCoordinate(pos.price);
-        if (y !== null && y >= 0 && y <= rect.height) {
+        if (y !== null && y >= 0 && y <= this.plotHeight-26) {
           const isBuy = pos.type === 'buy';
           const pnlPoints = isBuy ? (currentPrice - pos.price) : (pos.price - currentPrice);
           const pnlUsd = (pnlPoints * pos.pointValue * pos.qty).toFixed(2);
@@ -657,27 +667,30 @@ class ChartEngine {
           ctx.lineWidth = 1.5;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(rect.width - 55, y);
+          ctx.moveTo(this.appearance?.extendedLines===false?8:0, y);
+          ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-65, y);
           ctx.stroke();
           ctx.setLineDash([]);
 
           // Position Badge
           ctx.fillStyle = isBuy ? '#2962ff' : '#f23645';
-          ctx.fillRect(8, y - 10, 85, 20);
+          const badgeX=this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8;
+          ctx.fillRect(badgeX, y - 10, 85, 20);
           ctx.fillStyle = '#ffffff';
           ctx.font = 'bold 10px monospace';
-          ctx.fillText(`${pos.type.toUpperCase()} ${pos.qty} @ ${pos.price.toFixed(2)}`, 12, y + 4);
+          ctx.fillText(`${pos.type.toUpperCase()} ${pos.qty} @ ${pos.price.toFixed(2)}`, badgeX+4, y + 4);
 
           // PnL Badge
           ctx.fillStyle = isProfit ? '#089981' : '#f23645';
-          ctx.fillRect(98, y - 10, 80, 20);
+          if(this.appearance?.pnl!==false){ctx.fillRect(badgeX+90, y - 10, 80, 20);
           ctx.fillStyle = '#ffffff';
-          ctx.fillText(`${isProfit ? '+' : ''}$${pnlUsd}`, 103, y + 4);
+          const value=this.appearance?.pnlUnit==='Ticks'?`${(pnlPoints/(this.metadata.tickSize||1)).toFixed(1)} ticks`:this.appearance?.pnlUnit==='Percentage'?`${(pnlPoints/pos.price*100).toFixed(2)}%`:`$${pnlUsd}`;
+          ctx.fillText(`${isProfit ? '+' : ''}${value}`, badgeX+95, y + 4);}
         }
       }
     }
 
+    if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotHeight-26){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-65,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
     ctx.save();
     ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - 65), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
     const drawings = [...(this.indicatorDrawings || []), ...(this.drawingsHidden ? [] : this.drawings || [])];
