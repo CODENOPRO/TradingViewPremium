@@ -68,7 +68,7 @@ test('paper pending orders run across accounts and restore active selection', ()
   assert.equal(a.positions[0].price, 98);
 });
 
-test('indicator worker reports Pine unsupported, and renders a JS descriptor contract', async () => {
+test('JS worker contract works independently; a host without importScripts fails Pine explicitly', async () => {
   const messages = [];
   const context = vm.createContext({ self: { postMessage: m => messages.push(m) }, performance });
   vm.runInContext(fs.readFileSync('frontend/js/indicator_worker.js', 'utf8'), context);

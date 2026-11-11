@@ -429,14 +429,14 @@
       <div class="modal-body script-body">
         <div class="script-actions">
           <input id="indicator-name" class="search-input" aria-label="Tên indicator" placeholder="Tên indicator">
-          <label class="btn-secondary file-button">Nhập file .js<input id="indicator-file" type="file" accept=".js,.txt" hidden></label>
+          <label class="btn-secondary file-button">Nhập .pine / .js<input id="indicator-file" type="file" accept=".pine,.js,.txt" hidden></label>
         </div>
-        <p class="editor-help">JavaScript · calculate(bars, context) → { series, drawings, tables }. Chạy trong Worker riêng. Pine cần chuyển đổi trước.</p>
-        <textarea id="indicator-code" class="code-area" aria-label="Mã nguồn indicator" placeholder="Dán mã JavaScript indicator của bạn…" spellcheck="false"></textarea>
-        <label class="settings-label" for="indicator-settings">Thông số (JSON)</label>
-        <textarea id="indicator-settings" class="code-area settings-code" spellcheck="false">{}</textarea>
+        <p class="editor-help">Dán Pine Script //@version=6 hoặc JavaScript. Chạy trong Worker riêng; PineTS còn giới hạn tương thích và sẽ báo phần chưa hỗ trợ. Không cần chuyển tay sang JS.</p>
+        <textarea id="indicator-code" class="code-area" aria-label="Mã nguồn indicator" placeholder="Dán Pine Script v6 hoặc JavaScript indicator của bạn…" spellcheck="false"></textarea>
+        <details><summary class="settings-label">Advanced inputs (JSON)</summary><label class="settings-label" for="indicator-settings">Thông số (JSON)</label>
+        <textarea id="indicator-settings" class="code-area settings-code" spellcheck="false">{}</textarea></details>
       </div>
-      <div class="modal-footer"><button id="remove-indicator" class="btn-secondary">Gỡ indicator</button><button id="apply-indicator" class="btn-primary">Lưu &amp; chạy</button></div>
+      <div class="modal-footer"><button id="stop-indicator-run" class="btn-secondary">Dừng tính</button><button id="remove-indicator" class="btn-secondary">Gỡ indicator</button><button id="apply-indicator" class="btn-primary">Lưu &amp; chạy</button></div>
     </div>
   </div>
 
@@ -504,6 +504,7 @@
   <script src="js/market_data.js"></script>
   <script src="js/bridge_protocol.js"></script>
   <script src="js/drawing_model.js"></script>
+  <script src="js/pine_painter.js"></script>
   <script src="js/chart_engine.js"></script>
   <script src="js/native_cycle_pane.js"></script>
   <script src="js/drawing_settings.js"></script>
@@ -511,6 +512,9 @@
   <script src="js/drawing_tools.js"></script>
   <script src="js/sync_controller.js"></script>
   <script src="js/indicator_runner.js"></script>
+  <script src="js/indicator_pane_stack.js"></script>
+  <script src="js/indicator_collection.js"></script>
+  <script src="js/indicator_library.js"></script>
   <script src="js/indicator_settings.js"></script>
   <script src="js/paper_trading.js"></script>
   <script src="js/chart_settings.js"></script>

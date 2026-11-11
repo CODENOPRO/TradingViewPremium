@@ -18,7 +18,7 @@ Launcher có thể mở TradingView nếu chưa chạy; không force-close works
 - ETH và RTH theo metadata session/DST/early close từ TradingView. RTH dựng từ nến 1m đang có; lịch sử RTH không sâu hơn nguồn phút đã tải.
 - Hình vẽ lưu theo chart và mã. Chọn để mở toolbar, kéo điểm/hình, double-click mở setting; Style, Text, Coordinates, Visibility, template, khóa, clone, thứ tự lớp, undo/redo.
 - Demo account có balance/margin tùy chọn; Market/Limit/Stop, SL/TP, vị thế và sổ lệnh được lưu cục bộ. Giá mô phỏng là last quan sát được, không có bid/ask giả.
-- Indicator JavaScript người dùng nhập/lưu/import `.js`, chạy trong Worker có timeout 4 giây; không có indicator dựng sẵn hoặc EMA mẫu.
+- Indicators có My scripts / Favorites / On chart, lưu code và nhiều instance độc lập trên mỗi chart. Pine v6 thử nghiệm (PineTS) hoặc JavaScript chạy trong Worker; không tự thêm indicator mẫu. Xem [INDICATORS.md](INDICATORS.md).
 - Backend lấy mã/timeframe từ `symbolInfo` của nguồn có nến; không đoán theo `sds_N` hoặc tên indicator. Không tự đổi timeframe của TradingView.
 - Reconnect có backoff; snapshot dữ liệu đang được TradingView tải mỗi 20 giây, tail poll mỗi giây; sửa nến đến trễ/volume-only, atomic persistence và backup.
 
@@ -28,8 +28,8 @@ Mở `/?engine=v5` để thử pane native trên Lightweight Charts 5.3.0; `/lin
 
 ## Giới hạn cần biết
 
-- **Đã có QS Stacks+ JavaScript và QT+ test port để nhập thủ công. QT+ chưa tương đương Pine hoàn chỉnh.** Xem [cách test và giới hạn](frontend/indicators/README.md). Không hỗ trợ dán Pine nguyên bản.
-- Worker hỗ trợ series line/histogram, overlay drawings, pane ribbon riêng, tables và màu thân nến. Tín hiệu/alert Pine chưa được xác nhận parity.
+- **Đã có QS Stacks+ JavaScript và QT+ test port để nhập thủ công. QT+ chưa tương đương Pine hoàn chỉnh.** Xem [cách test và giới hạn](frontend/indicators/README.md). Có thể dán Pine v6 vào runtime thử nghiệm; chưa tương thích đầy đủ mọi script/import.
+- Worker hỗ trợ series line/histogram/area, overlay drawings, pane ribbon riêng, tables và màu thân nến. Tín hiệu/alert Pine chưa được xác nhận parity.
 - Chỉ lấy các mã/timeframe hiện có trong chart nguồn và cache. Chưa có dịch vụ tải lịch sử độc lập, warmup HTF chủ động hoặc xác nhận đủ 5.000 nến cho QT+.
 - Chưa hoàn thiện toàn bộ công cụ TradingView: các công cụ hiện có là rectangle, trendline, text, fib, position box và measure. Visibility lưu cả các nhóm thời gian ngoài UI nhưng hiện UI chỉ có phút/giờ/D/W.
 - Paper engine khớp theo các mẫu giá nhận được khi backend/trình duyệt hoạt động; chưa có mô phỏng tick-by-tick, phí/slippage, margin liquidation, amend/drag lệnh hoặc giao dịch trong replay. Không coi là parity broker/TradingView đầy đủ.
@@ -47,7 +47,7 @@ File nhập định nghĩa `function calculate(bars, context)` hoặc `const ind
 - `candleColors`: `[{time,color}]` cho màu thân nến; `warnings` hiện trên status. `events` chỉ là kết quả tính, chưa có notification dispatcher.
 - `context`: `symbol`, `timeframe`, `metadata`, `settings`, `markets` chứa dữ liệu đa mã/khung và `viewport`.
 
-Script được lưu theo chart. Worker là cơ chế giữ UI đáp ứng, không phải sandbox bảo mật cho code không tin cậy. Không có module import/Pine transpilation tự động.
+Code lưu trong thư viện local, mỗi lần Add tạo instance riêng theo chart. Worker giữ UI đáp ứng; chỉ chạy code bạn tin cậy. Pine v6 dùng PineTS vendored và provider local; external import thiếu source sẽ báo lỗi, không tải từ tài khoản TradingView.
 
 ## Kiểm tra
 
@@ -68,7 +68,7 @@ Mời người khác: mở repo → **Settings → Collaborators & teams → Add
 
 Repo cá nhân private không có vai trò collaborator chỉ đọc: collaborator có cả quyền push. Nếu chỉ muốn chia sẻ quyền xem/tải, dùng repo Organization với vai trò **Read**, hoặc public để mọi người đọc/tải mà không cần mời. Không tự đổi visibility hoặc gửi lời mời thay người dùng. Tham khảo [GitHub repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository).
 
-Lightweight Charts vendored giữ thông báo giấy phép và attribution của TradingView. Các bản JavaScript chuyển từ attachment giữ notice MPL-2.0/attribution; không upload attachment Pine gốc hoặc thư viện ENIGMA.
+PineTS 0.13.1 giữ LICENSE AGPL-3.0-only và provenance trong frontend/vendor/pinets-0.13.1. Lightweight Charts vendored giữ thông báo giấy phép và attribution của TradingView. Các bản JavaScript chuyển từ attachment giữ notice MPL-2.0/attribution; không upload attachment Pine gốc hoặc thư viện ENIGMA.
 ## Chart Settings
 
 Nút ⚙ mở bảy mục cài đặt theo TradingView Desktop, có preview/Cancel và lưu riêng từng chart. Xem [CHART_SETTINGS.md](CHART_SETTINGS.md) để biết các mục đã nối hành vi và phần còn thiếu dữ liệu/chức năng.
@@ -76,3 +76,7 @@ Nút ⚙ mở bảy mục cài đặt theo TradingView Desktop, có preview/Canc
 Đối chiếu toàn màn hình và panel desktop: [DESKTOP_PARITY.md](DESKTOP_PARITY.md).
 
 Nếu web báo backend cũ: đóng server Python cũ rồi chạy lại `start_terminal.bat`. `/health` của bản hiện tại có `service: trading-terminal`, `protocol_version: 2` và cổng WS. Dữ liệu chỉ live cho mã đang được tải trong TradingView; mã thiếu nguồn giữ cache và hiện trạng thái dữ liệu đã lưu.
+
+## Bộ vẽ được yêu cầu khảo sát
+
+Đã đọc lightweight-charts-drawing của deepentropy; chưa thay renderer v4 hoặc migrate hình cũ. Quyết định và khác biệt tại [DRAWING_REPO_REVIEW.md](DRAWING_REPO_REVIEW.md).

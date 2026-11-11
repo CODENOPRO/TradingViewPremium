@@ -4,6 +4,12 @@ const CHART_DATE = new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York'
 const CHART_DATETIME = new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
 
 class ChartEngine {
+  static rebaseRange(oldBars,newBars,range,tfSeconds){
+    if(!range||!oldBars.length||!newBars.length)return range;
+    if(range.to>=oldBars.length-1){const delta=newBars.length-oldBars.length;return {from:range.from+delta,to:range.to+delta};}
+    const before={bars:oldBars,tfSeconds},after={bars:newBars,tfSeconds};
+    return {from:DrawingModel.logicalIndex(after,DrawingModel.timeAt(before,range.from)),to:DrawingModel.logicalIndex(after,DrawingModel.timeAt(before,range.to))};
+  }
   get plotHeight() { return this.container.clientHeight-(this.paneHeight||0); }
   constructor(container, symbol, config = {}) {
     this.container = container;
@@ -170,6 +176,7 @@ class ChartEngine {
 
   resize() {
     const rect = this.container.getBoundingClientRect();
+    if(this.indicatorStack&&rect.width>0&&rect.height>0){this.indicatorStack.resize(rect);return;}
     if (rect.width > 0 && rect.height > 0) {
       const view=this.paneView||{};
       this.paneHeight = this.indicatorPane ? view.collapsed?24:view.maximized?rect.height:Math.max(24,Math.min(Math.max(56,rect.height*(view.ratio??.3)),rect.height-80)) : 0;
@@ -225,11 +232,12 @@ class ChartEngine {
 
   renderCurrentTimeframe(reset = true) {
     const previous = this.chart.timeScale().getVisibleLogicalRange();
+    const previousBars=this.bars;
     const available = this.getBarsForTimeframe(this.currentTimeframe);
     this.bars = this.replayMode ? available.slice(0, this.replayIndex) : available;
     this.series.setData(this.appearance?ChartAppearance.candleData(this,this.bars):this.bars);
     if (reset && this.bars.length) this.resetView();
-    else if (previous) this.chart.timeScale().setVisibleLogicalRange(previous);
+    else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
     this.container.dataset.empty = this.bars.length ? '' : 'Không có dữ liệu cho mã/khung này';
     this.renderDrawings();
@@ -286,6 +294,8 @@ class ChartEngine {
   }
 
   clearCustomSeries() {
+    if(this.pinePaintPrimitive){this.series.detachPrimitive(this.pinePaintPrimitive);this.pinePaintPrimitive=null;this.pinePaintUpdate=null;}
+    this.indicatorPaints=[];
     for (const series of this.customSeries) this.chart.removeSeries(series);
     this.customSeries = [];
     this.indicatorDrawings = [];
@@ -296,11 +306,17 @@ class ChartEngine {
     this.paneCanvas?.remove(); this.paneCanvas=null;
     this.paneHeader?.remove();this.paneHeader=null;this.paneSeparator?.remove();this.paneSeparator=null;
     this.indicatorLegend?.remove();this.indicatorLegend=null;
-    this.container.querySelector('.indicator-tables')?.replaceChildren();
+    this.indicatorTables?.replaceChildren();
     this.resize();
   }
 
   applyIndicatorResult(result) {
+    this.indicatorPaints=result.paints||[];
+    if(this.indicatorPaints.length&&!this.pinePaintPrimitive&&typeof this.series.attachPrimitive==='function'){
+      this.pinePaintPrimitive={attached:({requestUpdate})=>{this.pinePaintUpdate=requestUpdate;},paneViews:()=>[{zOrder:()=> 'bottom',renderer:()=>({draw:target=>target.useMediaCoordinateSpace(scope=>PinePainter.draw(scope.context,this,{paints:this.indicatorPaints},scope.mediaSize.width+65,scope.mediaSize.height))})}]};
+      this.series.attachPrimitive(this.pinePaintPrimitive);
+    }
+    this.pinePaintUpdate?.();
     // Keep series instances across ticks; rebuilding them also resets scale state.
     const descriptors=result.series || [];
     if(this.customSeries.length!==descriptors.length || this.customSeries.some((s,i)=>s._indicatorType!==(descriptors[i].type||'line'))) {
@@ -309,8 +325,10 @@ class ChartEngine {
     }
     descriptors.forEach((descriptor,i) => {
       const options = { color: descriptor.color || '#2962ff', lineWidth: Math.max(1, Math.min(4, Math.round(descriptor.width || 1))),
-        title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false };
-      const series = this.customSeries[i] || this.addSeries(descriptor.type==='histogram'?'Histogram':'Line',options);
+        title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false,
+        lineStyle:descriptor.lineStyle==='dashed'?2:descriptor.lineStyle==='dotted'?1:0,lineType:descriptor.step?1:0 };
+      if(descriptor.type==='area')Object.assign(options,{lineColor:options.color,topColor:options.color,bottomColor:'transparent'});
+      const series = this.customSeries[i] || this.addSeries(descriptor.type==='histogram'?'Histogram':descriptor.type==='area'?'Area':'Line',options);
       series._indicatorType=descriptor.type||'line'; series.applyOptions({...options,lastValueVisible:this.appearance?.indicatorValues==='Value'});
       series.setData(descriptor.data);
       this.customSeries[i]=series;
@@ -332,26 +350,29 @@ class ChartEngine {
       this.paneCanvas.remove();this.paneCanvas=null;this.paneHeader?.remove();this.paneHeader=null;this.paneSeparator?.remove();this.paneSeparator=null;
     }
     if(this.paneCanvas)this.paneCanvas.setAttribute('aria-label',this.indicatorPane.title||'Indicator pane');
-    let panel = this.container.querySelector('.indicator-tables');
-    if (!panel) { panel = document.createElement('div'); panel.className = 'indicator-tables'; this.container.appendChild(panel); }
+    let panel = this.indicatorTables;
+    if (!panel) { panel = document.createElement('div'); panel.className = 'indicator-tables'; this.indicatorTables=panel;this.container.appendChild(panel); }
     panel.replaceChildren();
     const groups=new Map();
     for (const descriptor of result.tables || []) {
-      const position=String(descriptor.position||'Top Right').toLowerCase().replaceAll('_',' '),key=position+':'+!!descriptor.pane;
+      const position=String(descriptor.position||'Top Right').toLowerCase().replaceAll('_',' '),key=position+':'+!!descriptor.pane+':'+(descriptor.paneId||'');
       if(!groups.has(key)) {
         const group=document.createElement('div');group.className='indicator-table-group';
         if(descriptor.pane) {group.classList.add('pane-table-group');group.style.maxHeight='calc(var(--indicator-pane-height, 70px) - 30px)';group.style.overflow='auto';group.style.pointerEvents='auto';}
         group.style[position.includes('left')?'left':'right']=position.includes('left')?'6px':'76px';
         if(position.includes('bottom'))group.style.bottom=descriptor.pane?'4px':'calc(var(--indicator-pane-height, 0px) + 30px)';
         else group.style.top=position.includes('middle')?'40%':descriptor.pane?'calc(100% - var(--indicator-pane-height, 0px) + 26px)':'6px';
+        const host=this.indicatorStack?.hosts.get(descriptor.paneId);
+        if(descriptor.pane&&host){const bottom=parseFloat(host.paneCanvas?.style.bottom)||0,height=host.paneHeight||70;group.style.maxHeight=Math.max(0,height-28)+'px';group.style.top='auto';group.style.bottom=position.includes('bottom')?(bottom+4)+'px':'auto';if(!position.includes('bottom'))group.style.top=(this.container.clientHeight-bottom-height+26)+'px';}
         panel.appendChild(group);groups.set(key,group);
       }
       const table = document.createElement('table');
       if (descriptor.title) { const caption = table.createCaption(); caption.textContent = descriptor.title; }
       for (const row of descriptor.rows || []) {
         const tr = table.insertRow();
-        for (const value of row) { const td = tr.insertCell(); td.textContent = String(value && typeof value==='object' ? value.text??'' : value??''); if(value?.color)td.style.color=value.color; }
+        for (const value of row) { const td = tr.insertCell(); td.textContent = String(value && typeof value==='object' ? value.text??'' : value??''); if(value?.color)td.style.color=value.color;if(value?.background)td.style.background=value.background;if(value?.align)td.style.textAlign=value.align;if(value?.size)td.style.fontSize=Math.max(8,Math.min(72,value.size))+'px'; }
       }
+      for(const merge of (descriptor.merges||[]).slice(0,3000)){if(![merge.startRow,merge.endRow,merge.startCol,merge.endCol].every(Number.isInteger)||merge.startRow<0||merge.startCol<0||merge.endRow<merge.startRow||merge.endCol<merge.startCol||merge.endRow>=table.rows.length||merge.endCol>=30)continue;const cell=table.rows[merge.startRow]?.cells[merge.startCol];if(!cell)continue;cell.colSpan=merge.endCol-merge.startCol+1;cell.rowSpan=merge.endRow-merge.startRow+1;for(let r=merge.startRow;r<=merge.endRow;r++)for(let c=merge.startCol;c<=merge.endCol;c++)if(r!==merge.startRow||c!==merge.startCol){const covered=table.rows[r]?.cells[c];if(covered)covered.hidden=true;}}
       groups.get(key).appendChild(table);
     }
     this.renderDrawings();
@@ -359,6 +380,7 @@ class ChartEngine {
   }
 
   renderIndicatorPane() {
+    if(this.indicatorStack){this.indicatorStack.redraw();return;}
     if(!this.paneCanvas||!this.indicatorPane)return;
     const width=this.container.clientWidth,height=this.paneHeight||70,dpr=window.devicePixelRatio||1;
     this.paneCanvas.width=width*dpr;this.paneCanvas.height=height*dpr;
@@ -372,6 +394,7 @@ class ChartEngine {
     ctx.save();ctx.beginPath();ctx.rect(0,24,Math.max(0,width-65),height-24);ctx.clip();
     const adapter={bars:this.bars,tfSeconds:this.tfSeconds,currentTimeframe:this.currentTimeframe,chart:this.chart,container:this.container,
       series:{priceToCoordinate:y}};
+    if(pane.series?.length||pane.paints?.length)PinePainter.draw(ctx,adapter,pane,width,height);
     for(const drawing of pane.drawings)DrawingModel.draw(ctx,adapter,drawing);
     ctx.restore();
     ctx.fillStyle=this.config.textColor;ctx.font='10px Arial';ctx.textAlign='left';

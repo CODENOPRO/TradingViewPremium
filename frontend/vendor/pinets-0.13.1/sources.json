@@ -1,0 +1,12 @@
+{
+  "package": "pinets",
+  "version": "0.13.1",
+  "repository": "https://github.com/LuxAlgo/PineTS",
+  "commit": "100357e4297209e4693a75b3f56005ce6a73b259",
+  "source": "https://registry.npmjs.org/pinets/-/pinets-0.13.1.tgz",
+  "license": "AGPL-3.0-only",
+  "file": "pinets.min.browser.js",
+  "original_sha256": "dbc3e05a33a127e784737e90991cbb0bad85204b7e2cae167dd0f1e0678e7379",
+  "vendored_sha256": "8ade57cbd80b68bb4c053e1beefcae3056a95a6d146213558688765bdade31f9",
+  "modification": "Removed sourceMappingURL only; sourcemap not distributed. Source and license remain upstream."
+}

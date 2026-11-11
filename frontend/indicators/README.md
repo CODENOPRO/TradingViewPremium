@@ -1,11 +1,11 @@
 # Indicator JavaScript để test
 
-Hai file độc lập, không thêm indicator mặc định vào chart và không cài runtime Pine:
+Hai bản port JavaScript để nhập thủ công, không thêm indicator mặc định. Host hiện có runtime Pine v6 thử nghiệm riêng; xem [INDICATORS.md](../../INDICATORS.md).
 
 - `qs-stacks-plus.js`: bản **Quarter Sequence Stacks+ | @arleay** từ attachment ngày 2026-11-11 (475 dòng Pine, © arleay).
 - `qt-plus.js`: bản **QT+ by 4XS** từ attachment trước đó (3.300 dòng Pine, © Enigma; QS © Danielliuks / @Crypto_MM_). Đây là **test port có giới hạn**, chưa phải bản Pine tương đương hoàn chỉnh.
 
-Mở web → chọn chart → **Indicators → Nhập file .js → Lưu & chạy**. Sau khi nạp, bấm **⚙ cạnh tên indicator**, ⚙ cạnh nút Indicators hoặc ⚙ trên header cycle để mở **Inputs / Style / Visibility**. Inputs có checkbox/ô số/menu/màu và tìm kiếm; Cancel bỏ draft, Ok lưu. Một số tùy chọn QT+ chưa port được khóa rõ. Hoặc dán toàn bộ nội dung một file. Thông số JSON `{}` dùng mặc định; tên input giữ theo Pine. Chỉ một script trên mỗi chart; muốn thử cả hai thì chọn hai chart khác nhau. Reload sẽ nạp lại script đã lưu. Không dán hai file chung một editor.
+Mở web → chọn chart → **Indicators → New script → Nhập file .js → Save & add to chart**. Sau khi nạp, bấm **⚙ cạnh tên indicator**, ⚙ cạnh nút Indicators hoặc ⚙ trên header cycle để mở **Inputs / Style / Visibility**. Inputs có checkbox/ô số/menu/màu và tìm kiếm; Cancel bỏ draft, Ok lưu. Một số tùy chọn QT+ chưa port được khóa rõ. Hoặc dán toàn bộ nội dung một file. Thông số JSON `{}` dùng mặc định; tên input giữ theo Pine. Có thể add cả hai trên cùng chart thành hai instance và pane riêng. Reload sẽ nạp lại tất cả instance/settings đã lưu. Không dán hai file chung một editor.
 
 Ví dụ QS: `{"showLiquidity":true,"smtNano":true}`. QT+: `{"show_qcisd":true}`. Sửa xong file trên đĩa phải nhập/lưu lại; bản đã lưu trong localStorage không tự cập nhật theo file.
 

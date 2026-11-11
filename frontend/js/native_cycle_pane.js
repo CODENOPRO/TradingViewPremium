@@ -36,7 +36,7 @@ class NativeCyclePane {
     this.descriptor=descriptor;this.header.firstChild.textContent=descriptor.title||'Cycle';
     // No artificial future bars: these anchors share the chart's existing time domain.
     this.series.setData(this.engine.bars.map(b=>({time:b.time,value:(descriptor.min+descriptor.max)/2})));
-    if(!this.initialized){this.initialized=true;this.size();this.resetScale(this.view.range);}
+    if(!this.initialized){this.initialized=true;this.size();if(descriptor.autoScale)this.series.priceScale().applyOptions({autoScale:true});else this.resetScale(this.view.range);}
     this.invalidate?.();this.geometry();
   }
 
@@ -76,6 +76,7 @@ class NativeCyclePane {
     if(!this.descriptor||this.view.collapsed||this.destroyed)return;
     ctx.save();ctx.beginPath();ctx.rect(0,24,size.width,Math.max(0,size.height-24));ctx.clip();
     const e=this.engine,adapter={bars:e.bars,tfSeconds:e.tfSeconds,currentTimeframe:e.currentTimeframe,chart:e.chart,container:{clientWidth:size.width+65},series:this.series};
+    if(this.descriptor.series?.length||this.descriptor.paints?.length)PinePainter.draw(ctx,adapter,this.descriptor,size.width+65,size.height);
     for(const drawing of this.descriptor.drawings)DrawingModel.draw(ctx,adapter,drawing);
     ctx.restore();
   }
@@ -98,8 +99,8 @@ class NativeCyclePane {
 class ChartEngineV5 extends ChartEngine {
   get plotHeight(){return this.chart?this.chart.panes()[0].getHeight()+this.chart.timeScale().height():this.container.clientHeight;}
   initChart(){super.initChart();this.container.dataset.chartEngine='v5';this.chart.applyOptions({layout:{panes:{enableResize:true,separatorColor:'#8b8377',separatorHoverColor:'#2962ff80'}}});}
-  resize(){const r=this.container.getBoundingClientRect();if(r.width<=0||r.height<=0)return;this.chart.applyOptions({width:r.width,height:r.height});this.nativeCycle?.size();this.resizeOverlay();}
-  renderIndicatorPane(){this.nativeCycle?.invalidate?.();}
+  resize(){const r=this.container.getBoundingClientRect();if(r.width<=0||r.height<=0)return;if(this.indicatorStack){this.indicatorStack.resize(r);return;}this.chart.applyOptions({width:r.width,height:r.height});this.nativeCycle?.size();this.resizeOverlay();}
+  renderIndicatorPane(){if(this.indicatorStack)this.indicatorStack.redraw();else this.nativeCycle?.invalidate?.();}
   clearCustomSeries(){this.nativeCycle?.destroy();this.nativeCycle=null;this.paneHeight=0;super.clearCustomSeries();}
   applyIndicatorResult(result){
     super.applyIndicatorResult({...result,pane:null});

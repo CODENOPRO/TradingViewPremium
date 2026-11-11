@@ -9,28 +9,30 @@ class IndicatorSettings {
     modal.onclick=e=>{if(e.target===modal)this.close();};
     modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();this.close();}if(e.key==='Tab'){const fields=[...modal.querySelectorAll('button,input,select,textarea')].filter(x=>!x.disabled&&x.getClientRects().length);const first=fields[0],last=fields.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
     for(const button of modal.querySelectorAll('[data-tab]'))button.onclick=()=>this.render(button.dataset.tab);
-    modal.querySelector('.indi-defaults').onclick=()=>{if(this.tab==='inputs')this.draft={...this.chart.runner.defaults};else if(this.tab==='style')this.view={...this.view,overlay:true,pane:true,tables:true,candleColors:true};else this.view.visibility={};this.render(this.tab);};
+    modal.querySelector('.indi-defaults').onclick=()=>{if(this.tab==='inputs')this.draft={...this.runner.defaults};else if(this.tab==='style')this.view={...this.view,overlay:true,pane:true,tables:true,candleColors:true};else this.view.visibility={};this.render(this.tab);};
     modal.querySelector('.indi-ok').onclick=()=>this.apply();
   }
 
   async open(chart) {
     if(!chart.runner?.ready){window.showToast?.('Nạp indicator trước khi mở setting.','alert');return;}
-    this.chart=chart;this.opener=document.activeElement;this.draft={...chart.runner.settings};this.view=structuredClone(chart.runner.view||{});
-    this.modal.querySelector('.indi-settings-title').textContent=chart.runner.name||'Indicator';
+    const request=this.request=(this.request||0)+1;
+    this.runner=chart.runner.selected?.runner||chart.runner;this.instanceId=chart.runner.record?.id;
+    this.chart=chart;this.opener=document.activeElement;this.draft={...this.runner.settings};this.view=structuredClone(this.runner.view||{});
+    this.modal.querySelector('.indi-settings-title').textContent=this.runner.name||'Indicator';
     this.modal.querySelector('.indi-settings-error').textContent='';
-    const name=chart.runner.name||'',slug=name.startsWith('QT+ by 4XS')?'qt-plus':name.startsWith('QS Stacks+')?'qs-stacks-plus':null;
-    this.fields=chart.runner.inputs||[];
+    const name=this.runner.name||'',slug=name.startsWith('QT+ by 4XS')?'qt-plus':name.startsWith('QS Stacks+')?'qs-stacks-plus':null;
+    this.fields=this.runner.inputs||[];
     if(!this.fields.length&&slug){
-      try {if(!this.schemas.has(slug)){const response=await fetch(`indicators/${slug}.inputs.json`);if(!response.ok)throw Error('Input metadata unavailable');this.schemas.set(slug,await response.json());}this.fields=this.schemas.get(slug);}
+      try {if(!this.schemas.has(slug)){const response=await fetch(`indicators/${slug}.inputs.json`);if(!response.ok)throw Error('Input metadata unavailable');this.schemas.set(slug,await response.json());}if(this.request!==request)return;this.fields=this.schemas.get(slug);}
       catch(error){console.warn(error.message);}
     }
-    if(this.chart!==chart)return;
-    if(!this.fields.length)this.fields=Object.entries(chart.runner.defaults||{}).map(([key,value])=>({key,label:key.replaceAll('_',' '),type:typeof value==='boolean'?'bool':typeof value==='number'?'float':/^#[0-9a-f]{6,8}$/i.test(value)?'color':'string',group:'Inputs'}));
-    this.fields=this.fields.filter(f=>Object.hasOwn(chart.runner.defaults||{},f.key));
+    if(this.chart!==chart||this.request!==request)return;
+    if(!this.fields.length)this.fields=Object.entries(this.runner.defaults||{}).map(([key,value])=>({key,label:key.replaceAll('_',' '),type:typeof value==='boolean'?'bool':typeof value==='number'?'float':/^#[0-9a-f]{6,8}$/i.test(value)?'color':'string',group:'Inputs'}));
+    this.fields=this.fields.filter(f=>Object.hasOwn(this.runner.defaults||{},f.key));
     this.modal.classList.add('show');this.render('inputs');this.modal.querySelector('[data-tab="inputs"]').focus();
   }
 
-  close(){this.modal.classList.remove('show');this.opener?.focus();}
+  close(){this.request=(this.request||0)+1;this.modal.classList.remove('show');this.opener?.focus();}
 
   render(tab) {
     this.tab=tab;
@@ -59,7 +61,7 @@ class IndicatorSettings {
   field(parent,descriptor,target,defaultTrue=false) {
     const {key,type}=descriptor,row=document.createElement('label');row.className='indi-field';row.title=descriptor.disabled||descriptor.tooltip||'';
     const caption=document.createElement('span');caption.textContent=descriptor.label||key;row.appendChild(caption);
-    const value=target[key]??(defaultTrue?true:this.chart.runner.defaults[key]);
+    const value=target[key]??(defaultTrue?true:this.runner.defaults[key]);
     let control;
     if(descriptor.options?.length){control=document.createElement('select');for(const v of descriptor.options){const option=document.createElement('option');option.value=String(v);option.textContent=String(v);control.appendChild(option);}control.value=String(value);}
     else {control=document.createElement('input');control.type=type==='bool'?'checkbox':type==='int'||type==='float'?'number':type==='color'?'color':'text';
@@ -81,7 +83,7 @@ class IndicatorSettings {
     try {
       const invalid=this.modal.querySelector('input:invalid');if(invalid){invalid.reportValidity();return;}
       for(const f of this.fields){const v=this.draft[f.key];if(['int','float'].includes(f.type)&&(!Number.isFinite(v)||f.type==='int'&&!Number.isInteger(v)||f.min!==undefined&&v<f.min||f.max!==undefined&&v>f.max))throw Error(`Giá trị không hợp lệ: ${f.label}`);}
-      if(this.onApply(this.chart,this.draft,this.view)!==false)this.close();
+      if(this.onApply(this.chart,this.draft,this.view,this.instanceId)!==false)this.close();
     } catch(error){this.modal.querySelector('.indi-settings-error').textContent=error.message;}
   }
 }

@@ -75,14 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     charts.forEach(c => c.container.classList.toggle('active', c === chart));
     updateHeader(); saveWorkspace();if(desktop){desktop.hoverBar=null;desktop.signature='';desktop.refresh();}
   }
-  const indicatorSettings=new IndicatorSettings((chart,settings,view)=>{
-    const script=Workspace.read(`indicator_${chart.id}`,null);if(!script?.code)return false;
-    const inputsChanged=JSON.stringify(settings)!==JSON.stringify(chart.runner.settings);
-    if(!Workspace.write(`indicator_${chart.id}`,{...script,settings,view}))return false;
-    if(inputsChanged)chart.runner.load(script.code,settings,view);
-    else {chart.runner.view=view;chart.runner.applyView();}
-    return true;
+  const indicatorSettings=new IndicatorSettings((chart,settings,view,id)=>{
+    const entry=chart.runner.entries.find(e=>e.record.id===id);
+    return !!entry&&chart.runner.update(id,{settings,view});
   });
+  let indicatorLibrary;
   const indicatorSettingsButton=document.createElement('button');indicatorSettingsButton.id='btn-indicator-settings';indicatorSettingsButton.className='btn-icon';indicatorSettingsButton.textContent='⚙';indicatorSettingsButton.title='Indicator settings';indicatorSettingsButton.setAttribute('aria-label','Active indicator settings');
   $('btn-indicator').after(indicatorSettingsButton);indicatorSettingsButton.onclick=()=>indicatorSettings.open(active);
   for (const chart of charts) {
@@ -90,13 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.container.addEventListener('pointerdown', () => activate(chart));
     chart.container.addEventListener('chart-activate', () => activate(chart));
     chart.sessionMode ||= 'ETH';
-    chart.runner = new IndicatorRunner(chart, () => ({ markets: Object.fromEntries(cache), viewport: chart.chart.timeScale().getVisibleRange() }), message => {
+    chart.runner = new IndicatorCollection(chart, () => ({ markets: Object.fromEntries(cache), viewport: chart.chart.timeScale().getVisibleRange() }), message => {
       chart.indicatorStatus = message; if (chart === active) $('indicator-status').textContent = message;
     });
     chart.onDataChange = () => chart.runner.schedule();
     chart.chart.timeScale().subscribeVisibleLogicalRangeChange(() => { saveWorkspace(); chart.runner.schedule(); });
-    const script = Workspace.read(`indicator_${chart.id}`, null);
-    if (script?.code) chart.runner.load(script.code, script.settings,script.view);
+    chart.onIndicatorEdit=id=>{activate(chart);indicatorLibrary.open(chart,id);};
   }
   activate(active);
   document.querySelectorAll('.tf-btn').forEach(button => button.addEventListener('click', () => {
@@ -136,37 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
     stopReplay(); drawing.saveDrawings(active); drawing.setTool('crosshair');
     drawing.editor.clear(); active.runner.stop(); active.clearCustomSeries(); active.symbol = item.dataset.sym; active.clearData();
     drawing.loadDrawings(active); hydrate(active);refreshAlertLines();renderPaper();
-    const script = Workspace.read(`indicator_${active.id}`, null); if (script?.code) active.runner.load(script.code, script.settings,script.view);
+    active.runner.restart();
     closeModal($('symbol-modal')); updateHeader(); saveWorkspace();
   }));
 
-  // The script editor stays empty until the user imports or writes a script.
-  $('btn-indicator').addEventListener('click', () => {
-    const script = Workspace.read(`indicator_${active.id}`, {}) || {};
-    $('indicator-name').value = script.name || '';
-    $('indicator-code').value = script.code || '';
-    $('indicator-settings').value = JSON.stringify(script.settings || {}, null, 2);
-    showModal('indicator-modal');
-  });
-  $('indicator-file').addEventListener('change', async event => {
-    const file = event.target.files[0]; if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { toast('File vượt 2 MB', 'alert'); return; }
-    $('indicator-code').value = await file.text(); $('indicator-name').value = file.name.replace(/\.[^.]+$/, ''); event.target.value = '';
-  });
-  $('apply-indicator').addEventListener('click', () => {
-    try {
-      const settings = JSON.parse($('indicator-settings').value || '{}');
-      if (!settings || Array.isArray(settings) || typeof settings !== 'object') throw new Error('Settings cần là JSON object.');
-      const previous=Workspace.read(`indicator_${active.id}`,null);
-      const script = { name: $('indicator-name').value.trim() || 'Custom indicator', code: $('indicator-code').value, settings,view:previous?.view||{} };
-      if (!Workspace.write(`indicator_${active.id}`, script)) return;
-      active.runner.load(script.code, script.settings,script.view); closeModal($('indicator-modal'));
-    } catch (error) { toast(error.message, 'alert'); }
-  });
-  $('remove-indicator').addEventListener('click', () => {
-    active.runner.stop(); active.clearCustomSeries(); Workspace.write(`indicator_${active.id}`, null);
-    active.indicatorStatus = 'Chưa có indicator'; updateHeader(); closeModal($('indicator-modal'));
-  });
+  indicatorLibrary=new IndicatorLibrary({getChart:()=>active,openSettings:(chart,id)=>{chart.runner.select(id);indicatorSettings.open(chart);},onChange:()=>{updateHeader();if(desktop){desktop.signature='';desktop.refresh();}}});
+  indicatorLibrary.migrate(charts);
+  $('btn-indicator').addEventListener('click',()=>indicatorLibrary.open());
 
   // Replay owns its display slice. Live data continues in the cache without entering replay.
   function replayDraw() {
@@ -257,12 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-trade-sell').addEventListener('click', () => place('sell'));
   renderPaper();
 
-  function toggleIndicator(chart){
-    const script=Workspace.read(`indicator_${chart.id}`,null);if(!script?.code)return;
-    const view={...(chart.runner.view||{}),hidden:!chart.runner.view?.hidden};
-    if(!Workspace.write(`indicator_${chart.id}`,{...script,view}))return;
-    chart.runner.view=view;chart.runner.applyView();chart.container.dataset.indicatorHidden=String(view.hidden);
-  }
+  function toggleIndicator(chart){chart.runner.toggle();}
   charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
 
   // Settings and scale controls.
