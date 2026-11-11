@@ -61,36 +61,34 @@ class SyncController {
       this.isBroadcasting = false;
     });
 
-    // 2. Synchronize Crosshair across all charts
+    // Keep the target crosshair at the same relative height, never at a candle close.
     chartEngine.chart.subscribeCrosshairMove((param) => {
       if (!this.syncEnabled || this.isCrosshairBroadcasting) return;
-
-      if (!param || !param.time || param.point === undefined || param.point.x < 0) {
-        // Pointer left chart - clear crosshair on others
-        this.isCrosshairBroadcasting = true;
-        for (const target of this.charts) {
-          if (target !== chartEngine) {
-            try { target.chart.clearCrosshairPosition(); } catch(e) {}
-          }
-        }
-        this.isCrosshairBroadcasting = false;
-        return;
-      }
-
-      this.isCrosshairBroadcasting = true;
-      for (const target of this.charts) {
-        if (target !== chartEngine && target.series && target.bars && target.bars.length > 0) {
+      const sourceHeight=this.mainPaneHeight(chartEngine);
+      const valid=param&&Number.isFinite(param.time)&&param.point&&Number.isFinite(param.point.x)&&Number.isFinite(param.point.y)&&param.point.x>=0&&param.point.y>=0&&param.point.y<sourceHeight&&(param.paneIndex===undefined||param.paneIndex===0);
+      this.isCrosshairBroadcasting=true;
+      try {
+        for(const target of this.charts){
+          if(target===chartEngine)continue;
           try {
-            const tgtIdx = this.findClosestBarIndex(target.bars, param.time);
-            if (tgtIdx >= 0) {
-              const tgtBar = target.bars[tgtIdx];
-              target.chart.setCrosshairPosition(tgtBar.close, param.time, target.series);
-            }
-          } catch(e) {}
+            if(!valid||!target.series||!target.bars?.length){target.chart.clearCrosshairPosition();continue;}
+            const index=this.findClosestBarIndex(target.bars,param.time),bar=target.bars[index];
+            // The native API otherwise snaps missing/future times to an old loaded candle.
+            const contains=bar&&(bar.time===param.time||target.tfSeconds>chartEngine.tfSeconds&&param.time>=bar.time&&param.time<bar.time+target.tfSeconds);
+            const height=this.mainPaneHeight(target);
+            const price=height>0?target.series.coordinateToPrice(param.point.y/sourceHeight*height):null;
+            if(!contains||!Number.isFinite(price)){target.chart.clearCrosshairPosition();continue;}
+            target.chart.setCrosshairPosition(price,bar.time,target.series);
+          }catch(error){try{target.chart.clearCrosshairPosition();}catch{}}
         }
-      }
-      this.isCrosshairBroadcasting = false;
+      }finally{this.isCrosshairBroadcasting=false;}
     });
+  }
+
+  mainPaneHeight(engine){
+    const height=engine.plotHeight??engine.container?.clientHeight??0;
+    const axis=engine.chart.timeScale().height?.()??26;
+    return Math.max(0,height-axis);
   }
 
   findClosestBarIndex(bars, time) {

@@ -77,6 +77,8 @@ Bốn cụm nổi trên trái/phải, dưới trái/phải và thanh vẽ trái 
 
 Header tên mã/OHLC và BUY/SELL trên từng chart đã ẩn theo yêu cầu giao diện gọn; lệnh demo dùng nút Paper Trading. Góc dưới dùng biểu tượng NQ/ES/YM, tự tránh thanh vẽ/cụm dưới và đổi theo mã; CL chưa có asset nên không gán logo của mã khác. Thanh trên thiếu chỗ sẽ đưa các thao tác phụ vào `…`. Logo attribution trên chart tắt bằng tùy chọn chính thức; notice được giữ trong vendor và link TradingView nằm trong Settings. Nguồn: [LayoutOptions.attributionLogo](https://tradingview.github.io/lightweight-charts/docs/api/interfaces/LayoutOptions#attributionlogo).
 
+Crosshair đồng bộ dùng cùng thời điểm và độ cao chuột tương đối theo từng vùng giá, không ghim vào close/OHLC của chart đích. Nếu đích thiếu nến đúng thời điểm thì xóa crosshair đồng bộ thay vì nhảy về cây cũ; khung lớn hơn dùng nến thực chứa thời điểm đó. Ra khỏi vùng giá hoặc vào pane indicator thì xóa crosshair ở các chart khác. Vùng chart mặc định dùng con trỏ dấu cộng; hành vi đồng bộ kéo/zoom không đổi.
+
 Đối chiếu toàn màn hình và panel desktop: [DESKTOP_PARITY.md](DESKTOP_PARITY.md).
 
 Nếu web báo backend cũ: đóng server Python cũ rồi chạy lại `start_terminal.bat`. `/health` của bản hiện tại có `service: trading-terminal`, `protocol_version: 2` và cổng WS. Dữ liệu chỉ live cho mã đang được tải trong TradingView; mã thiếu nguồn giữ cache và hiện trạng thái dữ liệu đã lưu.
