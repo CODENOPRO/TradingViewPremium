@@ -2,6 +2,7 @@ class DrawingManager {
   constructor() {
     this.activeTool = 'crosshair';
     this.magnetEnabled = false;
+    this.magnetMode = 'strong';
     this.drawingsLocked = false;
     this.drawingsHidden = false;
     this.drawingState = null;
@@ -10,6 +11,7 @@ class DrawingManager {
     this.redoStacks = new Map();
     this.editor = new DrawingEditor(this);
     this.initHotkeys();
+    const magnet=Workspace.read('terminal_magnet_v1',{});this.magnetEnabled=!!magnet.enabled;this.magnetMode=magnet.mode==='weak'?'weak':'strong';this.updateMagnetButtons();
   }
 
   setTool(tool) {
@@ -32,19 +34,12 @@ class DrawingManager {
         window.currentActiveChart.drawings = [];
         window.currentActiveChart.renderDrawings();
         this.saveDrawings(window.currentActiveChart);
-        if (typeof showToast === 'function') showToast('🗑 Đã xóa toàn bộ hình vẽ trên chart', 'info');
       }
       return;
     }
 
     if (tool === 'magnet') {
-      this.magnetEnabled = !this.magnetEnabled;
-      document.querySelectorAll('.tool-btn[data-tool="magnet"], .ft-btn[data-tool="magnet"]').forEach(btn => {
-        btn.classList.toggle('active', this.magnetEnabled);
-      });
-      if (typeof showToast === 'function') {
-        showToast(this.magnetEnabled ? '🧲 Nam châm hút râu nến: BẬT' : '🧲 Nam châm: TẮT', 'info');
-      }
+      this.setMagnet(!this.magnetEnabled);
       return;
     }
 
@@ -62,6 +57,19 @@ class DrawingManager {
     });
   }
 
+  updateMagnetButtons(){
+    document.querySelectorAll('.tool-btn[data-tool="magnet"], .ft-btn[data-tool="magnet"]').forEach(btn=>{
+      btn.classList.toggle('active',this.magnetEnabled);btn.setAttribute('aria-pressed',String(this.magnetEnabled));
+      btn.title=`Magnet: ${this.magnetEnabled?'On':'Off'} · ${this.magnetMode==='weak'?'Weak':'Strong'} (Ctrl: temporary toggle)`;
+    });
+  }
+  setMagnet(enabled,mode=this.magnetMode){this.magnetEnabled=!!enabled;this.magnetMode=mode==='weak'?'weak':'strong';this.updateMagnetButtons();Workspace.write('terminal_magnet_v1',{enabled:this.magnetEnabled,mode:this.magnetMode});}
+  snapPoint(chart,time,price,event={}){
+    const temporary=!!(event.ctrlKey||event.metaKey);
+    if(this.magnetEnabled===temporary)return {time,price};
+    return chart.snapToBar(time,price,temporary?'strong':this.magnetMode);
+  }
+
   toggleLock() {
     this.drawingsLocked = !this.drawingsLocked;
     const charts = window.charts || (window.currentActiveChart ? [window.currentActiveChart] : []);
@@ -70,9 +78,7 @@ class DrawingManager {
     document.querySelectorAll('.tool-btn[data-tool="lock"], .ft-btn[data-tool="lock"]').forEach(btn => {
       btn.classList.toggle('active', this.drawingsLocked);
     });
-    if (typeof showToast === 'function') {
-      showToast(this.drawingsLocked ? '🔒 Đã KHÓA toàn bộ bản vẽ' : '🔓 Đã MỞ KHÓA bản vẽ', 'info');
-    }
+
   }
 
   toggleEye() {
@@ -86,9 +92,7 @@ class DrawingManager {
     document.querySelectorAll('.tool-btn[data-tool="eye"], .ft-btn[data-tool="eye"]').forEach(btn => {
       btn.classList.toggle('active', this.drawingsHidden);
     });
-    if (typeof showToast === 'function') {
-      showToast(this.drawingsHidden ? '👁 Đã ẨN tất cả bản vẽ' : '👁 Đã HIỆN tất cả bản vẽ', 'info');
-    }
+
   }
 
   bindChart(chartEngine) {
@@ -108,9 +112,7 @@ class DrawingManager {
       let price = chartEngine.coordinateToPrice(y);
       if (!time || !price) return;
 
-      if (this.magnetEnabled) {
-        price = chartEngine.snapToOHLC(time, price);
-      }
+      ({time,price}=this.snapPoint(chartEngine,time,price,e));
 
       // Horizontal Line: 1-click drop
       if (this.activeTool === 'hline') {
@@ -172,9 +174,7 @@ class DrawingManager {
       let price = chartEngine.coordinateToPrice(y);
       if (!time || !price) return;
 
-      if (this.magnetEnabled) {
-        price = chartEngine.snapToOHLC(time, price);
-      }
+      ({time,price}=this.snapPoint(chartEngine,time,price,e));
 
       chartEngine.drawings = chartEngine.drawings.filter(d => !d.isTemp);
       chartEngine.drawings.push({

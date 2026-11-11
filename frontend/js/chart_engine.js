@@ -617,32 +617,24 @@ class ChartEngine {
   }
 
   // MAGNET HELPER (SNAP TO CANDLE OHLC)
-  snapToOHLC(time, price) {
-    if (!this.bars || !this.bars.length) return price;
-    // Find closest bar to time
-    let closestBar = null;
-    let minDiff = Infinity;
-    for (const b of this.bars) {
-      const d = Math.abs(b.time - time);
-      if (d < minDiff) {
-        minDiff = d;
-        closestBar = b;
-      }
+  snapToBar(time,price,mode='strong') {
+    if(!this.bars?.length||!Number.isFinite(time)||!Number.isFinite(price))return {time,price};
+    let lo=0,hi=this.bars.length-1;
+    while(lo<hi){const mid=(lo+hi)>>1;if(this.bars[mid].time<time)lo=mid+1;else hi=mid;}
+    const next=this.bars[lo],prior=this.bars[Math.max(0,lo-1)];
+    const bar=Math.abs(next.time-time)<Math.abs(prior.time-time)?next:prior;
+    const y=this.series.priceToCoordinate(price);if(y===null)return {time,price};
+    let closest=price,distance=Infinity;
+    for(const candidate of [bar.open,bar.high,bar.low,bar.close]){const at=this.series.priceToCoordinate(candidate);if(at===null)continue;const delta=Math.abs(at-y);if(delta<distance){closest=candidate;distance=delta;}}
+    if(mode==='weak'){
+      const x=this.chart.timeScale().logicalToCoordinate(DrawingModel.logicalIndex(this,time));
+      const barX=this.chart.timeScale().logicalToCoordinate(DrawingModel.logicalIndex(this,bar.time));
+      if(x===null||barX===null||Math.hypot(x-barX,distance)>8)return {time,price};
     }
-    if (!closestBar) return price;
-
-    const candidates = [closestBar.open, closestBar.high, closestBar.low, closestBar.close];
-    let closestPrice = price;
-    let minPriceDiff = Infinity;
-    for (const c of candidates) {
-      const pd = Math.abs(c - price);
-      if (pd < minPriceDiff) {
-        minPriceDiff = pd;
-        closestPrice = c;
-      }
-    }
-    return closestPrice;
+    if(!Number.isFinite(distance))return {time,price};
+    return {time:bar.time,price:closest};
   }
+  snapToOHLC(time,price){return this.snapToBar(time,price).price;}
 
   // DRAWINGS RENDERING
   renderDrawings() {

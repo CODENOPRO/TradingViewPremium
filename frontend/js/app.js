@@ -200,7 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let alerts = Workspace.read('terminal_alerts_v1', []);
   if (!Array.isArray(alerts)) alerts = [];
   const previousPrices = new Map();
-  $('btn-alert').addEventListener('click', () => { $('alert-sym-label').textContent = active.symbol; $('alert-price-input').value = cache.get(active.symbol)?.['1m']?.at(-1)?.close || ''; showModal('alert-modal'); });
+  function openAlert(chart,price){activate(chart);$('alert-sym-label').textContent=chart.symbol;$('alert-price-input').value=Number.isFinite(price)?price:(cache.get(chart.symbol)?.['1m']?.at(-1)?.close||'');showModal('alert-modal');}
+  $('btn-alert').addEventListener('click',()=>openAlert(active));
   $('btn-save-alert').addEventListener('click', () => {
     const price = Number($('alert-price-input').value); if (!Number.isFinite(price) || !$('alert-price-input').value) return toast('Nhập giá hợp lệ', 'alert');
     alerts.push({ symbol: active.symbol, price, condition: $('alert-condition').value, triggered: false });
@@ -281,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-settings').addEventListener('click',()=>chartSettings.open());
   charts.forEach(c=>c.onChartSettings=()=>{activate(c);chartSettings.open();});
   desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertRemove:index=>{alerts=alerts.filter((_,i)=>i!==index);Workspace.write('terminal_alerts_v1',alerts);refreshAlertLines();}});
+  new ChartContextMenu({charts,drawing,desktop,activate,openAlert});
   document.querySelectorAll('.scale-toggle').forEach(button => button.addEventListener('click', () => {
     if (button.textContent.trim() === 'auto') active.chart.priceScale('right').applyOptions({ autoScale: true });
     else { const mode = button.textContent.trim() === '%' ? LightweightCharts.PriceScaleMode.Percentage : LightweightCharts.PriceScaleMode.Logarithmic; active.chart.priceScale('right').applyOptions({ mode: button.classList.contains('active') ? 0 : mode }); document.querySelectorAll('.scale-toggle').forEach(b => { if (b !== button) b.classList.remove('active'); }); button.classList.toggle('active'); }
@@ -289,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.key === 'Escape') { document.querySelectorAll('.modal.show').forEach(closeModal); $('layout-popover').classList.remove('show'); }
     if (event.target.closest('input, textarea, select, [contenteditable]')) return;
     if (event.altKey && event.key.toLowerCase() === 'r') { event.preventDefault(); sync.syncEnabled ? sync.resetAllCharts() : active.resetView(); }
+    if (event.altKey && event.key.toLowerCase() === 'a') { event.preventDefault(); openAlert(active); }
     if (event.key === 'F10') { event.preventDefault(); replayNext(); }
   });
 

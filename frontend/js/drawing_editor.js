@@ -72,7 +72,8 @@ class DrawingEditor {
       if(!this.drag||this.drag.chart!==chart)return;
       const rect=chart.container.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
       if(Math.hypot(x-this.drag.startX,y-this.drag.startY)<3&&!this.drag.changed)return;
-      const point=DrawingModel.fromPixel(chart,x,y);if(!point)return;
+      let point=DrawingModel.fromPixel(chart,x,y);if(!point)return;
+      if(this.drag.handle!=='body')point=this.manager.snapPoint(chart,point.time,point.price,event);
       event.preventDefault();event.stopImmediatePropagation();
       const {original,start,handle}=this.drag,d=structuredClone(original);
       if(handle==='p1'||handle==='p2')d[handle]=point;

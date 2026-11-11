@@ -63,6 +63,14 @@ class DesktopShell {
       }
       if(key==='measure'||key==='text'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
       if(key==='magnet'){
+        const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
+        const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');
+        const options=document.createElement('button');options.type='button';options.className='magnet-menu-toggle';options.textContent='›';options.setAttribute('aria-label','Magnet options');options.setAttribute('aria-expanded','false');
+        const closeMenu=()=>{menu.hidden=true;options.setAttribute('aria-expanded','false');};
+        const showMenu=()=>{menu.hidden=!menu.hidden;options.setAttribute('aria-expanded',String(!menu.hidden));if(!menu.hidden){const rect=group.getBoundingClientRect();menu.style.top=Math.min(innerHeight-128,rect.top)+'px';}};
+        options.onclick=showMenu;b.oncontextmenu=e=>{e.preventDefault();showMenu();};
+        for(const [mode,label] of [['weak','Weak magnet'],['strong','Strong magnet'],['off','Off']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.setAttribute('role','menuitem');option.onclick=()=>{this.drawing.setMagnet(mode!=='off',mode==='off'?this.drawing.magnetMode:mode);closeMenu();b.focus();};menu.appendChild(option);}
+        group.append(options);document.body.appendChild(menu);document.addEventListener('click',e=>{if(!group.contains(e.target)&&!menu.contains(e.target))closeMenu();});menu.onkeydown=e=>{if(e.key==='Escape'){closeMenu();b.focus();}};
         const keep=this.button('Stay in drawing mode','keep',()=>{this.drawing.keepDrawing=!this.drawing.keepDrawing;keep.classList.toggle('active',this.drawing.keepDrawing);keep.setAttribute('aria-pressed',String(this.drawing.keepDrawing));});keep.className='tool-btn';keep.setAttribute('aria-pressed','false');rail.appendChild(keep);
       }
     }
