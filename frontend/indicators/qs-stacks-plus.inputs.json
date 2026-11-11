@@ -1,0 +1,202 @@
+[
+  {
+    "key": "fridayAsQ4",
+    "type": "bool",
+    "label": "Friday as Q4",
+    "group": "Quarter clock"
+  },
+  {
+    "key": "blockLimit",
+    "type": "int",
+    "label": "Blocks per row",
+    "group": "Quarter clock",
+    "min": 8,
+    "max": 70
+  },
+  {
+    "key": "showTriplets",
+    "type": "bool",
+    "label": "Sequence text",
+    "group": "Quarter clock"
+  },
+  {
+    "key": "showRoots",
+    "type": "bool",
+    "label": "Highlight 3, 6 and 9",
+    "group": "Quarter clock"
+  },
+  {
+    "key": "showNames",
+    "type": "bool",
+    "label": "Row names",
+    "group": "Quarter clock"
+  },
+  {
+    "key": "rowNano",
+    "type": "bool",
+    "label": "Nano",
+    "group": "Quarter rows"
+  },
+  {
+    "key": "rowMicro",
+    "type": "bool",
+    "label": "Micro",
+    "group": "Quarter rows"
+  },
+  {
+    "key": "row90",
+    "type": "bool",
+    "label": "90m",
+    "group": "Quarter rows"
+  },
+  {
+    "key": "rowDaily",
+    "type": "bool",
+    "label": "Daily",
+    "group": "Quarter rows"
+  },
+  {
+    "key": "rowWeekly",
+    "type": "bool",
+    "label": "Weekly",
+    "group": "Quarter rows"
+  },
+  {
+    "key": "rowMonthly",
+    "type": "bool",
+    "label": "Monthly",
+    "group": "Quarter rows"
+  },
+  {
+    "key": "q1",
+    "type": "color",
+    "label": "Q1",
+    "group": "Clock colors"
+  },
+  {
+    "key": "q2",
+    "type": "color",
+    "label": "Q2",
+    "group": "Clock colors"
+  },
+  {
+    "key": "q3",
+    "type": "color",
+    "label": "Q3",
+    "group": "Clock colors"
+  },
+  {
+    "key": "q4",
+    "type": "color",
+    "label": "Q4",
+    "group": "Clock colors"
+  },
+  {
+    "key": "autoPeers",
+    "type": "bool",
+    "label": "Match index peers automatically",
+    "group": "SSMT"
+  },
+  {
+    "key": "manualA",
+    "type": "symbol",
+    "label": "Peer A",
+    "group": "SSMT"
+  },
+  {
+    "key": "manualB",
+    "type": "symbol",
+    "label": "Peer B",
+    "group": "SSMT"
+  },
+  {
+    "key": "showSmt",
+    "type": "bool",
+    "label": "Divergence lines and tags",
+    "group": "SSMT"
+  },
+  {
+    "key": "showStages",
+    "type": "bool",
+    "label": "Stage markers",
+    "group": "SSMT"
+  },
+  {
+    "key": "smtNano",
+    "type": "bool",
+    "label": "Nano",
+    "group": "SSMT tiers"
+  },
+  {
+    "key": "smtMicro",
+    "type": "bool",
+    "label": "Micro",
+    "group": "SSMT tiers"
+  },
+  {
+    "key": "smt90",
+    "type": "bool",
+    "label": "90m",
+    "group": "SSMT tiers"
+  },
+  {
+    "key": "smtDaily",
+    "type": "bool",
+    "label": "Daily",
+    "group": "SSMT tiers"
+  },
+  {
+    "key": "minStages",
+    "type": "int",
+    "label": "Minimum aligned tiers",
+    "group": "SSMT",
+    "min": 1,
+    "max": 4
+  },
+  {
+    "key": "swingTolerance",
+    "type": "int",
+    "label": "Stage swing tolerance (bars)",
+    "group": "SSMT",
+    "min": 0,
+    "max": 12
+  },
+  {
+    "key": "historyLimit",
+    "type": "int",
+    "label": "Divergences retained",
+    "group": "SSMT",
+    "min": 5,
+    "max": 140
+  },
+  {
+    "key": "bull",
+    "type": "color",
+    "label": "Bullish",
+    "group": "SSMT"
+  },
+  {
+    "key": "bear",
+    "type": "color",
+    "label": "Bearish",
+    "group": "SSMT"
+  },
+  {
+    "key": "showOpen",
+    "type": "bool",
+    "label": "True 90m open",
+    "group": "Price context"
+  },
+  {
+    "key": "showStackNote",
+    "type": "bool",
+    "label": "Triple sequence tag",
+    "group": "Price context"
+  },
+  {
+    "key": "showLiquidity",
+    "type": "bool",
+    "label": "Prior 90m high and low",
+    "group": "Price context"
+  }
+]

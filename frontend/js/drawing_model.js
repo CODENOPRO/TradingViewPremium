@@ -91,6 +91,9 @@ const DrawingModel = (() => {
     ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;ctx.setLineDash(dash(d.lineStyle));
     const line=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
     if(d.type === 'line') {
+      if(d.axis==='vertical') {
+        line(g.a.x,0,g.a.x,(chart.plotHeight??chart.container.clientHeight)-26);ctx.restore();return;
+      }
       let a={...(g.a.x <= g.b.x ? g.a : g.b)},b={...(g.a.x <= g.b.x ? g.b : g.a)};
       const slope=(b.y-a.y)/(b.x-a.x || .001);
       if(d.extend === 'left' || d.extend === 'both'){const x=Math.min(a.x,b.x);const y=a.x<=b.x?a.y:b.y;a={x:0,y:y-x*slope};}
@@ -126,10 +129,10 @@ const DrawingModel = (() => {
     if(d.text || d.type === 'text') {
       const style=d.textStyle;
       ctx.setLineDash([]);ctx.fillStyle=style.color;ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${style.size}px Arial`;
-      ctx.textAlign=d.type === 'text' ? 'left' : style.horizontal;
+      ctx.textAlign=style.horizontal;
       const x=d.type === 'text'?g.a.x:style.horizontal === 'left'?left+6:style.horizontal === 'center'?(left+right)/2:right-6;
       const lines=(d.text||'Text').split('\n');
-      const y=d.type === 'text'?g.a.y:style.vertical === 'above'?top-8-(lines.length-1)*style.size*1.3:style.vertical === 'below'?bottom+style.size+6:(top+bottom)/2-(lines.length-1)*style.size*.65;
+      const y=style.vertical === 'above'?top-8-(lines.length-1)*style.size*1.3:style.vertical === 'below'?bottom+style.size+6:d.type === 'text'?g.a.y:(top+bottom)/2-(lines.length-1)*style.size*.65;
       lines.forEach((text,index)=>ctx.fillText(text,x,y+index*style.size*1.3));
     }
     ctx.restore();

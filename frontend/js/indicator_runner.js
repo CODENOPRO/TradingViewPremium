@@ -7,11 +7,13 @@ class IndicatorRunner {
     this.busy = false;
   }
 
-  load(code, settings = {}) {
+  load(code, settings = {}, view = {}) {
     this.stop();
     this.chart.clearCustomSeries();
     this.code = code;
+    this.lastResult=null;
     this.settings = settings;
+    this.view=view;
     if (!code.trim()) { this.onStatus('Chưa có indicator'); return; }
     this.onStatus('Đang nạp script…');
     const worker = new Worker('js/indicator_worker.js');
@@ -22,6 +24,8 @@ class IndicatorRunner {
       clearTimeout(this.timeout);
       if (data.type === 'error') { this.fail(data.error); return; }
       if (data.type === 'ready') {
+        this.name=data.name; this.defaults=data.defaults; this.inputs=data.inputs||[];
+        this.chart.setIndicatorLegend?.(data.name);
         this.settings = { ...data.defaults, ...this.settings };
         this.ready = true;
         this.schedule();
@@ -31,14 +35,24 @@ class IndicatorRunner {
       if (data.id === this.revision) {
         try {
           this.validate(data.result);
-          this.chart.applyIndicatorResult(data.result);
-          this.onStatus(`${data.elapsed.toFixed(0)} ms · ${this.chart.bars.length} nến`);
+          this.lastResult=data.result;this.applyView();
+          this.onStatus(`${data.elapsed.toFixed(0)} ms · ${this.chart.bars.length} nến${data.result.warnings?.length ? ' · '+data.result.warnings.join('; ') : ''}`);
         } catch (error) { this.fail(error.message); return; }
       }
       if (this.pending) { this.pending = false; this.schedule(); }
     };
     worker.onerror = error => this.fail(error.message || 'Indicator worker bị lỗi');
     worker.postMessage({ type: 'init', code });
+  }
+
+  applyView() {
+    if(!this.lastResult)return;
+    const result=this.lastResult,v=this.view||{},visible=v.visibility?.[this.chart.currentTimeframe]!==false;
+    this.chart.applyIndicatorResult({...result,
+      drawings:visible&&v.overlay!==false?result.drawings:[],
+      pane:visible&&v.pane!==false?result.pane:null,
+      tables:visible&&v.tables!==false?(result.tables||[]).filter(t=>v.pane!==false||!t.pane):[],
+      series:visible?result.series:[],candleColors:visible&&v.candleColors!==false?result.candleColors:[]});
   }
 
   schedule() {
@@ -54,7 +68,8 @@ class IndicatorRunner {
     if (!this.chart.bars.length) { this.onStatus('Đang chờ dữ liệu'); return; }
     this.busy = true;
     this.timeout = setTimeout(() => this.fail('Tính indicator quá 4 giây; đã dừng. Script vẫn được lưu.'), 4000);
-    const context = { ...this.getContext(), settings: this.settings, symbol: this.chart.symbol, timeframe: this.chart.currentTimeframe, metadata: this.chart.metadata };
+    const context = { ...this.getContext(), settings: this.settings, symbol: this.chart.symbol, timeframe: this.chart.currentTimeframe, metadata: this.chart.metadata,
+      timeframeSeconds: this.chart.tfSeconds, now: Date.now()/1000, sessionMode:this.chart.sessionMode, replay:!!this.chart.replayMode };
     this.worker.postMessage({ type: 'run', id: this.revision, bars: this.chart.bars, context });
   }
 
@@ -68,7 +83,9 @@ class IndicatorRunner {
         previous = point.time;
       }
     }
-    for (const drawing of result.drawings || []) {
+    if (result.pane && (!Number.isFinite(result.pane.min) || !Number.isFinite(result.pane.max) || result.pane.max <= result.pane.min || !Array.isArray(result.pane.drawings) || result.pane.drawings.length > 2000)) throw new Error('Pane indicator không hợp lệ.');
+    if(result.candleColors && (!Array.isArray(result.candleColors) || result.candleColors.some(x=>!Number.isFinite(x.time)||typeof x.color!=='string'))) throw new Error('Màu nến indicator không hợp lệ.');
+    for (const drawing of [...(result.drawings || []), ...(result.pane?.drawings || [])]) {
       if (!['line', 'box', 'hline', 'text', 'fib', 'position', 'measure'].includes(drawing.type) || !drawing.p1 || !Number.isFinite(drawing.p1.time) || !Number.isFinite(drawing.p1.price)) throw new Error('Hình indicator không hợp lệ.');
       if (drawing.type !== 'text' && drawing.type !== 'hline' && (!drawing.p2 || !Number.isFinite(drawing.p2.time) || !Number.isFinite(drawing.p2.price))) throw new Error('Hình thiếu điểm kết thúc.');
     }

@@ -24,8 +24,8 @@ Launcher có thể mở TradingView nếu chưa chạy; không force-close works
 
 ## Giới hạn cần biết
 
-- **QT+ chưa được chuyển thành indicator JavaScript hoàn chỉnh. Không hỗ trợ dán Pine nguyên bản.** Worker/editor là nền để thêm bản chuyển đổi, không phải Pine runtime đầy đủ.
-- Worker hiện hỗ trợ series line/histogram, drawing và table trên main chart; pane riêng của QT+ chưa triển khai.
+- **Đã có QS Stacks+ JavaScript và QT+ test port để nhập thủ công. QT+ chưa tương đương Pine hoàn chỉnh.** Xem [cách test và giới hạn](frontend/indicators/README.md). Không hỗ trợ dán Pine nguyên bản.
+- Worker hỗ trợ series line/histogram, overlay drawings, pane ribbon riêng, tables và màu thân nến. Tín hiệu/alert Pine chưa được xác nhận parity.
 - Chỉ lấy các mã/timeframe hiện có trong chart nguồn và cache. Chưa có dịch vụ tải lịch sử độc lập, warmup HTF chủ động hoặc xác nhận đủ 5.000 nến cho QT+.
 - Chưa hoàn thiện toàn bộ công cụ TradingView: các công cụ hiện có là rectangle, trendline, text, fib, position box và measure. Visibility lưu cả các nhóm thời gian ngoài UI nhưng hiện UI chỉ có phút/giờ/D/W.
 - Paper engine khớp theo các mẫu giá nhận được khi backend/trình duyệt hoạt động; chưa có mô phỏng tick-by-tick, phí/slippage, margin liquidation, amend/drag lệnh hoặc giao dịch trong replay. Không coi là parity broker/TradingView đầy đủ.
@@ -34,11 +34,13 @@ Launcher có thể mở TradingView nếu chưa chạy; không force-close works
 
 ## Indicator JavaScript
 
-File nhập định nghĩa `function calculate(bars, context)` hoặc `const indicator = { name, defaults, calculate }`. Kết quả là `{ series, drawings, tables }`.
+File nhập định nghĩa `function calculate(bars, context)` hoặc `const indicator = { name, defaults, calculate }`. Kết quả là `{ series, drawings, tables, pane?, candleColors?, events?, warnings? }`.
 
 - `series`: danh sách `{ type: 'line' | 'histogram', data: [{ time, value }], color, width, title }`, time giây Unix tăng dần.
 - `drawings`: `{ type, p1: {time,price}, p2?: {time,price}, ...style }`; các loại theo `DrawingModel`.
-- `tables`: `{ title, rows: [[value, ...], ...] }`.
+- `tables`: `{ title, rows: [[value, ...], ...], position?, pane? }`; ô có thể là `{text,color}`.
+- `pane`: `{title, min, max, drawings}`; cùng time axis, thang dọc riêng, không đổi ba chart độc lập.
+- `candleColors`: `[{time,color}]` cho màu thân nến; `warnings` hiện trên status. `events` chỉ là kết quả tính, chưa có notification dispatcher.
 - `context`: `symbol`, `timeframe`, `metadata`, `settings`, `markets` chứa dữ liệu đa mã/khung và `viewport`.
 
 Script được lưu theo chart. Worker là cơ chế giữ UI đáp ứng, không phải sandbox bảo mật cho code không tin cậy. Không có module import/Pine transpilation tự động.
@@ -62,4 +64,4 @@ Mời người khác: mở repo → **Settings → Collaborators & teams → Add
 
 Repo cá nhân private không có vai trò collaborator chỉ đọc: collaborator có cả quyền push. Nếu chỉ muốn chia sẻ quyền xem/tải, dùng repo Organization với vai trò **Read**, hoặc public để mọi người đọc/tải mà không cần mời. Không tự đổi visibility hoặc gửi lời mời thay người dùng. Tham khảo [GitHub repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository).
 
-Lightweight Charts vendored giữ thông báo giấy phép và attribution của TradingView. Chưa đưa source Pine người dùng đính kèm hoặc thư viện ENIGMA vào repo.
+Lightweight Charts vendored giữ thông báo giấy phép và attribution của TradingView. Các bản JavaScript chuyển từ attachment giữ notice MPL-2.0/attribution; không upload attachment Pine gốc hoặc thư viện ENIGMA.

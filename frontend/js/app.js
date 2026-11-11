@@ -69,7 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
     charts.forEach(c => c.container.classList.toggle('active', c === chart));
     updateHeader(); saveWorkspace();
   }
+  const indicatorSettings=new IndicatorSettings((chart,settings,view)=>{
+    const script=Workspace.read(`indicator_${chart.id}`,null);if(!script?.code)return false;
+    const inputsChanged=JSON.stringify(settings)!==JSON.stringify(chart.runner.settings);
+    if(!Workspace.write(`indicator_${chart.id}`,{...script,settings,view}))return false;
+    if(inputsChanged)chart.runner.load(script.code,settings,view);
+    else {chart.runner.view=view;chart.runner.applyView();}
+    return true;
+  });
+  const indicatorSettingsButton=document.createElement('button');indicatorSettingsButton.id='btn-indicator-settings';indicatorSettingsButton.className='btn-icon';indicatorSettingsButton.textContent='⚙';indicatorSettingsButton.title='Indicator settings';indicatorSettingsButton.setAttribute('aria-label','Active indicator settings');
+  $('btn-indicator').after(indicatorSettingsButton);indicatorSettingsButton.onclick=()=>indicatorSettings.open(active);
   for (const chart of charts) {
+    chart.onIndicatorSettings=()=>{activate(chart);indicatorSettings.open(chart);};
     chart.container.addEventListener('pointerdown', () => activate(chart));
     chart.container.addEventListener('chart-activate', () => activate(chart));
     chart.sessionMode ||= 'ETH';
@@ -79,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.onDataChange = () => chart.runner.schedule();
     chart.chart.timeScale().subscribeVisibleLogicalRangeChange(() => { saveWorkspace(); chart.runner.schedule(); });
     const script = Workspace.read(`indicator_${chart.id}`, null);
-    if (script?.code) chart.runner.load(script.code, script.settings);
+    if (script?.code) chart.runner.load(script.code, script.settings,script.view);
   }
   activate(active);
   document.querySelectorAll('.tf-btn').forEach(button => button.addEventListener('click', () => {
@@ -119,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     stopReplay(); drawing.saveDrawings(active); drawing.setTool('crosshair');
     drawing.editor.clear(); active.runner.stop(); active.clearCustomSeries(); active.symbol = item.dataset.sym; active.clearData();
     drawing.loadDrawings(active); hydrate(active);
-    const script = Workspace.read(`indicator_${active.id}`, null); if (script?.code) active.runner.load(script.code, script.settings);
+    const script = Workspace.read(`indicator_${active.id}`, null); if (script?.code) active.runner.load(script.code, script.settings,script.view);
     closeModal($('symbol-modal')); updateHeader(); saveWorkspace();
   }));
 
@@ -140,9 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const settings = JSON.parse($('indicator-settings').value || '{}');
       if (!settings || Array.isArray(settings) || typeof settings !== 'object') throw new Error('Settings cần là JSON object.');
-      const script = { name: $('indicator-name').value.trim() || 'Custom indicator', code: $('indicator-code').value, settings };
+      const previous=Workspace.read(`indicator_${active.id}`,null);
+      const script = { name: $('indicator-name').value.trim() || 'Custom indicator', code: $('indicator-code').value, settings,view:previous?.view||{} };
       if (!Workspace.write(`indicator_${active.id}`, script)) return;
-      active.runner.load(script.code, script.settings); closeModal($('indicator-modal'));
+      active.runner.load(script.code, script.settings,script.view); closeModal($('indicator-modal'));
     } catch (error) { toast(error.message, 'alert'); }
   });
   $('remove-indicator').addEventListener('click', () => {

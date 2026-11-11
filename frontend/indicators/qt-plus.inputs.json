@@ -1,0 +1,2499 @@
+[
+  {
+    "key": "modeltype",
+    "type": "string",
+    "label": "Calculation Mode",
+    "group": "VISIBILITY SETTINGS",
+    "tooltip": " Micro => 1-2m,'\n' 90m =>3m-10m, '\n'Daily=> 15-30m, '\n'Weekly => h1-12h, '\n' Effect => Visibility",
+    "options": [
+      "Auto",
+      "Custom"
+    ]
+  },
+  {
+    "key": "alerttype",
+    "type": "string",
+    "label": "Type of SSMT",
+    "group": "VISIBILITY SETTINGS",
+    "tooltip": "Effect => Visibility and Alerts",
+    "options": [
+      "All",
+      "Normal",
+      "Hidden"
+    ]
+  },
+  {
+    "key": "i_font",
+    "type": "string",
+    "label": "Chart Text Size",
+    "group": "VISIBILITY SETTINGS",
+    "options": [
+      "tiny",
+      "small",
+      "normal",
+      "large",
+      "huge"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "show_sbar_st",
+    "type": "bool",
+    "label": "Show SSMT Status Bar",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Displays a horizontal status bar of active Normal SSMT cycles."
+  },
+  {
+    "key": "sbar_pos_in",
+    "type": "string",
+    "label": "Status Bar Position",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Top Right",
+      "Top Left",
+      "Bottom Right",
+      "Bottom Left"
+    ]
+  },
+  {
+    "key": "sbar_size_in",
+    "type": "string",
+    "label": "Status Bar Font",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Tiny",
+      "Small",
+      "Normal",
+      "Large"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "c_sb_bull",
+    "type": "color",
+    "label": "Bullish",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "c_sb_bear",
+    "type": "color",
+    "label": "Bearish",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "c_sb_neut",
+    "type": "color",
+    "label": "Neutral",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "c_sb_sand",
+    "type": "color",
+    "label": "Sandwich",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Text color when both bullish and bearish Normal SSMT are active simultaneously."
+  },
+  {
+    "key": "sb_show_y",
+    "type": "bool",
+    "label": "Show Yearly",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "sb_show_q",
+    "type": "bool",
+    "label": "Show Quarterly",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "sb_show_m",
+    "type": "bool",
+    "label": "Show Monthly",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "sb_show_w",
+    "type": "bool",
+    "label": "Show Weekly",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "sb_show_d",
+    "type": "bool",
+    "label": "Show Daily",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "sb_show_90m",
+    "type": "bool",
+    "label": "Show 90m",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "sb_show_mic",
+    "type": "bool",
+    "label": "Show Micro",
+    "group": "SSMT STATUS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "use_psp_adv",
+    "type": "bool",
+    "label": "Enable Advanced PSP",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "max_psp_bars",
+    "type": "int",
+    "label": "Max PSP Markers",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 10
+  },
+  {
+    "key": "psp_vis_limit",
+    "type": "timeframe",
+    "label": "Show on Timeframes >=",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "The PSP will only be visible if the Chart Timeframe is Greater Than or Equal to this setting."
+  },
+  {
+    "key": "psp_mode",
+    "type": "string",
+    "label": "Display Mode",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Icons Only",
+      "Body Only",
+      "Both"
+    ]
+  },
+  {
+    "key": "psp_bull_clr",
+    "type": "color",
+    "label": "Bullish Icon",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "psp_bear_clr",
+    "type": "color",
+    "label": "Bearish Icon",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "psp_bull_shape",
+    "type": "string",
+    "label": "Shape",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "●",
+      "✦",
+      "▲",
+      "♦",
+      "♟"
+    ]
+  },
+  {
+    "key": "psp_bear_shape",
+    "type": "string",
+    "label": "Shape",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "●",
+      "✦",
+      "▼",
+      "♦",
+      "♟"
+    ]
+  },
+  {
+    "key": "psp_size_str",
+    "type": "string",
+    "label": "Size",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Tiny",
+      "Small",
+      "Normal",
+      "Large",
+      "Huge",
+      "Auto"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "psp_bull_body",
+    "type": "color",
+    "label": "Bull Body",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "psp_bear_body",
+    "type": "color",
+    "label": "Bear Body",
+    "group": "ADVANCED PSP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hidelines",
+    "type": "bool",
+    "label": "Hide lines",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "ssmt_history_limit",
+    "type": "int",
+    "label": "SSMT History Limit",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "max": 100,
+    "tooltip": "Controls the maximum number of Normal and Hidden SSMT lines/labels to show."
+  },
+  {
+    "key": "hidelabels",
+    "type": "bool",
+    "label": "Hide labels",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtMo",
+    "type": "bool",
+    "label": "Normal Monthly ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtW",
+    "type": "bool",
+    "label": "Normal Weekly ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtD",
+    "type": "bool",
+    "label": "Normal Daily   ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtN",
+    "type": "bool",
+    "label": "Normal 90m    ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtm",
+    "type": "bool",
+    "label": "Normal Micro  ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtQ",
+    "type": "bool",
+    "label": "Normal Quarterly",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_smtY",
+    "type": "bool",
+    "label": "Normal Yearly ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtMo_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtW_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtD_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtN_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtm_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtQ_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smtY_clr",
+    "type": "color",
+    "label": "N",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtMo",
+    "type": "bool",
+    "label": "Hidden Monthly ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtW",
+    "type": "bool",
+    "label": "Hidden Weekly ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtD",
+    "type": "bool",
+    "label": "Hidden Daily   ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtN",
+    "type": "bool",
+    "label": "Hidden 90m    ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtm",
+    "type": "bool",
+    "label": "Hidden Micro  ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtQ",
+    "type": "bool",
+    "label": "Hidden Quarterly",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "show_hsmtY",
+    "type": "bool",
+    "label": "Hidden Yearly ",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtMo_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtW_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtD_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtN_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtm_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtQ_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "hsmtY_clr",
+    "type": "color",
+    "label": "H",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "smt_txt_all",
+    "type": "color",
+    "label": "SSMT Text Color",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "normstyle",
+    "type": "string",
+    "label": "Normal SSMT line style",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "solid",
+      "dotted",
+      "dashed"
+    ]
+  },
+  {
+    "key": "hiddstyle",
+    "type": "string",
+    "label": "Hidden SSMT line style",
+    "group": "SSMTS ON CHART ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "solid",
+      "dotted",
+      "dashed"
+    ]
+  },
+  {
+    "key": "al1ok",
+    "type": "bool",
+    "label": "al1ok",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "al2ok",
+    "type": "bool",
+    "label": "al2ok",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "al3ok",
+    "type": "bool",
+    "label": "al3ok",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "al4ok",
+    "type": "bool",
+    "label": "al4ok",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "al_con1",
+    "type": "string",
+    "label": "1",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "al_con3",
+    "type": "string",
+    "label": "3",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "bl_con1",
+    "type": "string",
+    "label": "1",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "bl_con3",
+    "type": "string",
+    "label": "3",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "cl_con1",
+    "type": "string",
+    "label": "1",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "cl_con3",
+    "type": "string",
+    "label": "3",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dl_con1",
+    "type": "string",
+    "label": "1",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dl_con3",
+    "type": "string",
+    "label": "3",
+    "group": " ALERTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Mobu",
+      "Mobe",
+      "Wbu",
+      "Wbe",
+      "Dbu",
+      "Dbe",
+      "Qbu",
+      "Qbe",
+      "Ybu",
+      "Ybe",
+      "Nbu",
+      "Nbe",
+      "mbu",
+      "mbe",
+      "none"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "triad_selection_mode",
+    "type": "string",
+    "label": "Triad Selection",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Auto uses imported library logic. Manual lets you define specific pairs.",
+    "options": [
+      "Auto",
+      "Manual",
+      "Off"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_m1",
+    "type": "bool",
+    "label": "Triad 1",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st1_m1",
+    "type": "symbol",
+    "label": "st1_m1",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st2_m1",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st3_m1",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_m1",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_m2",
+    "type": "bool",
+    "label": "Triad 2",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st1_m2",
+    "type": "symbol",
+    "label": "st1_m2",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st2_m2",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st3_m2",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_m2",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_m3",
+    "type": "bool",
+    "label": "Triad 3",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st1_m3",
+    "type": "symbol",
+    "label": "st1_m3",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st2_m3",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st3_m3",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_m3",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_m4",
+    "type": "bool",
+    "label": "Triad 4",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st1_m4",
+    "type": "symbol",
+    "label": "st1_m4",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st2_m4",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "st3_m4",
+    "type": "symbol",
+    "label": "&",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_m4",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "showsmt1",
+    "type": "bool",
+    "label": "Show SMT 1 ",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "showsmt2",
+    "type": "bool",
+    "label": "Show SMT 2 ",
+    "group": "TRIAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "dyad_selection_mode",
+    "type": "string",
+    "label": "Dyad Selection",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Auto uses imported library logic. Manual lets you define specific pairs.",
+    "options": [
+      "Auto",
+      "Manual",
+      "Off"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_dyad_m1",
+    "type": "bool",
+    "label": "Dyad 1",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m1_sym1",
+    "type": "symbol",
+    "label": "dyad_m1_sym1",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m1_sym2",
+    "type": "symbol",
+    "label": "&",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_dyad_m1",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_dyad_m2",
+    "type": "bool",
+    "label": "Dyad 2",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m2_sym1",
+    "type": "symbol",
+    "label": "dyad_m2_sym1",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m2_sym2",
+    "type": "symbol",
+    "label": "&",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_dyad_m2",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_dyad_m3",
+    "type": "bool",
+    "label": "Dyad 3",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m3_sym1",
+    "type": "symbol",
+    "label": "dyad_m3_sym1",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m3_sym2",
+    "type": "symbol",
+    "label": "&",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_dyad_m3",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "enable_dyad_m4",
+    "type": "bool",
+    "label": "Dyad 4",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m4_sym1",
+    "type": "symbol",
+    "label": "dyad_m4_sym1",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dyad_m4_sym2",
+    "type": "symbol",
+    "label": "&",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "inv_dyad_m4",
+    "type": "bool",
+    "label": "Inverse",
+    "group": "DYAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "tz",
+    "type": "string",
+    "label": "Timezone",
+    "group": "Timezone",
+    "options": [
+      "UTC-11",
+      "UTC-10",
+      "UTC-9",
+      "UTC-8",
+      "UTC-7",
+      "UTC-6",
+      "UTC-5",
+      "UTC-4",
+      "UTC-3",
+      "UTC-2",
+      "UTC-1",
+      "UTC",
+      "UTC+1",
+      "UTC+2",
+      "UTC+3",
+      "UTC+4",
+      "UTC+5",
+      "UTC+5:30",
+      "UTC+6",
+      "UTC+7",
+      "UTC+8",
+      "UTC+9",
+      "UTC+10",
+      "UTC+11",
+      "UTC+12"
+    ]
+  },
+  {
+    "key": "badj",
+    "type": "bool",
+    "label": "B-ADJ: (For only futures)",
+    "group": "Timezone",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "dayStartHour",
+    "type": "int",
+    "label": "Day Start Hour (TZ)",
+    "group": "Timezone",
+    "min": 0,
+    "max": 23
+  },
+  {
+    "key": "show_qcisd",
+    "type": "bool",
+    "label": "Enable QCISD Engine",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "bias_input",
+    "type": "string",
+    "label": "Market Bias",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Bullish",
+      "Bearish",
+      "Neutral"
+    ]
+  },
+  {
+    "key": "qcisd_max_limit",
+    "type": "int",
+    "label": "Max QCISD Lines",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "max": 50,
+    "tooltip": "Limit line drawing to prevent memory exhaustion."
+  },
+  {
+    "key": "qcisd_width",
+    "type": "int",
+    "label": "Line Width",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1
+  },
+  {
+    "key": "qcisd_mono",
+    "type": "bool",
+    "label": "Monospace",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "qcisd_lbl_size_str",
+    "type": "string",
+    "label": "Text Size",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Tiny",
+      "Small",
+      "Normal"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "qcisd_bull_clr",
+    "type": "color",
+    "label": "Bull",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qcisd_bear_clr",
+    "type": "color",
+    "label": "Bear",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qcisd_pend_clr",
+    "type": "color",
+    "label": "Pending",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qcisd_text_clr",
+    "type": "color",
+    "label": "Text",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qcisd_trigger",
+    "type": "string",
+    "label": "HP-QCISD Alerts",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "All",
+      "Confirmation",
+      "Invalidation",
+      "Retest",
+      "Off"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "qcisd_norm_trigger",
+    "type": "string",
+    "label": "Normal Alerts",
+    "group": "QCISD SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "All",
+      "Confirmation",
+      "Invalidation",
+      "Retest",
+      "Off"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "qt_show_sess",
+    "type": "bool",
+    "label": "Show: Sess",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_90",
+    "type": "bool",
+    "label": "90m",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_22",
+    "type": "bool",
+    "label": "Micro",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_lbl_main",
+    "type": "bool",
+    "label": "Extras: Labels",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_fill",
+    "type": "bool",
+    "label": "Fills",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_fill_transp",
+    "type": "int",
+    "label": "Fill Opac%",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 0,
+    "max": 100
+  },
+  {
+    "key": "qt_show_out_sess",
+    "type": "bool",
+    "label": "Outlines: Sess",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_out_90",
+    "type": "bool",
+    "label": "90m",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_out_22",
+    "type": "bool",
+    "label": "Micro",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_bord_transp",
+    "type": "int",
+    "label": "Line Opac%",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 0,
+    "max": 100,
+    "tooltip": "0% = Solid, 100% = Invisible"
+  },
+  {
+    "key": "qt_line_style",
+    "type": "string",
+    "label": "qt_line_style",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Global Line Style",
+    "options": [
+      "Solid",
+      "Dotted",
+      "Dashed"
+    ]
+  },
+  {
+    "key": "qt_gap_min",
+    "type": "int",
+    "label": "Gap",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 0,
+    "max": 15
+  },
+  {
+    "key": "qt_c_lbl_text",
+    "type": "color",
+    "label": "Txt",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_use_mono_in",
+    "type": "bool",
+    "label": "Mono",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "qt_box_hist_days",
+    "type": "int",
+    "label": "History (Days)",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "max": 30
+  },
+  {
+    "key": "qt_tf_box_max",
+    "type": "timeframe",
+    "label": "Max TF",
+    "group": "QT CYCLES SETTINGS  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_c_asia_m",
+    "type": "color",
+    "label": "Fill: Sess",
+    "group": "Asia"
+  },
+  {
+    "key": "qt_c_asia_90",
+    "type": "color",
+    "label": "90m",
+    "group": "Asia"
+  },
+  {
+    "key": "qt_c_asia_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "Asia"
+  },
+  {
+    "key": "qt_b_asia_m",
+    "type": "color",
+    "label": "Line: Sess",
+    "group": "Asia"
+  },
+  {
+    "key": "qt_b_asia_90",
+    "type": "color",
+    "label": "90m",
+    "group": "Asia"
+  },
+  {
+    "key": "qt_b_asia_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "Asia"
+  },
+  {
+    "key": "qt_c_lon_m",
+    "type": "color",
+    "label": "Fill: Sess",
+    "group": "London"
+  },
+  {
+    "key": "qt_c_lon_90",
+    "type": "color",
+    "label": "90m",
+    "group": "London"
+  },
+  {
+    "key": "qt_c_lon_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "London"
+  },
+  {
+    "key": "qt_b_lon_m",
+    "type": "color",
+    "label": "Line: Sess",
+    "group": "London"
+  },
+  {
+    "key": "qt_b_lon_90",
+    "type": "color",
+    "label": "90m",
+    "group": "London"
+  },
+  {
+    "key": "qt_b_lon_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "London"
+  },
+  {
+    "key": "qt_c_nyam_m",
+    "type": "color",
+    "label": "Fill: Sess",
+    "group": "NY AM"
+  },
+  {
+    "key": "qt_c_nyam_90",
+    "type": "color",
+    "label": "90m",
+    "group": "NY AM"
+  },
+  {
+    "key": "qt_c_nyam_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "NY AM"
+  },
+  {
+    "key": "qt_b_nyam_m",
+    "type": "color",
+    "label": "Line: Sess",
+    "group": "NY AM"
+  },
+  {
+    "key": "qt_b_nyam_90",
+    "type": "color",
+    "label": "90m",
+    "group": "NY AM"
+  },
+  {
+    "key": "qt_b_nyam_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "NY AM"
+  },
+  {
+    "key": "qt_c_nypm_m",
+    "type": "color",
+    "label": "Fill: Sess",
+    "group": "NY PM"
+  },
+  {
+    "key": "qt_c_nypm_90",
+    "type": "color",
+    "label": "90m",
+    "group": "NY PM"
+  },
+  {
+    "key": "qt_c_nypm_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "NY PM"
+  },
+  {
+    "key": "qt_b_nypm_m",
+    "type": "color",
+    "label": "Line: Sess",
+    "group": "NY PM"
+  },
+  {
+    "key": "qt_b_nypm_90",
+    "type": "color",
+    "label": "90m",
+    "group": "NY PM"
+  },
+  {
+    "key": "qt_b_nypm_22",
+    "type": "color",
+    "label": "Micro",
+    "group": "NY PM"
+  },
+  {
+    "key": "qt_show_div",
+    "type": "bool",
+    "label": "Show Divider",
+    "group": "Daily Divider ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_div_time",
+    "type": "string",
+    "label": "qt_div_time",
+    "group": "Daily Divider ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Midnight (00:00)",
+      "Day Open (18:00)"
+    ]
+  },
+  {
+    "key": "qt_c_div",
+    "type": "color",
+    "label": "Color",
+    "group": "Daily Divider ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_s_div",
+    "type": "string",
+    "label": "Style",
+    "group": "Daily Divider ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Solid",
+      "Dotted",
+      "Dashed"
+    ]
+  },
+  {
+    "key": "qt_lim_div",
+    "type": "int",
+    "label": "Max Count",
+    "group": "Daily Divider ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "max": 499
+  },
+  {
+    "key": "qt_htf_cnt",
+    "type": "int",
+    "label": "Global Count",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "max": 50
+  },
+  {
+    "key": "qt_htf_style",
+    "type": "string",
+    "label": "Style",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Solid",
+      "Dashed",
+      "Dotted"
+    ]
+  },
+  {
+    "key": "qt_show_y",
+    "type": "bool",
+    "label": "Year",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_c_y",
+    "type": "color",
+    "label": "qt_c_y",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_m",
+    "type": "bool",
+    "label": "Month",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_c_m",
+    "type": "color",
+    "label": "qt_c_m",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_show_w",
+    "type": "bool",
+    "label": "Week",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_c_w",
+    "type": "color",
+    "label": "qt_c_w",
+    "group": "HTF Dividers ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_i_max_keep",
+    "type": "int",
+    "label": "Max History",
+    "group": "Opening Prices Styling🎨 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "max": 50,
+    "tooltip": "How many past lines to keep per slot."
+  },
+  {
+    "key": "qt_i_unlimited",
+    "type": "bool",
+    "label": "∞ Keep All",
+    "group": "Opening Prices Styling🎨 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_i_l_style",
+    "type": "string",
+    "label": "Style",
+    "group": "Opening Prices Styling🎨 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Solid",
+      "Dotted",
+      "Dashed"
+    ]
+  },
+  {
+    "key": "qt_i_t_size",
+    "type": "string",
+    "label": "Text",
+    "group": "Opening Prices Styling🎨 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Tiny",
+      "Small",
+      "Normal",
+      "Large"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "qt_i_offset",
+    "type": "int",
+    "label": "Offset",
+    "group": "Opening Prices Styling🎨 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "qt_s1_on",
+    "type": "bool",
+    "label": "qt_s1_on",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s1_name",
+    "type": "string",
+    "label": "qt_s1_name",
+    "group": "Opening Prices Slots⏰",
+    "tooltip": "Label Name"
+  },
+  {
+    "key": "qt_s1_start",
+    "type": "string",
+    "label": "to",
+    "group": "Opening Prices Slots⏰",
+    "tooltip": "Start Time (EST)"
+  },
+  {
+    "key": "qt_s1_end",
+    "type": "string",
+    "label": "qt_s1_end",
+    "group": "Opening Prices Slots⏰",
+    "tooltip": "End Time (EST)"
+  },
+  {
+    "key": "qt_s1_col",
+    "type": "color",
+    "label": "qt_s1_col",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s2_on",
+    "type": "bool",
+    "label": "qt_s2_on",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s2_name",
+    "type": "string",
+    "label": "qt_s2_name",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s2_start",
+    "type": "string",
+    "label": "to",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s2_end",
+    "type": "string",
+    "label": "qt_s2_end",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s2_col",
+    "type": "color",
+    "label": "qt_s2_col",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s3_on",
+    "type": "bool",
+    "label": "qt_s3_on",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s3_name",
+    "type": "string",
+    "label": "qt_s3_name",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s3_start",
+    "type": "string",
+    "label": "to",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s3_end",
+    "type": "string",
+    "label": "qt_s3_end",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s3_col",
+    "type": "color",
+    "label": "qt_s3_col",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s4_on",
+    "type": "bool",
+    "label": "qt_s4_on",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s4_name",
+    "type": "string",
+    "label": "qt_s4_name",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s4_start",
+    "type": "string",
+    "label": "to",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s4_end",
+    "type": "string",
+    "label": "qt_s4_end",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "qt_s4_col",
+    "type": "color",
+    "label": "qt_s4_col",
+    "group": "Opening Prices Slots⏰"
+  },
+  {
+    "key": "to_offset_val",
+    "type": "int",
+    "label": "Label Offset (Bars)",
+    "group": "TRUE OPENS SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 0,
+    "max": 100
+  },
+  {
+    "key": "to_textSize",
+    "type": "string",
+    "label": "Text Size",
+    "group": "TRUE OPENS SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "tiny",
+      "small",
+      "normal",
+      "large"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "to_use_mono",
+    "type": "bool",
+    "label": "Use Monospace Text",
+    "group": "TRUE OPENS SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Applies to both chart labels and the status table.",
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "to_style_mode",
+    "type": "string",
+    "label": "Line Style Mode",
+    "group": "TRUE OPENS SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Auto: Active=Dotted, History=Solid.",
+    "options": [
+      "Auto",
+      "Custom"
+    ]
+  },
+  {
+    "key": "to_custom_style",
+    "type": "string",
+    "label": "Style",
+    "group": "TRUE OPENS SETTINGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "Solid",
+      "Dashed",
+      "Dotted"
+    ]
+  },
+  {
+    "key": "to_hist_count_global",
+    "type": "int",
+    "label": "Global History Count",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "min": 1,
+    "tooltip": "How many past lines to keep for the selected timeframes."
+  },
+  {
+    "key": "to_hist_yr",
+    "type": "bool",
+    "label": "Year",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_hist_qt",
+    "type": "bool",
+    "label": "Quarter",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_hist_mn",
+    "type": "bool",
+    "label": "Month",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_hist_wk",
+    "type": "bool",
+    "label": "Week",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_hist_dy",
+    "type": "bool",
+    "label": "Day",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_hist_sess",
+    "type": "bool",
+    "label": "Session",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_hist_90m",
+    "type": "bool",
+    "label": "90m",
+    "group": "True Open History Filters ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_yr_open",
+    "type": "bool",
+    "label": "Show True Year Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_qt_open",
+    "type": "bool",
+    "label": "Show True Quarter Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_mn_open",
+    "type": "bool",
+    "label": "Show True Month Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_wk_open",
+    "type": "bool",
+    "label": "Show True Week Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_dy_open",
+    "type": "bool",
+    "label": "Show True Day Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_sess_open",
+    "type": "bool",
+    "label": "Show True Session Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_show_90m_open",
+    "type": "bool",
+    "label": "Show True 90-Min Opens",
+    "group": "True Open Visibility ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_nm_min",
+    "type": "timeframe",
+    "label": "90-Min Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_nm_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_sess_min",
+    "type": "timeframe",
+    "label": "Session Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_sess_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_dy_min",
+    "type": "timeframe",
+    "label": "Daily Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_dy_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_wk_min",
+    "type": "timeframe",
+    "label": "Weekly Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_wk_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_mn_min",
+    "type": "timeframe",
+    "label": "Monthly Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_mn_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_qt_min",
+    "type": "timeframe",
+    "label": "Quarterly Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_qt_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_yr_min",
+    "type": "timeframe",
+    "label": "Yearly Boundaries",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_yr_max",
+    "type": "timeframe",
+    "label": "To",
+    "group": "True Open Custom TF Ranges ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_yr",
+    "type": "color",
+    "label": "Year TO",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_n_yr",
+    "type": "string",
+    "label": "to_n_yr",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_qt",
+    "type": "color",
+    "label": "Quarter TO",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_n_qt",
+    "type": "string",
+    "label": "to_n_qt",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_mn",
+    "type": "color",
+    "label": "Month TO",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_n_mn",
+    "type": "string",
+    "label": "to_n_mn",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_wk",
+    "type": "color",
+    "label": "Week TO",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_n_wk",
+    "type": "string",
+    "label": "to_n_wk",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_dy",
+    "type": "color",
+    "label": "Daily TO",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_n_dy",
+    "type": "string",
+    "label": "to_n_dy",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_90m",
+    "type": "color",
+    "label": "90-Min TO",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_sess",
+    "type": "color",
+    "label": "Session TO Color",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_sess_lbl_mode",
+    "type": "string",
+    "label": "Session Label Mode",
+    "group": "True Open Styling & Labels ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "tooltip": "Name: Shows AO/LO etc.\nTime: Shows 19:30/01:30 etc.",
+    "options": [
+      "Name",
+      "Time"
+    ]
+  },
+  {
+    "key": "to_show_table",
+    "type": "bool",
+    "label": "Show Price Tracking Table",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_table_pos",
+    "type": "string",
+    "label": "Table Position",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "top_right",
+      "middle_right",
+      "bottom_right",
+      "top_left",
+      "middle_left",
+      "bottom_left"
+    ]
+  },
+  {
+    "key": "to_table_txt_size",
+    "type": "string",
+    "label": "Table Text Size",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "options": [
+      "tiny",
+      "small",
+      "normal",
+      "large"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "to_tbl_show_90m",
+    "type": "bool",
+    "label": "Show 90-Min",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_tbl_show_sess",
+    "type": "bool",
+    "label": "Show Session",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_tbl_show_dy",
+    "type": "bool",
+    "label": "Show Daily",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_tbl_show_wk",
+    "type": "bool",
+    "label": "Show Weekly",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_tbl_show_mn",
+    "type": "bool",
+    "label": "Show Monthly",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_tbl_show_qt",
+    "type": "bool",
+    "label": "Show Quarterly",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_tbl_show_yr",
+    "type": "bool",
+    "label": "Show Yearly",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_tbl_above",
+    "type": "color",
+    "label": "Above",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_tbl_below",
+    "type": "color",
+    "label": "Below",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "to_c_tbl_none",
+    "type": "color",
+    "label": "Not Open",
+    "group": "True Open Price Tracking Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+  {
+    "key": "i_show_nano",
+    "type": "bool",
+    "label": "Show Nano (5.625m quarters)",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe <= 1m."
+  },
+  {
+    "key": "i_show_micro",
+    "type": "bool",
+    "label": "Show Micro (22.5m quarters)",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe <= 5m."
+  },
+  {
+    "key": "i_show_m90",
+    "type": "bool",
+    "label": "Show 90-minute quarters",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe <= 1h."
+  },
+  {
+    "key": "i_show_daily",
+    "type": "bool",
+    "label": "Show Daily (6h quarters)",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe <= 4h."
+  },
+  {
+    "key": "i_show_weekly",
+    "type": "bool",
+    "label": "Show Weekly (day quarters)",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe <= 6h."
+  },
+  {
+    "key": "i_show_monthly",
+    "type": "bool",
+    "label": "Show Monthly (week quarters)",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe <= 4h."
+  },
+  {
+    "key": "i_show_yearly",
+    "type": "bool",
+    "label": "Show Yearly (3-month quarters)",
+    "group": "QS | 1. Time Cycles",
+    "tooltip": "Chart timeframe 15m - 1W."
+  },
+  {
+    "key": "i_hist",
+    "type": "int",
+    "label": "Quarters kept per row",
+    "group": "QS | 1. Time Cycles",
+    "min": 1,
+    "max": 250,
+    "tooltip": "How many past cells each row keeps. TradingView allows 500 boxes in total, so (rows x this value) + projected cells must stay under 500. The QT cycle boxes (QT CYCLES SETTINGS) share the same 500-box limit, so lower this or the QT history days if cells disappear."
+  },
+  {
+    "key": "i_seqlbl_show",
+    "type": "bool",
+    "label": "Show Sequence Label (e.g. 3-3-3)",
+    "group": "QS | 2. Sequence Display",
+    "tooltip": "Shows the current sequence of the lowest visible cycle."
+  },
+  {
+    "key": "i_seqlbl_pos",
+    "type": "string",
+    "label": "Label Position",
+    "group": "QS | 2. Sequence Display",
+    "tooltip": "Top / Bottom = label at the right edge of the pane. Corner = small box in the top-left corner.",
+    "options": [
+      "Top",
+      "Bottom",
+      "Corner"
+    ]
+  },
+  {
+    "key": "i_seqlbl_size",
+    "type": "string",
+    "label": "Label Size",
+    "group": "QS | 2. Sequence Display",
+    "options": [
+      "Small",
+      "Normal",
+      "Large"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "i_min_chain",
+    "type": "int",
+    "label": "Minimum Chain Length",
+    "group": "QS | 2. Sequence Display",
+    "min": 2,
+    "max": 7,
+    "tooltip": "Only highlight when at least this many adjacent visible timeframes are aligned."
+  },
+  {
+    "key": "i_hl_on",
+    "type": "bool",
+    "label": "Highlight Chains",
+    "group": "QS | 3. Chain Highlighting",
+    "tooltip": "ON: cells in a chain also get the strong colour and the style below is applied."
+  },
+  {
+    "key": "i_hl_style",
+    "type": "string",
+    "label": "Highlight Style",
+    "group": "QS | 3. Chain Highlighting",
+    "tooltip": "Cell colour only = chain cells keep their strong quarter colour and all other cells fade (no extra marking).\nBackground color = pane background while any chain is active.\nBoxes = thick chain-coloured border on every cell in a chain.\nSeparate ribbon row = an extra bottom row showing the chain length.",
+    "options": [
+      "Cell colour only",
+      "Background color",
+      "Boxes",
+      "Separate ribbon row"
+    ]
+  },
+  {
+    "key": "i_chain_col",
+    "type": "color",
+    "label": "Chain Color",
+    "group": "QS | 3. Chain Highlighting"
+  },
+  {
+    "key": "i_chain_transp",
+    "type": "int",
+    "label": "Chain Highlight Transparency",
+    "group": "QS | 3. Chain Highlighting",
+    "min": 0,
+    "max": 100
+  },
+  {
+    "key": "i_col_q1",
+    "type": "color",
+    "label": "Q1 Color",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_col_q2",
+    "type": "color",
+    "label": "Q2",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_col_q3",
+    "type": "color",
+    "label": "Q3",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_col_q4",
+    "type": "color",
+    "label": "Q4",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_col_q0",
+    "type": "color",
+    "label": "Q0 (Weekly Friday)",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_q_transp",
+    "type": "int",
+    "label": "Transparency for preferred (strong) cells",
+    "group": "QS | 4. Quarter Colours",
+    "min": 0,
+    "max": 100
+  },
+  {
+    "key": "i_nc_transp",
+    "type": "int",
+    "label": "Transparency for non-preferred (faded) cells",
+    "group": "QS | 4. Quarter Colours",
+    "min": 0,
+    "max": 100,
+    "tooltip": "Applies to every cell whose sequence is not preferred."
+  },
+  {
+    "key": "i_col_border",
+    "type": "color",
+    "label": "Cell border colour",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_col_369",
+    "type": "color",
+    "label": "369 border colour",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_txt_col",
+    "type": "color",
+    "label": "Cell text colour",
+    "group": "QS | 4. Quarter Colours"
+  },
+  {
+    "key": "i_show_bg",
+    "type": "bool",
+    "label": "Show Quarter Backgrounds",
+    "group": "QS | 5. Visual Options",
+    "tooltip": "OFF: normal quarter cells have no fill (preferred/chain highlights still show)."
+  },
+  {
+    "key": "i_vlines",
+    "type": "bool",
+    "label": "Show Vertical Lines at quarter starts",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_col_vline",
+    "type": "color",
+    "label": "Vertical line colour",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_show_qnum",
+    "type": "bool",
+    "label": "Show Quarter Numbers",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_pure_only",
+    "type": "bool",
+    "label": "Show only pure sequences (111 / 222 / 333 / 444)",
+    "group": "QS | 5. Visual Options",
+    "tooltip": "ON: only pure sequences can be preferred (colours, table, alerts, projection)."
+  },
+  {
+    "key": "i_bridge",
+    "type": "bool",
+    "label": "Allow Q4-Q1 bridge",
+    "group": "QS | 5. Visual Options",
+    "tooltip": "ON: Q4 next to Q1 (either direction) continues a chain."
+  },
+  {
+    "key": "i_seqtxt_nano",
+    "type": "bool",
+    "label": "Nano row shows sequence text",
+    "group": "QS | 5. Visual Options",
+    "tooltip": "ON: cells show the sequence (e.g. 3-2-3, tiny text). OFF: cells show Q#."
+  },
+  {
+    "key": "i_seqtxt_micro",
+    "type": "bool",
+    "label": "Micro row shows sequence text",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_seqtxt_m90",
+    "type": "bool",
+    "label": "90M row shows sequence text",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_seqtxt_daily",
+    "type": "bool",
+    "label": "Daily row shows sequence text",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_seqtxt_weekly",
+    "type": "bool",
+    "label": "Weekly row shows sequence text",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_seqtxt_monthly",
+    "type": "bool",
+    "label": "Monthly row shows sequence text",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_seqtxt_yearly",
+    "type": "bool",
+    "label": "Yearly row shows sequence text",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_show_labels",
+    "type": "bool",
+    "label": "Show row labels",
+    "group": "QS | 5. Visual Options",
+    "tooltip": "Row names anchored at the leftmost visible bar. TradingView redraws chart-anchored labels on scroll, which can cause a brief flicker."
+  },
+  {
+    "key": "i_label_color",
+    "type": "color",
+    "label": "Label text colour",
+    "group": "QS | 5. Visual Options"
+  },
+  {
+    "key": "i_label_size",
+    "type": "string",
+    "label": "Row label text size",
+    "group": "QS | 5. Visual Options",
+    "options": [
+      "Tiny",
+      "Small",
+      "Normal"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "QS_TZ",
+    "type": "string",
+    "label": "Timezone",
+    "group": "QS | 6. Timezone",
+    "tooltip": "Default America/New_York. The trading day starts at 18:00 in the selected timezone.",
+    "options": [
+      "America/New_York",
+      "America/Chicago",
+      "America/Los_Angeles",
+      "UTC",
+      "Europe/London"
+    ]
+  },
+  {
+    "key": "i_pref_nano",
+    "type": "string",
+    "label": "Nano sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Comma separated list, e.g. 2-2-2,3-3-3. Nano sequence = 90m-Micro-Nano."
+  },
+  {
+    "key": "i_pref_micro",
+    "type": "string",
+    "label": "Micro sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Micro sequence = Daily-90m-Micro."
+  },
+  {
+    "key": "i_pref_m90",
+    "type": "string",
+    "label": "90min sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "90m sequence = Weekly-Daily-90m."
+  },
+  {
+    "key": "i_pref_daily",
+    "type": "string",
+    "label": "Daily sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Daily sequence = Monthly-Weekly-Daily."
+  },
+  {
+    "key": "i_pref_weekly",
+    "type": "string",
+    "label": "Weekly sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Weekly sequence = Yearly-Monthly-Weekly."
+  },
+  {
+    "key": "i_pref_monthly",
+    "type": "string",
+    "label": "Monthly sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Monthly sequence = Quadrenial-Yearly-Monthly."
+  },
+  {
+    "key": "i_pref_yearly",
+    "type": "string",
+    "label": "Yearly sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Yearly sequence = Quadrenial-Yearly-Yearly."
+  },
+  {
+    "key": "i_hp_on",
+    "type": "bool",
+    "label": "Filter high probability sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "ON: the list below REPLACES the per-cycle lists above for every cycle (exact matches only). OFF: the per-cycle lists are used.\nListed sequences get the strong quarter colour; all others fade."
+  },
+  {
+    "key": "i_hp_list",
+    "type": "string",
+    "label": "High probability sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Write the sequences you want, separated by commas. Used when the filter above is ON."
+  },
+  {
+    "key": "i_incl_next",
+    "type": "bool",
+    "label": "Include the next sequence",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Per-cycle lists only: a listed 3-3-3 also matches the following 3-3-4 (last digit + 1, up to Q4)."
+  },
+  {
+    "key": "i_only_pref",
+    "type": "bool",
+    "label": "Colour only preferred sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "ON: cells are filled ONLY while their sequence is preferred (special colours). Other cells stay empty (border only)."
+  },
+  {
+    "key": "i_mark_369",
+    "type": "bool",
+    "label": "Mark 369 sequences",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "Marks sequences whose digit sum reduces (digital root) to 3, 6 or 9 with a thick border."
+  },
+  {
+    "key": "i_369_pref",
+    "type": "bool",
+    "label": "Treat 369 sequences as preferred",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "ON: 369 sequences also count as preferred (colours, table, alerts, projection)."
+  },
+  {
+    "key": "i_fri_q4",
+    "type": "bool",
+    "label": "Friday as Q4",
+    "group": "QS | 7. Sequence Filters",
+    "tooltip": "OFF: Mon=Q1, Tue=Q2, Wed=Q3, Thu=Q4, Fri=Q0.\nON: Friday is also counted as Q4."
+  },
+  {
+    "key": "i_tbl_show",
+    "type": "bool",
+    "label": "Show info table",
+    "group": "QS | 8. Table"
+  },
+  {
+    "key": "i_tbl_pos",
+    "type": "string",
+    "label": "Position",
+    "group": "QS | 8. Table",
+    "options": [
+      "Top Left",
+      "Top Right",
+      "Middle Right",
+      "Bottom Left",
+      "Bottom Right"
+    ]
+  },
+  {
+    "key": "i_tbl_size",
+    "type": "string",
+    "label": "Text size",
+    "group": "QS | 8. Table",
+    "options": [
+      "Tiny",
+      "Small",
+      "Normal"
+    ],
+    "disabled": "Chưa được port đầy đủ trong QT+ JS; giữ nguyên, xem README indicator."
+  },
+  {
+    "key": "i_proj_show",
+    "type": "bool",
+    "label": "Project rest of session",
+    "group": "QS | 9. Forward Projection",
+    "tooltip": "Draws every row forward to the next 18:00 session roll (clock-pure, so upcoming quarters, sequences and chains are known in advance). Projected cells have dotted borders. Redrawn once per bar."
+  },
+  {
+    "key": "i_proj_max",
+    "type": "int",
+    "label": "Max projected cells per row",
+    "group": "QS | 9. Forward Projection",
+    "min": 1,
+    "max": 60,
+    "tooltip": "Caps projected cells per row to protect the 500-box limit."
+  }
+]

@@ -54,7 +54,7 @@ class DrawingEditor {
   }
   remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.('Mở khóa bản vẽ trước khi xóa.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
   open(tab='style'){if(this.drawing)this.settings.open(this.selection.chart,this.drawing,tab);}
-  find(chart,x,y){if(chart.drawingsHidden)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
+  find(chart,x,y){if(chart.drawingsHidden||y>chart.plotHeight-26)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
   bind(chart){
     chart.container.addEventListener('pointerdown',event=>{
       if(event.button!==0||this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select,.indicator-tables,.tv-trade-pill,.chart-nav-controls'))return;
