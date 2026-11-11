@@ -17,23 +17,20 @@ class DesktopShell {
     this.root.innerHTML='<div class="desktop-panel-header"><div class="desktop-panel-tabs" role="tablist"></div><button class="desktop-panel-close" aria-label="Close side panel">×</button></div><div class="desktop-panel-content"></div>';
     this.content=this.root.querySelector('.desktop-panel-content');this.tabs=this.root.querySelector('.desktop-panel-tabs');
     this.root.querySelector('.desktop-panel-close').onclick=()=>this.open(null);
-    this.root.onkeydown=e=>{if(e.key==='Escape'){const mode=this.mode;this.open(null);this.rail.querySelector(`[data-panel="${mode}"]`)?.focus();}};
+    this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout').focus();}};
     this.rail=document.createElement('nav');this.rail.id='right-sidebar';this.rail.setAttribute('aria-label','Chart panels');
     for(const [key,label] of [['watch','Watchlist'],['alerts','Alerts panel'],['objects','Object tree and data window'],['editor','Indicator editor']]){
-      const b=this.button(label,key,()=>key==='editor'?$('btn-indicator').click():this.open(this.mode===key?null:key));b.dataset.panel=key;this.rail.appendChild(b);
+      const b=this.button(label,key,()=>{key==='editor'?$('btn-indicator').click():this.open(this.mode===key?null:key);$('layout-popover').classList.remove('show');});b.dataset.panel=key;this.rail.appendChild(b);
     }
-    $('app-body').append(this.root,this.rail);
+    $('app-body').appendChild(this.root);$('layout-popover').appendChild(this.rail);
     const spread=$('trade-spread'),size=document.createElement('input'),center=document.createElement('div');
     center.className='trade-center';spread.before(center);center.appendChild(spread);size.id='trade-inline-qty';size.type='number';size.min='1';size.step='1';size.value=$('order-qty').value;size.setAttribute('aria-label','Order quantity');
     size.oninput=()=>{$('order-qty').value=size.value;};$('order-qty').addEventListener('input',()=>{size.value=$('order-qty').value;});center.appendChild(size);
     for(const id of ['btn-trade-buy','btn-trade-sell']){const b=$(id);b.setAttribute('role','button');b.tabIndex=0;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click();}};}
     // Keep existing event handlers and IDs when moving controls into their desktop positions.
-    const footer=document.createElement('div');footer.id='desktop-footer';
-    const editor=this.button('Indicator editor','editor',()=>$('btn-indicator').click());editor.append('Indicator Editor');
-    footer.append(editor,$('btn-paper'));$('content-wrapper').appendChild(footer);
-    const meta=document.querySelector('.bottom-meta');meta.appendChild($('session-mode'));$('session-mode').title='Chart session: RTH / ETH';
-    $('layout-popover').appendChild($('btn-sync'));$('btn-sync').classList.add('layout-sync');
-    $('btn-refresh-htf').classList.add('footer-refresh');footer.appendChild($('btn-refresh-htf'));
+    const right=document.querySelector('.topbar-right');right.prepend($('btn-paper'),$('btn-sync'));
+    document.querySelector('.timeframe-group').appendChild($('btn-refresh-htf'));
+    $('btn-indicator-settings').after($('session-mode'));$('session-mode').title='Chart session: RTH / ETH';
     this.undo=this.button('Undo drawing','arrow',()=>{this.drawing.historyStep(this.getActive(),false);this.signature='';this.refresh();});this.undo.className='btn-icon desktop-undo';
     this.redo=this.button('Redo drawing','arrow',()=>{this.drawing.historyStep(this.getActive(),true);this.signature='';this.refresh();});this.redo.className='btn-icon';
     document.querySelector('.topbar-left').append(this.undo,this.redo);
@@ -54,14 +51,15 @@ class DesktopShell {
   installTools(){
     const rail=document.getElementById('left-sidebar');
     for(const node of rail.querySelectorAll('.tool-separator'))node.remove();
-    for(const key of ['crosshair','line','fib','position','box','text','measure','magnet','lock','eye','trash']){
+    for(const key of ['crosshair','line','box','text','fib','position','measure','magnet','lock','eye','trash']){
       const b=rail.querySelector(`[data-tool="${key}"]`);if(!b)continue;
-      if(['line','fib','position','box','text'].includes(key))b.innerHTML=DesktopShell.icon(key);
+      const importedIcon={crosshair:'crosshair',line:'trend',box:'rectangle',text:'text',fib:'fib',position:'forecast',magnet:'magnet',lock:'lock',eye:'eye',trash:'trash'}[key];
+      if(importedIcon)b.innerHTML=TerminalIcons.svg(importedIcon);
       rail.appendChild(b);
       if(key==='line'){
-        const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';rail.appendChild(h);
+        const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';h.innerHTML=TerminalIcons.svg('horizontal');rail.appendChild(h);
       }
-      if(key==='measure'||key==='text'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
+      if(key==='measure'||key==='box'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
       if(key==='magnet'){
         const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
         const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');
@@ -71,7 +69,7 @@ class DesktopShell {
         options.onclick=showMenu;b.oncontextmenu=e=>{e.preventDefault();showMenu();};
         for(const [mode,label] of [['weak','Weak magnet'],['strong','Strong magnet'],['off','Off']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.setAttribute('role','menuitem');option.onclick=()=>{this.drawing.setMagnet(mode!=='off',mode==='off'?this.drawing.magnetMode:mode);closeMenu();b.focus();};menu.appendChild(option);}
         group.append(options);document.body.appendChild(menu);document.addEventListener('click',e=>{if(!group.contains(e.target)&&!menu.contains(e.target))closeMenu();});menu.onkeydown=e=>{if(e.key==='Escape'){closeMenu();b.focus();}};
-        const keep=this.button('Stay in drawing mode','keep',()=>{this.drawing.keepDrawing=!this.drawing.keepDrawing;keep.classList.toggle('active',this.drawing.keepDrawing);keep.setAttribute('aria-pressed',String(this.drawing.keepDrawing));});keep.className='tool-btn';keep.setAttribute('aria-pressed','false');rail.appendChild(keep);
+        const keep=this.button('Stay in drawing mode','keep',()=>{this.drawing.keepDrawing=!this.drawing.keepDrawing;keep.classList.toggle('active',this.drawing.keepDrawing);keep.setAttribute('aria-pressed',String(this.drawing.keepDrawing));});keep.className='tool-btn';keep.innerHTML=TerminalIcons.svg('pencil');keep.setAttribute('aria-pressed','false');rail.appendChild(keep);
       }
     }
   }

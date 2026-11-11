@@ -106,7 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.querySelectorAll('[data-tool]').forEach(button => button.addEventListener('click', () => drawing.setTool(button.dataset.tool)));
   document.querySelectorAll('.range-btn').forEach(button => button.addEventListener('click', () => (sync.syncEnabled ? charts : [active]).forEach(c => c.setRange(button.textContent))));
-  $('btn-sync').addEventListener('click', () => sync.toggleSync($('btn-sync')));
+  const renderSyncButton=()=>{$('btn-sync').innerHTML=TerminalIcons.svg('link')+`<span>Sync: ${sync.syncEnabled?'ON':'OFF'}</span>`;$('btn-sync').setAttribute('aria-pressed',String(sync.syncEnabled));};
+  renderSyncButton();
+  $('btn-sync').addEventListener('click', () => {sync.toggleSync($('btn-sync'));renderSyncButton();});
   $('btn-layout').addEventListener('click', event => { event.stopPropagation(); $('layout-popover').classList.toggle('show'); });
   document.querySelectorAll('.layout-icon-btn').forEach(button => button.addEventListener('click', () => {
     grid.className = button.dataset.layout;
@@ -250,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-settings').addEventListener('click',()=>chartSettings.open());
   charts.forEach(c=>c.onChartSettings=()=>{activate(c);chartSettings.open();});
   desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertRemove:index=>{alerts=alerts.filter((_,i)=>i!==index);Workspace.write('terminal_alerts_v1',alerts);refreshAlertLines();}});
+  new ToolbarClusters(()=>chartSettings.open());
   new ChartContextMenu({charts,drawing,desktop,activate,openAlert});
   document.querySelectorAll('.scale-toggle').forEach(button => button.addEventListener('click', () => {
     if (button.textContent.trim() === 'auto') active.chart.priceScale('right').applyOptions({ autoScale: true });

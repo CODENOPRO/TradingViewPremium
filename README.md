@@ -73,6 +73,8 @@ PineTS 0.13.1 giữ LICENSE AGPL-3.0-only và provenance trong frontend/vendor/p
 
 Nút ⚙ mở bảy mục cài đặt theo TradingView Desktop, có preview/Cancel và lưu riêng từng chart. Xem [CHART_SETTINGS.md](CHART_SETTINGS.md) để biết các mục đã nối hành vi và phần còn thiếu dữ liệu/chức năng.
 
+Bốn cụm nổi trên trái/phải, dưới trái/phải và thanh vẽ trái nằm trên chart phủ kín cửa sổ. Trong Settings → Cụm công cụ trên chart có bật/tắt từng cụm và độ trong suốt nền; các tùy chọn này lưu ngay, riêng với preview/Cancel của chart. `Ctrl + ,` mở lại Settings kể cả khi đã ẩn hết. Watchlist/Objects/Data/Alerts/Editor nằm trong menu Layout thay cho dải đen cố định bên phải.
+
 Đối chiếu toàn màn hình và panel desktop: [DESKTOP_PARITY.md](DESKTOP_PARITY.md).
 
 Nếu web báo backend cũ: đóng server Python cũ rồi chạy lại `start_terminal.bat`. `/health` của bản hiện tại có `service: trading-terminal`, `protocol_version: 2` và cổng WS. Dữ liệu chỉ live cho mã đang được tải trong TradingView; mã thiếu nguồn giữ cache và hiện trạng thái dữ liệu đã lưu.

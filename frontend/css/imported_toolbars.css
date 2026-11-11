@@ -1,0 +1,44 @@
+/* Floating UI from the user's TradingTerminal project: backgrounds alone fade. */
+body { background:var(--chart); }
+#app-body { position:absolute; inset:0; background:transparent; }
+#content-wrapper { background:transparent; }
+#topbar { position:fixed; top:6px; left:6px; right:6px; height:auto; min-height:0; align-items:flex-start; gap:8px; padding:0; border:0; background:transparent; pointer-events:none; z-index:50; }
+#topbar .topbar-left,#topbar .topbar-right,#left-sidebar,.bottom-ranges,.bottom-meta { background:rgba(15,15,15,var(--toolbar-opacity,1)); border:1px solid rgba(48,48,48,var(--toolbar-opacity,1)); border-radius:14px; }
+#topbar .topbar-left,#topbar .topbar-right { padding:3px 7px; gap:3px; }
+#topbar .topbar-left,#topbar .topbar-right,.bottom-ranges,.bottom-meta { pointer-events:auto; }
+#topbar .topbar-left { min-width:0; overflow-x:auto; scrollbar-width:none; }
+#topbar .topbar-right { flex-shrink:0; margin-left:auto; }
+#topbar .symbol-selector-pill { padding:6px 9px; }
+#topbar .symbol-selector-pill .badge-circle { display:inline-flex; }
+#topbar .separator { margin:0 4px; }
+#topbar .btn-icon,#topbar .tf-btn { display:inline-flex; align-items:center; gap:6px; height:32px; padding:7px; border-radius:4px; color:#d1d1d1; }
+#topbar .tf-btn.active { background:#333; color:#fff; }
+#topbar .btn-icon:hover,#topbar .tf-btn:hover { background:#282828; color:#e1f9f3; }
+#topbar .btn-icon.active { color:#72dbc5; }
+#topbar .tt-icon { width:17px; height:17px; flex:0 0 auto; vertical-align:middle; pointer-events:none; }
+#left-sidebar { position:fixed; left:6px; top:56px; width:48px; height:auto; margin:0; padding:7px 4px; gap:3px; max-height:calc(100dvh - 106px); scrollbar-width:thin; z-index:40; }
+#left-sidebar .sidebar-avatar { display:none; }
+#left-sidebar .tool-btn { width:38px; height:34px; min-height:34px; border-radius:5px; color:#c3c3c3; }
+#left-sidebar .tool-btn .tt-icon { width:22px; height:22px; flex:0 0 auto; vertical-align:middle; pointer-events:none; stroke-width:1.65; stroke-linecap:round; stroke-linejoin:round; }
+#left-sidebar .tool-btn:hover { background:#303030; color:#e1f9f3; }
+#left-sidebar .tool-btn.active { color:#72dbc5; background:#183a35; }
+#left-sidebar .tool-separator { height:1px; min-height:1px; width:28px; margin:6px 0; background:rgba(48,48,48,var(--toolbar-opacity,1)); }
+#left-sidebar .magnet-tool-group { width:38px; }
+#left-sidebar .magnet-menu-toggle { right:-4px; }
+#topbar .btn-icon:focus-visible,#topbar .tf-btn:focus-visible,#left-sidebar .tool-btn:focus-visible { outline:2px solid #72dbc5; outline-offset:2px; }
+#bottombar { position:fixed; bottom:6px; left:6px; right:6px; height:auto; min-height:0; align-items:flex-end; gap:12px; padding:0; border:0; background:transparent; pointer-events:none; z-index:40; }
+.bottom-ranges,.bottom-meta { padding:4px 10px; min-height:28px; max-width:100%; overflow-x:auto; scrollbar-width:none; }
+.bottom-meta { margin-left:auto; flex-shrink:1; }
+#desktop-footer { display:none; }
+#desktop-panel { position:fixed; top:54px; right:6px; bottom:46px; z-index:60; border:1px solid #303030; border-radius:14px; overflow:hidden; }
+#layout-popover { position:fixed; top:54px; right:6px; }
+#layout-popover #right-sidebar { width:auto; flex-direction:row; justify-content:flex-end; background:transparent; border:0; border-top:1px solid #333; margin-top:8px; padding:7px 0 0; }
+#paper-panel,#replay-toolbar { position:absolute; bottom:46px; left:64px; right:8px; z-index:45; border-radius:14px; }
+.toolbar-settings { margin:0 22px; padding:10px 0; max-height:240px; overflow-y:auto; flex-shrink:0; }
+.toolbar-settings summary { cursor:pointer; margin-bottom:12px; }
+.toolbar-settings .setting-row { margin-bottom:14px; }
+.toolbar-transparency { display:flex; align-items:center; gap:8px; }
+.toolbar-transparency input { width:120px; padding:0; }
+.toolbar-transparency output { min-width:38px; text-align:right; }
+.chart-settings-layout { flex:1; min-height:130px; }
+@media(prefers-reduced-motion:no-preference) { #topbar .btn-icon,#left-sidebar .tool-btn { transition:color .15s ease,background .15s ease; } }
