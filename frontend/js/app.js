@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = $('chart-grid');
   if ([...document.querySelectorAll('.layout-icon-btn')].some(b => b.dataset.layout === saved.layout)) grid.className = saved.layout;
   let active = charts.find(c => c.id === saved.active) || charts[0];
-  let saveTimer;
+  let saveTimer,desktop;
   function saveWorkspace() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => Workspace.write('terminal_workspace_v1', { active: active.id, layout: grid.className, charts: charts.map(c => ({ symbol: c.symbol, timeframe: c.currentTimeframe, sessionMode: c.sessionMode, range: c.savedRange || c.chart.timeScale().getVisibleLogicalRange() })) }), 250);
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.container.appendChild(document.querySelector('.tv-trade-pill'));
     document.querySelector('.tv-trade-pill').hidden=chart.appearance?.buySell===false;
     charts.forEach(c => c.container.classList.toggle('active', c === chart));
-    updateHeader(); saveWorkspace();
+    updateHeader(); saveWorkspace();if(desktop){desktop.hoverBar=null;desktop.signature='';desktop.refresh();}
   }
   const indicatorSettings=new IndicatorSettings((chart,settings,view)=>{
     const script=Workspace.read(`indicator_${chart.id}`,null);if(!script?.code)return false;
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alerts.push({ symbol: active.symbol, price, condition: $('alert-condition').value, triggered: false });
     Workspace.write('terminal_alerts_v1', alerts); refreshAlertLines(); closeModal($('alert-modal')); toast('Đã lưu cảnh báo giá');
   });
-  function refreshAlertLines(){charts.forEach(c=>{c.priceAlerts=alerts.filter(a=>a.symbol===c.symbol);c.renderDrawings();});}
+  function refreshAlertLines(){charts.forEach(c=>{c.priceAlerts=alerts.filter(a=>a.symbol===c.symbol);c.renderDrawings();});desktop?.refresh();}
   function checkAlerts(symbol, price) {
     const previous = previousPrices.get(symbol); previousPrices.set(symbol, price);
     for (const alert of alerts) {
@@ -255,9 +255,22 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-trade-sell').addEventListener('click', () => place('sell'));
   renderPaper();
 
+  function toggleIndicator(chart){
+    const script=Workspace.read(`indicator_${chart.id}`,null);if(!script?.code)return;
+    const view={...(chart.runner.view||{}),hidden:!chart.runner.view?.hidden};
+    if(!Workspace.write(`indicator_${chart.id}`,{...script,view}))return;
+    chart.runner.view=view;chart.runner.applyView();chart.container.dataset.indicatorHidden=String(view.hidden);
+  }
+  charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
+
   // Settings and scale controls.
   const appearanceStore=Workspace.read('terminal_chart_settings_v1',{});
-  charts.forEach(c=>ChartAppearance.apply(c,{...ChartAppearance.defaults(colors),...(appearanceStore[c.id]||{})}));
+  const oldProfiles=structuredClone(appearanceStore);
+  charts.forEach(c=>{const profile=ChartAppearance.desktopProfile(appearanceStore[c.id],colors,c.symbol);appearanceStore[c.id]=profile;ChartAppearance.apply(c,profile);});
+  if(JSON.stringify(oldProfiles)!==JSON.stringify(appearanceStore)){
+    const backupKey='terminal_desktop_appearance_before_v1';
+    if(Workspace.read(backupKey,null)||Workspace.write(backupKey,{profiles:oldProfiles,legacyColors:colors}))Workspace.write('terminal_chart_settings_v1',appearanceStore);
+  }
   const chartSettings=new ChartSettings(()=>active,(chart,settings)=>{
     const next={...Workspace.read('terminal_chart_settings_v1',{}),[chart.id]:settings};
     if(!Workspace.write('terminal_chart_settings_v1',next))return false;
@@ -266,6 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHeader();return true;
   });
   $('btn-settings').addEventListener('click',()=>chartSettings.open());
+  charts.forEach(c=>c.onChartSettings=()=>{activate(c);chartSettings.open();});
+  desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertRemove:index=>{alerts=alerts.filter((_,i)=>i!==index);Workspace.write('terminal_alerts_v1',alerts);refreshAlertLines();}});
   document.querySelectorAll('.scale-toggle').forEach(button => button.addEventListener('click', () => {
     if (button.textContent.trim() === 'auto') active.chart.priceScale('right').applyOptions({ autoScale: true });
     else { const mode = button.textContent.trim() === '%' ? LightweightCharts.PriceScaleMode.Percentage : LightweightCharts.PriceScaleMode.Logarithmic; active.chart.priceScale('right').applyOptions({ mode: button.classList.contains('active') ? 0 : mode }); document.querySelectorAll('.scale-toggle').forEach(b => { if (b !== button) b.classList.remove('active'); }); button.classList.toggle('active'); }
@@ -283,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('connection-status').textContent = stale ? 'Nguồn chậm · dữ liệu cũ' : bridge.state === 'connected' ? 'TradingView · đã kết nối' : bridge.state === 'connecting' ? 'Đang kết nối…' : 'Mất nguồn · dữ liệu đã lưu';
     $('connection-status').title = bridge.message || '';
     charts.forEach(c=>{c.marketLive=live(c.symbol);if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));c.updateCountdown?.();});
-    updateHeader();
+    updateHeader();desktop?.refresh();
   }
   function receive(message) {
     if (message.type === 'bridge_status') { bridge = message; statusText(); return; }

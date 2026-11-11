@@ -1,5 +1,14 @@
 /* Chart appearance only. Exchange sessions and indicator calculation clocks stay separate. */
 const ChartAppearance = {
+  desktopProfile(previous,legacy,symbol) {
+    const settings={...this.defaults(legacy),...previous};
+    if(settings.desktopVersion===1)return settings;
+    // Only replace the old application's defaults; keep deliberately customized values.
+    const reference={previousClose:[false,true],titleMode:['Ticker','Name'],chartValues:[true,false],barChange:[true,false],verticalGrid:[true,false],horizontalGrid:[true,false],bottomMargin:[15,8],rightMargin:[12,10],hourFormat:['24-hours','12-hours'],textColor:['#202020','#000000'],borderUp:['#211f1d','#000000'],borderDown:['#211f1d','#000000'],wickUp:['#211f1d','#000000'],wickDown:['#211f1d','#000000'],crosshair:['#434651','#000000'],scaleLines:['#a8a194','#000000']};
+    if(symbol==='NQ1!')reference.bodyDown=['#211f1d','#5e6977'];
+    for(const [key,[old,value]] of Object.entries(reference))if(settings[key]===old)settings[key]=value;
+    settings.desktopVersion=1;return settings;
+  },
   defaults(colors={}) {
     return {bg:'#c2baae',grid:'#a8a194',bodyUp:'#e8e4dc',bodyDown:'#211f1d',borderUp:'#211f1d',borderDown:'#211f1d',wickUp:'#211f1d',wickDown:'#211f1d',textColor:'#202020',...colors,
       body:true,borders:true,wick:true,previousClose:false,precision:'Default',timezone:'America/New_York',
@@ -74,7 +83,7 @@ class ChartSettings {
     this.modal.querySelector('#close-settings').onclick=()=>this.cancel();this.modal.querySelector('#cancel-settings').onclick=()=>this.cancel();this.modal.querySelector('#save-settings').onclick=()=>this.commit();
     this.modal.addEventListener('click',e=>{if(e.target===this.modal)this.cancel();});
     this.modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopImmediatePropagation();if(this.palette){this.palette.remove();this.palette=null;}else this.cancel();}if(e.key==='Tab'){const focusable=[...this.modal.querySelectorAll('button,input,select,textarea')].filter(n=>!n.disabled&&n.getClientRects().length);const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
-    this.modal.querySelector('#chart-template').onchange=e=>{try{if(e.target.value==='reset')this.draft={...ChartAppearance.defaults(),session:this.original.session};else if(e.target.value==='load'){const value=Workspace.read('terminal_chart_template_v1',null);if(value)this.draft={...this.draft,...value,session:this.original.session};}else if(e.target.value==='save')Workspace.write('terminal_chart_template_v1',ChartAppearance.validate(this.draft));this.select(this.tab);this.preview();}catch(error){this.error.textContent=error.message;}e.target.value='';};
+    this.modal.querySelector('#chart-template').onchange=e=>{try{if(e.target.value==='reset')this.draft={...ChartAppearance.desktopProfile(null,{},this.chart.symbol),session:this.original.session};else if(e.target.value==='load'){const value=Workspace.read('terminal_chart_template_v1',null);if(value)this.draft={...this.draft,...value,session:this.original.session};}else if(e.target.value==='save')Workspace.write('terminal_chart_template_v1',ChartAppearance.validate(this.draft));this.select(this.tab);this.preview();}catch(error){this.error.textContent=error.message;}e.target.value='';};
   }
   open(){this.chart=this.getChart();this.opener=document.activeElement;this.original={...this.chart.appearance,session:this.chart.sessionMode};this.draft={...this.original};this.modal.classList.add('show');this.select(this.tab);this.nav.querySelector('[aria-selected="true"]').focus();}
   close(){this.palette?.remove();this.palette=null;this.modal.classList.remove('show');this.opener?.focus();}

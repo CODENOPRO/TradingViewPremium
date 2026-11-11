@@ -13,6 +13,8 @@ test('host visibility/styles filter the display without altering calculations or
  const original={series:[],drawings:[{type:'text'}],pane:{min:0,max:100,drawings:[]},tables:[{pane:true},{title:'Main'}],candleColors:[{time:60,color:'#112233'}]};runner.lastResult=original;
  runner.view={pane:false,candleColors:false};runner.applyView();assert.equal(applied.pane,null);assert.equal(applied.tables.length,1);assert.equal(applied.drawings.length,1);assert.equal(applied.candleColors.length,0);assert.ok(original.pane);assert.equal(original.tables.length,2);
  runner.view={visibility:{'1m':false}};runner.applyView();assert.equal(applied.drawings.length,0);assert.equal(applied.tables.length,0);assert.equal(applied.pane,null);
+ runner.view={hidden:true};runner.applyView();assert.equal(applied.drawings.length,0);assert.equal(applied.pane,null);assert.equal(applied.tables.length,0);
+ runner.view={hidden:false};runner.applyView();assert.equal(applied.pane,original.pane);assert.equal(applied.drawings,original.drawings);assert.equal(runner.lastResult,original);
 });
 test('cycle separator/plot/axis pointer handlers resize, pan, zoom, persist and reset independently',()=>{
  class Element {constructor(){this.style={};this.children=[];this.events={};this.attrs={};}setAttribute(k,v){this.attrs[k]=v;}appendChild(x){this.children.push(x);}dispatchEvent(){}setPointerCapture(){}addEventListener(k,v){this.events[k]=v;}}

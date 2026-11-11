@@ -384,6 +384,7 @@ class ChartEngine {
       const title=document.createElement('span');title.className='indicator-title';legend.appendChild(title);
       const settings=document.createElement('button');settings.type='button';settings.textContent='⚙';settings.title='Indicator settings';settings.setAttribute('aria-label','Indicator settings');
       settings.onclick=event=>{event.stopPropagation();this.onIndicatorSettings?.();};legend.appendChild(settings);
+      const eye=document.createElement('button');eye.type='button';eye.className='indicator-eye';eye.textContent='◉';eye.title='Hide / show indicator';eye.setAttribute('aria-label','Hide or show indicator');eye.onclick=e=>{e.stopPropagation();this.onIndicatorToggle?.();};legend.insertBefore(eye,settings);
       legend.ondblclick=()=>this.onIndicatorSettings?.();
     }
     this.indicatorLegend.querySelector('.indicator-title').textContent=name.replace(/ · JavaScript.*$/,'');
@@ -597,7 +598,7 @@ class ChartEngine {
     const diff=bar.close-previous,diffPct=previous?diff/previous*100:0;
     legendEl.replaceChildren();legendEl.style.color=s?.textColor||this.config.textColor;
     const add=(text,className)=>{const span=document.createElement('span');span.className=className||'';span.textContent=text;legendEl.appendChild(span);};
-    if(s?.logo)add(this.symbol.slice(0,1),'legend-logo');
+    if(s?.logo)add(({ 'NQ1!':'100','ES1!':'500','YM1!':'30' })[this.symbol]||this.symbol.slice(0,1),'legend-logo '+(this.symbol==='ES1!'?'legend-logo-es':''));
     if(s?.title!==false){const description=this.metadata?.description||this.symbol;const title=s?.titleMode==='Name'?description:s?.titleMode==='Name and ticker'?description+' · '+this.symbol:this.symbol;add(`${title} · ${this.currentTimeframe} · ${this.sessionMode||'ETH'}`,'legend-symbol');}
     if(s?.marketStatus)add(this.marketLive?'● Live':'○ Stale','legend-market');
     if(s?.chartValues!==false)add(`O ${format(bar.open)}  H ${format(bar.high)}  L ${format(bar.low)}  C ${format(bar.close)}`,'legend-ohlc');

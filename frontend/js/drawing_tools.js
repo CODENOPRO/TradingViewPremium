@@ -122,14 +122,14 @@ class DrawingManager {
         });
         this.saveDrawings(chartEngine);
         chartEngine.renderDrawings();
-        this.setTool('crosshair');
+        if(!this.keepDrawing)this.setTool('crosshair');
         return;
       }
 
       if (this.activeTool === 'text') {
         const note = { ...DrawingModel.defaults('text'), id: crypto.randomUUID(), type: 'text', p1: { time, price }, text: 'Text' };
         chartEngine.drawings.push(note); this.saveDrawings(chartEngine);
-        this.setTool('crosshair'); this.editor.select(chartEngine, note); this.editor.open('text');
+        if(!this.keepDrawing)this.setTool('crosshair'); this.editor.select(chartEngine, note); this.editor.open('text');
         return;
       }
 
@@ -156,7 +156,7 @@ class DrawingManager {
         this.saveDrawings(chartEngine);
 
         this.drawingState = null;
-        this.setTool('crosshair');
+        if(!this.keepDrawing)this.setTool('crosshair');
         chartEngine.renderDrawings();
       }
     });

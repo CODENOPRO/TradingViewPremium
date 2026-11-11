@@ -32,4 +32,8 @@ test('rectangle mixed corners resize the correct point; invisible shapes cannot 
   assert.equal(DrawingModel.hit(chart,shape,100,10),'p2x_p1y');
   shape.visibility.minutes.enabled=false;
   assert.equal(DrawingModel.hit(chart,shape,0,50),null);
+  shape.visibility.minutes.enabled=true;shape.hidden=true;
+  assert.equal(DrawingModel.hit(chart,shape,0,50),null);
+  assert.equal(DrawingModel.normalize(shape).hidden,true);
+  shape.hidden=false;assert.equal(DrawingModel.hit(chart,shape,0,50),'p1x_p2y');
 });

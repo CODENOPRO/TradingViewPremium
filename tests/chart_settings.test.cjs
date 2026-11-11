@@ -2,6 +2,17 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const {ChartAppearance}=require('../frontend/js/chart_settings.js');
 
+test('desktop appearance migrates old defaults once while preserving custom settings and input snapshots',()=>{
+  const saved={bodyDown:'#211f1d',bg:'#112233',topMargin:17,chartValues:true};
+  const snapshot=JSON.stringify(saved),next=ChartAppearance.desktopProfile(saved,{},'NQ1!');
+  assert.equal(next.bodyDown,'#5e6977');assert.equal(next.bg,'#112233');assert.equal(next.topMargin,17);
+  assert.equal(next.chartValues,false);assert.equal(next.verticalGrid,false);assert.equal(next.desktopVersion,1);
+  assert.equal(JSON.stringify(saved),snapshot);
+  const changed={...next,chartValues:true};assert.equal(ChartAppearance.desktopProfile(changed,{},'NQ1!').chartValues,true);
+  assert.equal(ChartAppearance.desktopProfile({bodyDown:'#abcdef'},{},'NQ1!').bodyDown,'#abcdef');
+  assert.equal(ChartAppearance.desktopProfile({bodyDown:'#211f1d'},{},'ES1!').bodyDown,'#211f1d');
+});
+
 test('previous-close candle direction, body visibility and indicator color keep raw OHLC unchanged',()=>{
   const bars=[{time:1,open:100,high:111,low:99,close:110},{time:2,open:101,high:106,low:100,close:105}];
   const original=JSON.stringify(bars),s=ChartAppearance.defaults();

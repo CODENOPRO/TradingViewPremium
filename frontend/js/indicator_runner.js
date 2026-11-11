@@ -47,7 +47,8 @@ class IndicatorRunner {
 
   applyView() {
     if(!this.lastResult)return;
-    const result=this.lastResult,v=this.view||{},visible=v.visibility?.[this.chart.currentTimeframe]!==false;
+    const result=this.lastResult,v=this.view||{},visible=v.hidden!==true&&v.visibility?.[this.chart.currentTimeframe]!==false;
+    if(this.chart.container?.dataset)this.chart.container.dataset.indicatorHidden=String(!!v.hidden);
     this.chart.applyIndicatorResult({...result,
       drawings:visible&&v.overlay!==false?result.drawings:[],
       pane:visible&&v.pane!==false?result.pane:null,

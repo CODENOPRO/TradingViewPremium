@@ -18,6 +18,7 @@ const DrawingModel = (() => {
       visibility:Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) };
   }
   function visible(value, timeframe) {
+    if(value.hidden)return false;
     const entry = timeframe === 'D' ? ['days',1] : timeframe === 'W' ? ['weeks',1] : timeframe.endsWith('h') ? ['hours',Number(timeframe.slice(0,-1))] : timeframe.endsWith('m') ? ['minutes',Number(timeframe.slice(0,-1))] : null;
     if (!entry) return true;
     const rule = value.visibility?.[entry[0]];

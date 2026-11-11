@@ -196,3 +196,71 @@ input { min-width:0; }
 @media(max-width:650px) { .chart-settings-modal { padding:8px; }.chart-settings-nav { width:157px; }.chart-settings-nav button { padding:0 7px; font-size:12px; }.chart-settings-body { padding:0 16px 18px 12px; }.chart-settings-layout { padding-left:10px; }.chart-setting-controls { max-width:160px; }.chart-setting-controls select { max-width:150px; } }
 .chart-unavailable-note { display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:#424242; color:#999; width:14px; height:14px; font-size:10px; flex-shrink:0; cursor:help; }
 .chart-settings-nav button[role="tab"]:focus-visible { outline-offset:-2px; }
+/* Desktop chart chrome, checked against the running TradingView window. */
+#topbar { height:40px; background:#080808; gap:4px; padding:0 8px; }
+.topbar-left { gap:2px; }.topbar-right { gap:1px; }
+#topbar .symbol-selector-pill .badge-circle,#btn-indicator-settings { display:none; }
+.tf-btn,.btn-icon { height:32px; padding:6px; font-size:13px; }
+#topbar .separator { margin:0 3px; }
+#left-sidebar { width:55px; gap:4px; background:#080808; padding-top:6px; }
+.tool-btn { width:38px; height:34px; min-height:34px; }
+.tool-btn svg { width:23px; height:23px; stroke:currentColor; stroke-width:1.15; fill:none; }
+.tool-separator { margin:5px 0; width:32px; }
+#right-sidebar { width:45px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:6px; padding:8px 3px; background:#080808; border-left:1px solid #333; }
+#right-sidebar button { display:flex; align-items:center; justify-content:center; width:38px; height:38px; background:transparent; color:#bebebe; border-radius:6px; }
+#right-sidebar button:hover,#right-sidebar button.active { background:#282828; }
+#right-sidebar button.active { color:#80a6ff; }
+#right-sidebar svg,.desktop-panel-content svg,#desktop-footer svg,.chart-go-realtime svg { width:23px; height:23px; stroke:currentColor; stroke-width:1.1; fill:none; }
+#desktop-panel { width:260px; min-width:200px; max-width:35vw; flex-shrink:0; display:flex; flex-direction:column; background:#080808; border-left:1px solid #303030; min-height:0; }
+.desktop-panel-header { display:flex; align-items:center; min-height:48px; gap:5px; padding:7px 7px 7px 12px; border-bottom:1px solid #292929; }
+.desktop-panel-close { background:transparent; color:#aaa; font-size:22px; width:23px; flex-shrink:0; margin-left:auto; }
+.desktop-panel-tabs { display:flex; align-items:center; min-width:0; gap:3px; font-size:15px; }
+.desktop-panel-tabs button { min-width:0; white-space:nowrap; padding:7px 6px; border-radius:5px; background:transparent; color:#999; font-size:12px; }
+.desktop-panel-tabs button[aria-selected="true"] { background:#333; color:#eee; }
+.desktop-panel-content { overflow-y:auto; overflow-x:hidden; flex:1; scrollbar-width:thin; scrollbar-color:#444 transparent; }
+.desktop-panel-content h3 { font-size:13px; font-weight:600; padding:15px 12px 12px; margin:0; border-bottom:1px solid #222; }
+.desktop-panel-note { margin:18px 12px; color:#888; font-size:12px; line-height:1.6; }
+.watch-head { padding:10px 12px; color:#888; font-size:11px; border-bottom:1px solid #242424; }
+.watch-row { width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 12px; color:#ddd; background:transparent; font-variant-numeric:tabular-nums; }
+.watch-row:hover,.object-row:hover { background:#202020; }.watch-row.selected { background:#17315d; }
+.object-row { min-height:39px; display:flex; align-items:center; padding:3px 8px; gap:3px; }
+.object-row button { background:transparent; color:#bdbdbd; flex-shrink:0; width:25px; padding:3px; }
+.object-row button:first-child { width:auto; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; font-size:12px; padding-left:5px; }
+.object-row svg { width:18px; height:18px; }.object-row button.active { color:#87a8ff; }.object-hidden>button:first-child { opacity:.45; }
+.data-window-row { display:flex; justify-content:space-between; gap:10px; margin:0; padding:7px 12px; font-size:12px; color:#bbb; font-variant-numeric:tabular-nums; }
+.data-window-row span:last-child { color:#eee; text-align:right; }
+.desktop-add-alert { display:block; margin:14px 12px; padding:7px 10px; background:#2962ff; color:#fff; border-radius:6px; }
+.alert-list-row { display:flex; justify-content:space-between; align-items:center; padding:13px 12px; border-bottom:1px solid #292929; gap:10px; font-size:12px; }
+.alert-list-row span { white-space:pre-line; line-height:1.7; }.alert-list-row button { width:22px; background:transparent; color:#aaa; }
+#desktop-footer { height:39px; min-height:39px; display:flex; align-items:center; gap:8px; padding:3px 12px; border-top:1px solid #333; background:#080808; }
+#desktop-footer button { height:30px; display:flex; align-items:center; gap:7px; padding:4px 8px; color:#bdbdbd; background:transparent; font-size:12px; }
+#desktop-footer #btn-paper { color:#ddd; border-left:1px solid #333; padding-left:15px; }#desktop-footer .footer-refresh { margin-left:auto!important; }
+#bottombar { height:34px; min-height:34px; background:#080808; }
+#session-mode { width:57px; border:0; background:transparent; color:#bbb; padding:3px 0 3px 3px; font-size:11px; }
+.layout-sync { width:100%; justify-content:flex-start; margin-top:7px; border-top:1px solid #444; border-radius:0; padding-top:12px; height:38px; }
+.chart-legend { top:7px; left:9px; gap:5px; font-size:12px; align-items:center; }
+.legend-symbol { font-weight:500; }.legend-logo { width:18px; height:18px; min-width:18px; font-size:8px; }.legend-logo-es { background:#ed3150; }
+.tv-trade-pill { top:32px; left:9px; gap:7px; }
+.trade-sell,.trade-buy { height:35px; min-width:82px; padding:3px 7px; gap:0; font-size:12px; }
+.trade-sell { flex-direction:column-reverse; }.trade-buy { flex-direction:column; }
+.trade-buy span,.trade-sell span { margin:0!important; text-align:center; line-height:14px; }
+.trade-buy span:last-child,.trade-sell span:first-child { font-size:9px!important; line-height:10px; }
+.trade-spread { align-self:flex-start; padding-top:4px; font-size:8px; }
+.indicator-legend { top:75px; left:9px; display:flex; align-items:center; height:23px; max-width:calc(100% - 80px); font-size:12px; color:var(--chart-text,#211f1d); }
+.indicator-legend button { opacity:0; }.indicator-legend:hover button,.indicator-legend:focus-within button { opacity:1; }
+.chart-wrapper[data-indicator-hidden="true"] .indicator-title { opacity:.4; }
+.indicator-pane-header { height:25px; font-size:12px; padding:0 8px; }
+.chart-go-realtime { position:absolute; right:76px; width:30px; height:29px; border-radius:5px; border:1px solid #8a8379; background:#e8e4dce8; color:#292929; z-index:22; padding:3px; }
+@media(max-width:1000px) { #desktop-panel { width:220px; }#right-sidebar { width:40px; }#topbar #btn-alert span,#topbar #btn-replay span,#btn-layout>span { display:none; }.bottom-meta { gap:4px; }#connection-status { max-width:125px; } }
+.trade-center { width:28px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; }.trade-center .trade-spread { align-self:center; padding:0; line-height:10px; }
+#trade-inline-qty { width:25px; height:18px; padding:0 1px; text-align:center; border:1px solid #938d82; border-radius:3px; background:#d7d1c7; color:#292929; font-size:11px; appearance:textfield; }
+#trade-inline-qty::-webkit-inner-spin-button { appearance:none; }
+.desktop-undo svg { transform:scaleX(-1); }
+.desktop-undo svg,.topbar-left>button[aria-label="Redo drawing"] svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.1; }
+.chart-window-controls { position:absolute; top:5px; right:76px; z-index:22; display:flex; gap:3px; opacity:0; pointer-events:none; }
+.chart-wrapper:hover .chart-window-controls,.chart-window-controls:focus-within { opacity:1; pointer-events:auto; }
+.chart-window-controls button { background:#ded9d0d9; color:#46433e; width:25px; height:24px; padding:3px; border-radius:3px; }
+.chart-window-controls svg { width:18px; height:18px; stroke:currentColor; stroke-width:1.1; fill:none; }
+#chart-grid[data-expanded="box-1"],#chart-grid[data-expanded="box-2"],#chart-grid[data-expanded="box-3"] { grid-template-columns:1fr; grid-template-rows:1fr; }
+#chart-grid[data-expanded="box-1"]>.chart-wrapper:not(#box-1),#chart-grid[data-expanded="box-2"]>.chart-wrapper:not(#box-2),#chart-grid[data-expanded="box-3"]>.chart-wrapper:not(#box-3) { display:none; }
+#chart-grid[data-expanded="box-1"]>#box-1,#chart-grid[data-expanded="box-2"]>#box-2,#chart-grid[data-expanded="box-3"]>#box-3 { display:block; grid-column:1; grid-row:1; }
