@@ -355,3 +355,9 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Frontend thêm BridgeProtocol: health phải đúng service/version/port, bỏ fallback mù sang8080 khi404; báo backend cũ/lỗi cụ thể thay vì connecting mãi. Snapshot rỗng/hỏng/ngắn không xóa history hợp lệ; merge correction theo timestamp. WebSocket localhost dùng127.0.0.1 để tránh IPv6 mismatch. Badge nhỏ từng chart báo cached/chờ nguồn, không toast lớn. Nút về vùng có nến cũng xuất hiện nếu viewport đi hết vào tương lai. Launcher chỉ tái dùng server có protocol2 đúng dịch vụ.
 - Live health và WS: cả3000/3001 connected, nhận liên tục3 status; YM snapshot557 nến ở3000,925 ở3001 với metadata (số tại thời điểm thử, không cam kết độ sâu). CDP thực tế lúc kiểm tra chỉ có ES/ES/YM, NQ vắng nguồn; giữ cache NQ và báo stale, không giả live/không tự sửa chart nguồn. Đã kiểm tra mọi loaded widget: lúc đó chỉ một widget.
 - 44 test Node +5 test Python qua (49 tổng), syntax/diff checks qua. Regression protocol cũ, YM snapshotempty/short/correction và YM ở non-active widget/dedupe. Vẫn chưa UI-check Edge vì Computer Use bị người dùng dừng; kiểm chứng live là HTTP/WS thật. Pine v6 vẫn đang triển khai, chưa xong adapter/web.
+
+### 2026-11-11 — Chỉ dùng localhost:3000
+
+- Người dùng yêu cầu chuyển về 3000 thôi. Backend hiện PID15512, HTTP3000 và WebSocket8080; đã tắt preview3001/8081. Không mở lại preview mặc định.
+- Đã sao lưu rồi gộp history preview vào cache backend; giữ nến production khi trùng timestamp. Không chuyển localStorage giữa hai origin, không thay account/drawings/scripts.
+- Kiểm tra lại /health: protocol2, connected, đủ NQ1!/ES1!/YM1! sau khi người dùng khôi phục nguồn; listener chỉ có3000/8080. UI chưa kiểm tra trực tiếp vì người dùng đã dừng Computer Use bằng Esc. Pine runtime và thay đổi rebase viewport còn đang làm, không tính là hoàn tất trong batch đổi cổng.
