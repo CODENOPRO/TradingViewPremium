@@ -29,6 +29,7 @@ class DesktopShell {
     for(const id of ['btn-trade-buy','btn-trade-sell']){const b=$(id);b.setAttribute('role','button');b.tabIndex=0;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click();}};}
     // Keep existing event handlers and IDs when moving controls into their desktop positions.
     const right=document.querySelector('.topbar-right');right.prepend($('btn-paper'),$('btn-sync'));
+    $('btn-paper').innerHTML=TerminalIcons.svg('wallet')+'<span>Paper Trading</span>';
     document.querySelector('.timeframe-group').appendChild($('btn-refresh-htf'));
     $('btn-indicator-settings').after($('session-mode'));$('session-mode').title='Chart session: RTH / ETH';
     this.undo=this.button('Undo drawing','arrow',()=>{this.drawing.historyStep(this.getActive(),false);this.signature='';this.refresh();});this.undo.className='btn-icon desktop-undo';
@@ -46,6 +47,27 @@ class DesktopShell {
     }
     const panel=Workspace.read('terminal_desktop_panel_v1',{});this.objectTab=panel.objectTab==='data'?'data':'tree';
     this.open(['watch','objects','alerts'].includes(panel.mode)?panel.mode:null,false);
+    this.installToolbarOverflow();
+  }
+  installToolbarOverflow(){
+    const left=document.querySelector('.topbar-left'),right=document.querySelector('.topbar-right'),header=document.getElementById('topbar');
+    const menu=document.createElement('div');menu.className='toolbar-overflow';menu.hidden=true;menu.setAttribute('role','menu');document.body.appendChild(menu);
+    const more=document.createElement('button');more.type='button';more.className='btn-icon toolbar-more';more.textContent='⋯';more.hidden=true;more.setAttribute('aria-label','More toolbar actions');more.setAttribute('aria-expanded','false');left.appendChild(more);
+    const nodes=[this.redo,this.undo,document.getElementById('btn-refresh-htf'),document.getElementById('btn-alert'),document.getElementById('btn-replay'),document.querySelector('.timeframe-group')];
+    const items=nodes.map(node=>{const anchor=document.createComment('toolbar-position');node.before(anchor);if(node.tagName==='BUTTON')node.dataset.overflowLabel=node.getAttribute('aria-label')||node.textContent.trim()||node.title;return {node,anchor};});
+    const close=(focus=false)=>{menu.hidden=true;more.setAttribute('aria-expanded','false');if(focus)more.focus();};
+    more.onclick=()=>{if(!menu.hidden){close();return;}menu.hidden=false;more.setAttribute('aria-expanded','true');const rect=more.getBoundingClientRect();menu.style.left=Math.max(6,Math.min(innerWidth-menu.offsetWidth-6,rect.right-menu.offsetWidth))+'px';menu.style.top=(rect.bottom+4)+'px';menu.querySelector('button:not([disabled])')?.focus();};
+    menu.onclick=e=>{if(e.target.closest('button'))close();};
+    menu.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close(true);}else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const buttons=[...menu.querySelectorAll('button:not([disabled])')],index=buttons.indexOf(document.activeElement),next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(index+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;buttons[next]?.focus();}};
+    document.addEventListener('pointerdown',e=>{if(!menu.contains(e.target)&&!more.contains(e.target))close();});
+    this.fitToolbar=()=>{
+      close();for(const {node,anchor}of items)anchor.after(node);more.hidden=true;
+      if(left.hidden||!header.clientWidth)return;
+      if(left.scrollWidth<=left.clientWidth+1)return;
+      more.hidden=false;
+      for(const {node}of items){menu.appendChild(node);if(left.scrollWidth<=left.clientWidth+1)break;}
+    };
+    this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);this.fitToolbar();
   }
   button(label,icon,action){const b=document.createElement('button');b.type='button';b.title=label;b.setAttribute('aria-label',label);b.innerHTML=DesktopShell.icon(icon);b.onclick=action;return b;}
   installTools(){

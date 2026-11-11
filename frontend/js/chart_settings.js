@@ -133,16 +133,7 @@ class ChartSettings {
       r('Precision','precision','select',{options:['Default','0','1','2','3','4','5','6','7','8']});
       r('Timezone','timezone','select',{options:[['America/New_York','New York'],['America/Chicago','Chicago'],['Etc/UTC','UTC'],['Asia/Ho_Chi_Minh','Ho Chi Minh'],['Europe/London','London'],['Asia/Tokyo','Tokyo']]});
     }else if(tab==='Status line'){
-      g('INSTRUMENT');
-      r('Logo','logo');
-      r('Title','title');
-      r('Title format','titleMode','select',{options:['Name','Ticker','Name and ticker']});
-      r('Open market status','marketStatus');
-      r('Chart values','chartValues');
-      r('Bar change values','barChange');
-      r('Volume','volume');
-      r('Last day change values','dayChange','check',{disabled:'Chưa có previous settlement được xác minh'});
-      r('Buy/sell buttons','buySell');
+      const note=document.createElement('p');note.className='desktop-panel-note';note.textContent='Tên mã/OHLC và BUY/SELL đã ẩn. Biểu tượng mã nằm ở góc dưới chart.';this.body.appendChild(note);
       g('INDICATORS');
       r('Titles','indicatorTitles');
       r('Inputs','indicatorInputs','check',{disabled:'Chưa có formatter rút gọn input theo từng script'});
@@ -187,7 +178,6 @@ class ChartSettings {
       r('Right','rightMargin','number',{min:0,max:500,suffix:'bars'});
     }else if(tab==='Trading'){
       g('GENERAL');
-      r('Buy/sell buttons','buySell');
       r('One-click trading','oneClick','check',{disabled:'Hiện luôn đặt lệnh mô phỏng một lần bấm; chưa có chế độ xác nhận'});
       r('Multiple exit levels','multipleExits','check',{disabled:'Ledger hiện hỗ trợ một SL và một TP cho mỗi vị thế'});
       r('Execution sound','executionSound','check',{disabled:'Chưa có bộ âm thanh khớp lệnh'});

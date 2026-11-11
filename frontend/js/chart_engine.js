@@ -66,6 +66,7 @@ class ChartEngine {
       width: width,
       height: height,
       layout: {
+        attributionLogo:false,
         background: { type: 'solid', color: this.config.bg },
         textColor: this.config.textColor,
         fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, sans-serif'
@@ -128,6 +129,9 @@ class ChartEngine {
       priceLineWidth: 1
     });
 
+    this.symbolBadge=document.createElement('img');this.symbolBadge.className='chart-symbol-badge';
+    this.symbolBadge.draggable=false;this.updateSymbolBadge();this.container.appendChild(this.symbolBadge);
+
     // Double click to reset view
     this.container.addEventListener('dblclick', (e) => {
       // Only reset if clicked inside chart area, not on buttons
@@ -139,6 +143,26 @@ class ChartEngine {
 
   addSeries(type,options,paneIndex=0) {
     return typeof this.chart.addSeries==='function'?this.chart.addSeries(LightweightCharts[type+'Series'],options,paneIndex):this.chart['add'+type+'Series'](options);
+  }
+
+  updateSymbolBadge(){
+    if(!this.symbolBadge)return;
+    const file={'NQ1!':'nasdaq-100','ES1!':'s-and-p-500','YM1!':'dow-30'}[this.symbol];
+    this.symbolBadge.hidden=!file;this.symbolBadge.alt=this.symbol;this.symbolBadge.title=this.symbol;
+    if(file)this.symbolBadge.src='assets/symbols/'+file+'.svg';
+  }
+
+  positionSymbolBadge(){
+    if(!this.symbolBadge)return;
+    const rect=this.container.getBoundingClientRect(),size=28;
+    let bottom=Math.max(30,rect.height-this.plotHeight+30),left=10;
+    const overlaps=box=>box&&box.width>0&&box.height>0&&rect.left+left<box.right&&rect.left+left+size>box.left&&rect.bottom-bottom>box.top&&rect.bottom-bottom-size<box.bottom;
+    const sidebar=document.getElementById('left-sidebar')?.getBoundingClientRect();
+    if(overlaps(sidebar))left=Math.max(left,sidebar.right-rect.left+8);
+    for(const selector of ['.bottom-ranges','.bottom-meta']){const lower=document.querySelector(selector)?.getBoundingClientRect();if(overlaps(lower))bottom=Math.max(bottom,rect.bottom-lower.top+6);}
+    left=Math.max(4,Math.min(left,rect.width-65-size-4));bottom=Math.min(bottom,Math.max(4,rect.height-size-4));
+    if(this.symbolBadge.style.bottom!==bottom+'px')this.symbolBadge.style.bottom=bottom+'px';
+    if(this.symbolBadge.style.left!==left+'px')this.symbolBadge.style.left=left+'px';
   }
 
   initDrawingOverlay() {
@@ -283,6 +307,7 @@ class ChartEngine {
   }
 
   clearData() {
+    this.updateSymbolBadge();
     this.rawBars = [];
     this.bars = [];
     this.htfData = {};
@@ -661,6 +686,7 @@ class ChartEngine {
 
   // DRAWINGS RENDERING
   renderDrawings() {
+    this.positionSymbolBadge();
     if (!this.overlayCtx) return;
     const ctx = this.overlayCtx;
     const rect = this.container.getBoundingClientRect();

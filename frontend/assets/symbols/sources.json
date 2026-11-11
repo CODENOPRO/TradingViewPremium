@@ -1,0 +1,17 @@
+{
+  "NQ1!": {
+    "file": "nasdaq-100.svg",
+    "source": "https://s3-symbol-logo.tradingview.com/indices/nasdaq-100--big.svg",
+    "sha256": "449cbcdc7cdef3572942e6ec9c1d151a4e24b11a7c2e7680e4621207ae342cb6"
+  },
+  "ES1!": {
+    "file": "s-and-p-500.svg",
+    "source": "https://s3-symbol-logo.tradingview.com/indices/s-and-p-500--big.svg",
+    "sha256": "550202b7ba7e082e43e4dd5a793ba206d6ae39be5608fad28e802bdd2c5dc6da"
+  },
+  "YM1!": {
+    "file": "dow-30.svg",
+    "source": "https://s3-symbol-logo.tradingview.com/indices/dow-30--big.svg",
+    "sha256": "b26124c652b0e3febbad2f85aacc58040420180616f074a93cb3cfad11cd28ff"
+  }
+}

@@ -75,6 +75,8 @@ Nút ⚙ mở bảy mục cài đặt theo TradingView Desktop, có preview/Canc
 
 Bốn cụm nổi trên trái/phải, dưới trái/phải và thanh vẽ trái nằm trên chart phủ kín cửa sổ. Trong Settings → Cụm công cụ trên chart có bật/tắt từng cụm và độ trong suốt nền; các tùy chọn này lưu ngay, riêng với preview/Cancel của chart. `Ctrl + ,` mở lại Settings kể cả khi đã ẩn hết. Watchlist/Objects/Data/Alerts/Editor nằm trong menu Layout thay cho dải đen cố định bên phải.
 
+Header tên mã/OHLC và BUY/SELL trên từng chart đã ẩn theo yêu cầu giao diện gọn; lệnh demo dùng nút Paper Trading. Góc dưới dùng biểu tượng NQ/ES/YM, tự tránh thanh vẽ/cụm dưới và đổi theo mã; CL chưa có asset nên không gán logo của mã khác. Thanh trên thiếu chỗ sẽ đưa các thao tác phụ vào `…`. Logo attribution trên chart tắt bằng tùy chọn chính thức; notice được giữ trong vendor và link TradingView nằm trong Settings. Nguồn: [LayoutOptions.attributionLogo](https://tradingview.github.io/lightweight-charts/docs/api/interfaces/LayoutOptions#attributionlogo).
+
 Đối chiếu toàn màn hình và panel desktop: [DESKTOP_PARITY.md](DESKTOP_PARITY.md).
 
 Nếu web báo backend cũ: đóng server Python cũ rồi chạy lại `start_terminal.bat`. `/health` của bản hiện tại có `service: trading-terminal`, `protocol_version: 2` và cổng WS. Dữ liệu chỉ live cho mã đang được tải trong TradingView; mã thiếu nguồn giữ cache và hiện trạng thái dữ liệu đã lưu.

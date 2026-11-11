@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-settings').addEventListener('click',()=>chartSettings.open());
   charts.forEach(c=>c.onChartSettings=()=>{activate(c);chartSettings.open();});
   desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertRemove:index=>{alerts=alerts.filter((_,i)=>i!==index);Workspace.write('terminal_alerts_v1',alerts);refreshAlertLines();}});
-  new ToolbarClusters(()=>chartSettings.open());
+  new ToolbarClusters(()=>chartSettings.open(),()=>{desktop.fitToolbar?.();charts.forEach(c=>c.positionSymbolBadge());});
   new ChartContextMenu({charts,drawing,desktop,activate,openAlert});
   document.querySelectorAll('.scale-toggle').forEach(button => button.addEventListener('click', () => {
     if (button.textContent.trim() === 'auto') active.chart.priceScale('right').applyOptions({ autoScale: true });
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('connection-status').dataset.state = stale ? 'stale' : bridge.state;
     $('connection-status').textContent = bridge.state==='backend_error'?bridge.message:stale ? 'Nguồn chậm · dữ liệu cũ' : bridge.state === 'connected' ? 'TradingView · đã kết nối' : bridge.state === 'connecting' ? 'Đang kết nối…' : 'Mất nguồn · dữ liệu đã lưu';
     $('connection-status').title = bridge.message || '';
-    charts.forEach(c=>{c.marketLive=live(c.symbol);c.sourceBadge.hidden=c.marketLive;c.sourceBadge.textContent=`${c.symbol} · ${c.bars.length?'dữ liệu đã lưu':'chờ nguồn'}`;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));c.updateCountdown?.();});
+    charts.forEach(c=>{c.marketLive=live(c.symbol);c.sourceBadge.hidden=c.marketLive;c.sourceBadge.textContent=`${c.symbol} · ${c.bars.length?'dữ liệu đã lưu':'chờ nguồn'}`;if(c.symbolBadge)c.symbolBadge.title=c.marketLive?`${c.symbol} · Live`:c.sourceBadge.textContent;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));c.updateCountdown?.();});
     updateHeader();desktop?.refresh();
   }
   function receive(message) {
