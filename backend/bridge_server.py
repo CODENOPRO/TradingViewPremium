@@ -22,15 +22,16 @@ store = MarketStore(os.getenv('TERMINAL_DATA_DIR', str(ROOT)))
 clients = set()
 refresh = asyncio.Event()
 status = {'type': 'bridge_status', 'state': 'connecting', 'last_update': None,
-          'message': 'Đang kết nối TradingView', 'symbols': []}
+          'message': 'Đang kết nối TradingView', 'symbols': [],
+          'service': 'trading-terminal', 'protocol_version': 2, 'pid': os.getpid()}
 
 # Symbol metadata is authoritative; titles and sds_N indexes are not symbols.
 SNAPSHOT_JS = r'''(() => {
   const collection = window._exposed_chartWidgetCollection;
   if (!collection) throw new Error('TradingView chart collection unavailable');
-  const widget = collection.activeChartWidget.value();
-  const result = [];
-  for (const source of widget.model().dataSources()) {
+  const widgets = typeof collection.getAll === 'function' ? collection.getAll() : [collection.activeChartWidget.value()];
+  const result = new Map();
+  for (const widget of widgets) for (const source of widget.model().dataSources()) {
     try {
       const info = source.symbolInfo?.();
       const resolution = source.interval?.();
@@ -45,16 +46,19 @@ SNAPSHOT_JS = r'''(() => {
       };
       if (__FULL__) bars.each((index,value) => { append(value); });
       else append(bars.valueAt(bars.lastIndex()));
-      result.push({symbol, resolution, bars:output, metadata:{
+      const entry = {symbol, resolution, bars:output, metadata:{
         exchange:info.exchange || info.listed_exchange || '', description:info.description || symbol,
         timezone:info.timezone, session:info.session,
         tickSize:info.minmov / info.pricescale, pointValue:info.pointvalue,
         sessionRegular:(info.subsessions || []).filter(s => s.id === 'us_regular').map(s => ({session:s.session, corrections:s['session-correction'] || ''}))[0] || null,
         holidays:info.session_holidays || ''
-      }});
-    } catch (error) { result.push({error:String(error)}); }
+      }};
+      const key = symbol + ':' + resolution, previous = result.get(key);
+      const last = output.at(-1)?.time ?? -1, priorLast = previous?.bars.at(-1)?.time ?? -1;
+      if (!previous || last > priorLast || last === priorLast && output.length > previous.bars.length) result.set(key, entry);
+    } catch (error) { result.set('error:' + result.size, {error:String(error)}); }
   }
-  return result;
+  return [...result.values()];
 })()'''
 
 
@@ -225,7 +229,8 @@ async def frontend_ws_handler(socket):
 class HTTPHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/health':
-            body = json.dumps({**status, 'ws_port': WS_PORT}).encode()
+            counts = {symbol: len(bars) for symbol, bars in dict(store.data['1m']).items()}
+            body = json.dumps({**status, 'ws_port': WS_PORT, 'cached_1m': counts}).encode()
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Content-Length', str(len(body)))

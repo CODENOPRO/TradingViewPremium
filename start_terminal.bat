@@ -13,7 +13,7 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-powershell -NoProfile -Command "try { $health = Invoke-RestMethod http://localhost:3000/health -TimeoutSec 2; if ($health.ws_port -eq 8080) { exit 0 }; exit 1 } catch { exit 1 }"
+powershell -NoProfile -Command "try { $health = Invoke-RestMethod http://localhost:3000/health -TimeoutSec 2; if ($health.ws_port -eq 8080 -and $health.service -eq 'trading-terminal' -and $health.protocol_version -eq 2) { exit 0 }; exit 1 } catch { exit 1 }"
 if not errorlevel 1 goto ready
 powershell -NoProfile -Command "$client = New-Object System.Net.Sockets.TcpClient; try { $client.Connect('127.0.0.1',3000); exit 0 } catch { exit 1 } finally { $client.Dispose() }"
 if not errorlevel 1 (

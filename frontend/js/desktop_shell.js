@@ -97,7 +97,8 @@ class DesktopShell {
   }
   updateRealtime(c){
     const range=c.chart.timeScale().getVisibleLogicalRange();
-    c.goRealtimeButton.hidden=!range||!c.bars.length||range.to>=c.bars.length-1||!!c.replayMode;
+    const last=c.bars.length-1,emptyRange=range&&(range.from>last||range.to<0);
+    c.goRealtimeButton.hidden=!range||!c.bars.length||!emptyRange&&range.to>=last||!!c.replayMode;
     c.goRealtimeButton.style.bottom=`${(c.paneHeight||0)+35}px`;
   }
   heading(text){const h=document.createElement('h3');h.textContent=text;this.content.appendChild(h);}

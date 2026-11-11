@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     c.tfSeconds = TF_MAP[c.currentTimeframe];
     c.savedRange = saved.charts?.[i]?.range;
     c.sessionMode = saved.charts?.[i]?.sessionMode === 'RTH' ? 'RTH' : 'ETH';
+    const badge=document.createElement('span');badge.className='chart-data-status';badge.hidden=true;c.container.appendChild(badge);c.sourceBadge=badge;
     return c;
   });
   window.charts = charts;
@@ -298,9 +299,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function statusText() {
     const stale = bridge.state === 'connected' && Date.now() / 1000 - bridge.last_update > 5;
     $('connection-status').dataset.state = stale ? 'stale' : bridge.state;
-    $('connection-status').textContent = stale ? 'Nguồn chậm · dữ liệu cũ' : bridge.state === 'connected' ? 'TradingView · đã kết nối' : bridge.state === 'connecting' ? 'Đang kết nối…' : 'Mất nguồn · dữ liệu đã lưu';
+    $('connection-status').textContent = bridge.state==='backend_error'?bridge.message:stale ? 'Nguồn chậm · dữ liệu cũ' : bridge.state === 'connected' ? 'TradingView · đã kết nối' : bridge.state === 'connecting' ? 'Đang kết nối…' : 'Mất nguồn · dữ liệu đã lưu';
     $('connection-status').title = bridge.message || '';
-    charts.forEach(c=>{c.marketLive=live(c.symbol);if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));c.updateCountdown?.();});
+    charts.forEach(c=>{c.marketLive=live(c.symbol);c.sourceBadge.hidden=c.marketLive;c.sourceBadge.textContent=`${c.symbol} · ${c.bars.length?'dữ liệu đã lưu':'chờ nguồn'}`;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));c.updateCountdown?.();});
     updateHeader();desktop?.refresh();
   }
   function receive(message) {
@@ -310,8 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!symbols.includes(symbol) || !TF_MAP[tf] || !['history', 'tick'].includes(type)) return;
     const data = cache.get(symbol) || {};
     if (message.metadata) data.metadata = message.metadata;
-    if (type === 'history') data[tf] = MarketData.clean(message.bars);
-    else data[tf] = MarketData.clean([...(data[tf] || []), message.bar]).slice(-1500);
+    data[tf]=BridgeProtocol.bars(data[tf],message);
     cache.set(symbol, data);
     for (const c of charts.filter(c => c.symbol === symbol)) {
       c.metadata = data.metadata || c.metadata;
@@ -328,9 +328,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   async function connect() {
     clearTimeout(reconnect);
-    let port = 8080;
-    try { const response = await fetch('/health', { signal: AbortSignal.timeout(3000) }); const health = await response.json(); port = health.ws_port || port; } catch { /* Old bridge compatibility; status stays disconnected until data arrives. */ }
-    socket = new WebSocket(`ws://${location.hostname || 'localhost'}:${port}`);
+    let port;
+    try {
+      const response=await fetch('/health',{signal:AbortSignal.timeout(3000),cache:'no-store'});
+      if(!response.ok)throw Error(response.status===404?'Backend cũ ở cổng này; chạy lại start_terminal.bat.':`Backend HTTP ${response.status}`);
+      port=BridgeProtocol.health(await response.json()).ws_port;
+    }catch(error){bridge={state:'backend_error',symbols:[],message:error.message||'Không kết nối được backend'};statusText();reconnect=setTimeout(connect,retry);retry=Math.min(retry*2,15000);return;}
+    const wsHost=location.hostname==='localhost'?'127.0.0.1':location.hostname||'127.0.0.1';
+    socket = new WebSocket(`ws://${wsHost}:${port}`);
     window.terminalWs = socket;
     socket.onopen = () => { retry = 1000; };
     socket.onmessage = event => { try { receive(JSON.parse(event.data)); } catch (error) { console.error(error); toast(`Dữ liệu không hợp lệ: ${error.message}`, 'alert'); } };
