@@ -22,6 +22,10 @@ Launcher có thể mở TradingView nếu chưa chạy; không force-close works
 - Backend lấy mã/timeframe từ `symbolInfo` của nguồn có nến; không đoán theo `sds_N` hoặc tên indicator. Không tự đổi timeframe của TradingView.
 - Reconnect có backoff; snapshot dữ liệu đang được TradingView tải mỗi 20 giây, tail poll mỗi giây; sửa nến đến trễ/volume-only, atomic persistence và backup.
 
+## Bản thử v5
+
+Mở `/?engine=v5` để thử pane native trên Lightweight Charts 5.3.0; `/line-tools-lab.html` để thử bộ vẽ plugin riêng. Bản chính vẫn v4.2.2. Vùng thử đọc bản sao và ghi storage có prefix riêng, không ghi đè hình/script/account gốc. Xem [checklist và giới hạn](V5_PREVIEW.md).
+
 ## Giới hạn cần biết
 
 - **Đã có QS Stacks+ JavaScript và QT+ test port để nhập thủ công. QT+ chưa tương đương Pine hoàn chỉnh.** Xem [cách test và giới hạn](frontend/indicators/README.md). Không hỗ trợ dán Pine nguyên bản.

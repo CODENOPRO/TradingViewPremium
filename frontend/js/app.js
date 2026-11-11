@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let bridge = { state: 'connecting', symbols: [] };
   let socket, reconnect, retry = 1000, replayTimer, replayChart;
   const charts = ['NQ1!', 'ES1!', 'YM1!'].map((symbol, i) => {
-    const c = new ChartEngine($(`box-${i + 1}`), symbols.includes(saved.charts?.[i]?.symbol) ? saved.charts[i].symbol : symbol, colors);
+    const Engine=window.TERMINAL_ENGINE_V5?ChartEngineV5:ChartEngine;
+    const c = new Engine($(`box-${i + 1}`), symbols.includes(saved.charts?.[i]?.symbol) ? saved.charts[i].symbol : symbol, colors);
     c.id = `box-${i + 1}`;
     c.currentTimeframe = TF_MAP[saved.charts?.[i]?.timeframe] ? saved.charts[i].timeframe : '1m';
     c.tfSeconds = TF_MAP[c.currentTimeframe];
@@ -16,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return c;
   });
   window.charts = charts;
+  if(window.TERMINAL_ENGINE_V5){
+    const badge=document.createElement('a');badge.className='v5-preview-badge';badge.textContent='v5 · vùng thử';badge.href='line-tools-lab.html';badge.title='Mở trang thử Rectangle/Fib/Position';document.querySelector('header').appendChild(badge);
+  }
   const sync = new SyncController();
   window.syncCtrl = sync;
   charts.forEach(c => sync.register(c));

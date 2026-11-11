@@ -110,7 +110,7 @@ class ChartEngine {
     });
 
     // Add Candlestick Series
-    this.series = this.chart.addCandlestickSeries({
+    this.series = this.addSeries('Candlestick',{
       upColor: this.config.bodyUp,
       downColor: this.config.bodyDown,
       borderUpColor: this.config.borderUp,
@@ -125,10 +125,14 @@ class ChartEngine {
     // Double click to reset view
     this.container.addEventListener('dblclick', (e) => {
       // Only reset if clicked inside chart area, not on buttons
-      if (!e.target.closest('.chart-nav-controls') && !e.target.closest('.chart-legend')) {
+      if (!e.defaultPrevented && !e.target.closest('button,input,select,.chart-nav-controls,.chart-legend,.indicator-legend,.indicator-pane-header')) {
         this.resetView();
       }
     });
+  }
+
+  addSeries(type,options,paneIndex=0) {
+    return typeof this.chart.addSeries==='function'?this.chart.addSeries(LightweightCharts[type+'Series'],options,paneIndex):this.chart['add'+type+'Series'](options);
   }
 
   initDrawingOverlay() {
@@ -303,7 +307,7 @@ class ChartEngine {
     descriptors.forEach((descriptor,i) => {
       const options = { color: descriptor.color || '#2962ff', lineWidth: Math.max(1, Math.min(4, Math.round(descriptor.width || 1))),
         title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false };
-      const series = this.customSeries[i] || (descriptor.type === 'histogram' ? this.chart.addHistogramSeries(options) : this.chart.addLineSeries(options));
+      const series = this.customSeries[i] || this.addSeries(descriptor.type==='histogram'?'Histogram':'Line',options);
       series._indicatorType=descriptor.type||'line'; series.applyOptions(options);
       series.setData(descriptor.data);
       this.customSeries[i]=series;
