@@ -1,0 +1,66 @@
+"""Sequential native history loading in one source tab, with guarded restore."""
+import asyncio
+import time
+
+NATIVE_INTERVALS={'1m':'1','5m':'5','15m':'15','30m':'30','1h':'60','2h':'120','4h':'240','D':'D','W':'W','1M':'1M','3M':'3M'}
+
+def canonical_resolution(value):
+    return {'1D':'D','1W':'W'}.get(str(value),str(value))
+
+
+class SourceChanged(Exception):
+    pass
+
+
+class NativeWarmup:
+    def __init__(self,read,change,snapshot,history,accept,report,clock=time.monotonic,sleep=asyncio.sleep):
+        async def canonical_read():return canonical_resolution(await read())
+        self.read=canonical_read;self.change=change;self.snapshot=snapshot;self.history=history
+        self.accept=accept;self.report=report;self.clock=clock;self.sleep=sleep
+        self.queue=[];self.wake=asyncio.Event();self.active=None
+        self.running=False;self.finished=set()
+
+    def request(self,timeframes,priority=False):
+        values=[tf for tf in dict.fromkeys(timeframes) if tf in NATIVE_INTERVALS and tf!=self.active and not(self.running and tf in self.finished)]
+        for tf in values:
+            if tf in self.queue:self.queue.remove(tf)
+        self.queue=values+self.queue if priority else self.queue+values
+        self.wake.set()
+
+    async def cycle(self):
+        original=await self.read();expected=original;done=[];failures=[];warnings=[]
+        self.running=True;self.finished.clear()
+        try:
+            while self.queue:
+                if await self.read()!=expected:raise SourceChanged('Source interval changed by user')
+                tf=self.queue.pop(0);self.active=tf;desired=NATIVE_INTERVALS[tf]
+                self.report({'state':'loading','timeframe':tf,'completed':done[:],'remaining':self.queue[:],'original_resolution':original})
+                await self.change(expected,desired);expected=desired
+                deadline=self.clock()+120;last_count=None;growth=self.clock();captured=False;complete=False;reason='time_limit'
+                while self.clock()<deadline:
+                    if await self.read()!=desired:raise SourceChanged('Source interval changed by user')
+                    entries=await self.snapshot()
+                    ready=[e for e in entries if e.get('resolution') in (desired,'1'+desired if desired in ('D','W') else desired) and e.get('bars')]
+                    if {'NQ1!','ES1!','YM1!'}<={e.get('symbol') for e in ready}:
+                        self.accept(ready);captured=True
+                        counts=tuple(sorted((e['symbol'],len(e['bars'])) for e in ready))
+                        if counts!=last_count:last_count=counts;growth=self.clock()
+                        progress=await self.history()
+                        if progress and progress.get('complete'):
+                            reason=progress.get('reason');complete=reason=='source_limit';break
+                        if self.clock()-growth>=12 and not (progress or {}).get('loading'):reason='no_growth';break
+                    await self.sleep(.5)
+                if not captured:failures.append({'timeframe':tf,'error':'Không nhận đủ nến native của ba mã trong 120 giây'})
+                elif not complete:warnings.append({'timeframe':tf,'reason':reason,'message':'Đã lưu nến native nhận được; chưa xác nhận hết lịch sử'})
+                done.append(tf);self.finished.add(tf);self.active=None
+        except SourceChanged:
+            self.queue.clear()
+            self.report({'state':'interrupted','completed':done,'message':'Đã dừng quét vì timeframe nguồn được thay đổi.'})
+            return
+        finally:
+            self.active=None
+            self.running=False
+            # Do not overwrite an interval the user selected during loading.
+            current=await self.read()
+            if current==expected and current!=original:await self.change(current,original)
+        self.report({'state':'complete','completed':done,'failures':failures,'warnings':warnings,'restored_resolution':original})

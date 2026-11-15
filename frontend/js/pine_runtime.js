@@ -15,7 +15,7 @@ class PineRuntime {
       return {key,label:f.title||f.name||key,type:['price','time'].includes(f.type)?'float':f.type,group:f.group||'Inputs',tooltip:f.tooltip,min:f.minval,max:f.maxval,step:f.step,options:f.type==='source'?['open','high','low','close','hl2','hlc3','ohlc4']:f.options};
     });
     this.usesViewport=this.indicator.usesVisibleRange();
-    return {name:'Pine v6',runtime:'pine6',defaults:this.defaults,inputs:this.inputs};
+    return {name:'Pine v6',runtime:'pine6',defaults:this.defaults,inputs:this.inputs,usesViewport:this.usesViewport,usesMarkets:this.needsPeers};
   }
   timeframe(value){const aliases={'1':'1m','5':'5m','15':'15m','60':'1h','240':'4h','360':'6h','1D':'D','1W':'W'};return aliases[value]||value;}
   closeTime(time,tf,metadata,regular){
@@ -65,11 +65,11 @@ class PineRuntime {
           if(context.replay)minute=minute.filter(b=>b.time<=bars.at(-1).time);
           source=MarketData.durations[tf]?MarketData.aggregate(minute,tf,{...metadata,session:metadata.sessionRegular.session,sessionType:'RTH'}):null;
         }else source=entry?.[tf];
-        if(!source&&MarketData.durations[tf]){
-          let minute=entry?.['1m']||[];if(context.replay)minute=minute.filter(b=>b.time<=bars.at(-1).time);
-          source=MarketData.aggregate(minute,tf,metadata);
+        if(tf==='6h')warnings.add('6h ghép từ nến native 1h, căn theo phiên nguồn; không phải feed native 6h.');
+        if(!source?.length){
+          const error=Error(`Đang chờ dữ liệu native ${symbol}/${tf}. Nạp khung ${tf} trong TradingView; indicator sẽ tự chạy lại khi dữ liệu tới.`);
+          error.dataRequired={symbol,timeframe:tf,resolution:String(resolution)};throw error;
         }
-        if(!source)throw Error(`Chưa có timeframe ${resolution} cho ${symbol}.`);
         source=source.filter(b=>(!context.replay||b.time<=bars.at(-1).time)&&(!Number.isFinite(start)||b.time*1000>=start)&&(!Number.isFinite(end)||b.time*1000<=end));
         if(Number.isFinite(limit)&&limit>0)source=source.slice(-limit);
         if(!source.length)throw Error(`Không có nến ${symbol}/${resolution} trong history đang tải.`);
@@ -80,7 +80,7 @@ class PineRuntime {
     };
   }
   async run(bars,context){
-    const key=JSON.stringify([bars,context.symbol,context.timeframe,context.sessionMode,context.replay,context.settings,context.metadata,this.needsPeers?context.markets:null,this.usesViewport?context.viewport:null,this.needsClock?context.now:Math.floor((context.now||0)/(context.timeframeSeconds||60))]);
+    const key=JSON.stringify([context.dataRevision,bars.length,bars.at(-1)?.time,context.symbol,context.timeframe,context.sessionMode,context.replay,context.settings,context.metadata,this.needsPeers?context.markets:null,this.usesViewport?context.viewport:null,this.needsClock?context.now:null]);
     if(key===this.lastKey)return {...this.lastResult,cached:true};
     for(const f of this.inputs){const value=context.settings?.[f.key]??this.defaults[f.key];if(value!==undefined){try{this.indicator.input[f.key]=value;}catch{this.indicator.inputs[f.key]=value;}}}
     const warnings=new Set(),provider=this.provider(bars,context,warnings);
@@ -101,7 +101,13 @@ class PineRuntime {
     const seconds=context.timeframeSeconds||60;
     const at=(x,xloc)=>xloc==='bt'||xloc==='bar_time'?x/1000:bars[Math.trunc(x)]?.time??(x<0?bars[0].time+x*seconds:bars.at(-1).time+(x-bars.length+1)*seconds);
     const add=(drawing,onMain)=>{if(!drawing||![drawing.p1?.time,drawing.p1?.price,...(drawing.p2?[drawing.p2.time,drawing.p2.price]:[])].every(Number.isFinite))return;(onMain?result.drawings:pane.drawings).push(drawing);};
-    const names=Object.values(output.plots||{}),plots=output.plots||{};
+    const names=Object.values(output.plots||{}),plots=output.plots||{},barIndex=new Map(bars.map((bar,index)=>[bar.time,index]));
+    const plotTime=(point,offset=0)=>{
+      const original=point.time/1000;
+      if(!offset)return original;
+      const index=barIndex.get(original);
+      return Number.isInteger(index)?at(index+offset,'bar_index'):original;
+    };
     for(const plot of names){
       const options=plot.options||{},kind=options.style||'line',onMain=options.force_overlay===true||(options.overlay??overlay),target=onMain?result:pane;
       if(['label','drawing_line','drawing_box','table','linefill','drawing_polyline'].includes(kind)){
@@ -124,7 +130,7 @@ class PineRuntime {
       if(kind==='barcolor'){for(const point of plot.data||[])if(point.value&&point.options?.color)result.candleColors.push({time:point.time/1000,color:point.options.color});continue;}
       if(kind==='background'){target.paints.push({type:'background',data:(plot.data||[]).filter(p=>p.value).map(p=>({time:p.time/1000,color:color(p.options?.color,options.color)}))});continue;}
       if(kind==='fill'){
-        const first=plots[options.plot1],second=plots[options.plot2];if(first&&second)target.paints.push({type:'fill',top:first.data.map(p=>({time:p.time/1000,value:p.value})),bottom:second.data.map(p=>({time:p.time/1000,value:p.value})),color:color(options.color),colors:(plot.data||[]).map(p=>p.options?.color)});else warnings.add('Fill thiếu plot tham chiếu.');continue;
+        const first=plots[options.plot1],second=plots[options.plot2];if(first&&second)target.paints.push({type:'fill',top:first.data.map(p=>({time:plotTime(p,Number(first.options?.offset)||0),value:p.value})),bottom:second.data.map(p=>({time:plotTime(p,Number(second.options?.offset)||0),value:p.value})),color:color(options.color),colors:(plot.data||[]).map(p=>p.options?.color)});else warnings.add('Fill thiếu plot tham chiếu.');continue;
       }
       if(kind==='shape'||kind==='char'||kind==='arrow'){
         if(!onMain&&!String(options.location).toLowerCase().includes('absolute')){warnings.add('Shape trong pane chưa hỗ trợ vị trí tương đối; không dùng giá OHLC để làm lệch thang đo pane.');continue;}
@@ -139,9 +145,7 @@ class PineRuntime {
       const allowed=['line','style_line','style_linebr','style_stepline','hline','style_histogram','style_columns','style_area'];
       if(!allowed.includes(kind)){warnings.add(`Chưa render plot style ${kind}.`);continue;}
       const offset=Number(options.offset)||0;
-      if(offset)warnings.add('Plot offset chưa được render; plot này được bỏ qua để tránh đặt sai thời gian.');
-      if(offset)continue;
-      const data=(plot.data||[]).map(p=>Number.isFinite(p.value)?{time:p.time/1000,value:p.value,color:color(p.options?.color,options.color)}:{time:p.time/1000});
+      const data=(plot.data||[]).map(p=>Number.isFinite(p.value)?{time:plotTime(p,offset),value:p.value,color:color(p.options?.color,options.color)}:{time:plotTime(p,offset)});
       const type=kind.includes('histogram')||kind.includes('columns')?'histogram':kind.includes('area')?'area':'line';
       target.series.push({type,title:plot.title||'',color:color(options.color),width:Math.max(1,Math.min(4,Number(options.linewidth)||1)),data,lineStyle:style(options.linestyle),step:kind.includes('stepline')});
     }

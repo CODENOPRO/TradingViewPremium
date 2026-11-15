@@ -2,6 +2,7 @@ class SyncController {
   constructor() {
     this.charts = [];
     this.syncEnabled = true;
+    this.options={symbol:false,interval:false,crosshair:true,time:false,dateRange:false,...(typeof Workspace==='undefined'?{}:Workspace.read('terminal_sync_options_v1',{}))};
     this.isBroadcasting = false;
     this.isCrosshairBroadcasting = false;
   }
@@ -11,65 +12,36 @@ class SyncController {
 
     // 1. Sync Visible Logical Range (Time & Zoom Sync with Right-Aligned Offset)
     chartEngine.chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
-      if (!this.syncEnabled || this.isBroadcasting || !range) return;
+      if (chartEngine.container?.hidden || !this.syncEnabled || (!this.options.time && !this.options.dateRange) || this.isBroadcasting || !range) return;
       if (!chartEngine.bars || chartEngine.bars.length === 0) return;
 
       this.isBroadcasting = true;
 
-      const srcBars = chartEngine.bars;
-      const srcLastIdx = srcBars.length - 1;
-      const span = range.to - range.from;
-
-      for (const target of this.charts) {
-        if (target === chartEngine) continue;
-        const tgtBars = target.bars;
-        if (!tgtBars || tgtBars.length === 0) continue;
-
-        const tgtLastIdx = tgtBars.length - 1;
-
-        try {
-          if (range.to >= srcLastIdx) {
-            // Live / Near-live view with right margin padding
-            const offsetFromRight = range.to - srcLastIdx;
-            const targetTo = tgtLastIdx + offsetFromRight;
-            const targetFrom = targetTo - span;
-            target.chart.timeScale().setVisibleLogicalRange({ from: targetFrom, to: targetTo });
-          } else {
-            // Viewing historical candles in the past
-            // Find timestamp of the bar near range.to on source chart
-            const clampedSrcIdx = Math.max(0, Math.min(srcLastIdx, Math.round(range.to)));
-            const targetTime = srcBars[clampedSrcIdx].time;
-
-            // Find matching bar in target chart
-            const tgtIdx = this.findClosestBarIndex(tgtBars, targetTime);
-            if (tgtIdx >= 0) {
-              const subBarFraction = range.to - Math.round(range.to);
-              const targetTo = tgtIdx + subBarFraction;
-              const targetFrom = targetTo - span;
-              target.chart.timeScale().setVisibleLogicalRange({ from: targetFrom, to: targetTo });
-            } else {
-              const offsetFromRight = range.to - srcLastIdx;
-              const targetTo = tgtLastIdx + offsetFromRight;
-              target.chart.timeScale().setVisibleLogicalRange({ from: targetTo - span, to: targetTo });
-            }
-          }
-        } catch (e) {
-          // Ignore transient range errors
+      try {
+        const timeAt=(chart,index)=>{const bars=chart.bars,base=Math.max(0,Math.min(bars.length-1,Math.floor(index))),next=bars[base+1];return bars[base].time+(index-base)*(next?next.time-bars[base].time:chart.tfSeconds);};
+        const indexAt=(chart,time)=>{const bars=chart.bars,i=this.findClosestBarIndex(bars,time),next=bars[i+1];return i+(time-bars[i].time)/(next?next.time-bars[i].time:chart.tfSeconds);};
+        const fromTime=timeAt(chartEngine,range.from),toTime=timeAt(chartEngine,range.to);
+        for(const target of this.charts){
+          if(target===chartEngine||!target.bars?.length||target.container?.hidden)continue;
+          const previous=target.chart.timeScale().getVisibleLogicalRange(),to=indexAt(target,toTime);
+          const from=this.options.dateRange?indexAt(target,fromTime):to-(previous?previous.to-previous.from:range.to-range.from);
+          try{target.chart.timeScale().setVisibleLogicalRange({from,to});}catch{}
         }
+      } finally {
+        this.isBroadcasting = false;
       }
 
-      this.isBroadcasting = false;
     });
 
     // Keep the target crosshair at the same relative height, never at a candle close.
     chartEngine.chart.subscribeCrosshairMove((param) => {
-      if (!this.syncEnabled || this.isCrosshairBroadcasting) return;
+      if (chartEngine.container?.hidden || !this.syncEnabled || !this.options.crosshair || this.isCrosshairBroadcasting) return;
       const sourceHeight=this.mainPaneHeight(chartEngine);
       const valid=param&&Number.isFinite(param.time)&&param.point&&Number.isFinite(param.point.x)&&Number.isFinite(param.point.y)&&param.point.x>=0&&param.point.y>=0&&param.point.y<sourceHeight&&(param.paneIndex===undefined||param.paneIndex===0);
       this.isCrosshairBroadcasting=true;
       try {
         for(const target of this.charts){
-          if(target===chartEngine)continue;
+          if(target===chartEngine||target.container?.hidden)continue;
           try {
             if(!valid||!target.series||!target.bars?.length){target.chart.clearCrosshairPosition();continue;}
             const index=this.findClosestBarIndex(target.bars,param.time),bar=target.bars[index];

@@ -1,6 +1,6 @@
 /* Drawing properties are plain data so saved workspaces and templates share one format. */
 const DrawingModel = (() => {
-  const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure' };
+  const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure',brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
   function defaults(type) {
     return { color:'#211f1d', borderColor:'#211f1d', width:1, lineStyle:'solid', strokeOpacity:100,
@@ -13,9 +13,14 @@ const DrawingModel = (() => {
   }
   function normalize(value) {
     const base = defaults(value.type);
-    return { ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
+    const normalized={ ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
       stats:{ ...base.stats, ...value.stats }, middleLine:{ ...base.middleLine, ...value.middleLine }, textStyle:{ ...base.textStyle, ...value.textStyle },
       visibility:Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) };
+    if(normalized.type==='position'&&normalized.p1&&normalized.p2&&!normalized.p3){
+      const reward=normalized.p2.price-normalized.p1.price;
+      normalized.p3={time:normalized.p2.time,price:normalized.p1.price-reward/Math.max(.1,normalized.riskReward)};
+    }
+    return normalized;
   }
   function visible(value, timeframe) {
     if(value.hidden)return false;
@@ -34,8 +39,9 @@ const DrawingModel = (() => {
     if (!lo || bars[lo].time === time) return lo;
     return lo-1+(time-bars[lo-1].time)/(bars[lo].time-bars[lo-1].time);
   }
-  function timeAt(chart, index) {
+  function timeAt(chart, index, continuous=false) {
     if (!chart.bars.length || !Number.isFinite(index)) return null;
+    if(continuous){const base=Math.max(0,Math.min(chart.bars.length-1,Math.floor(index))),bar=chart.bars[base],next=chart.bars[base+1];return bar.time+(index-base)*(next?next.time-bar.time:chart.tfSeconds);}
     const rounded=Math.round(index);
     if (rounded >= 0 && rounded < chart.bars.length) return chart.bars[rounded].time;
     const edge=rounded < 0 ? 0 : chart.bars.length-1;
@@ -45,8 +51,8 @@ const DrawingModel = (() => {
     const logical = logicalIndex(chart,p.time);
     return { x:logical === null ? null : chart.chart.timeScale().logicalToCoordinate(logical), y:chart.series.priceToCoordinate(p.price) };
   }
-  function fromPixel(chart, x, y) {
-    const time=timeAt(chart,chart.chart.timeScale().coordinateToLogical(x));
+  function fromPixel(chart, x, y, continuous=false) {
+    const time=timeAt(chart,chart.chart.timeScale().coordinateToLogical(x),continuous);
     const price=chart.series.coordinateToPrice(y);
     return time !== null && Number.isFinite(price) ? {time,price} : null;
   }
@@ -61,21 +67,41 @@ const DrawingModel = (() => {
   }
   const dash = style => style === 'dashed' ? [7,5] : style === 'dotted' ? [2,3] : [];
   function geometry(chart, value) {
-    const a=point(chart,value.p1), b=point(chart,value.p2 || value.p1);
-    if ([a.x,a.y,b.x,b.y].some(v=>v === null || !Number.isFinite(v))) return null;
-    return { a,b,left:Math.min(a.x,b.x),right:Math.max(a.x,b.x),top:Math.min(a.y,b.y),bottom:Math.max(a.y,b.y) };
+    const normalized=normalize(value),a=point(chart,normalized.p1),b=point(chart,normalized.p2 || normalized.p1),c=normalized.p3?point(chart,normalized.p3):null;
+    if ([a.x,a.y,b.x,b.y,...(c?[c.x,c.y]:[])].some(v=>v === null || !Number.isFinite(v))) return null;
+    const points=value.type==='brush'&&value.points?.length?value.points.map(p=>point(chart,p)).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)):c?[a,b,c]:[a,b];return { a,b,c,left:Math.min(...points.map(p=>p.x)),right:Math.max(...points.map(p=>p.x)),top:Math.min(...points.map(p=>p.y)),bottom:Math.max(...points.map(p=>p.y)) };
   }
   function distance(x,y,a,b) {
     const dx=b.x-a.x,dy=b.y-a.y, t=Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy || 1)));
     return Math.hypot(x-a.x-t*dx,y-a.y-t*dy);
   }
+  function boxEdges(g) {
+    return [
+      {handle:'p1_time',x:g.a.x,y:(g.a.y+g.b.y)/2},
+      {handle:'p2_time',x:g.b.x,y:(g.a.y+g.b.y)/2},
+      {handle:'p1_price',x:(g.a.x+g.b.x)/2,y:g.a.y},
+      {handle:'p2_price',x:(g.a.x+g.b.x)/2,y:g.b.y}
+    ];
+  }
+  function resizeBox(value,handle,point) {
+    const result=structuredClone(value),[key,axis]=handle.split('_');
+    if(['p1','p2'].includes(key)&&['time','price'].includes(axis))result[key][axis]=point[axis];
+    return result;
+  }
   function hit(chart,value,x,y) {
     if (!visible(value,chart.currentTimeframe)) return null;
     const g=geometry(chart,value);if(!g)return null;
+    if(value.type==='brush'){
+      const points=(value.points||[]).map(p=>point(chart,p));
+      for(let i=1;i<points.length;i++)if(distance(x,y,points[i-1],points[i])<7)return 'body';
+      return null;
+    }
     if (Math.hypot(x-g.a.x,y-g.a.y) < 9) return 'p1';
     if (value.p2 && Math.hypot(x-g.b.x,y-g.b.y) < 9) return 'p2';
+    if (value.type==='position'&&g.c&&Math.hypot(x-g.c.x,y-g.c.y) < 9) return 'p3';
     if(value.type === 'box' && Math.hypot(x-g.a.x,y-g.b.y)<9)return 'p1x_p2y';
     if(value.type === 'box' && Math.hypot(x-g.b.x,y-g.a.y)<9)return 'p2x_p1y';
+    if(value.type === 'box')for(const edge of boxEdges(g))if(Math.hypot(x-edge.x,y-edge.y)<9)return edge.handle;
     if(value.type === 'hline') return Math.abs(y-g.a.y)<7 ? 'body' : null;
     if(value.type === 'text') return x>=g.a.x-8 && x<=g.a.x+Math.max(50,(value.text||'').length*(value.textStyle?.size||12)*.65) && Math.abs(y-g.a.y)<22 ? 'body' : null;
     if(['box','position','measure','fib'].includes(value.type)) return x>=g.left-6 && x<=g.right+6 && y>=g.top-6 && y<=g.bottom+6 ? 'body' : null;
@@ -91,7 +117,10 @@ const DrawingModel = (() => {
     ctx.save();
     ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;ctx.setLineDash(dash(d.lineStyle));
     const line=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
-    if(d.type === 'line') {
+    if(d.type==='brush'){
+      const points=(d.points||[]).map(p=>point(chart,p));ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
+      points.forEach((p,i)=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)){if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);}});ctx.stroke();
+    } else if(d.type === 'line') {
       if(d.axis==='vertical') {
         line(g.a.x,0,g.a.x,(chart.plotHeight??chart.container.clientHeight)-26);ctx.restore();return;
       }
@@ -115,12 +144,17 @@ const DrawingModel = (() => {
       if(d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=d.middleLine.width;ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
     } else if(d.type === 'fib') {
       for(const level of d.levels){const y=g.a.y+(g.b.y-g.a.y)*level;line(left,y,right,y);ctx.fillStyle=d.color;ctx.font='10px Arial';ctx.fillText(`${level} (${(d.p1.price+(d.p2.price-d.p1.price)*level).toFixed(2)})`,left+4,y-4);}
-    } else if(d.type === 'position') {
-      const riskY=g.a.y+(g.a.y-g.b.y)/d.riskReward;
-      ctx.fillStyle='rgba(8,153,129,.22)';ctx.fillRect(left,top,Math.max(30,right-left),bottom-top);
-      ctx.fillStyle='rgba(242,54,69,.22)';ctx.fillRect(left,Math.min(g.a.y,riskY),Math.max(30,right-left),Math.abs(g.a.y-riskY));
-      line(left,g.a.y,Math.max(right,left+30),g.a.y);
-      ctx.fillStyle=d.textStyle.color;ctx.font='11px Arial';ctx.fillText(`R:R ${d.riskReward.toFixed(2)}`,left+5,top+16);
+    } else if(d.type === 'position'&&g.c) {
+      const span=Math.max(30,right-left),entry=g.a.y,target=g.b.y,stop=g.c.y,isLong=d.p2.price>=d.p1.price;
+      const reward=Math.abs(d.p2.price-d.p1.price),risk=Math.abs(d.p1.price-d.p3.price),rr=risk?reward/risk:0;
+      const rewardTop=Math.min(entry,target),rewardBottom=Math.max(entry,target),riskTop=Math.min(entry,stop),riskBottom=Math.max(entry,stop);
+      ctx.fillStyle='rgba(8,153,129,.22)';ctx.fillRect(left,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
+      ctx.fillStyle='rgba(242,54,69,.22)';ctx.fillRect(left,riskTop,span,Math.max(1,riskBottom-riskTop));
+      ctx.setLineDash([5,5]);ctx.strokeStyle='rgba(220,225,232,.76)';line(left,entry,left+span,entry);ctx.setLineDash([]);
+      const pill=(text,x,y,fill)=>{ctx.font='600 11px Arial';const w=ctx.measureText(text).width+10;ctx.fillStyle=fill;ctx.fillRect(x-w/2,y-10,w,19);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(text,x,y+3);};
+      pill(`PnL: ${isLong?'+':'-'}${reward.toFixed(2)}`,left+span/2,rewardTop+9,'#3c7b9e');
+      pill(`PnL: ${isLong?'-':'+'}${risk.toFixed(2)}`,left+span/2,riskBottom+9,'#616b77');
+      pill(`Risk/reward ratio: ${rr.toFixed(2)}`,left+span/2,entry,'#68717c');
     } else if(d.type === 'measure') {
       if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}ctx.strokeRect(left,top,right-left,bottom-top);
       ctx.fillStyle=d.textStyle.color;ctx.font='11px Arial';
@@ -138,6 +172,6 @@ const DrawingModel = (() => {
     }
     ctx.restore();
   }
-  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,hex,rgba,geometry,hit,draw};
+  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,hex,rgba,geometry,hit,draw,boxEdges,resizeBox};
 })();
 if(typeof module !== 'undefined')module.exports=DrawingModel;

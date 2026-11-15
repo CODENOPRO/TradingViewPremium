@@ -1,0 +1,29 @@
+# Đợt sửa ngày 12/11/2026 — bản chờ mở thủ công
+
+Đã tạo bản phục hồi trước khi sửa tại `.backups/scheduled-20261112-0710/` (frontend và mã backend; dữ liệu gốc không bị đổi). Automation được kích hoạt lúc 07:30 giờ Việt Nam, sau mốc hẹn 07:10. Không mở/reload trang chính, không restart backend chính, không publish/commit/push.
+
+## Thay đổi
+
+- Giá và countdown dùng chung một badge trên trục phải: giá ở trên, đồng hồ ở dưới, cùng màu. Replay chỉ lấy giá nến đã đóng; timestamp của khoảng đang chạy chỉ dùng tính thời gian, không đưa OHLC tương lai vào indicator. Khi nghỉ phiên, giữ giá và ẩn dòng countdown; lỗi kết nối nằm ở trạng thái nguồn riêng.
+- Session clock dùng timezone sàn, DST, lịch nghỉ, phiên qua đêm/split và correction `Fn`; tháng/quý dùng ngày lịch và phiên cuối thực tế theo metadata. Bridge đọc cả trường `corrections` của nguồn. Độ đúng ngày nghỉ/đóng sớm phụ thuộc lịch metadata mà TradingView cung cấp; không tự bịa lịch thiếu.
+- Settings ở góc phải trên, kính mờ dễ đọc, kéo bằng tiêu đề, giới hạn trong màn hình. Toolbars nằm dưới Events, chứa visibility/transparency/Hide labels/Calendar transparency/music toast và Reduce motion. Các lựa chọn thanh công cụ lưu ngay; màu chart là preview, Cancel hoàn tác, OK mới lưu.
+- Animation 0,4 giây, easing giảm tốc cuối; bỏ luật CSS cũ vô hiệu hóa toàn bộ transition theo hệ điều hành và cung cấp Reduce motion riêng. Hover nút ẩn label mở rộng ô rồi hiện chữ. Mã/timeframe vẫn có chữ.
+- Layout có từng toggle Symbol/Interval/Crosshair/Time/Date range và thông tin; mặc định mới chỉ Crosshair bật, giữ tùy chọn người dùng đã lưu. Không còn master Sync trên header.
+- Hover công cụ vẽ hiện sao; Favourite lưu danh sách/vị trí/hướng. Bấm grip sáu chấm mở Horizontal/Vertical, kéo grip để dời. Thanh vẽ trái cũng có grip kéo.
+- Fullscreen ẩn chrome và thanh vẽ trái; giữ Favourite, countdown, hình vẽ/indicator và dock Calendar/Music. Timeframe là pill kính mờ bo tròn, trượt xuống khi hover mép trên.
+- Backend lưu cấu hình pair cuối trong `backend/source_requests.json`; vẫn poll khi web ngắt/ẩn, không quay về 1m, không đóng source sau 90 giây. Khảo sát symbol/interval thực của chart đã mở trước khi tạo mới. Không đổi symbol/timeframe chart người dùng. Nguồn/cache RAM và backup đĩa vẫn giữ. 6h/12h tiếp tục báo giới hạn Basic, không synthesize/bypass.
+- Popup màu bấm bên trong không tự đóng, bấm ngoài đóng; Settings lớn chỉ X/Cancel/OK. Attribution được dời khỏi Settings sang link TradingView ở thanh đáy; vendor LICENSE/NOTICE vẫn giữ.
+- Calendar panel đen bo tròn, overlay trượt từ phải, transparency riêng; filter impact/currency, ngày/giờ/countdown/A-F-P khi nguồn có. Replay hiển thị lịch gạch chéo + Unavailable in Replay. Render countdown không dựng lại toàn bộ danh sách mỗi giây.
+- Calendar/Music dock mặc định rộng ~30% trục giá; hover mở rộng sang trái. Cả hai vẫn hoạt động trong fullscreen.
+- Music dùng official embed/API cho YouTube, TikTok, Spotify, SoundCloud. Đĩa thumbnail, trạng thái play/pause, toast đổi bài 2 giây. Video YouTube/TikTok dừng khi đóng panel. Playlist chỉ khi nhà cung cấp hỗ trợ; TikTok chỉ full video URL. Không tải hoặc tách audio. Nếu API điều khiển Spotify/YouTube bị chặn, dùng player official dự phòng và báo thiếu track timing; không giả vờ đồng bộ đĩa/toast.
+
+## Kiểm chứng và giới hạn thực tế
+
+- 73 Node tests và 17 Python tests, gồm DST/ngày nghỉ/early close/Fn/tháng, Replay closed bars, URL validation, calendar cache/error, lưu source config và tái dùng chart không marker khi UI disconnect. Xem `backend/tests-node-scheduled.log`.
+- UI kiểm tra bằng tab QA ẩn riêng ở 3101/8181 với cache sao chép, nguồn native offline. Đã thấy badge hai dòng trong Replay NQ1m/ES5m/YM15m, cùng bước 21:11→21:12 UTC (NQ 01:00; ES/YM 04:00→03:00), Sync mặc định, star/menu hướng và kéo Favourite/toolbar trái, Settings kéo được, palette preview/Cancel/outside click, fullscreen/dock và transition computed **0.4s**. Console app không có lỗi JS trong các kiểm tra đó. Không chạy lại nguồn native production để tránh mở tab/chạy bản chính.
+- Forex Factory official weekly export trả **HTTP 403 Forbidden** từ máy kiểm tra. Chưa lấy được feed hợp lệ, chưa xác minh Actual realtime. UI báo unavailable/not real-time; không dùng dữ liệu giả hoặc đổi nguồn. Backend kiểm tra export tối đa một lần mỗi 10 phút và giữ cache cũ nếu lỗi. **Yêu cầu calendar Actual realtime chưa hoàn tất vì bị dịch vụ chặn.**
+- YouTube official demo load được title, thumbnail, duration và player. Spotify metadata load được; một lượt control API timeout, lượt sau API và official player tải được nhưng player báo lỗi provider “Something went wrong”, chưa xác nhận phát bài. Có fallback official embed khi API không tải. Playback đủ bài, playlist và live metadata của các provider phụ thuộc quyền/region/login/embed policy. Không coi mọi link đã phát được; SoundCloud demo đã tải title/artwork/duration 3:33 và official widget, phát được qua nút ngoài, đĩa running khi play và paused khi pause; TikTok demo trả Server error và ứng dụng hiện lỗi thật. Chưa có playlist/link thật của người dùng để kiểm tra end-to-end tất cả provider.
+
+Nguồn kỹ thuật: [Trading sessions](https://www.tradingview.com/charting-library-docs/latest/connecting_data/time-and-sessions/Trading-Sessions/), [YouTube IFrame API](https://developers.google.com/youtube/iframe_api_reference), [Spotify iFrame API](https://developer.spotify.com/documentation/embeds/references/iframe-api), [SoundCloud Widget API](https://developers.soundcloud.com/docs/api/html5-widget), [TikTok Embed Player](https://developers.tiktok.com/docs/en/embed-player), [Forex Factory calendar](https://www.forexfactory.com/calendar).
+
+Bản này **CHƯA LAUNCH**. Backend QA dừng sau kiểm tra; người dùng mở lại bằng launcher khi muốn áp dụng backend mới. Không ghi đè cache gốc hay trạng thái browser chính trong QA.

@@ -2,7 +2,9 @@
 setlocal
 cd /d "%~dp0"
 title Trading Terminal
-python -c "import websockets" >nul 2>&1
+set "TERMINAL_PYTHON=python"
+if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" set "TERMINAL_PYTHON=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+"%TERMINAL_PYTHON%" -c "import websockets" >nul 2>&1
 if errorlevel 1 (
   echo Install dependencies first: python -m pip install -r requirements.txt
   pause
@@ -13,7 +15,7 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-powershell -NoProfile -Command "try { $health = Invoke-RestMethod http://localhost:3000/health -TimeoutSec 2; if ($health.ws_port -eq 8080 -and $health.service -eq 'trading-terminal' -and $health.protocol_version -eq 2) { exit 0 }; exit 1 } catch { exit 1 }"
+"%TERMINAL_PYTHON%" -c "import json,urllib.request; h=json.load(urllib.request.urlopen('http://127.0.0.1:3000/health',timeout=2)); raise SystemExit(not (h.get('ws_port')==8080 and h.get('service')=='trading-terminal' and h.get('protocol_version')==2))" >nul 2>&1
 if not errorlevel 1 goto ready
 powershell -NoProfile -Command "$client = New-Object System.Net.Sockets.TcpClient; try { $client.Connect('127.0.0.1',3000); exit 0 } catch { exit 1 } finally { $client.Dispose() }"
 if not errorlevel 1 (
@@ -21,9 +23,9 @@ if not errorlevel 1 (
   pause
   exit /b 1
 )
-start /b python "%~dp0backend\bridge_server.py"
+start "Trading Terminal Backend" /min "%TERMINAL_PYTHON%" "%~dp0backend\bridge_server.py"
 for /l %%i in (1,1,8) do (
-  powershell -NoProfile -Command "try { Invoke-RestMethod http://localhost:3000/health -TimeoutSec 1 | Out-Null; exit 0 } catch { exit 1 }"
+  "%TERMINAL_PYTHON%" -c "import json,urllib.request; h=json.load(urllib.request.urlopen('http://127.0.0.1:3000/health',timeout=1)); raise SystemExit(h.get('service')!='trading-terminal')" >nul 2>&1
   if not errorlevel 1 goto ready
   timeout /t 1 /nobreak >nul
 )

@@ -10,9 +10,8 @@ import tempfile
 import threading
 
 SYMBOLS = {"NQ1!", "ES1!", "YM1!", "CL1!"}
-TIMEFRAMES = {"1m", "5m", "15m", "1h", "4h", "6h", "D", "W"}
-RESOLUTIONS = {"1": "1m", "5": "5m", "15": "15m", "60": "1h", "240": "4h",
-               "360": "6h", "1D": "D", "D": "D", "1W": "W", "W": "W"}
+RESOLUTIONS = {'1':'1m','5':'5m','15':'15m','30':'30m','60':'1h','120':'2h','240':'4h','360':'6h','720':'12h','D':'D','1D':'D','W':'W','1W':'W','1M':'1M','3M':'3M'}
+TIMEFRAMES = set(RESOLUTIONS.values())
 
 
 def clean_bar(value):
@@ -31,7 +30,7 @@ def clean_bar(value):
         return None
 
 
-def normalize_bars(values, limit=1500):
+def normalize_bars(values, limit=None):
     if not isinstance(values, list):
         return []
     bars = {}
@@ -39,7 +38,7 @@ def normalize_bars(values, limit=1500):
         bar = clean_bar(value)
         if bar:
             bars[bar["time"]] = bar
-    return sorted(bars.values(), key=lambda bar: bar["time"])[-limit:]
+    return sorted(bars.values(), key=lambda bar: bar["time"])[-limit:] if limit else sorted(bars.values(), key=lambda bar: bar["time"])
 
 
 def atomic_json(path, value):
@@ -114,5 +113,4 @@ class MarketStore:
             else:
                 history.insert(idx, bar)
             changed.append(bar)
-        del history[:-1500]
         return changed

@@ -2,7 +2,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),vm=require(
 function harness(initial={}){
   const saved=new Map(Object.entries(structuredClone(initial)));let canWrite=true;
   class Element{constructor(){this.children=[];this.dataset={};this.classList={toggle(){}};}appendChild(e){this.children.push(e);}append(...es){this.children.push(...es);}replaceChildren(){this.children=[];}setAttribute(){}}
-  class Runner{constructor(chart){this.chart=chart;this.view={};this.defaults={};}load(code,settings,view){this.code=code;this.settings=settings;this.view=view;this.ready=true;this.loads=(this.loads||0)+1;this.chart.clearCustomSeries();}stop(){this.ready=false;}schedule(){this.scheduled=true;}applyView(){if(this.lastResult)this.chart.applyIndicatorResult(this.view.hidden?{series:[],drawings:[]}:this.lastResult);}emit(result){this.lastResult=result;this.applyView();}}
+  class Runner{constructor(chart){this.chart=chart;this.view={};this.defaults={};}load(code,settings,view){this.code=code;this.settings=settings;this.view=view;this.ready=true;this.loads=(this.loads||0)+1;this.chart.clearCustomSeries();}stop(){this.ready=false;}schedule(options){this.scheduled=options||true;}applyView(){if(this.lastResult)this.chart.applyIndicatorResult(this.view.hidden?{series:[],drawings:[]}:this.lastResult);}emit(result){this.lastResult=result;this.applyView();}}
   class Stack{constructor(){this.hosts=new Map();}set(panes){this.panes=panes;}remove(){}}
   const ctx=vm.createContext({structuredClone,document:{createElement:()=>new Element()},IndicatorRunner:Runner,IndicatorPaneStack:Stack,Workspace:{read:(k,f)=>saved.has(k)?structuredClone(saved.get(k)):f,write:(k,v)=>{if(!canWrite)return false;saved.set(k,structuredClone(v));return true;}}});
   vm.runInContext(fs.readFileSync('frontend/js/indicator_collection.js','utf8')+';this.Collection=IndicatorCollection;',ctx);
@@ -31,4 +31,13 @@ test('failed persistence leaves displayed indicators and source settings untouch
  const h=harness(),group=new h.Collection(h.chart('a'),()=>({}),()=>{});const record=group.add({name:'one',code:'code',settings:{n:2},view:{}});h.failWrites();
  assert.equal(group.remove(record.id),false);assert.equal(group.update(record.id,{settings:{n:99}}),false);assert.equal(group.add({code:'other'}),false);
  assert.equal(group.entries.length,1);assert.equal(group.entries[0].record.settings.n,2);assert.equal(group.entries[0].runner.ready,true);
+});
+test('collection preserves scheduling reasons for every active indicator',()=>{
+ const h=harness(),group=new h.Collection(h.chart('a'),()=>({}),()=>{});
+ const active=group.add({name:'active',code:'code',settings:{},view:{}});
+ const paused=group.add({name:'paused',code:'code',settings:{},view:{}});
+ group.pause(paused.id);
+ group.schedule({viewport:true});
+ assert.deepEqual(group.entries.find(e=>e.record.id===active.id).runner.scheduled,{viewport:true});
+ assert.equal(group.entries.find(e=>e.record.id===paused.id).runner.scheduled,undefined);
 });

@@ -10,7 +10,7 @@ class DrawingSettings {
       <div class="drawing-tabs" role="tablist">${['Style','Text','Coordinates','Visibility'].map((tab,i)=>`<button type="button" role="tab" data-tab="${tab.toLowerCase()}" aria-selected="${i===0}">${tab}</button>`).join('')}</div>
       <div class="modal-body drawing-panel" data-panel="style">
         <div data-types="box,line,fib">${select('Extend','extend',[['none',"Don’t extend"],['left','Extend left'],['right','Extend right'],['both','Extend both']])}</div>
-        <div data-types="box,line,hline,fib,position,measure" class="drawing-inline-field"><span>Border / Line</span><div class="drawing-inline-controls">
+        <div data-types="box,line,hline,fib,position,measure,brush" class="drawing-inline-field"><span>Border / Line</span><div class="drawing-inline-controls">
           <input data-field="borderColor" type="color" aria-label="Border color"><input data-field="width" type="number" min="1" max="5" aria-label="Line width"><select data-field="lineStyle" aria-label="Line style"><option value="solid">━━</option><option value="dotted">····</option><option value="dashed">┅┅</option></select><input data-field="strokeOpacity" type="range" min="0" max="100" aria-label="Line opacity">
         </div></div>
         <div data-types="box" class="drawing-inline-field"><label><input data-field="middleLine.enabled" type="checkbox">Middle line</label><div class="drawing-inline-controls">
@@ -18,7 +18,6 @@ class DrawingSettings {
         </div></div>
         <div data-types="box,measure" class="drawing-inline-field"><label><input data-field="fillEnabled" type="checkbox">Background</label><div class="drawing-inline-controls"><input data-field="fillColor" type="color" aria-label="Background color"><input data-field="fillOpacity" type="range" min="0" max="100" aria-label="Background opacity"></div></div>
         <div data-types="fib"><label class="drawing-field"><span>Levels</span><input id="drawing-levels" type="text" placeholder="0, 0.5, 1"></label></div>
-        <div data-types="position">${field('Risk / Reward','riskReward','number','min="0.1" max="100" step="0.1"')}</div>
         <div data-types="line" class="drawing-line-stats">${check('Price range','stats.price')}${check('Percent change','stats.percent')}${check('Bars range','stats.bars')}${check('Date / time range','stats.time')}${check('Middle point','stats.middle')}</div>
       </div>
       <div class="modal-body drawing-panel" data-panel="text" hidden>
@@ -51,7 +50,7 @@ class DrawingSettings {
       try{this.read();const name=this.root.querySelector('#drawing-template-name').value.trim();if(!name)throw new Error('Nhập tên template.');
         if(['__proto__','constructor','prototype'].includes(name))throw new Error('Tên template không hợp lệ.');
         const templates=Workspace.read('drawing_templates_v1',{});templates[this.draft.type]||={};
-        const {id,type,p1,p2,locked,...style}=structuredClone(this.draft);templates[type][name]=style;
+        const {id,type,p1,p2,p3,points,locked,...style}=structuredClone(this.draft);templates[type][name]=style;
         if(Workspace.write('drawing_templates_v1',templates)){this.templates();this.root.querySelector('#drawing-template-name').hidden=true;this.root.querySelector('#drawing-template-save').hidden=true;}
       }catch(error){this.error(error.message);}
     });
@@ -95,6 +94,7 @@ class DrawingSettings {
     const levels=this.root.querySelector('#drawing-levels').value.split(',').map(value=>Number(value.trim()));
     if(!levels.length||levels.length>30||levels.some(value=>!Number.isFinite(value)))throw new Error('Fib levels không hợp lệ.');
     this.draft.levels=levels;
+    const brushAnchor=this.draft.type==='brush'?{...this.draft.p1}:null;
     this.root.querySelectorAll('[data-point]').forEach(input=>{
       const value=Number(input.value);if(!input.value||!Number.isFinite(value))throw new Error('Tọa độ không hợp lệ.');
       const point=this.draft[input.dataset.point];
@@ -102,6 +102,7 @@ class DrawingSettings {
       if(input.dataset.coordinate==='price')point.price=value;
       else {const time=DrawingModel.timeAt(this.chart,value);if(time===null||time<=0)throw new Error('Bar không hợp lệ.');point.time=time;}
     });
+    if(brushAnchor&&this.draft.points){const delta=DrawingModel.logicalIndex(this.chart,this.draft.p1.time)-DrawingModel.logicalIndex(this.chart,brushAnchor.time),price=this.draft.p1.price-brushAnchor.price;this.draft.points=this.draft.points.map(p=>({time:DrawingModel.timeAt(this.chart,DrawingModel.logicalIndex(this.chart,p.time)+delta,true),price:p.price+price}));}
     this.root.querySelectorAll('[data-mirror]').forEach(input=>input.value=this.value(input.dataset.mirror));
   }
   preview(){try{this.read();this.error('');this.editor.preview(this.draft);}catch(error){this.error(error.message);}}

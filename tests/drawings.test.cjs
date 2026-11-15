@@ -37,3 +37,11 @@ test('rectangle mixed corners resize the correct point; invisible shapes cannot 
   assert.equal(DrawingModel.normalize(shape).hidden,true);
   shape.hidden=false;assert.equal(DrawingModel.hit(chart,shape,0,50),'p1x_p2y');
 });
+
+test('position upgrades legacy entry/target drawings with an explicit stop and keeps all three handles',()=>{
+  const chart={currentTimeframe:'1m',tfSeconds:60,bars:[{time:60},{time:120}],chart:{timeScale:()=>({logicalToCoordinate:i=>i*100})},series:{priceToCoordinate:p=>p*10}};
+  const position=DrawingModel.normalize({type:'position',p1:{time:60,price:100},p2:{time:120,price:120},riskReward:2});
+  assert.deepEqual(position.p3,{time:120,price:90});
+  const g=DrawingModel.geometry(chart,position);
+  assert.equal(DrawingModel.hit(chart,position,g.c.x,g.c.y),'p3');
+});

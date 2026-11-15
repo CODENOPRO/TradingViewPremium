@@ -1,6 +1,6 @@
 /* One source of truth for candle validation, session alignment and chart routing. */
 const MarketData = (() => {
-  const durations = { '1m': 60, '5m': 300, '15m': 900, '1h': 3600, '4h': 14400, '6h': 21600, D: 86400, W: 604800 };
+  const durations = { '1m': 60, '5m': 300, '15m': 900, '30m':1800, '2h':7200, '12h':43200, '1M':2592000, '3M':7776000, '1h': 3600, '4h': 14400, '6h': 21600, D: 86400, W: 604800 };
   const formatters = new Map();
   function parts(time, zone) {
     if (!formatters.has(zone)) formatters.set(zone, new Intl.DateTimeFormat('en-CA', {

@@ -6,6 +6,10 @@
   <title>Trading Terminal</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/imported_toolbars.css">
+  <link rel="stylesheet" href="css/terminal_features.css">
+  <link rel="stylesheet" href="css/terminal_polish.css">
+  <link rel="stylesheet" href="css/terminal_companions.css">
+  <link rel="stylesheet" href="css/terminal_studio.css?v=alert-delete-1">
 </head>
 <body>
 
@@ -45,6 +49,12 @@
         <button class="tf-btn" data-tf="4h">4h</button>
         <button class="tf-btn" data-tf="D">D</button>
         <button class="tf-btn" data-tf="W">W</button>
+        <button class="tf-btn" data-tf="30m">30m</button>
+        <button class="tf-btn" data-tf="2h">2h</button>
+        <button class="tf-btn" data-tf="6h">6h</button>
+        <button class="tf-btn" data-tf="12h">12h</button>
+        <button class="tf-btn" data-tf="1M">1M</button>
+        <button class="tf-btn" data-tf="3M">3M</button>
         <button id="btn-refresh-htf" class="btn-icon" style="padding: 2px 6px; font-size: 11px; margin-left: 2px;" title="Đọc lại dữ liệu đang có trên TradingView, không đổi timeframe gốc">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
@@ -52,6 +62,9 @@
           <span id="htf-sync-pill" style="font-size: 11px; font-weight: 500; color: #787b86;">Refresh</span>
         </button>
       </div>
+      <select id="timeframe-quick" aria-label="Chart timeframe" title="Chart timeframe">
+        <option value="1m">1m</option><option value="5m">5m</option><option value="15m">15m</option><option value="30m">30m</option><option value="1h">1h</option><option value="2h">2h</option><option value="4h">4h</option><option value="6h">6h</option><option value="12h">12h</option><option value="D">D</option><option value="W">W</option><option value="1M">1M</option><option value="3M">3M</option>
+      </select>
 
       <div class="separator"></div>
 
@@ -87,6 +100,10 @@
         <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M11 3v18m0-9h10"/></svg>
         <span>Layout</span>
       </button>
+
+      <span id="live-clock" aria-live="off">New York</span>
+      <select id="timezone-quick" aria-label="Chart timezone" title="Chart timezone"><option value="Etc/UTC">UTC</option><option value="America/New_York">New York</option><option value="America/Chicago">Chicago</option><option value="Asia/Ho_Chi_Minh">Ho Chi Minh</option><option value="Europe/London">London</option><option value="Asia/Tokyo">Tokyo</option></select>
+      <span id="connection-status" role="status" data-state="connecting">Đang kết nối…</span>
 
       <!-- Settings Cog -->
       <button id="btn-settings" class="btn-icon" title="Chart Properties & Colors">
@@ -173,6 +190,7 @@
       <button class="tool-btn" data-tool="position" title="Vị thế Long / Short Risk-Reward (Alt + P)"><svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 14h16M12 6v5m-2-2 2-3 2 3"/></svg></button>
 
       <!-- 7. Ruler / Measure Tool -->
+      <button class="tool-btn" data-tool="brush" title="Brush · Vẽ tự do" aria-label="Brush"><svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 18c-3 0-3 4-3 4s5 0 5-3l13-13-3-3z"/></svg></button>
       <button class="tool-btn" data-tool="measure" title="Thước đo khoảng giá & số nến (Shift + Click)"><svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 16 13-13 5 5L8 21zM12 7l2 2m-6 2 2 2m-6 2 2 2"/></svg></button>
 
       <div class="tool-separator"></div>
@@ -288,29 +306,6 @@
         <button id="btn-replay-exit" class="replay-btn replay-exit" title="Thoát Replay">&times; Exit</button>
       </div>
 
-      <!-- BOTTOM BAR (RANGES, TIMEZONE, WATERMARK) -->
-      <footer id="bottombar">
-        <div class="bottom-ranges"><span id="connection-status" role="status" data-state="connecting">Đang kết nối…</span>
-          <button class="range-btn">1D</button>
-          <button class="range-btn">5D</button>
-          <button class="range-btn">1M</button>
-          <button class="range-btn">3M</button>
-          <button class="range-btn">6M</button>
-          <button class="range-btn">YTD</button>
-          <button class="range-btn">1Y</button>
-          <button class="range-btn">5Y</button>
-          <button class="range-btn">ALL</button>
-        </div>
-
-        <div class="bottom-meta"><span id="indicator-status" role="status">Chưa có indicator</span>
-          <span id="live-clock">New York</span>
-          <div class="bottom-scale-toggles">
-            <button class="scale-toggle">%</button>
-            <button class="scale-toggle">log</button>
-            <button class="scale-toggle" style="color: #2962ff; font-weight: 700;">auto</button>
-          </div>
-        </div>
-      </footer>
     </div>
   </div>
 
@@ -361,21 +356,21 @@
     </div>
   </div>
 
-  <!-- User scripts only. No bundled indicators or Pine compatibility claims. -->
+  <!-- Pine Editor: personal Pine v6 scripts only. -->
   <div id="indicator-modal" class="modal">
     <div class="modal-content script-dialog">
-      <div class="modal-header"><span>Indicators · My scripts</span><button id="close-indicator-modal" class="modal-close" aria-label="Đóng">×</button></div>
+      <div class="modal-header"><div class="studio-heading"><span class="studio-mark">⌁</span><div>Indicators<span class="studio-subtitle">Your scripts. Your workspace.</span></div></div><div class="studio-window-actions"><button id="editor-expand" class="btn-secondary" aria-label="Expand editor" title="Expand editor">↗</button><button id="close-indicator-modal" class="modal-close" aria-label="Đóng">×</button></div></div>
       <div class="modal-body script-body">
         <div class="script-actions">
-          <input id="indicator-name" class="search-input" aria-label="Tên indicator" placeholder="Tên indicator">
-          <label class="btn-secondary file-button">Nhập .pine / .js<input id="indicator-file" type="file" accept=".pine,.js,.txt" hidden></label>
+          <input id="indicator-name" class="search-input" aria-label="Tên script" placeholder="Untitled script">
         </div>
-        <p class="editor-help">Dán Pine Script //@version=6 hoặc JavaScript. Chạy trong Worker riêng; PineTS còn giới hạn tương thích và sẽ báo phần chưa hỗ trợ. Không cần chuyển tay sang JS.</p>
-        <textarea id="indicator-code" class="code-area" aria-label="Mã nguồn indicator" placeholder="Dán Pine Script v6 hoặc JavaScript indicator của bạn…" spellcheck="false"></textarea>
-        <details><summary class="settings-label">Advanced inputs (JSON)</summary><label class="settings-label" for="indicator-settings">Thông số (JSON)</label>
-        <textarea id="indicator-settings" class="code-area settings-code" spellcheck="false">{}</textarea></details>
+        <div class="editor-filebar"><span class="editor-language">PINE v6</span><span id="editor-target"></span><span class="editor-shortcuts">Ctrl S · Save &nbsp; / &nbsp; Ctrl Enter · Run</span></div>
+        <div class="editor-surface"><pre id="editor-lines" aria-hidden="true">1</pre><textarea id="indicator-code" class="code-area" aria-label="Pine Script v6 source" placeholder="Paste your Pine Script v6 here…" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off"></textarea></div>
+        <div class="editor-position"><span>PineTS 0.13.1 · local Worker</span><span id="editor-cursor">Ln 1, Col 1</span></div>
+        <textarea id="indicator-settings" hidden>{}</textarea>
+        <div class="editor-console-heading">OUTPUT <span>Runtime messages</span></div><p id="indicator-console" class="indicator-console" role="status" aria-live="polite"></p>
       </div>
-      <div class="modal-footer"><button id="stop-indicator-run" class="btn-secondary">Dừng tính</button><button id="remove-indicator" class="btn-secondary">Gỡ indicator</button><button id="apply-indicator" class="btn-primary">Lưu &amp; chạy</button></div>
+      <div class="modal-footer"><button id="stop-indicator-run" class="btn-secondary">Stop</button><button id="remove-indicator" class="btn-secondary">Remove</button><button id="apply-indicator" class="btn-primary">Add to chart</button></div>
     </div>
   </div>
 
@@ -396,7 +391,7 @@
   <div id="alert-modal" class="modal">
     <div class="modal-content" style="width: 400px;">
       <div class="modal-header">
-        <span>Tạo Cảnh Báo Giá (Create Alert)</span>
+        <span id="alert-modal-title">Tạo cảnh báo giá</span>
         <button id="close-alert" class="modal-close">&times;</button>
       </div>
       <div class="modal-body">
@@ -418,6 +413,8 @@
         </div>
       </div>
       <div class="modal-footer">
+        <label id="alert-rearm-row" hidden><input type="checkbox" id="alert-rearm"> Bật lại cảnh báo đã kích hoạt</label>
+        <button id="btn-delete-alert" class="btn-secondary" hidden>Xóa cảnh báo</button>
         <button id="btn-save-alert" class="btn-primary">Đặt Cảnh Báo</button>
       </div>
     </div>
@@ -455,7 +452,7 @@
   <script src="js/bridge_protocol.js"></script>
   <script src="js/drawing_model.js"></script>
   <script src="js/pine_painter.js"></script>
-  <script src="js/chart_engine.js"></script>
+  <script src="js/chart_engine.js?v=interaction-news-1"></script>
   <script src="js/native_cycle_pane.js"></script>
   <script src="js/drawing_settings.js"></script>
   <script src="js/drawing_editor.js"></script>
@@ -464,14 +461,22 @@
   <script src="js/indicator_runner.js"></script>
   <script src="js/indicator_pane_stack.js"></script>
   <script src="js/indicator_collection.js"></script>
+  <script src="js/pine_editor.js"></script>
   <script src="js/indicator_library.js"></script>
   <script src="js/indicator_settings.js"></script>
-  <script src="js/paper_trading.js"></script>
+  <script src="js/paper_trading.js?v=interaction-news-1"></script>
+  <script src="js/replay_paper.js?v=interaction-news-1"></script>
+  <script src="js/paper_panel.js?v=interaction-news-1"></script>
   <script src="js/chart_settings.js"></script>
   <script src="js/terminal_icons.js"></script>
   <script src="js/desktop_shell.js"></script>
   <script src="js/toolbar_clusters.js"></script>
-  <script src="js/chart_context_menu.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/chart_context_menu.js?v=interaction-news-1"></script>
+  <script src="js/terminal_features.js?v=interaction-news-1"></script>
+  <script src="js/terminal_polish.js"></script>
+  <script src="js/news_protocols.js?v=interaction-news-1"></script>
+  <script src="js/terminal_companions.js?v=interaction-news-1"></script>
+  <script src="js/price_alerts.js?v=alert-delete-1"></script>
+  <script src="js/app.js?v=alert-delete-1"></script>
 </body>
 </html>

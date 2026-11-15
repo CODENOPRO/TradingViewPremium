@@ -7,11 +7,11 @@ class DesktopShell {
     return {from:to-span,to};
   }
   static icon(name) {
-    const paths={watch:'M4 3h16v18l-8-4-8 4z',alerts:'M12 8v5l3 2M5 4L2 7m17-3 3 3M4 13a8 8 0 1 0 16 0 8 8 0 1 0-16 0',objects:'M2 8l10-6 10 6-10 6zM2 13l10 6 10-6M2 18l10 6 10-6',editor:'M8 5L2 12l6 7m8-14 6 7-6 7',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0',lock:'M5 10h14v11H5zM8 10V6a4 4 0 0 1 8 0v4',close:'M5 5l14 14M19 5L5 19',settings:'M4 4h16v16H4zM8 8h8v8H8z',arrow:'M4 12h16m-6-6 6 6-6 6',line:'M4 20L20 4M2 18l4 4M18 2l4 4',hline:'M2 12h20M5 9v6',fib:'M3 4h18M3 10h13M3 16h18M3 22h9',box:'M4 4h16v16H4zM2 2h4v4H2zM18 18h4v4h-4z',position:'M4 4h12v7H4zM8 11h12v9H8zM2 4h20',text:'M4 5V3h16v2M12 3v18M8 21h8',keep:'M3 14l11-11 7 7-11 11H3zM15 14v8m-4-4h8'};
+    const paths={watch:'M4 3h16v18l-8-4-8 4z',alerts:'M12 8v5l3 2M5 4L2 7m17-3 3 3M4 13a8 8 0 1 0 16 0 8 8 0 1 0-16 0',objects:'M2 8l10-6 10 6-10 6zM2 13l10 6 10-6M2 18l10 6 10-6',editor:'M8 5L2 12l6 7m8-14 6 7-6 7',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0',lock:'M5 10h14v11H5zM8 10V6a4 4 0 0 1 8 0v4',close:'M5 5l14 14M19 5L5 19',settings:'M4 4h16v16H4zM8 8h8v8H8z',arrow:'M4 12h16m-6-6 6 6-6 6',line:'M4 20L20 4M2 18l4 4M18 2l4 4',hline:'M2 12h20M5 9v6',fib:'M3 4h18M3 10h13M3 16h18M3 22h9',box:'M4 4h16v16H4zM2 2h4v4H2zM18 18h4v4h-4z',position:'M4 4h12v7H4zM8 11h12v9H8zM2 4h20',text:'M4 5V3h16v2M12 3v18M8 21h8',brush:'M5 18c-3 0-3 4-3 4s5 0 5-3l13-13-3-3z',keep:'M3 14l11-11 7 7-11 11H3zM15 14v8m-4-4h8'};
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name]||paths.objects}"/></svg>`;
   }
-  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onSymbol,onIndicatorToggle,drawing}) {
-    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onSymbol,onIndicatorToggle,drawing});
+  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onSymbol,onIndicatorToggle,drawing}) {
+    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onSymbol,onIndicatorToggle,drawing});
     const $=id=>document.getElementById(id);
     this.root=document.createElement('aside');this.root.id='desktop-panel';this.root.hidden=true;this.root.setAttribute('aria-label','Chart side panel');
     this.root.innerHTML='<div class="desktop-panel-header"><div class="desktop-panel-tabs" role="tablist"></div><button class="desktop-panel-close" aria-label="Close side panel">×</button></div><div class="desktop-panel-content"></div>';
@@ -53,7 +53,7 @@ class DesktopShell {
     const left=document.querySelector('.topbar-left'),right=document.querySelector('.topbar-right'),header=document.getElementById('topbar');
     const menu=document.createElement('div');menu.className='toolbar-overflow';menu.hidden=true;menu.setAttribute('role','menu');document.body.appendChild(menu);
     const more=document.createElement('button');more.type='button';more.className='btn-icon toolbar-more';more.textContent='⋯';more.hidden=true;more.setAttribute('aria-label','More toolbar actions');more.setAttribute('aria-expanded','false');left.appendChild(more);
-    const nodes=[this.redo,this.undo,document.getElementById('btn-refresh-htf'),document.getElementById('btn-alert'),document.getElementById('btn-replay'),document.querySelector('.timeframe-group')];
+    const nodes=[this.redo,this.undo,document.getElementById('btn-refresh-htf'),document.getElementById('btn-alert'),document.getElementById('btn-replay')];
     const items=nodes.map(node=>{const anchor=document.createComment('toolbar-position');node.before(anchor);if(node.tagName==='BUTTON')node.dataset.overflowLabel=node.getAttribute('aria-label')||node.textContent.trim()||node.title;return {node,anchor};});
     const close=(focus=false)=>{menu.hidden=true;more.setAttribute('aria-expanded','false');if(focus)more.focus();};
     more.onclick=()=>{if(!menu.hidden){close();return;}menu.hidden=false;more.setAttribute('aria-expanded','true');const rect=more.getBoundingClientRect();menu.style.left=Math.max(6,Math.min(innerWidth-menu.offsetWidth-6,rect.right-menu.offsetWidth))+'px';menu.style.top=(rect.bottom+4)+'px';menu.querySelector('button:not([disabled])')?.focus();};
@@ -61,6 +61,7 @@ class DesktopShell {
     menu.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close(true);}else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const buttons=[...menu.querySelectorAll('button:not([disabled])')],index=buttons.indexOf(document.activeElement),next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(index+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;buttons[next]?.focus();}};
     document.addEventListener('pointerdown',e=>{if(!menu.contains(e.target)&&!more.contains(e.target))close();});
     this.fitToolbar=()=>{
+      if(document.fullscreenElement)return;
       close();for(const {node,anchor}of items)anchor.after(node);more.hidden=true;
       if(left.hidden||!header.clientWidth)return;
       if(left.scrollWidth<=left.clientWidth+1)return;
@@ -73,7 +74,7 @@ class DesktopShell {
   installTools(){
     const rail=document.getElementById('left-sidebar');
     for(const node of rail.querySelectorAll('.tool-separator'))node.remove();
-    for(const key of ['crosshair','line','box','text','fib','position','measure','magnet','lock','eye','trash']){
+    for(const key of ['crosshair','line','box','text','fib','position','measure','brush','magnet','lock','eye','trash']){
       const b=rail.querySelector(`[data-tool="${key}"]`);if(!b)continue;
       const importedIcon={crosshair:'crosshair',line:'trend',box:'rectangle',text:'text',fib:'fib',position:'forecast',magnet:'magnet',lock:'lock',eye:'eye',trash:'trash'}[key];
       if(importedIcon)b.innerHTML=TerminalIcons.svg(importedIcon);
@@ -91,7 +92,6 @@ class DesktopShell {
         options.onclick=showMenu;b.oncontextmenu=e=>{e.preventDefault();showMenu();};
         for(const [mode,label] of [['weak','Weak magnet'],['strong','Strong magnet'],['off','Off']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.setAttribute('role','menuitem');option.onclick=()=>{this.drawing.setMagnet(mode!=='off',mode==='off'?this.drawing.magnetMode:mode);closeMenu();b.focus();};menu.appendChild(option);}
         group.append(options);document.body.appendChild(menu);document.addEventListener('click',e=>{if(!group.contains(e.target)&&!menu.contains(e.target))closeMenu();});menu.onkeydown=e=>{if(e.key==='Escape'){closeMenu();b.focus();}};
-        const keep=this.button('Stay in drawing mode','keep',()=>{this.drawing.keepDrawing=!this.drawing.keepDrawing;keep.classList.toggle('active',this.drawing.keepDrawing);keep.setAttribute('aria-pressed',String(this.drawing.keepDrawing));});keep.className='tool-btn';keep.innerHTML=TerminalIcons.svg('pencil');keep.setAttribute('aria-pressed','false');rail.appendChild(keep);
       }
     }
   }
@@ -152,7 +152,7 @@ class DesktopShell {
   renderAlerts(){
     const alerts=this.getAlerts(),signature=JSON.stringify(alerts);if(signature===this.signature)return;this.signature=signature;this.content.replaceChildren();
     const create=document.createElement('button');create.className='desktop-add-alert';create.textContent='+ Create alert';create.onclick=()=>document.getElementById('btn-alert').click();this.content.appendChild(create);
-    for(const [index,alert] of alerts.entries()){const row=document.createElement('div');row.className='alert-list-row';const label=document.createElement('span');label.textContent=`${alert.symbol} · ${alert.price}\n${alert.condition} · ${alert.triggered?'Triggered':'Active'}`;const remove=this.button('Remove alert','close',()=>{this.onAlertRemove(index);this.signature='';this.refresh();});row.append(label,remove);this.content.appendChild(row);}
+    for(const [index,alert] of alerts.entries()){const row=document.createElement('div');row.className='alert-list-row';const label=document.createElement('span');label.textContent=`${alert.symbol} · ${alert.price}\n${alert.condition} · ${alert.triggered?'Triggered':'Active'}`;const remove=this.button('Remove alert','close',()=>{this.onAlertRemove(index);this.signature='';this.refresh();});label.tabIndex=0;label.setAttribute('role','button');label.title='Edit alert';label.onclick=()=>this.onAlertEdit?.(alert.id);label.onkeydown=e=>{if(e.key==='Enter')this.onAlertEdit?.(alert.id);};row.append(label,remove);this.content.appendChild(row);}
     if(!alerts.length){const p=document.createElement('p');p.className='desktop-panel-note';p.textContent='No price alerts yet.';this.content.appendChild(p);}
   }
 }

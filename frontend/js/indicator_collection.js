@@ -35,7 +35,7 @@ class IndicatorCollection {
       if(key==='setIndicatorLegend')return name=>{entry.name=name;this.renderLegends();};
       return Reflect.get(target,key,target);
     }});
-    entry.runner=new IndicatorRunner(proxy,this.getContext,message=>{entry.status=message;this.onStatus(`${entry.name||record.name}: ${message}`);this.renderLegends();});
+    entry.runner=new IndicatorRunner(proxy,this.getContext,message=>{entry.status=message;this.onStatus(`${entry.name||record.name}: ${message}`,record.id);this.renderLegends();});
     this.entries.push(entry);return entry;
   }
   start(entry){if(entry.record.enabled!==false)entry.runner.load(entry.record.code,entry.record.settings||{},entry.record.view||{});}
@@ -64,7 +64,7 @@ class IndicatorCollection {
   }
   toggle(id=this.record?.id){const entry=this.entries.find(e=>e.record.id===id);return entry&&this.update(id,{view:{...entry.record.view,hidden:!entry.record.view?.hidden}});}
   pause(id=this.record?.id){return id?this.update(id,{enabled:false}):false;}
-  schedule(){for(const e of this.entries)if(e.record.enabled!==false)e.runner.schedule();}
+  schedule(options={}){for(const e of this.entries)if(e.record.enabled!==false)e.runner.schedule(options);}
   stop(){for(const e of this.entries)e.runner.stop();}
   restart(){this.stop();for(const e of this.entries){e.result=null;this.start(e);}this.render();}
   render(){

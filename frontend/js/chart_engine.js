@@ -30,6 +30,8 @@ class ChartEngine {
 
     this.rawBars = [];
     this.bars = [];
+    this.dataRevision = 0;
+    this.dataUpdateKind = 'replace';
     this.htfData = { 'W': [], 'D': [], '4h': [], '1h': [], '15m': [], '5m': [], '1m': [] };
     this.currentTimeframe = '1m';
     this.tfSeconds = 60;
@@ -155,7 +157,8 @@ class ChartEngine {
   positionSymbolBadge(){
     if(!this.symbolBadge)return;
     const rect=this.container.getBoundingClientRect(),size=28;
-    let bottom=Math.max(30,rect.height-this.plotHeight+30),left=10;
+    const axisInset=(this.chart?.timeScale().height?.()||20)+10;
+    let bottom=rect.height-this.plotHeight+axisInset,left=10;
     const overlaps=box=>box&&box.width>0&&box.height>0&&rect.left+left<box.right&&rect.left+left+size>box.left&&rect.bottom-bottom>box.top&&rect.bottom-bottom-size<box.bottom;
     const sidebar=document.getElementById('left-sidebar')?.getBoundingClientRect();
     if(overlaps(sidebar))left=Math.max(left,sidebar.right-rect.left+8);
@@ -178,6 +181,7 @@ class ChartEngine {
     this.container.appendChild(this.overlayCanvas);
 
     this.overlayCtx = this.overlayCanvas.getContext('2d');
+    this.initOverlayScaleSync();
 
     // Redraw drawings on every scroll / zoom / time range change
     this.chart.timeScale().subscribeVisibleLogicalRangeChange(() => {
@@ -186,6 +190,20 @@ class ChartEngine {
     });
 
     this.resizeOverlay();
+  }
+
+  initOverlayScaleSync() {
+    if(typeof this.series.attachPrimitive!=='function')return;
+    // Run after the native chart has applied its current price/time transform.
+    // Price-axis drags do not emit visibleLogicalRange changes or crosshair
+    // events, so an external canvas cannot stay aligned from those alone.
+    // This primitive follows native draw frames; it has no idle RAF loop and
+    // never recalculates indicators or changes saved price/time anchors.
+    const view={zOrder:()=> 'top',renderer:()=>({draw:()=>{
+      this.renderDrawings();
+    }})};
+    this.overlayScaleSync={paneViews:()=>[view]};
+    this.series.attachPrimitive(this.overlayScaleSync);
   }
 
   resizeOverlay() {
@@ -220,8 +238,10 @@ class ChartEngine {
   setHtfData(tf, values) {
     this.htfData[tf] = MarketData.clean(values);
     this.htfBaselines[tf] = new Map(this.rawBars.map(b => [b.time, b.volume]));
+    // Rendering the active timeframe already emits a data invalidation.
+    // For an inactive timeframe, still invalidate request.* consumers once.
     if (this.currentTimeframe === tf) this.renderCurrentTimeframe(false);
-    this.onDataChange?.();
+    else { this.dataUpdateKind = 'keep'; this.dataRevision++; this.onDataChange?.(); }
   }
 
   getBarsForTimeframe(tf) {
@@ -230,42 +250,28 @@ class ChartEngine {
       return MarketData.aggregate(filtered, tf, { ...this.metadata, session: this.metadata.sessionRegular?.session, sessionType: 'RTH' });
     }
     if (tf === '1m') return this.rawBars.map(b => ({ ...b }));
-    const direct = this.htfData[tf] || [];
-    if (!direct.length) return MarketData.aggregate(this.rawBars, tf, this.metadata);
-    const result = direct.map(b => ({ ...b }));
-    const last = result[result.length - 1];
-    const tail = this.rawBars.filter(b => b.time >= last.time);
-    const aggregate = MarketData.aggregate(tail, tf, this.metadata);
-    const baseline = this.htfBaselines[tf] || new Map();
-    for (const bar of aggregate) {
-      if (bar.time === last.time) {
-        // With full minute coverage, recompute; otherwise use only changes since the HTF snapshot.
-        const complete = tail.length && tail[0].time === last.time;
-        if (complete) Object.assign(last, bar);
-        else {
-          last.high = Math.max(last.high, bar.high);
-          last.low = Math.min(last.low, bar.low);
-          last.close = bar.close;
-          last.volume = Math.max(0, last.volume + tail.filter(b => MarketData.bucket(b.time, tf, this.metadata) === last.time)
-            .reduce((sum, b) => sum + b.volume - (baseline.get(b.time) || 0), 0));
-        }
-      } else if (bar.time > last.time) result.push(bar);
-    }
-    return result;
+    return (this.htfData[tf] || []).map(b => ({ ...b }));
   }
 
   renderCurrentTimeframe(reset = true) {
     const previous = this.chart.timeScale().getVisibleLogicalRange();
     const previousBars=this.bars;
     const available = this.getBarsForTimeframe(this.currentTimeframe);
+    if(this.replayMode&&Number.isFinite(this.replayClock))this.replayIndex=TerminalTime.closedIndex(available,this.currentTimeframe,this.metadata,this.replayClock);
     this.bars = this.replayMode ? available.slice(0, this.replayIndex) : available;
-    this.series.setData(this.appearance?ChartAppearance.candleData(this,this.bars):this.bars);
+    this.renderCandleData();
     if (reset && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
     this.container.dataset.empty = this.bars.length ? '' : 'Không có dữ liệu cho mã/khung này';
     this.renderDrawings();
-    this.onDataChange?.();
+    this.dataUpdateKind = 'replace';
+    this.dataRevision++;this.onDataChange?.();
+  }
+
+  renderCandleData(){
+    const bars=this.replayPreview?this.getBarsForTimeframe(this.currentTimeframe):this.bars;
+    this.series.setData(this.appearance?ChartAppearance.candleData(this,bars):bars);
   }
 
   setTimeframe(tf) {
@@ -273,7 +279,6 @@ class ChartEngine {
     const visible=this.appearance?.keepLeft?this.chart.timeScale().getVisibleRange():null;
     this.currentTimeframe = tf;
     this.tfSeconds = TF_MAP[tf];
-    this.replayMode = false;
     this.renderCurrentTimeframe();
     if(visible&&this.bars.length){const from=this.bars.findIndex(b=>b.time>=visible.from),range=this.chart.timeScale().getVisibleLogicalRange();if(from>=0&&range)this.chart.timeScale().setVisibleLogicalRange({from,to:from+range.to-range.from});}
   }
@@ -303,7 +308,8 @@ class ChartEngine {
     else this.series.setData(this.appearance?ChartAppearance.candleData(this,next):next);
     this.updateLegend(tail);
     this.renderDrawings();
-    this.onDataChange?.();
+    this.dataUpdateKind=historical?'replace':'tail';
+    this.dataRevision++;this.onDataChange?.();
   }
 
   clearData() {
@@ -314,6 +320,8 @@ class ChartEngine {
     this.htfBaselines = {};
     this.replayMode = false;
     this.series.setData([]);
+    this.dataUpdateKind = 'replace';
+    this.dataRevision++;
     this.container.querySelector('.chart-legend').textContent = this.symbol;
     this.renderDrawings();
   }
@@ -655,17 +663,29 @@ class ChartEngine {
   }
 
   updateCountdown(){
-    if(!this.appearance?.countdown){this.countdownLabel?.remove();this.countdownLabel=null;return;}
-    if(!this.countdownLabel){this.countdownLabel=document.createElement('div');this.countdownLabel.className='chart-countdown';this.container.appendChild(this.countdownLabel);}
-    const b=this.bars.at(-1),seconds=b?Math.ceil(b.time+this.tfSeconds-Date.now()/1000):0;
-    // Calendar-sized bars are not fixed-length exchange sessions; do not invent a countdown.
-    this.countdownLabel.hidden=!b||seconds<0||this.tfSeconds>=86400||this.replayMode||!this.marketLive;
-    this.countdownLabel.textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
-    const y=b?this.series.priceToCoordinate(b.close):null;this.countdownLabel.style.top=Math.max(0,Math.min(this.plotHeight-42,(y??0)+10))+'px';
+    const a=this.appearance,visible=a?.symbolLine?.toLowerCase().includes('value')??true;
+    if(!a?.countdown||!visible){this.countdownLabel?.remove();this.countdownLabel=null;return;}
+    if(!this.countdownLabel){const el=document.createElement('div');el.className='chart-countdown';el.innerHTML='<span class="axis-price"></span><span class="axis-countdown"></span>';this.container.appendChild(el);this.countdownLabel=el;}
+    this.series.applyOptions({lastValueVisible:false});
+    const b=this.bars.at(-1),now=this.replayMode?this.replayClock:Date.now()/1000;
+    const metadata=this.sessionMode==='RTH'?{...this.metadata,session:this.metadata.sessionRegular?.session,sessionCorrections:this.metadata.sessionRegular?.corrections}:this.metadata;
+    const raw=this.currentTimeframe==='1m'?this.rawBars:this.htfData[this.currentTimeframe]||[];
+    let lo=0,hi=raw.length;while(lo<hi){const mid=(lo+hi)>>1;if(raw[mid].time<=now)lo=mid+1;else hi=mid;}
+    // Read timestamps only for the in-progress interval; Replay price/indicators stay closed-bar only.
+    const current=raw[lo-1],session=TerminalTime.activeSession(now,metadata),seconds=current?Math.max(0,Math.ceil(TerminalTime.end({time:current.time},this.currentTimeframe,metadata)-now)):0;
+    const label=this.countdownLabel,y=b?this.series.priceToCoordinate(b.close):null;label.hidden=!b||y===null||y<0||y>this.plotHeight-26;
+    if(!b)return;label.querySelector('.axis-price').textContent=this.series.priceFormatter().format(b.close);
+    const timer=label.querySelector('.axis-countdown');timer.hidden=!session||seconds<=0;timer.textContent=timer.hidden?'':TerminalTime.format(seconds);
+    label.style.background=a.symbolLineColor||'#211f1d';label.style.color=TerminalFeatures.contrast(a.symbolLineColor||'#211f1d');
+    label.style.fontSize=(a.fontSize||12)+'px';label.style.top=Math.max(0,Math.min(this.plotHeight-label.offsetHeight-26,(y??0)-(a.fontSize||12)*.7))+'px';
+    this.positionCountdown();
+  }
+  positionCountdown(){
+    const label=this.countdownLabel;if(!label)return;const b=this.bars?.at(-1);if(!b)return;const y=this.series.priceToCoordinate(b.close);label.hidden=y===null||y<0||y>this.plotHeight-26;if(label.hidden)return;label.style.top=Math.max(0,Math.min(this.plotHeight-label.offsetHeight-26,y-(this.appearance?.fontSize||12)*.7))+'px';label.style.width=Math.max(50,this.chart.priceScale('right').width())+'px';
   }
 
   // MAGNET HELPER (SNAP TO CANDLE OHLC)
-  snapToBar(time,price,mode='strong') {
+  snapToBar(time,price,mode='strong',pixel=null) {
     if(!this.bars?.length||!Number.isFinite(time)||!Number.isFinite(price))return {time,price};
     let lo=0,hi=this.bars.length-1;
     while(lo<hi){const mid=(lo+hi)>>1;if(this.bars[mid].time<time)lo=mid+1;else hi=mid;}
@@ -675,7 +695,7 @@ class ChartEngine {
     let closest=price,distance=Infinity;
     for(const candidate of [bar.open,bar.high,bar.low,bar.close]){const at=this.series.priceToCoordinate(candidate);if(at===null)continue;const delta=Math.abs(at-y);if(delta<distance){closest=candidate;distance=delta;}}
     if(mode==='weak'){
-      const x=this.chart.timeScale().logicalToCoordinate(DrawingModel.logicalIndex(this,time));
+      const x=pixel?.x??this.chart.timeScale().logicalToCoordinate(DrawingModel.logicalIndex(this,time));
       const barX=this.chart.timeScale().logicalToCoordinate(DrawingModel.logicalIndex(this,bar.time));
       if(x===null||barX===null||Math.hypot(x-barX,distance)>8)return {time,price};
     }
@@ -687,12 +707,16 @@ class ChartEngine {
   // DRAWINGS RENDERING
   renderDrawings() {
     this.positionSymbolBadge();
+    this.positionCountdown();
     if (!this.overlayCtx) return;
     const ctx = this.overlayCtx;
     const rect = this.container.getBoundingClientRect();
     ctx.clearRect(0, 0, rect.width, rect.height);
 
     if(this.appearance)ChartAppearance.draw(this,ctx,rect);
+    this.alertOverlay?.draw(ctx,rect);
+    if(this.paperOverlay)this.paperOverlay.draw(ctx,rect);
+    else {
     // 1. Render Active Paper Positions (Entry line + Live PnL)
     if (this.appearance?.positions!==false && this.positions && this.positions.length) {
       const currentPrice = this.bars.length ? this.bars[this.bars.length - 1].close : 0;
@@ -733,6 +757,7 @@ class ChartEngine {
     }
 
     if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotHeight-26){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-65,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
+    }
     ctx.save();
     ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - 65), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
     const drawings = [...(this.indicatorDrawings || []), ...(this.drawingsHidden ? [] : this.drawings || [])];

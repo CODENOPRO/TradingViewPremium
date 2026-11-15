@@ -9,6 +9,15 @@ Terminal cá nhân dùng dữ liệu từ TradingView Desktop qua CDP `9222`. Fr
 3. Mở TradingView Desktop với remote debugging `9222`, tải các mã NQ/ES/YM cần dùng.
 4. Chạy `start_terminal.bat`, mở http://localhost:3000.
 
+### Khởi động tự động nguồn giá
+
+Chạy `start_terminal.bat`: launcher mở TradingView Desktop và backend, sau đó mở web.
+Backend giữ nguồn riêng cho từng cặp mã/timeframe đang hiển thị. Đổi timeframe của một chart không đổi nguồn của chart khác; các chart không được chọn vẫn nhận cập nhật. Không cần mở từng mã thủ công.
+Khi backend còn chạy, mở lại web cũng yêu cầu mở TradingView nếu đã tắt.
+Trình duyệt không thể khởi động một backend đang tắt: trong trường hợp đó hãy chạy launcher.
+Các nguồn dùng phiên đăng nhập/quyền dữ liệu hiện có của TradingView. Nếu cần đăng nhập, người dùng phải tự hoàn tất.
+Lịch sử của 13 khung đã chốt được lưu riêng; các khung đang dùng có subscription ổn định, lấy nến trực tiếp cho ETH. Dữ liệu giữ trong RAM và có bản lưu ổ đĩa. Tải thêm theo đợt 5.000 nến tới khi nguồn báo hết hoặc RAM trống dưới 2 GiB; độ sâu tùy quyền dữ liệu và nguồn. Các khung không đang đọc giữ snapshot đã lưu. RTH vẫn dùng lọc/tổng hợp phiên từ dữ liệu phút.
+
 Launcher có thể mở TradingView nếu chưa chạy; không force-close workspace đang mở. Nếu cổng 3000 do server cũ chiếm, đóng server cũ trước khi khởi động bản này.
 
 ## Có trong bản refactor đầu
@@ -86,3 +95,15 @@ Nếu web báo backend cũ: đóng server Python cũ rồi chạy lại `start_t
 ## Bộ vẽ được yêu cầu khảo sát
 
 Đã đọc lightweight-charts-drawing của deepentropy; chưa thay renderer v4 hoặc migrate hình cũ. Quyết định và khác biệt tại [DRAWING_REPO_REVIEW.md](DRAWING_REPO_REVIEW.md).
+
+
+Lưu ý quyền nguồn đã quan sát: tài khoản TradingView Basic hiện chặn custom interval khi chọn 6h. Khung 6h/12h chưa được nạp trực tiếp; backend ghi hạn chế trong /health và không tự ghép nến thay thế. Các khung chuẩn gồm cả 1M/3M đã có dữ liệu thực.
+
+
+### Giao diện và Replay
+- Layout chỉ còn biểu tượng; menu có bố cục1–16 chart, các kiểu chia ô và5 tùy chọn Sync riêng: Symbol/Interval/Crosshair/Time/Date range. Interval mặc định tắt để chọn khung độc lập.
+- Trong Layout có Chart settings và Hide toolbar text. Chế độ ẩn chữ giữ tên mã/timeframe; tên thao tác hiện cạnh logo khi hover hoặc focus.
+- Favourite: nhấp phải công cụ vẽ để thêm/bỏ sao, hoặc dùng nút☆ trên thanh Favourite. Kéo bằng tay nắm⠿; vị trí và danh sách lưu cục bộ.
+- Fullscreen ẩn thanh vẽ dọc và các cụm điều khiển khác, giữ Favourite. Rê chuột vào mép trên để hiện timeframe; Esc thoát fullscreen.
+- Replay dùng dữ liệu native đã lưu và chỉ phát nến đã đóng theo cùng thời gian UTC giữa các chart. Có All/Current chart, chọn nến/ngày/giờ/random, tiến/lùi, tốc độ0.5–10 bước/giây và lưu phiên. Space phát/dừng, F10 hoặc Alt+Right tiến, Alt+Left lùi. Đổi timeframe giữ thời điểm Replay. Indicator chỉ nhận dữ liệu đã đóng tại đồng hồ Replay. Paper Trading trong Replay chưa triển khai.
+- Countdown theo khung từng chart, lịch tháng/quý, timezone/session và correction đóng sớm nguồn cung cấp. Khung không có nguồn cập nhật được đánh dấu nguồn chậm; không tự tạo tick hoặc nội suy giá trong Replay.

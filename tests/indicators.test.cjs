@@ -5,6 +5,7 @@ const vm=require('node:vm');
 const qs=require('../frontend/indicators/qs-stacks-plus.js');
 const qt=require('../frontend/indicators/qt-plus.js');
 const MarketData=require('../frontend/js/market_data.js');
+const PineRuntime=require('../frontend/js/pine_runtime.js');
 global.MarketData=MarketData;
 const t=s=>Date.parse(s)/1000;
 const bar=(time,high=102,low=99,open=100,close=101)=>({time,high,low,open,close,volume:10});
@@ -94,4 +95,20 @@ test('QT QCISD confirms a bearish level and invalidates after three full bodies 
  assert.ok(qt.calculate(bars,ctx).events.some(x=>x.type==='qcisdConfirm'));
  for(let i=1;i<=3;i++){bars.push(bar(start+1440+i*60,114,104,105,106));peers.push(bar(start+1440+i*60,209,191,200,201));}
  const ended=qt.calculate(bars,ctx);assert.ok(ended.events.some(x=>x.type==='qcisdInvalidation'));assert.ok(!ended.drawings.some(x=>x.text?.startsWith('(-)')));
+});
+
+test('Pine plot offset follows real loaded bars instead of synthetic timeframe seconds',()=>{
+ const runtime=Object.create(PineRuntime.prototype);
+ const bars=[bar(60),bar(120),bar(3600)];
+ const result=runtime.convert({indicator:{overlay:true},plots:{line:{title:'Offset line',options:{style:'line',offset:1,color:'#fff'},data:[{time:60000,value:1},{time:120000,value:2}]}}},bars,{timeframeSeconds:60},new Set());
+ assert.deepEqual(result.series[0].data.map(point=>point.time),[120,3600]);
+ assert.equal(result.warnings.some(message=>message.includes('Plot offset chưa được render')),false);
+});
+
+test('Pine fill uses the offsets of its source plots',()=>{
+ const runtime=Object.create(PineRuntime.prototype),bars=[bar(60),bar(120),bar(3600)];
+ const plot=(offset,value)=>({options:{style:'line',offset},data:[{time:60000,value},{time:120000,value:value+1}]});
+ const result=runtime.convert({indicator:{overlay:true},plots:{top:plot(1,3),bottom:plot(1,1),band:{options:{style:'fill',plot1:'top',plot2:'bottom',color:'#fff'},data:[]}}},bars,{timeframeSeconds:60},new Set());
+ assert.deepEqual(result.paints[0].top.map(point=>point.time),[120,3600]);
+ assert.deepEqual(result.paints[0].bottom.map(point=>point.time),[120,3600]);
 });

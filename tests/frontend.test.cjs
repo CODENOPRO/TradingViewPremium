@@ -25,17 +25,19 @@ test('RTH metadata honors early close, holiday and DST without hardcoded UTC off
   assert.equal(MarketData.inRegularSession(bar(Date.parse('2026-04-03T15:00:00Z') / 1000), meta), false);
 });
 
-test('HTF volume does not double count repeated updates with partial minute history', () => {
+test('native HTF history only changes on its own feed, never from partial minute history', () => {
   const ctx = vm.createContext({ MarketData });
   vm.runInContext(fs.readFileSync('frontend/js/chart_engine.js', 'utf8') + '\nthis.Engine=ChartEngine;', ctx);
   const engine = Object.create(ctx.Engine.prototype);
   const start = MarketData.bucket(Date.parse('2026-11-10T15:02:00Z') / 1000, '5m', metadata);
   Object.assign(engine, { metadata, rawBars: [bar(start + 60, 5)], htfData: { '5m': [bar(start, 100)] }, htfBaselines: { '5m': new Map([[start + 60, 5]]) } });
   engine.rawBars[0].volume = 7;
-  assert.equal(engine.getBarsForTimeframe('5m')[0].volume, 102);
-  assert.equal(engine.getBarsForTimeframe('5m')[0].volume, 102);
+  assert.equal(engine.getBarsForTimeframe('5m')[0].volume, 100);
+  assert.equal(engine.getBarsForTimeframe('5m')[0].volume, 100);
   engine.rawBars.push(bar(start + 120, 3));
-  assert.equal(engine.getBarsForTimeframe('5m')[0].volume, 105);
+  assert.equal(engine.getBarsForTimeframe('5m')[0].volume, 100);
+  engine.htfData['5m']=[bar(start,105)];
+  assert.equal(engine.getBarsForTimeframe('5m')[0].volume,105);
 });
 
 test('paper margin rejects oversized trades and persists account equity after stop', () => {

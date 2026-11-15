@@ -21,6 +21,7 @@ class DrawingEditor {
       else if(action==='duplicate'){
         const draft=structuredClone(this.drawing);draft.id=crypto.randomUUID();draft.locked=false;
         const c=this.selection.chart;draft.p1.time=DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,draft.p1.time)+2);
+        if(draft.points){draft.points=draft.points.map(p=>({...p,time:DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,p.time)+2,true)}));draft.p1={...draft.points[0]};}
         if(draft.p2)draft.p2.time=DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,draft.p2.time)+2);
         c.drawings.push(draft);this.manager.saveDrawings(c);this.select(c,draft);
       } else if(action==='front'||action==='back'){
@@ -55,6 +56,16 @@ class DrawingEditor {
   remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.('Mở khóa bản vẽ trước khi xóa.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
   open(tab='style'){if(this.drawing)this.settings.open(this.selection.chart,this.drawing,tab);}
   find(chart,x,y){if(chart.drawingsHidden||y>chart.plotHeight-26)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
+  cursor(chart,hit){
+    if(!hit)return '';
+    if(hit.drawing.locked||this.manager.drawingsLocked)return 'not-allowed';
+    if(hit.handle==='body')return 'move';
+    if(hit.handle.endsWith('_time'))return 'ew-resize';
+    if(hit.handle.endsWith('_price')||hit.drawing.type==='hline')return 'ns-resize';
+    const g=DrawingModel.geometry(chart,hit.drawing);if(!g)return 'move';
+    const same=(g.a.x-g.b.x)*(g.a.y-g.b.y)>=0;
+    return ['p1x_p2y','p2x_p1y'].includes(hit.handle)?(same?'nesw-resize':'nwse-resize'):(same?'nwse-resize':'nesw-resize');
+  }
   bind(chart){
     chart.container.addEventListener('pointerdown',event=>{
       if(event.button!==0||this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select,.indicator-tables,.tv-trade-pill,.chart-nav-controls'))return;
@@ -69,17 +80,27 @@ class DrawingEditor {
       chart.chart.applyOptions({handleScroll:{pressedMouseMove:false}});chart.container.setPointerCapture(event.pointerId);
     },true);
     chart.container.addEventListener('pointermove',event=>{
-      if(!this.drag||this.drag.chart!==chart)return;
+      if(!this.drag||this.drag.chart!==chart){
+        if(this.manager.activeTool==='crosshair'&&!event.target.closest('button,input,select,.indicator-tables')){
+          const rect=chart.container.getBoundingClientRect();const cursor=this.cursor(chart,this.find(chart,event.clientX-rect.left,event.clientY-rect.top));chart.container.style.cursor=cursor;if(cursor)chart.container.style.setProperty('--drawing-cursor',cursor);else chart.container.style.removeProperty('--drawing-cursor');
+        }return;
+      }
       const rect=chart.container.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
       if(Math.hypot(x-this.drag.startX,y-this.drag.startY)<3&&!this.drag.changed)return;
       let point=DrawingModel.fromPixel(chart,x,y);if(!point)return;
       if(this.drag.handle!=='body')point=this.manager.snapPoint(chart,point.time,point.price,event);
       event.preventDefault();event.stopImmediatePropagation();
-      const {original,start,handle}=this.drag,d=structuredClone(original);
-      if(handle==='p1'||handle==='p2')d[handle]=point;
+      const {original,start,handle}=this.drag;let d=structuredClone(original);
+      if(handle==='p1'||handle==='p2'||handle==='p3')d[handle]=point;
       else if(handle==='p1x_p2y'){d.p1.time=point.time;d.p2.price=point.price;}
       else if(handle==='p2x_p1y'){d.p2.time=point.time;d.p1.price=point.price;}
-      else {const delta=Math.round(DrawingModel.logicalIndex(chart,point.time)-DrawingModel.logicalIndex(chart,start.time));for(const key of original.p2?['p1','p2']:['p1']){d[key].time=DrawingModel.timeAt(chart,DrawingModel.logicalIndex(chart,original[key].time)+delta);d[key].price=original[key].price+point.price-start.price;}}
+      else if(['p1_time','p2_time','p1_price','p2_price'].includes(handle))d=DrawingModel.resizeBox(original,handle,point);
+      else {const delta=Math.round(DrawingModel.logicalIndex(chart,point.time)-DrawingModel.logicalIndex(chart,start.time));for(const key of original.p3?['p1','p2','p3']:original.p2?['p1','p2']:['p1']){d[key].time=DrawingModel.timeAt(chart,DrawingModel.logicalIndex(chart,original[key].time)+delta);d[key].price=original[key].price+point.price-start.price;}}
+      if(d.type==='brush'&&original.points&&handle==='body'){
+        const delta=Math.round(DrawingModel.logicalIndex(chart,point.time)-DrawingModel.logicalIndex(chart,start.time));
+        d.points=original.points.map(p=>({time:DrawingModel.timeAt(chart,DrawingModel.logicalIndex(chart,p.time)+delta,true),price:p.price+point.price-start.price}));
+        d.p1={...d.points[0]};
+      }
       this.drag.changed=true;this.drag.draft=d;this.preview(d);
     },true);
     chart.container.addEventListener('pointerup',event=>{
@@ -87,6 +108,8 @@ class DrawingEditor {
       const draft=this.drag.changed?this.drag.draft:null;this.cancelDrag();if(draft)this.commit(draft);
     },true);
     chart.container.addEventListener('pointercancel',()=>this.cancelDrag(),true);
+    chart.container.addEventListener('lostpointercapture',()=>this.cancelDrag(),true);
+    chart.container.addEventListener('pointerleave',()=>{if(!this.drag){chart.container.style.cursor='';chart.container.style.removeProperty('--drawing-cursor');}});
     chart.container.addEventListener('dblclick',event=>{
       if(this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select'))return;
       const rect=chart.container.getBoundingClientRect(),hit=this.find(chart,event.clientX-rect.left,event.clientY-rect.top);
@@ -105,8 +128,12 @@ class DrawingEditor {
     if(chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe)){this.toolbar.hidden=true;return;}
     this.toolbar.hidden=false;
     const g=DrawingModel.geometry(chart,d);if(!g)return;
-    const points=[g.a];if(d.p2)points.push(g.b);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
+    const points=[g.a];if(d.p2)points.push(g.b);if(d.type==='position'&&g.c)points.push(g.c);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
     ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
     points.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
+    if(d.type==='box'){
+      ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
+      for(const p of DrawingModel.boxEdges(g)){ctx.fillRect(p.x-4,p.y-4,8,8);ctx.strokeRect(p.x-4,p.y-4,8,8);}ctx.restore();
+    }
   }
 }

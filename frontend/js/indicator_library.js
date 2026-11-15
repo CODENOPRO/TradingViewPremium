@@ -10,13 +10,13 @@ class IndicatorLibrary {
     const back=document.createElement('button');back.type='button';back.className='btn-secondary indicator-back';back.textContent='‹ My scripts';back.onclick=()=>this.showSection('scripts');this.body.prepend(back);
     this.footer=this.modal.querySelector('.modal-footer');this.saved=document.createElement('span');this.saved.className='indicator-save-state';this.footer.prepend(this.saved);
     const save=document.createElement('button');save.type='button';save.className='btn-secondary';save.textContent='Save script';save.onclick=()=>this.save(false);document.getElementById('apply-indicator').before(save);
-    for(const id of ['indicator-code','indicator-name','indicator-settings'])document.getElementById(id).addEventListener('input',()=>{this.clean=false;clearTimeout(this.timer);this.timer=setTimeout(()=>this.saveDraft(),250);this.saved.textContent='Draft…';});
+    this.console=document.getElementById('indicator-console');this.editor=new PineEditor(this);
+    for(const id of ['indicator-code','indicator-name'])document.getElementById(id).addEventListener('input',()=>{this.clean=false;clearTimeout(this.timer);this.timer=setTimeout(()=>this.saveDraft(),250);this.saved.textContent='Draft…';this.report('');});
     this.modal.addEventListener('close',()=>this.saveDraft());
     window.addEventListener('pagehide',()=>{if(this.section==='editor')this.saveDraft();});
-    document.getElementById('indicator-file').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;if(file.size>2*1024*1024){window.showToast?.('File vượt 2 MB','alert');return;}document.getElementById('indicator-code').value=await file.text();document.getElementById('indicator-name').value=file.name.replace(/\.[^.]+$/,'');event.target.value='';this.clean=false;this.saveDraft();});
     document.getElementById('apply-indicator').onclick=()=>this.save(true);
     document.getElementById('remove-indicator').onclick=()=>{if(this.instanceId&&this.chart.runner.remove(this.instanceId))this.showSection('chart');};
-    document.getElementById('stop-indicator-run').onclick=()=>{if(this.instanceId&&this.chart.runner.pause(this.instanceId)){this.saved.textContent='Stopped · saved';this.onChange?.();}};
+    document.getElementById('stop-indicator-run').onclick=()=>{if(this.instanceId&&this.chart.runner.pause(this.instanceId)){this.saved.textContent='Stopped · saved';this.report('Execution stopped. Script saved.');this.onChange?.();}};
   }
   migrate(charts){
     let changed=false;
@@ -29,13 +29,13 @@ class IndicatorLibrary {
     else this.showSection('scripts');
   }
   showSection(section){
-    if(this.section==='editor')this.saveDraft();this.section=section;this.body.hidden=true;this.footer.hidden=true;this.panel.hidden=false;
+    if(this.section==='editor')this.saveDraft();this.section=section;this.instanceId=null;this.body.hidden=true;this.footer.hidden=true;this.panel.hidden=false;
     for(const b of this.panel.querySelectorAll('[data-section]'))b.classList.toggle('active',b.dataset.section===section);
-    this.renderList();this.search.focus();
+    this.editor.sync();this.renderList();this.search.focus();
   }
   renderList(){
     this.list.replaceChildren();const query=this.search.value.trim().toLowerCase();
-    const records=this.section==='chart'?this.chart.runner.entries.map(e=>({...e.record,name:e.name||e.record.name})):this.sources.filter(s=>this.section==='archived'?s.archived:!s.archived&&(this.section!=='favorites'||s.favorite));
+    const records=this.section==='chart'?this.chart.runner.entries.map(e=>({...e.record})):this.sources.filter(s=>this.section==='archived'?s.archived:!s.archived&&(this.section!=='favorites'||s.favorite));
     const button=(text,label,action)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.title=label;b.setAttribute('aria-label',label);b.onclick=action;return b;};
     for(const record of records.filter(s=>s.name.toLowerCase().includes(query))){
       const row=document.createElement('div');row.className='indicator-script-row';const name=document.createElement('span');name.textContent=record.name;row.appendChild(name);
@@ -57,10 +57,10 @@ class IndicatorLibrary {
     this.sourceId=source?.sourceId||(!instanceId?source?.id:null)||this.sources.find(s=>s.code===source?.code)?.id||null;
     const draft=!source?Workspace.read('indicator_draft_v1',{}):source;
     document.getElementById('indicator-name').value=draft?.name||'';document.getElementById('indicator-code').value=draft?.code||'';document.getElementById('indicator-settings').value=draft?.settingsText??JSON.stringify(draft?.settings||{},null,2);
-    document.getElementById('apply-indicator').textContent=instanceId?'Save & update chart':'Save & add to chart';
-    document.getElementById('remove-indicator').hidden=document.getElementById('stop-indicator-run').hidden=!instanceId;this.saved.textContent='';document.getElementById('indicator-code').focus();
+    document.getElementById('apply-indicator').textContent=instanceId?'Update on chart':'Add to chart';
+    document.getElementById('remove-indicator').hidden=document.getElementById('stop-indicator-run').hidden=!instanceId;this.saved.textContent='';this.report(instanceId?this.chart.runner.entries.find(e=>e.record.id===instanceId)?.status:'');this.editor.sync();document.getElementById('indicator-code').focus();
   }
-  readEditor(){const settings=JSON.parse(document.getElementById('indicator-settings').value||'{}');if(!settings||Array.isArray(settings)||typeof settings!=='object')throw Error('Settings cần là JSON object.');return {name:document.getElementById('indicator-name').value.trim()||'Custom indicator',code:document.getElementById('indicator-code').value,settings};}
+  readEditor(){const code=document.getElementById('indicator-code').value;if(!/^\s*\/\/\s*@version\s*=\s*6\b/m.test(code))throw Error('Pine Editor chỉ nhận Pine Script v6: thêm //@version=6 ở đầu file.');if(!/\bindicator\s*\(/.test(code))throw Error('Script cần declaration indicator(). Strategy và library không thể thêm vào chart này.');return {name:document.getElementById('indicator-name').value.trim()||'Untitled script',code,settings:{...(this.chart.runner.entries.find(e=>e.record.id===this.instanceId)?.record.settings||this.sources.find(s=>s.id===this.sourceId)?.settings||{})}};}
   saveDraft(){clearTimeout(this.timer);if(this.section!=='editor'||this.clean)return;const draft={name:document.getElementById('indicator-name').value,code:document.getElementById('indicator-code').value,settingsText:document.getElementById('indicator-settings').value};if(Workspace.write('indicator_draft_v1',draft))this.saved.textContent='Draft saved';}
   save(add){
     try{
@@ -68,7 +68,8 @@ class IndicatorLibrary {
       const id=this.sourceId||this.chart.runner.id(),previous=this.sources.find(s=>s.id===id);
       const source={...previous,...script,id,updatedAt:Date.now()};const next=[...this.sources.filter(s=>s.id!==id),source];
       if(!Workspace.write('indicator_library_v1',next))return;this.sources=next;this.sourceId=id;this.clean=true;Workspace.write('indicator_draft_v1',null);this.saved.textContent='Saved';
-      if(add){const ok=this.instanceId?this.chart.runner.update(this.instanceId,{...script,sourceId:id,enabled:true}):this.chart.runner.add({...script,sourceId:id,view:{}});if(ok){this.onChange?.();this.showSection('chart');}}
-    }catch(error){this.saved.textContent=error.message;}
+      if(add){const ok=this.instanceId?this.chart.runner.update(this.instanceId,{...script,sourceId:id,enabled:true}):this.chart.runner.add({...script,sourceId:id,view:{}});if(ok){if(!this.instanceId)this.instanceId=ok.id;document.getElementById('apply-indicator').textContent='Update on chart';document.getElementById('remove-indicator').hidden=document.getElementById('stop-indicator-run').hidden=false;this.report(this.chart.runner.entries.find(e=>e.record.id===this.instanceId)?.status||'Đang nạp script…');this.onChange?.();}}
+    }catch(error){this.saved.textContent='';this.report('Lỗi: '+error.message);}
   }
+  report(message,chart,instanceId){if(!this.console||chart&&chart!==this.chart||instanceId&&this.instanceId&&instanceId!==this.instanceId)return;this.console.textContent=message||'Ready · Paste a Pine v6 indicator, save, then add to chart. External imports require library source.';if(chart&&this.section==='chart')this.renderList();this.console.classList.toggle('is-error',/Lỗi:|\b(error|unsupported|không hỗ trợ|thiếu)\b/i.test(message||''));}
 }

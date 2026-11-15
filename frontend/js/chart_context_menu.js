@@ -50,7 +50,7 @@ class ChartContextMenu {
         const value=point.price.toLocaleString('en-US',{maximumFractionDigits:8});
         this.item(`Copy price ${value}`,async()=>{if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable in this browser.');await navigator.clipboard.writeText(String(point.price));});
         this.divider();this.item(`Add alert on ${chart.symbol} at ${value}…`,()=>this.openAlert(chart,point.price),'Alt A');
-        this.item('Trade…',()=>{document.getElementById('order-price').value=point.price;document.getElementById('paper-panel').classList.add('open');});
+        this.item('Trade…',()=>{chart.container.dispatchEvent(new CustomEvent('chart-activate'));document.getElementById('paper-panel').dispatchEvent(new CustomEvent('paper-new-ticket',{detail:{price:point.price}}));});
         this.item('Add text note…',()=>{const note={...DrawingModel.defaults('text'),id:crypto.randomUUID(),type:'text',p1:point,text:''};chart.drawings.push(note);this.drawing.saveDrawings(chart);this.drawing.editor.select(chart,note);this.drawing.editor.open('text');});
       }
       this.divider();this.item('Object tree…',()=>{this.desktop.objectTab='tree';this.desktop.open('objects');});

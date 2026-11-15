@@ -49,6 +49,7 @@ class DrawingManager {
     }
     if (tool !== 'crosshair') this.editor.clear();
     this.activeTool = tool;
+    for(const chart of window.charts||[]){chart.container.style.cursor='';chart.container.style.removeProperty('--drawing-cursor');for(const button of chart.alertOverlay?.buttons.values()||[])button.style.pointerEvents=tool==='crosshair'?'auto':'none';}
     this.drawingState = null;
 
     document.querySelectorAll('.tool-btn, .ft-btn').forEach(btn => {
@@ -67,7 +68,32 @@ class DrawingManager {
   snapPoint(chart,time,price,event={}){
     const temporary=!!(event.ctrlKey||event.metaKey);
     if(this.magnetEnabled===temporary)return {time,price};
-    return chart.snapToBar(time,price,temporary?'strong':this.magnetMode);
+    const rect=chart.container?.getBoundingClientRect();
+    const pixel=rect&&Number.isFinite(event.clientX)?{x:event.clientX-rect.left,y:event.clientY-rect.top}:null;
+    return chart.snapToBar(time,price,temporary?'strong':this.magnetMode,pixel);
+  }
+
+  bindMagnetCrosshair(chart){
+    let pointer=null,updating=false;
+    chart.container.addEventListener('mousemove',event=>{
+      if(event.target.closest('button,input,select,.indicator-tables')){pointer=null;return;}
+      const rect=chart.container.getBoundingClientRect();
+      pointer={x:event.clientX-rect.left,y:event.clientY-rect.top,ctrlKey:event.ctrlKey,metaKey:event.metaKey};
+    },true);
+    chart.container.addEventListener('mouseleave',()=>{pointer=null;chart.chart.clearCrosshairPosition();});
+    chart.chart.subscribeCrosshairMove(param=>{
+      if(updating||!pointer||!param.point||param.paneIndex>0||chart.container.hidden)return;
+      if(pointer.x<0||pointer.x>=chart.container.clientWidth-(chart.chart.priceScale('right').width()||65)||pointer.y<0||pointer.y>=chart.plotHeight-26)return;
+      const temporary=!!(pointer.ctrlKey||pointer.metaKey);
+      if(this.magnetEnabled===temporary)return;
+      const time=chart.coordinateToTime(pointer.x),price=chart.coordinateToPrice(pointer.y);
+      const snapped=chart.snapToBar(time,price,temporary?'strong':this.magnetMode,pointer);
+      if(!Number.isFinite(snapped.time)||!Number.isFinite(snapped.price))return;
+      // Native Normal mode supplies free movement outside the weak snap radius.
+      if(snapped.time===time&&snapped.price===price)return;
+      updating=true;
+      try{chart.chart.setCrosshairPosition(snapped.price,snapped.time,chart.series);}finally{updating=false;}
+    });
   }
 
   toggleLock() {
@@ -99,9 +125,11 @@ class DrawingManager {
     const container = chartEngine.container;
     this.editor.bind(chartEngine);
     this.loadDrawings(chartEngine);
+    this.bindMagnetCrosshair(chartEngine);
+    this.bindBrush(chartEngine);
 
     container.addEventListener('click', (e) => {
-      if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.drawingsLocked) return;
+      if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.activeTool==='brush' || this.drawingsLocked) return;
       if (this.drawingState?.chart !== chartEngine) this.drawingState = null;
 
       const rect = container.getBoundingClientRect();
@@ -124,15 +152,23 @@ class DrawingManager {
         });
         this.saveDrawings(chartEngine);
         chartEngine.renderDrawings();
-        if(!this.keepDrawing)this.setTool('crosshair');
+        this.setTool('crosshair');
         return;
       }
 
       if (this.activeTool === 'text') {
         const note = { ...DrawingModel.defaults('text'), id: crypto.randomUUID(), type: 'text', p1: { time, price }, text: 'Text' };
         chartEngine.drawings.push(note); this.saveDrawings(chartEngine);
-        if(!this.keepDrawing)this.setTool('crosshair'); this.editor.select(chartEngine, note); this.editor.open('text');
+        this.setTool('crosshair'); this.editor.select(chartEngine, note); this.editor.open('text');
         return;
+      }
+
+      if(this.activeTool==='position'){
+        if(!this.drawingState){this.drawingState={step:3,chart:chartEngine,points:[{time,price}]};return;}
+        this.drawingState.points.push({time,price});
+        if(this.drawingState.points.length<3)return;
+        const [p1,p2,p3]=this.drawingState.points,newDrawing={id:crypto.randomUUID(),type:'position',p1,p2,p3,...DrawingModel.defaults('position')};
+        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);chartEngine.drawings.push(newDrawing);this.editor.select(chartEngine,newDrawing);this.saveDrawings(chartEngine);this.drawingState=null;this.setTool('crosshair');chartEngine.renderDrawings();return;
       }
 
       // 2-point tools (line, box, fib, position, measure)
@@ -158,13 +194,13 @@ class DrawingManager {
         this.saveDrawings(chartEngine);
 
         this.drawingState = null;
-        if(!this.keepDrawing)this.setTool('crosshair');
+        this.setTool('crosshair');
         chartEngine.renderDrawings();
       }
     });
 
     container.addEventListener('mousemove', (e) => {
-      if (!this.drawingState || this.drawingState.chart !== chartEngine || this.drawingState.step !== 2 || this.drawingsLocked) return;
+      if (!this.drawingState || this.drawingState.chart !== chartEngine || this.drawingsLocked) return;
 
       const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -175,6 +211,13 @@ class DrawingManager {
       if (!time || !price) return;
 
       ({time,price}=this.snapPoint(chartEngine,time,price,e));
+
+      if(this.drawingState.step===3){
+        const [p1,p2]=this.drawingState.points;
+        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);
+        chartEngine.drawings.push({id:'temp',isTemp:true,type:'position',p1,p2:p2||{time,price},p3:{time,price},...DrawingModel.defaults('position')});
+        chartEngine.renderDrawings();return;
+      }
 
       chartEngine.drawings = chartEngine.drawings.filter(d => !d.isTemp);
       chartEngine.drawings.push({
@@ -189,6 +232,40 @@ class DrawingManager {
       });
       chartEngine.renderDrawings();
     });
+  }
+
+  bindBrush(chart){
+    const node=chart.container;let stroke;
+    const finish=(event,cancel=false)=>{
+      if(!stroke)return;const current=stroke;stroke=null;
+      chart.drawings=chart.drawings.filter(d=>d!==current.drawing);chart.chart.applyOptions({handleScroll:{pressedMouseMove:current.scroll}});
+      if(node.hasPointerCapture(current.pointer))node.releasePointerCapture(current.pointer);
+      if(!cancel&&current.drawing.points.length>1&&current.symbol===chart.symbol){
+        const d=current.drawing;delete d.isTemp;chart.drawings.push(d);this.saveDrawings(chart);this.setTool('crosshair');this.editor.select(chart,d);
+      }
+      chart.renderDrawings();
+    };
+    node.addEventListener('pointerdown',event=>{
+      if(this.activeTool!=='brush'||this.drawingsLocked||event.button!==0||event.target.closest('button,input,select,.indicator-tables'))return;
+      const r=node.getBoundingClientRect(),x=event.clientX-r.left,y=event.clientY-r.top;
+      if(x<0||x>=node.clientWidth-(chart.chart.priceScale('right').width()||65)||y<0||y>=chart.plotHeight-26)return;
+      const p=DrawingModel.fromPixel(chart,x,y,true);if(!p)return;
+      event.preventDefault();event.stopImmediatePropagation();node.dispatchEvent(new CustomEvent('chart-activate'));
+      const d={...DrawingModel.defaults('brush'),type:'brush',id:crypto.randomUUID(),isTemp:true,p1:{...p},points:[p],width:2};
+      stroke={drawing:d,pointer:event.pointerId,symbol:chart.symbol,x,y,scroll:chart.chart.options().handleScroll.pressedMouseMove};chart.drawings.push(d);
+      chart.chart.applyOptions({handleScroll:{pressedMouseMove:false}});node.setPointerCapture(event.pointerId);
+    },true);
+    node.addEventListener('pointermove',event=>{
+      if(!stroke)return;if(this.activeTool!=='brush'||this.drawingsLocked||stroke.symbol!==chart.symbol)return finish(event,true);
+      event.preventDefault();event.stopImmediatePropagation();const r=node.getBoundingClientRect(),x=event.clientX-r.left,y=event.clientY-r.top;
+      if(x<0||x>=node.clientWidth-65||y<0||y>=chart.plotHeight-26||Math.hypot(x-stroke.x,y-stroke.y)<2||stroke.drawing.points.length>=8192)return;
+      const p=DrawingModel.fromPixel(chart,x,y,true);if(!p)return;stroke.drawing.points.push(p);stroke.x=x;stroke.y=y;chart.renderDrawings();
+    },true);
+    node.addEventListener('pointerup',event=>{if(stroke){event.preventDefault();event.stopImmediatePropagation();finish(event);}},true);
+    node.addEventListener('pointercancel',event=>finish(event,true),true);
+    node.addEventListener('lostpointercapture',event=>finish(event,true),true);
+    window.addEventListener('blur',event=>finish(event,true));
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')finish(event,true);});
   }
 
   initHotkeys() {
