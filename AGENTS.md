@@ -543,3 +543,220 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Origin workspace đang là zTadqa/TradingTerminal; giữ nguyên origin và toàn bộ thay đổi local. Dùng checkout main riêng của CODENOPRO/TradingViewPremium trong .backups/publish-codenopro-20261115, nền remote3adb20b, để đưa snapshot mã hiện hành lên mà không force-push hoặc ghép lịch sử không liên quan.
 - Phạm vi gồm mã nguồn/docs/test, frontend assets và10ảnh protocol người dùng cung cấp. Không đưa cache thị trường/metadata, cấu hình nguồn chart cục bộ, backup, log, secrets hoặc attachment Pine gốc.
 - Kiểm chứng trước xuất bản:119Node tests và36Python tests qua. Suite Python trong sandbox bị chặn socket; chạy lại có quyền socket local thành công. Không restart TradingView/backend hoặc thay dữ liệu workspace.
+
+### 2026-11-15 — Khung frontend cố định theo ảnh TradingView
+- Yêu cầu mới thay kiểu floating: thanh trên liền mạch, rail vẽ trái và rail panel phải gắn vào viewport; dùng mô tả Navigation 4 làm hướng thiết kế hover. Backend giữ nguyên.
+- Backup .backups/fixed-shell-20261115. Thêm frontend/css/fixed_shell.css; sửa index.html, desktop_shell.js, toolbar_clusters.js, terminal_features.js, terminal_polish.js, terminal_companions.js và tests/toolbar_clusters.test.cjs.
+- Chart có diện tích riêng dưới header46px, giữa rail52/44px. Object tree/watchlist/alerts mở trong flex layout và thu hẹp chart; Calendar/Music/News ở rail phải. Bỏ grip/đọc tọa độ toolbar cũ; favorite tools đặt trong rail trái. Chrome phẳng tối, đường chia mảnh, hover scale nhẹ và tôn trọng reduced motion. Giữ dữ liệu/legacy prefs để khôi phục; controls hide/opacity của toolbar khóa trong chế độ pinned.
+- Không cài React Bits Pro: dự án JS thuần, chưa có registry/license được cấu hình. Đây là triển khai CSS/JS riêng theo ý tưởng dock, không phải source block Pro. Không thêm framework/dependency hoặc sửa backend/TradingView/data/account.
+- Kiểm chứng:119/119Node tests qua; JS syntax5file qua, git diff check qua. UI QA riêng127.0.0.1:3000: chart thật nạp NQ/ES/YM; header/rails đúng bounds, favorites nằm trong rail; Object tree mở thu hẹp chart; Calendar và Layout mở/đóng được; console errors=[]. Ảnh fixed-terminal.jpg trong visualization chat. Chưa kiểm thử tương tác mọi công cụ hoặc mọi kích thước màn hình.
+- Xuất bản theo quy trình repo: dùng checkout CODENOPRO riêng .backups/publish-codenopro-20261115; các file nền đã đối chiếu trùng backup trước sửa, chỉ đưa các file batch này. Không đưa dữ liệu/cache/backup/ảnh QA hoặc thay origin workspace.
+- Git chưa commit/push: automatic approval review từ chối cả lệnh trước thực thi vì tin nhắn người dùng hiện tại chưa xác nhận rõ destination/push main; không retry hoặc dùng đường vòng. Bản sửa đã hoàn tất local, cần người dùng xác nhận quyền push repo trước khi tiếp tục xuất bản.
+
+### 2026-11-15 — Bỏ hai nút góc chart
+- Người dùng yêu cầu bỏ cặp icon theo ảnh: Chart settings và Maximize chart. Bỏ khối tạo chart-window-controls trong desktop_shell.js, tăng version asset trong index.html. Settings trên header và menu chuột phải vẫn dùng được. Backup desktop_shell-before-remove-chart-buttons.js trong .backups/fixed-shell-20261115.
+- Yêu cầu kế tiếp: thu gọn hai rail; đổi trái52→44px, phải44→36px, nút30px và icon19–20px; màn nhỏ dùng40/34px. Sửa fixed_shell.css và tăng version.
+
+### 2026-11-15 — Icon công cụ theo ảnh và menu layout 1–3 chart
+- Vẽ lại SVG trong terminal_icons.js: Crosshair nét ngắt, Trendline đầu mút, Fibonacci, Position, Rectangle bốn góc, Text, Magnet, Lock/Eye/Trash/Ruler/Brush. desktop_shell.js dùng chung icon cho measure/brush; bỏ override Crosshair cũ trong terminal_features.js. fixed_shell.css dùng icon23px/nét1px. Backup .backups/tool-icons-20261115.
+- Menu layout chỉ còn9lựa chọn:1/2/6cho1/2/3chart đúng ảnh, bỏ các hàng4–16và lựa chọn3chart grid không cần. Thêm trạng thái chọn sáng và aria-pressed. Workspace cũ trên3chart fallback3chart, không xóa drawings/scripts/chart stores. Menu rộng425px, giữ các sync options hiện hữu. Backup .backups/layout-menu-20261115.
+- File sửa: terminal_icons.js, desktop_shell.js, terminal_features.js, fixed_shell.css, index.html và tài liệu này. Không đổi backend/data/sync.
+- Kiểm chứng: JS syntax3file qua; UI127.0.0.1:3000 xác nhận13icon23px/nét1px, Brush thật; menu9nút theo hàng[1,2,6], chọn3chart column1+2tạo areas"c0 c1"/"c0 c2", chọn lại3cột được, console errors=[]. Ảnh tdv-tool-icons.jpg/layout-menu.jpg trong visualization chat. Giữ workspace localhost của người dùng. Chưa kiểm mọi công cụ bằng chuột.
+- Chưa commit/push: giữ trạng thái chờ xác nhận trực tiếp sau automatic approval review đã từ chối lần trước; không thử lại.
+
+### 2026-11-15 — Màu impact lịch tin và bỏ link nguồn
+- High đỏ#f23645, Medium cam#ff9800, Low vàng#f5d442 trên cả filter và từng event. Bỏ anchor From ShowMyTrades khỏi footer; giữ Updated/timezone/cache status. Không thay nguồn feed.
+- Sửa terminal_companions.css/js, index.html tăng asset version. Backup .backups/calendar-impact-colors-20261115.
+- Kiểm chứng: JS syntax qua; UI QA127.0.0.1:3000 computed colors đúng cả3mức, footer links=0, event dots hiển thị đúng. Ảnh calendar-colors.jpg trong visualization chat. Chưa commit/push, chờ xác nhận push đang còn pending.
+
+### 2026-11-15 — Thanh trên cùng dạng pill đen nổi & ảnh protocol trong tab Calendar
+- Yêu cầu 1: sửa `#topbar` theo mẫu thanh dock nổi bo tròn nhưng màu đen. Sửa `frontend/css/fixed_shell.css` (`--frame-top: 60px`, capsule đen `border-radius: 24px` nổi ở `top: 6px`, trạng thái active bo vuông có chấm sáng dưới `.tf-btn.active::after` và `.btn-icon.active::before`, ẩn dấu phân cách kép `#topbar .separator + .separator`, ẩn span phụ `#btn-indicator-settings > span` và giữ rộng 34px, nút `#btn-settings`/`#btn-fullscreen` tròn), tăng version `fixed_shell.css?v=6` trong `frontend/index.html`. Backup `.backups/topbar-pill-20261115/`.
+- Yêu cầu 2: gắn 10 ảnh quy tắc tin vào các ngày quan trọng tương ứng ngay trong tab Economic Calendar (`#calendar-panel`). Kiểm tra trực tiếp 10 PNG có sẵn trong `frontend/assets/news-protocols/` trùng nội dung với 10 ảnh người dùng gửi; tái sử dụng `NewsProtocols` và bộ ảnh hiện có, không nhân bản ảnh.
+- Hành vi thay đổi:
+  - `frontend/js/news_protocols.js`: tách `matchDay(events, today)` từ `match(events, now)`, bổ sung khớp `Fed's Chair` (`fed(?:'s|’s)?\s+chair(?:man)?\b`) và `Retail Sales Control Group` / `Retail Sales ex Autos` ở mốc `08:30` ET `High`, vẫn loại trừ diễn giả Fed khác (như Barr) và tin `tentative`/ADP.
+  - `frontend/js/terminal_companions.js`: `renderCalendar()` hợp nhất archive sự kiện của `NewsProtocolPanel` + dữ liệu `/api/calendar` hiện tại; `buildCalendarList()` quét thêm các ngày trong tầm sự kiện sắp tới (+3 ngày bù cuối tuần cho `Day After`) để ngày khớp quy tắc (kể cả khi bộ lọc chỉ bật `High` hoặc ngày trước/sau không có dòng sự kiện) vẫn tạo mục ngày theo thứ tự thời gian và gắn `.calendar-protocol-card` kèm ảnh PNG trực tiếp dưới tiêu đề ngày, ẩn trong Replay hoặc khi lọc riêng tiền tệ khác USD (`EUR`...); thêm click phóng to `.calendar-protocol-lightbox` đóng bằng nút `×`, backdrop hoặc `Esc`.
+  - `frontend/css/terminal_companions.css` & `frontend/index.html`: thêm style card/lightbox cho `#calendar-panel` và tăng `?v=calendar-protocols-1`.
+  - `tests/interaction_news.test.cjs`: thêm test cho `matchDay` (`Fed's Chair Warsh speech`, `Retail Sales Control Group`, loại trừ `Fed's Barr speech`) và gắn ảnh protocol theo ngày / Replay / lọc `EUR`.
+  - Backup trước sửa lưu tại `.backups/calendar-protocol-images-20261115/`.
+- Kiểm chứng: `node --check` qua cho `news_protocols.js` và `terminal_companions.js`; `node --test tests/*.test.cjs` đạt 121/121 passed (trong đó `tests/interaction_news.test.cjs` 9/9); UI QA trên `http://127.0.0.1:3000`:
+  - Topbar `?qa=topbar` (1015x909, 1440x900, thử `icon-labels-only` rồi khôi phục): `#topbar` đúng bounds (`y=6, h=48`), `#app-body`/`#left-sidebar`/`#right-sidebar` ở `y=60`, `#btn-indicator-settings` 34px, `#layout-popover` mở dưới bar tại `y=64`, 0 console errors.
+  - Calendar `?qa=calendar-protocols` (1440x900): tải 200 OK các asset `?v=calendar-protocols-1`; `#calendar-panel` hiển thị inline `assets/news-protocols/fed-day.png` (`Fed Chair · Event Day` · `Fed's Chair Warsh speech`) dưới `Tomorrow` và `assets/news-protocols/0830.png` (`08:30 Red Folder News` · `Retail Sales Control Group`) dưới `Tue 17 Nov`; bấm thumbnail mở và đóng `.calendar-protocol-lightbox` bình thường; 0 console errors.
+- Giới hạn & còn lại: UI QA thực tế xác minh các mẫu khớp tuần lịch hiện tại (`fed-day`, `0830`); các mẫu `fomc-*`, `cpi-*`, `ppi-day`, `nfp-week`, `fed-before` xác minh qua unit test (cả trường hợp trước/sau cuối tuần) do tuần lịch live hiện tại không có các sự kiện đó. Chưa commit/push vì `origin` hiện trỏ `https://github.com/zTadqa/TradingTerminal.git` và đang giữ nguyên trạng thái chờ xác nhận push như đợt trước.
+
+### 2026-11-15 — Đóng lại dialog Settings công cụ vẽ theo TradingView Desktop
+
+- Yêu cầu: sửa dialog cài đặt các công cụ vẽ (`#drawing-settings`) cho giống TradingView Desktop (`Rectangle` là mẫu chuẩn, các công cụ khác thích ứng đúng tính chất riêng thay vì sao chép nhãn cứng).
+- File thay đổi: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/js/desktop_shell.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`.
+- Hành vi thay đổi:
+  - `frontend/js/drawing_settings.js`: thiết kế lại header theo TV (nút đổi tên `#drawing-rename` + `#drawing-title-input`, icon đóng SVG mảnh); tab động theo loại hình (`tabsFor(type)`: `text` mở thẳng tab `Text` và ẩn `Style`; `fib`, `position`, `measure`, `brush` ẩn tab `Text` không dùng); nhãn đường viền/nét động (`#drawing-stroke-label`: `Border`, `Line`, `Trend line`, `Entry line`, `Stroke`); thay dãy ô độ dày bị bóp/select rỗng/thanh trượt rời bằng pill gọn `[swatch | line preview]` / `[swatch]` mở popover `.tv-style-popover` dùng chung (bảng màu TDV 60 ô + custom color, Opacity 0–100%, Thickness 1–5px, Style Solid/Dashed/Dotted); tab `Text` dùng toolbar cỡ chữ + `B`/`I` + `.tv-align-pair`; tab `Coordinates` hiển thị đủ 3 điểm (`#1 Entry`, `#2 Target`, `#3 Stop`) cho `position` và chỉ giá cho `hline`.
+  - `frontend/js/drawing_model.js`: bổ sung `title`, `profitColor`/`profitOpacity`, `stopColor`/`stopOpacity` và mặc định `entry line` cho `position`; cập nhật `draw()` để nhãn `fib` tôn trọng màu/độ mờ viền và `position` render theo các màu vùng/đường cấu hình mới.
+  - `frontend/js/drawing_editor.js` & `frontend/js/desktop_shell.js`: lọc nút nhanh trên floating toolbar (`fillColor` chỉ cho `box`/`measure`, `text` chỉ cho công cụ có chữ) và ưu tiên hiển thị `value.title` trong Object Tree.
+  - `frontend/css/fixed_shell.css` & `frontend/index.html`: ghi đè rule `.modal` navy của `terminal_studio.css` bằng `#drawing-settings` nền charcoal `#1f2126`, căn giữa `<select>` kèm `select::picker-icon{display:none}` và chevron SVG đơn để tránh mũi tên kép trên Chromium, tăng cache-buster lên `?v=9` và `?v=tdv-settings-1`.
+  - `tests/drawings.test.cjs`: thêm test `DrawingSettings adapts tabs, labels, coordinates and defaults to each drawing tool type`.
+  - Backup trước sửa lưu tại `.backups/drawing-settings-tdv-20261115/`.
+- Kiểm chứng: `node --check` cho `drawing_model.js`, `drawing_settings.js`, `drawing_editor.js`, `desktop_shell.js`; `node --test tests/*.test.cjs` đạt 122/122 passed; `git diff --check` trên các file đã sửa exited 0; UI QA qua browser trên `http://127.0.0.1:3000/?qa=drawing-settings` (`fixed_shell.css?v=9`):
+  - `Position`: hiện `Style`/`Coordinates`/`Visibility` (ẩn `Text`), nhãn `Entry line`/`Profit zone`/`Stop zone` và 3 điểm `#1 Entry`/`#2 Target`/`#3 Stop`.
+  - `Text`: ẩn `Style`, mở thẳng `Text` với toolbar cỡ chữ và `.tv-align-pair`.
+  - `Rectangle`: kiểm tra trực quan header/tabs/Extend/Border/Middle line/Background/Template/Cancel/Ok, xác nhận `<select>` chỉ còn 1 chevron mảnh; dọn sạch các hình vẽ thử tạm trên Chart 1 (`drawingsCount: 0`, 0 console errors).
+- Giới hạn & còn lại: popover chọn màu/nét/độ mờ và các công cụ khác (`line`, `hline`, `fib`, `measure`, `brush`) kiểm chứng logic qua `node --test` (122/122) và code inspection; chưa mở từng công cụ còn lại trên UI trình duyệt. Chưa commit/push vì `origin` hiện trỏ `https://github.com/zTadqa/TradingTerminal.git` và đang chờ xác nhận đích push.
+
+### 2026-11-16 — Giữ phím Shift để kéo thẳng công cụ Trend Line (`line`)
+
+- Yêu cầu: thêm chức năng giữ phím `Shift` thì kéo thẳng cho công cụ thanh `line` (Trend Line).
+- File thay đổi: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
+- Hành vi thay đổi:
+  - `frontend/js/drawing_model.js`: thêm `DrawingModel.constrainLinePoint(chart, anchor, targetPoint, pixel)` chuẩn TradingView — khóa hướng bội số 45° theo tọa độ pixel: ngang tuyệt đối giữ `price = anchor.price`, dọc tuyệt đối giữ `time = anchor.time`, và chéo 45° chiếu vuông góc theo pixel; đồng thời chặn lỗi chia `.001` trong `draw()` khi `line` thẳng đứng (`b.x === a.x`) bật `extend`.
+  - `frontend/js/drawing_tools.js`: hợp nhất `resolvePoint()` và `updatePreview()` trong `DrawingManager` để khi giữ `Shift` trong lúc vẽ `line` (cả `mousemove`, `click` chốt `p2`, và nhấn/nhả phím `Shift` lúc con trỏ đứng yên) đường preview và điểm chốt đều thẳng theo `p1`.
+  - `frontend/js/drawing_editor.js`: tách `applyDrag()` dùng chung cho `pointermove`, `pointerup` và `keydown`/`keyup` (`Shift`) để khi kéo chỉnh đầu mút `p1` hoặc `p2` của `line` đã vẽ mà giữ `Shift` thì đường line cũng bị khóa thẳng theo đầu đối diện.
+  - `frontend/index.html`: tăng cache-buster lên `?v=line-shift-1` cho `drawing_model.js`, `drawing_editor.js`, `drawing_tools.js`.
+  - `tests/drawings.test.cjs`: thêm 2 test cho `constrainLinePoint` (ngang/dọc/45° + `extend: 'both'` thẳng đứng) và vòng đời `DrawingManager` / `DrawingEditor` với `Shift` (`mousemove`, `keydown`/`keyup`, `click`, `pointermove`/`pointerup`).
+  - Backup trước sửa lưu tại `.backups/line-shift-straight-20261115/`.
+- Kiểm chứng:
+  - `node --check` qua cho `drawing_model.js`, `drawing_tools.js`, `drawing_editor.js`.
+  - `node --test tests/*.test.cjs`: đạt 124/124 passed, 0 failed.
+  - `git diff --check` trên các file đã sửa: exited 0.
+  - UI QA trên `http://127.0.0.1:3000/?qa=line-shift` (`?v=line-shift-1`, 0 console errors): vẽ `line` giữ `Shift` khóa ngang tuyệt đối (`#1 Price` == `#2 Price` = `27905.920911528152`, đường thứ 2 = `27876.609025915997`), kéo đầu mút `p2` giữ `Shift` khóa dọc tuyệt đối (`#1 Bar` == `#2 Bar` = `11016`); đã dọn sạch hình vẽ thử trên Chart 1 (`drawingsCount: 0`).
+- Giới hạn & còn lại: hướng chéo 45° và cập nhật preview khi bấm/thả `Shift` lúc con trỏ đứng yên kiểm chứng qua unit test (`tests/drawings.test.cjs`), trên UI trình duyệt đã kiểm chứng trực tiếp khóa ngang và kéo mút khóa dọc. Chưa commit/push vì `origin` hiện trỏ `https://github.com/zTadqa/TradingTerminal.git` và đang chờ xác nhận đích push.
+
+### 2026-11-16 — Giữ ảnh quy tắc ngày sau tin (`Day After`) và đồng bộ nhãn trên Calendar
+
+- Yêu cầu: đảm bảo các ảnh dự đoán/quy tắc cho những ngày sau tin vẫn tiếp tục hiển thị trong tab Economic Calendar (`#calendar-panel`).
+- File thay đổi: `backend/companion_services.py`, `backend/bridge_server.py`, `frontend/js/terminal_companions.js`, `frontend/index.html`, `tests/test_companions.py`, `tests/interaction_news.test.cjs`.
+- Hành vi thay đổi:
+  - `backend/companion_services.py` & `backend/bridge_server.py`: bổ sung `_merge_events` và lưu/nạp lịch sử 14 ngày gần nhất qua `history_path=DATA_DIR / 'calendar_cache.json'` (dùng `market_store.atomic_json`, đã được `.gitignore` loại trừ) để không mất sự kiện ngày trước khi ShowMyTrades bỏ tin đã qua khỏi feed `days=7`; giữ `history_path=None` mặc định cho unit test không ghi đĩa.
+  - `frontend/js/terminal_companions.js`: `renderCalendar()` đồng bộ ngay `protocolEvents` đã hợp nhất vào `this.news.events` và `localStorage` (`terminal_protocol_events_v1`) khi có `calendarData` và đưa `[length, firstTime, lastTime]` vào `calendarRenderKey`; `buildCalendarList()` nới cửa sổ quét ngày lên `+21d` / `maxMs + 5d` để không cắt thẻ `Day After` qua cuối tuần/kỳ nghỉ; `buildCalendarProtocol()` thêm tiền tố `Sau tin: ` / `Trước tin: ` cho thẻ `*-after`/`*-before` và chú thích `(giờ máy HH:mm)` khi ngày phiên New York lệch ngày trên máy.
+  - `frontend/index.html`: tăng cache-buster lên `?v=calendar-protocols-2` cho `news_protocols.js` và `terminal_companions.js`.
+  - `tests/test_companions.py` & `tests/interaction_news.test.cjs`: thêm test giữ & khôi phục sự kiện 14 ngày qua restart backend và test `renderCalendar()` hiển thị `fomc-after.png` (`Sau tin: FOMC Statement`) khi tin diễn ra hôm qua, qua cuối tuần (thứ Sáu -> thứ Hai), khi ngày hiện tại không có dòng sự kiện nào và ở biên cửa sổ xa (`+15d`).
+  - Backup trước sửa lưu tại `.backups/calendar-after-news-20261116/`.
+- Kiểm chứng:
+  - `python -m unittest discover -s tests -p "test_*.py" -v`: 37/37 passed (`OK`).
+  - `node --check` qua cho `news_protocols.js` và `terminal_companions.js`.
+  - `node --test tests/*.test.cjs`: 125/125 passed, 0 failed.
+  - `git diff --check`: exited 0.
+  - UI QA trên `http://127.0.0.1:3000/?qa=calendar-after` (`?v=calendar-protocols-2`, 1440x900, 0 console errors): `#calendar-panel` tải asset mới, hiển thị `Fed Chair · Event Day` · `Fed's Chair Warsh speech (giờ máy 00:00)` dưới `TODAY`, `08:30 Red Folder News` dưới `TOMORROW`, không ghép nhầm `FOMC Minutes`, lightbox mở/đóng bình thường và 10/10 ảnh quy tắc PNG tải HTTP 200 (bao gồm `fomc-after.png`).
+- Giới hạn & còn lại: kịch bản `FOMC · Day After` sau khi tin hôm qua biến mất khỏi feed được kiểm chứng bằng unit test Python + Node (`tests/test_companions.py`, `tests/interaction_news.test.cjs`) do sandbox trình duyệt không hỗ trợ `page.route` trên `/api/calendar` và tuần lịch live hiện tại chưa đi qua ngày sau FOMC; tiến trình `backend/bridge_server.py` đang chạy sẵn trên cổng 3000 cần được khởi động lại để nhận logic lưu `calendar_cache.json` phía backend (phần frontend có hiệu lực ngay khi reload). Chưa commit/push vì `origin` hiện trỏ `https://github.com/zTadqa/TradingTerminal.git` và đang chờ xác nhận đích push.
+
+### 2026-11-16 — Thu gọn ảnh quy tắc Calendar và hiển thị rõ chi tiết tin trong từng thẻ
+
+- Yêu cầu: sửa bố cục thẻ protocol trong Economic Calendar (`#calendar-panel`) để không bị ảnh quá to che/đẩy mất tin hôm đó và hiển thị rõ tin kích hoạt là tin gì, đồng thời thu nhỏ ảnh thumbnail.
+- File thay đổi: `frontend/css/terminal_companions.css`, `frontend/js/terminal_companions.js`, `frontend/index.html`, `tests/interaction_news.test.cjs`.
+- Hành vi thay đổi:
+  - `frontend/css/terminal_companions.css`: giới hạn `#calendar-panel` gọn `width: min(560px, ...)` thay vì phình theo ảnh 820px; đổi `.calendar-protocol-card` thành grid 2 cột (`minmax(0, 1fr) 144px`, tự xếp dọc ở `@media (max-width: 520px)`), thu nhỏ thumbnail `.calendar-protocol-thumb` xuống rộng `144px` (`~62–68px` cao, bấm vẫn mở `.calendar-protocol-lightbox` phóng to như cũ).
+  - `frontend/js/terminal_companions.js`: cập nhật `buildCalendarProtocol(card, dayIso, dateFormat)` render khối `.calendar-protocol-info` gồm tiêu đề quy tắc, badge ngữ cảnh `.calendar-protocol-tag` (`Sau tin`, `Trước tin`, `Tuần NFP`, `Phiên NY`) và danh sách `.calendar-protocol-events` cho từng tin kích hoạt với chấm màu `data-impact`, giờ (kèm ngày nếu lệch `dayIso`), đồng tiền, tên tin in đậm và `A`/`F`/`P`.
+  - `frontend/index.html`: tăng cache-buster lên `terminal_companions.css?v=calendar-protocols-2` và `terminal_companions.js?v=calendar-protocols-3`.
+  - `tests/interaction_news.test.cjs`: cập nhật kiểm tra nhãn `Sau tin`, `FOMC Statement`, `data-impact` và `A`/`F` trong `calendar preserves post-news Day After predictions...`.
+  - Backup trước sửa lưu tại `.backups/calendar-compact-20261116/`.
+- Kiểm chứng:
+  - `python -m unittest discover -s tests -p "test_*.py" -v`: 37/37 passed (`OK`).
+  - `node --check frontend/js/terminal_companions.js` & `node --test tests/*.test.cjs`: 125/125 passed, 0 failed (`tests/interaction_news.test.cjs`: 10/10 passed).
+  - `git diff --check`: exited 0.
+  - UI QA trên `http://127.0.0.1:3000/?qa=calendar-compact` (`1440x900`, `0` console errors): `#calendar-panel` rộng `560px`, thumbnail đo thực tế `142×68.19px` (`Today`) và `142×62.23px` (`Tomorrow`), hiển thị đồng thời `Fed Chair · Event Day` [`Phiên NY`, chấm đỏ, `00:00 (Tue 17 Nov) USD Fed's Chair Warsh speech`] + `08:30 Red Folder News` [chấm đỏ, `20:30 USD Retail Sales Control Group P 0.1%`] cùng các dòng `.calendar-event` của cả hai ngày; bấm thumbnail vẫn mở `.calendar-protocol-lightbox` (`952.09×457.25px`) và đóng bình thường.
+- Giới hạn & còn lại: bố cục mobile `< 520px` và ảnh ngày `Day After` kiểm chứng qua CSS media rule / unit test; tiến trình `backend/bridge_server.py` cổng 3000 vẫn chờ khởi động lại nếu muốn dùng phần lưu `calendar_cache.json` từ đợt trước; chưa commit/push chờ xác nhận đích remote `origin`.
+
+### 2026-11-16 — Gỡ bỏ nút/tab News riêng dưới Music
+
+- Yêu cầu: bỏ tab `News` nằm dưới chữ `Music` vì các ảnh quy tắc tin đã được gộp trực tiếp vào tab Economic Calendar.
+- File thay đổi: `frontend/js/terminal_companions.js`, `frontend/js/news_protocols.js`, `frontend/css/fixed_shell.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `tests/interaction_news.test.cjs`.
+- Hành vi thay đổi:
+  - `frontend/js/terminal_companions.js`: bỏ khởi tạo/gọi `new NewsProtocolPanel(this)` và `this.news.render()`; nạp và đồng bộ trực tiếp `this.protocolEvents` qua `Workspace` (`terminal_protocol_events_v1`) trong `TerminalCompanions` (giữ tương thích `this.news?.events` cho mock test nếu có).
+  - `frontend/js/news_protocols.js`: bỏ class `NewsProtocolPanel` (chỉ giữ module thuật toán khớp quy tắc `NewsProtocols`).
+  - `frontend/css/fixed_shell.css` & `frontend/css/terminal_studio.css`: dọn rule CSS thừa `.news-protocol-panel` / `.news-protocol-handle`.
+  - `frontend/index.html`: nâng cache-buster lên `terminal_studio.css?v=alert-delete-2`, `fixed_shell.css?v=10`, `news_protocols.js?v=calendar-protocols-3`, `terminal_companions.js?v=calendar-protocols-4`.
+  - `tests/interaction_news.test.cjs`: cập nhật test dùng trực tiếp `comp.protocolEvents` không cần `this.news`.
+  - Backup trước sửa lưu tại `.backups/remove-news-tab-20261116/`.
+- Kiểm chứng:
+  - `python -m unittest discover -s tests -p "test_*.py" -v`: 37/37 passed (`OK`).
+  - `node --check` (`news_protocols.js`, `terminal_companions.js`) & `node --test tests/*.test.cjs`: 125/125 passed, 0 failed.
+  - `git diff --check`: exited 0.
+  - UI QA trên `http://127.0.0.1:3000/?qa=no-news-tab` (`1440x900`, `0` console errors): `#terminal-edge-dock` chỉ còn đúng 2 nút `#edge-calendar` và `#edge-music`, `.news-protocol-handle`/`.news-protocol-panel` = `0`, và `#calendar-panel` vẫn hiển thị các thẻ protocol thu gọn bình thường.
+- Giới hạn & còn lại: tiến trình `backend/bridge_server.py` cổng 3000 vẫn chờ khởi động lại nếu muốn áp dụng phần lưu `calendar_cache.json` từ đợt trước; chưa commit/push chờ xác nhận đích remote `origin`.
+
+### 2026-11-16 — Chuẩn hóa menu chuột phải theo TradingView Desktop và sửa hệ thống Template (Theme & Công cụ vẽ)
+
+- Yêu cầu: sửa menu chuột phải trên chart/công cụ cho giống TradingView Desktop 100%, và sửa/hoàn thiện hệ thống lưu/áp dụng/xóa Template cho cả theme chart lẫn từng công cụ vẽ (Box/Rectangle, Line, Fib, Position, Text...).
+- File thêm & thay đổi: `frontend/js/template_menu.js` (mới), `frontend/js/chart_context_menu.js`, `frontend/js/chart_settings.js`, `frontend/js/drawing_settings.js`, `frontend/js/drawing_editor.js`, `frontend/js/app.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/context_menu.test.cjs`, `tests/drawings.test.cjs`.
+- Hành vi thay đổi:
+  - `frontend/js/template_menu.js`: tách helper dùng chung `TemplateMenu` quản lý lưu/đọc/xóa tên template không chặn (dùng modal `Save template` thay `window.prompt`), `Apply defaults`/`Apply default` và danh sách popup `.tv-template-menu`:
+    - Chart themes (`terminal_chart_templates_v1`, hỗ trợ tương thích đọc `terminal_chart_template_v1` cũ như `Saved template`): bổ sung preset sẵn `Default` (nền be desktop) và `Dark` (`#131722`), lưu tên tùy chọn (lọc bỏ `session` để không đổi nhầm RTH/ETH khi đổi theme), nút `×` xóa template tùy chọn.
+    - Drawing templates (`drawing_templates_v1` theo từng `type`): loại bỏ `id, type, p1, p2, p3, points, locked, hidden, title, isTemp` khi lưu qua `cleanDrawingStyle`, và `applyDrawingStyle` giữ nguyên tọa độ/`id`/`title`/`locked` của đối tượng đích (giữ `text` cũ nếu template có `text` rỗng, hoặc khi `Apply default` trả về `DrawingModel.defaults(type)`).
+  - `frontend/js/chart_settings.js`, `frontend/js/drawing_settings.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`: đổi `<select id="chart-template">` và `<select id="drawing-template">` thành nút `<button class="tv-template-trigger">` mở popup `TemplateMenu` (không còn kẹt `<select>` trên `__save` hoặc kẹt input tên ẩn); nút `Template…` trên toolbar vẽ mở trực tiếp menu template cho công cụ đang chọn kể cả `Text` mà không bắt mở full dialog; bỏ listener `contextmenu` thừa trong `DrawingEditor` vốn làm bung `.drawing-more` trùng với `ChartContextMenu`.
+  - `frontend/js/chart_context_menu.js`, `frontend/js/app.js`, `frontend/css/fixed_shell.css`:
+    - Menu chuột phải vùng trống theo cấu trúc & icon TradingView Desktop: cột icon trái thẳng hàng, phím tắt `+` (`Alt + R`, `Ctrl + V`, `Alt + A`, `Alt + Shift + S`, `Shift + T`), `Reset chart view`, `Copy price` định dạng theo `tickSize`/`precision`, `Paste` (`pasteDrawing` dịch tọa độ theo điểm click), `Add alert...`, lệnh nhanh `Sell/Buy <qty> <SYM> @ <price> limit/stop` (tự chọn `limit`/`stop` theo phía giá click so với close gần nhất), `Add order...`, `Lock vertical cursor line by time` (bật/tắt `sync.options.crosshair` có dấu tick & đồng bộ switch `#layout-popover`), `Table view`, `Object tree`, submenu `Chart template ›` (áp dụng/lưu/xóa ngay), `Remove <N> drawings`, `Remove <N> indicators`, `Settings…`.
+    - Menu chuột phải trên hình vẽ: `Settings…`, submenu `Template ›`, `Text…` (chỉ hiện với `box`/`line`/`hline`/`text`), `Visual order ›` (`Bring to front` / `Send to back`), `Clone`, `Copy` (`Ctrl + C`), `Lock`/`Unlock`, `Hide`, `Remove` (`Delete`); bổ sung phím tắt `Shift + T`, `Ctrl + C`, `Ctrl + V` vào `app.js`.
+  - Backup trước sửa lưu tại `.backups/context-templates-20261116/`.
+- Kiểm chứng:
+  - `node --check` qua cả 6 file JS mới/sửa (`template_menu.js`, `chart_settings.js`, `drawing_settings.js`, `drawing_editor.js`, `chart_context_menu.js`, `app.js`).
+  - `node --test tests/*.test.cjs`: 129/129 passed, 0 failed (gồm 5 test trong `tests/context_menu.test.cjs` và thêm test `ChartContextMenu.pasteDrawing` trong `tests/drawings.test.cjs`).
+  - `python -m unittest discover -s tests -p "test_*.py" -v`: 37/37 passed (`OK`).
+  - `git diff --check`: exited 0.
+  - UI QA trên `http://127.0.0.1:3000/?qa=context-templates` (`1440x900`, `0` console errors, `0` page errors): kiểm tra trực tiếp qua ảnh `step_275_shot_1_step_275_context_menu_submenu.png` và `step_287_shot_1_step_287_drawing_context_menu_open.png`: menu chuột phải vùng trống hiển thị đủ các mục + icon + phím tắt, submenu `Chart template ›` mở sang phải với `Save as…`/`Apply defaults`/`Default`/`Dark`, chuyển `Dark` đổi nền `#box-1` thành `#131722` (và khôi phục `Default` nền be); click phải Rectangle không còn bung `.drawing-more` ở toolbar và hiện đủ `Settings…`/`Template ›`/`Text…`/`Visual order ›`/`Clone`/`Copy`/`Lock`/`Hide`/`Remove`; test luồng `Save as…` / `Apply default` / xóa `×` trên cả `#chart-template`, `#drawing-template` và `Template…` ở toolbar vẽ, cùng `Copy`/`Paste` tạo hình thứ 2 rồi dọn sạch trước khi đóng.
+- Giới hạn & còn lại: chưa kiểm chứng qua trình duyệt nút bấm đặt lệnh thật `Sell 1 ...` / `Buy 1 ...` lúc phiên live đang mở vì phiên kiểm thử đang ở trạng thái nghỉ phiên (`Nghỉ phiên · giữ giá cuối`); chưa commit/push chờ xác nhận đích remote `origin`.
+
+### 2026-11-16 — Chuẩn hóa thanh công cụ nổi khi chọn hình vẽ giống TradingView Desktop
+
+- Yêu cầu: làm lại thanh công cụ nổi của đối tượng vẽ khi đang chọn (`.drawing-toolbar`) theo đúng bố cục, icon, bảng màu/nét nhanh và menu mở rộng như ảnh tham chiếu TradingView Desktop.
+- File thay đổi: `frontend/js/drawing_editor.js`, `frontend/js/app.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`.
+- Hành vi thay đổi:
+  - `frontend/js/drawing_editor.js`:
+    - Thay toàn bộ các control cũ (`<input type="color">`, `<select>`, `.toolbar-divider`, chữ thô) bằng 12 nút chuẩn TradingView theo đúng thứ tự: tay nắm kéo 6 chấm `.drawing-grip` (kéo di chuyển tự do và lưu vào `terminal_drawing_toolbar_pos_v1`, double-click để reset), `Template` (`data-action="template"` mở trực tiếp `TemplateMenu`), `Border color` (`data-tb-pop="borderColor"`), `Background color` (`data-tb-pop="fillColor"`), `Text color & style` (`data-tb-pop="textColor"` kèm nút `Edit text…` mở tab `Text`), `Line width` (`data-tb-pop="width"`, chọn `1px`–`5px`), `Line style` (`data-tb-pop="lineStyle"`, chọn `Solid`/`Dashed`/`Dotted`), `Settings`, `Add alert` (`onAlert` truyền giá giữa/điểm neo), `Lock/Unlock` (đổi path móc khóa mở/đóng và trạng thái `.active`), `Remove`, `More` (`○○○` mở `.drawing-more` gồm `Bring to front`, `Send to back`, `Clone`, `Copy`, `Hide`, `Template…`).
+    - Giữ ẩn tự động theo từng loại hình qua `[hidden]` (ví dụ ẩn `fillColor` trên `line`, ẩn `borderColor`/`fillColor`/`width`/`lineStyle` trên `text`), và kẹp `minLeft` trong `placeToolbar()` theo mép phải `#left-sidebar` (`+ 8px`) để không che thanh công cụ bên trái khi chart cột hẹp.
+  - `frontend/js/app.js`: nối `drawing.editor.onAlert` với `openAlert(chart, price)` và `drawing.editor.onCopy` với `contextMenu.copyDrawing(d)`.
+  - `frontend/css/fixed_shell.css` & `frontend/index.html`: bổ sung style dark `#1e1e1e`, bo góc `6px`, cao `38px`, `.drawing-toolbar [hidden]{display:none!important}`, SVG hairline `#dbdee6` (`19x19` và `17x17` + vạch màu `.tv-tb-swatch` `16x3px` có nền caro cho độ trong suốt), popover `.tv-tb-popover`/`.tv-tb-list-pop`, và menu `.drawing-more` đồng bộ `.chart-context-menu`; tăng version asset `fixed_shell.css?v=13`, `drawing_editor.js?v=ctx-tpl-3`, `app.js?v=ctx-tpl-2`.
+  - Backup trước sửa lưu tại `.backups/drawing-toolbar-20261116/`.
+- Kiểm chứng:
+  - `node --check frontend/js/drawing_editor.js` và `node --check frontend/js/app.js`: pass.
+  - `node --test tests/*.test.cjs`: 130/130 passed, 0 failed (bổ sung test cho `.drawing-toolbar` trong `tests/drawings.test.cjs`).
+  - `python -m unittest discover -s tests -p "test_*.py" -v`: 37/37 passed (`OK`).
+  - `git diff --check`: exited 0.
+  - UI QA trình duyệt trên `1440x900` (`0` console errors, `0` page errors):
+    - Đợt 1 (`?qa=tv-toolbar`, ảnh `step_338_shot_1.png`): phát hiện lỗi icon SVG bị đen và toolbar chạm mép trái `#left-sidebar`, đã sửa ngay bằng CSS kích thước/stroke/fill SVG và clamp `#left-sidebar`; đồng thời kiểm tra tương tác `width`, `lineStyle`, `borderColor`, `fillColor` (+ `Background visible`), kéo `.drawing-grip` (`+60, +40`), `Lock`, `Settings`, `.drawing-more`, và ẩn nút theo `line`/`text`.
+    - Đợt 2 (`?qa=tv-toolbar-v2`, ảnh `step_384_shot_1.png` và `final_step_398.png`): xác nhận `.drawing-toolbar` nằm tại `x=52px, y=136px` (`417.16x38px`, không đè `#left-sidebar`), toàn bộ 12 icon nét mảnh `#dbdee6`, vạch swatch dưới pencil/bucket/hollow `T`, `1px` line preview, và dọn sạch hình vẽ thử cuối phiên.
+- Giới hạn & còn lại: sau lần sửa CSS/clamping cuối (`?v=13`), các nút `[data-action="alert"]` và `[data-action="template"]` được xác nhận qua unit test/code wiring thay vì chụp thêm ảnh popover riêng sau lần sửa cuối; chưa commit/push chờ xác nhận đích remote `origin`.
+
+### 2026-11-16 — Bảng chọn màu thống nhất theo TradingView (Custom Color Picker)
+
+- Yêu cầu: “tất cả phần chỉnh màu của mọi cái thêm cái này” kèm ảnh tham chiếu TradingView Custom Color Picker (`media_1794761009191_9aebd20b.png`): nâng cấp đồng bộ các trình chọn màu trên toàn ứng dụng với bảng màu 60 ô (10×6), hàng Custom Colors lưu persistent, nút `+` mở panel chọn màu tùy chỉnh (ô xem trước, input mã hex `#rrggbb`, nút `Add`, ô gradient Saturation–Value, thanh Hue cầu vồng) và thanh Opacity `0%–100%` khi áp dụng.
+- File tạo/sửa & sao lưu:
+  - Sao lưu bản cũ trước khi sửa tại `.backups/color-picker-20261116/` (`chart_settings.js`, `drawing_editor.js`, `drawing_settings.js`, `fixed_shell.css`, `index.html`, `indicator_settings.js`).
+  - Tạo mới: `frontend/js/color_picker.js` (`ColorPicker`: `PALETTE`, `normalizeHex`, `parseColor`, `hexToHsv`, `hsvToHex`, `toCss`, `toHexAlpha`, `listCustomColors`, `addCustomColor`, `removeCustomColor` với key `terminal_custom_colors_v1` tối đa 19 màu, `closeActiveSub`, `mount`) và `tests/color_picker.test.cjs`.
+  - Sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_settings.js`, `frontend/js/chart_settings.js`, `frontend/js/indicator_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html` (nạp `js/color_picker.js?v=1`, cập nhật cache-buster `fixed_shell.css?v=14` và `?v=cp-1`).
+- Hành vi thay đổi:
+  - `DrawingEditor` và `DrawingSettings`: dùng chung `ColorPicker.mount(...)` thay `<input type="color">` / lưới màu thủ công (giữ fallback khi test Node VM chạy đơn lẻ không nạp `ColorPicker`); phím `Escape` đóng sub-panel `.tv-cp-panel` trước khi đóng popover.
+  - `ChartSettings`: thay `.chart-color-palette` + `<input type="color">` cũ bằng `.tv-style-popover.tv-chart-color-popover` dùng `ColorPicker.mount(..., { showOpacity: true })` và `closePalette()`.
+  - `IndicatorSettings`: thay `<input type="color">` + `<input type="range">` bằng nút swatch `.chart-color.tv-indi-color` mở `.tv-style-popover.tv-indi-popover` qua `ColorPicker.mount(...)`, định dạng giá trị `#rrggbb`/`#rrggbbaa` qua `toHexAlpha`.
+  - `fixed_shell.css`: bổ sung `.tv-chart-color-popover`, `.tv-indi-popover`, `.tv-cp-*` cùng rule specificity `(0,5,1)` ghi đè `.modal input...` của `terminal_studio.css` để `input.tv-cp-hex-input` giữ chiều cao `28px`.
+- Kiểm chứng:
+  - `node --check` cho `color_picker.js`, `drawing_editor.js`, `drawing_settings.js`, `chart_settings.js`, `indicator_settings.js`: pass.
+  - `node --test tests/*.test.cjs`: 134/134 passed, 0 failed.
+  - `python -m unittest discover -s tests -p "test_*.py" -v`: 37/37 passed (`OK`, 0.398s).
+  - `git diff --check`: exited 0.
+  - Quan sát UI trình duyệt trước khi bị tạm dừng:
+    - `DrawingEditor` (`step_410_shot_1.png`): popover `fillColor` mở sub-panel `.tv-cp-panel` tại `#f77c80` với ô xem trước, input focus xanh dương, nút `Add`, ô SV và thanh Hue khớp ảnh mẫu.
+    - `ChartSettings` (`step_439.png`): Symbol -> Body Up mở `.tv-chart-color-popover` hiển thị custom swatch `#f77c80` đã lưu, nút `+` xanh và `.tv-cp-panel` tại `#2962ff` gọn nét trong modal.
+    - `IndicatorSettings` (`step_467.png`, `step_667.png`): modal `Custom Color Test` hiển thị nút swatch `.tv-indi-color` và mở `.tv-indi-popover` có các custom swatch (`#f77c80` kèm nút xóa `×` khi hover, `#2962ff`), nút `+`, và thanh `Opacity 100%`.
+- Giới hạn & còn lại:
+  - Phiên QA trình duyệt bị dừng giữa chừng ở bước kiểm tra nút `+` của `IndicatorSettings` khi người dùng bấm Stop trên tab `agent-tab-51` (`BROWSER_USER_TAKEOVER`); do đó việc mở `.tv-cp-panel` trong `IndicatorSettings`, chụp ảnh live `DrawingSettings`, và bước dọn indicator thử `Custom Color Test` / custom swatch (`#f77c80`, `#2962ff`) trên tab đang mở chưa hoàn tất.
+  - Chưa commit/push, chờ xác nhận đích remote `origin` (`https://github.com/CODENOPRO/TradingViewPremium`).
+
+### 2026-11-16 — Sửa lỗi Pine Script v6 bất kỳ (timeout 12s, ngắt WebSocket 1008/1011, sai lệch hiển thị so với TradingView)
+
+- Yêu cầu: xử lý tận gốc việc paste nhiều code Pine Script v6 khác nhau (bao gồm `ICT Unicorn Model+` / `Unicorn+` và script `ta.vwap`/`time("America/New_York")`/màu động `na`) bị báo lỗi quá thời gian (`Quá 12 giây`), ngắt WebSocket backend, lỗi ngầm hoặc vẽ lệch hoàn toàn so với TradingView Desktop.
+- Backup trước sửa lưu tại `.backups/pinev6-fixes-20261116/`.
+- File thay đổi: `backend/bridge_server.py`, `frontend/js/app.js`, `frontend/js/indicator_worker.js`, `frontend/js/indicator_runner.js`, `frontend/js/pine_runtime.js`, `frontend/js/drawing_model.js`, `frontend/js/pine_painter.js`, `frontend/js/chart_engine.js`, `tests/pine_runtime.test.cjs`, `tests/test_backend.py`.
+- Hành vi thay đổi:
+  - `backend/bridge_server.py` & `frontend/js/app.js`: tách snapshot đọc nhẹ (`snapshot_market_data()`, `snapshot_metadata()`, `encode_initial_snapshot()`) và đẩy encode JSON snapshot ban đầu sang thread (`asyncio.to_thread`) thay vì `copy.deepcopy` đồng bộ chặn event loop; tăng queue client lên `256`; validate từng mục `request_native` và trả `native_request_error` kèm danh sách từ chối thay vì đóng WebSocket bằng `1008`; frontend lọc trước symbol/timeframe không hợp lệ và `'12h'` trước khi gửi `request_native` đồng thời giải phóng `pendingNative` khi nhận `native_request_error`.
+  - `frontend/js/indicator_worker.js`: cache `Intl.DateTimeFormat` tối đa 512 entry (`CachedDateTimeFormat`) trước khi nạp `pinets.min.browser.js`, giảm chi phí gọi lặp `time(..., "America/New_York")` / timezone từ PineTS.
+  - `frontend/js/indicator_runner.js`: nới ngân sách worker Pine v6 (`initBudget = 20000`, `runBudget = 25000`) và giới hạn `validate()` lên `300,000` điểm plot, `100` paints / `200,000` điểm paint, hỗ trợ `candle`/`bar` và `'quad'`/`'polyline'`.
+  - `frontend/js/pine_runtime.js`:
+    - Bỏ `\uFEFF` BOM và cho phép khoảng trắng trong `// @version=6`; kiểm tra `getDeclarationType()` trước `prepare()` để không che khuất lỗi cú pháp/biên dịch dưới nhãn `"Chỉ hỗ trợ indicator()"`; thêm `hlcc4` trong fallback `input.source`.
+    - Bổ sung mapping khung `'3'`, `'30'`, `'45'`, `'120'`, `'720'`, `'D'`, `'W'`, `'M'`, `'43200'`, `'129600'` và `'1M'`/`'3M'` trong `run()` + cache/bảo toàn biên `closeTime()`; thay `JSON.stringify(context.markets)` trong cache key bằng `marketsSignature()`.
+    - Cập nhật `convert()`: tra cứu `barByTime` `O(1)`; xử lý cả `null` và `NaN` (giá trị `na` nội bộ của PineTS) trong `isTransparent()` cùng màu ternary động theo nến (`hasPtColors`, ví dụ `cond ? color.green : na`); xử lý `box` với `border_color = na` (`transparent`, `strokeOpacity: 0`, `width: 0`), `label` theo `style_label_left`/`right`/`up`/`down`/`center`/`style_none` + `sizePx()` + `monospace`, `table` mở lớp kwarg bị lệch trong PineTS và bỏ qua bảng rỗng/`table.clear`, `linefill` (`quad`), `polyline`, `plotcandle`/`plotbar`, bỏ qua `display.none`/`data_window`/`status_line`, `style_circles`/`style_cross`, giới hạn 2.000 hình/marker gần nhất và tính min/max pane cho `candle`/`bar`/paint.
+  - `frontend/js/drawing_model.js`, `frontend/js/pine_painter.js`, `frontend/js/chart_engine.js`: bỏ `strokeRect` khi viền box bằng `0`/trong suốt; vẽ canh lề `top`/`bottom`/`inside`, `monospace` và nhãn Pine `label_left`/`right`/`above`/`below`/`center` + nền `labelBg`; vẽ `quad`, `polyline`, `Candlestick`, `Bar`, `markersOnly` và style bảng (`bgcolor`, `borderWidth === 0`, `frameWidth`/`frameColor`, `bold`/`italic`/`monospace`).
+  - `tests/test_backend.py` & `tests/pine_runtime.test.cjs`: thêm test kiểm chứng `native_request_error` không đóng WS, map `30m`/`1M`/`3M`, lỗi biên dịch Pine không bị che, box `border_color = na`, label placement, bảng bị xóa rỗng / kwarg lệch, `linefill`/`polyline`/`plotcandle` và `plot` dùng màu ternary động `na` + `style_linebr`.
+- Kiểm chứng:
+  - Cú pháp: `python -m py_compile backend/bridge_server.py` và `node --check` cho 7 file JS đã sửa đều đạt.
+  - Tự động: `node --test tests/*.test.cjs` đạt 138/138 passed (0 failed, 0 skipped); `python -m unittest discover -s tests` đạt 38/38 passed (`OK`); `git diff --check` exited 0.
+  - Live UI trên `http://127.0.0.1:3000` (qua backend `bridge_server.py` đã khởi động lại sạch trên cổng 3000/8080): console `0` lỗi, WS `127.0.0.1:8080` ổn định không có lỗi `1008`/`1011`; `Unicorn+ Test` ở chế độ `Full` + `Panel: true` vẽ box `BRK`/`FVG` không còn viền xanh dương, nhãn `UNI- 0 contracts = $0` / `SL` / `TP1` / `TP2 2R` / `$$$` thẳng hàng monospace, bảng `UNICORN+ READY` hiện góc trên phải và biến mất hoàn toàn khi tắt `Panel: false` (`1,616 ms` trên `11,048` nến `NQ1! 1m`); chuyển `30m` chạy sạch trong `646 ms` trên `5,036` nến không treo ở `NQ1!/30`; script `VWAP DynNa Test` (`ta.vwap` + `time(..., "America/New_York")` + màu động `na` + `plotshape`) chạy xong trong `283 ms` trên `11,048` nến `NQ1! 1m`, chỉ tô xanh các nến thỏa điều kiện trước `16:00 NY` kèm marker `▲`.
+- Giới hạn & còn lại:
+  - PineTS 0.13.1 chỉ hỗ trợ tập cú pháp/built-in của engine hiện tại (chưa hỗ trợ `import` thư viện ngoài thiếu source, `strategy()`, hoặc mọi cấu trúc Pine v6 nâng cao chưa được PineTS biên dịch).
+  - Theo xác nhận của người dùng (“push lên git hộ CODENOPRO/TradingViewPremium”), giữ remote cũ thành `ztadqa` (`ztadqa-main` tại `7f31684`), chuyển `origin` về `https://github.com/CODENOPRO/TradingViewPremium.git`, commit toàn bộ hiện trạng sạch đang chạy (37 file đã kiểm chứng, không gồm `.backups/`, cache JSON hay file tạm) nối tiếp trực tiếp trên `735b260` và fast-forward push lên `origin/main` (không force-push).

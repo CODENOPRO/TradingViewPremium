@@ -6,8 +6,8 @@ class IndicatorSettings {
     modal.innerHTML='<div class="modal-content indicator-settings-dialog"><div class="modal-header"><span class="indi-settings-title"></span><button class="modal-close" aria-label="Close indicator settings">×</button></div><div class="indi-tabs" role="tablist"><button role="tab" data-tab="inputs">Inputs</button><button role="tab" data-tab="style">Style</button><button role="tab" data-tab="visibility">Visibility</button></div><div class="indi-settings-body"></div><div class="indi-settings-error" role="alert"></div><div class="modal-footer"><button class="btn-secondary indi-defaults">Defaults</button><button class="btn-secondary indi-cancel">Cancel</button><button class="btn-primary indi-ok">Ok</button></div></div>';
     this.modal=modal;document.body.appendChild(modal);
     modal.querySelector('.modal-close').onclick=modal.querySelector('.indi-cancel').onclick=()=>this.close();
-    modal.onclick=e=>{if(e.target===modal)this.close();};
-    modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();this.close();}if(e.key==='Tab'){const fields=[...modal.querySelectorAll('button,input,select,textarea')].filter(x=>!x.disabled&&x.getClientRects().length);const first=fields[0],last=fields.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+    modal.onclick=e=>{if(this.palette&&!this.palette.contains(e.target)&&!e.target.closest?.('.tv-indi-color'))this.closePalette();if(e.target===modal)this.close();};
+    modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();if(this.palette){if(typeof ColorPicker==='undefined'||!ColorPicker.closeActiveSub(this.palette))this.closePalette();return;}this.close();}if(e.key==='Tab'){const fields=[...modal.querySelectorAll('button,input,select,textarea')].filter(x=>!x.disabled&&x.getClientRects().length);const first=fields[0],last=fields.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
     for(const button of modal.querySelectorAll('[data-tab]'))button.onclick=()=>this.render(button.dataset.tab);
     modal.querySelector('.indi-defaults').onclick=()=>{if(this.tab==='inputs')this.draft={...this.runner.defaults};else if(this.tab==='style')this.view={...this.view,overlay:true,pane:true,tables:true,candleColors:true};else this.view.visibility={};this.render(this.tab);};
     modal.querySelector('.indi-ok').onclick=()=>this.apply();
@@ -32,10 +32,12 @@ class IndicatorSettings {
     this.modal.classList.add('show');this.render('inputs');this.modal.querySelector('[data-tab="inputs"]').focus();
   }
 
-  close(){this.request=(this.request||0)+1;this.modal.classList.remove('show');this.opener?.focus();}
+  closePalette(){this.palette?.remove();this.palette=null;this.paletteTarget?.classList.remove('active');this.paletteTarget=null;}
+
+  close(){this.closePalette();this.request=(this.request||0)+1;this.modal.classList.remove('show');this.opener?.focus();}
 
   render(tab) {
-    this.tab=tab;
+    this.tab=tab;this.closePalette();
     for(const button of this.modal.querySelectorAll('[data-tab]')){const selected=button.dataset.tab===tab;button.classList.toggle('active',selected);button.setAttribute('aria-selected',String(selected));}
     const body=this.modal.querySelector('.indi-settings-body');body.replaceChildren();
     if(tab==='inputs') {
@@ -62,21 +64,45 @@ class IndicatorSettings {
     const {key,type}=descriptor,row=document.createElement('label');row.className='indi-field';row.title=descriptor.disabled||descriptor.tooltip||'';
     const caption=document.createElement('span');caption.textContent=descriptor.label||key;row.appendChild(caption);
     const value=target[key]??(defaultTrue?true:this.runner.defaults[key]);
+    if(type==='color'&&!descriptor.options?.length){
+      const btn=document.createElement('button');btn.type='button';btn.className='chart-color tv-indi-color';btn.dataset.inputKey=key;btn.setAttribute('aria-label',descriptor.label||key);btn.disabled=!!descriptor.disabled;
+      const swatch=document.createElement('span');
+      if(typeof ColorPicker!=='undefined'){const p=ColorPicker.parseColor(value);swatch.style.background=ColorPicker.toCss(p.hex,p.opacity);}else{swatch.style.background=String(value||'#2962ff');}
+      btn.appendChild(swatch);
+      btn.onclick=e=>{e.stopPropagation();this.openPalette(btn,key,descriptor,target,value);};
+      row.appendChild(btn);
+      if(descriptor.disabled){row.classList.add('unsupported');const note=document.createElement('small');note.textContent='Chưa hỗ trợ';row.appendChild(note);}
+      parent.appendChild(row);return;
+    }
     let control;
     if(descriptor.options?.length){control=document.createElement('select');for(const v of descriptor.options){const option=document.createElement('option');option.value=String(v);option.textContent=String(v);control.appendChild(option);}control.value=String(value);}
-    else {control=document.createElement('input');control.type=type==='bool'?'checkbox':type==='int'||type==='float'?'number':type==='color'?'color':'text';
-      if(type==='bool')control.checked=!!value;else control.value=type==='color'?String(value).slice(0,7):String(value??'');
+    else {control=document.createElement('input');control.type=type==='bool'?'checkbox':type==='int'||type==='float'?'number':'text';
+      if(type==='bool')control.checked=!!value;else control.value=String(value??'');
       if(control.type==='number'){control.step=descriptor.step??(type==='int'?1:'any');if(descriptor.min!==undefined)control.min=descriptor.min;if(descriptor.max!==undefined)control.max=descriptor.max;}
     }
     control.dataset.inputKey=key;control.setAttribute('aria-label',descriptor.label||key);control.disabled=!!descriptor.disabled;
-    control.oninput=()=>{target[key]=type==='bool'?control.checked:type==='int'||type==='float'?Number(control.value):type==='color'?control.value+(String(target[key]||value).length===9?String(target[key]||value).slice(7):''):control.value;};
+    control.oninput=()=>{target[key]=type==='bool'?control.checked:type==='int'||type==='float'?Number(control.value):control.value;};
     row.appendChild(control);
-    if(type==='color'){
-      const alpha=document.createElement('input');alpha.type='range';alpha.min=0;alpha.max=100;alpha.value=String(value).length===9?Math.round(parseInt(String(value).slice(7),16)/255*100):100;alpha.setAttribute('aria-label',(descriptor.label||key)+' opacity');alpha.disabled=!!descriptor.disabled;
-      alpha.oninput=()=>{target[key]=String(target[key]||value).slice(0,7)+Math.round(+alpha.value/100*255).toString(16).padStart(2,'0');};row.appendChild(alpha);
-    }
     if(descriptor.disabled){row.classList.add('unsupported');const note=document.createElement('small');note.textContent='Chưa hỗ trợ';row.appendChild(note);}
     parent.appendChild(row);
+  }
+
+  openPalette(button,key,descriptor,target,fallbackValue) {
+    if(this.palette&&this.paletteTarget===button){this.closePalette();return;}
+    this.closePalette();
+    const pop=document.createElement('div');pop.className='tv-style-popover tv-indi-popover';pop.setAttribute('role','dialog');pop.setAttribute('aria-label',(descriptor.label||key)+' color');
+    this.palette=pop;this.paletteTarget=button;button.classList.add('active');
+    if(typeof ColorPicker!=='undefined'){
+      ColorPicker.mount(pop,{
+        value:target[key]??fallbackValue,
+        showOpacity:true,
+        onChange:({hexAlpha,css})=>{target[key]=hexAlpha;button.firstChild.style.background=css;}
+      });
+    }
+    this.modal.appendChild(pop);
+    const r=button.getBoundingClientRect(),pw=pop.offsetWidth||246,ph=pop.offsetHeight||280;
+    pop.style.left=Math.max(8,Math.min(innerWidth-pw-8,r.left))+'px';
+    pop.style.top=(r.bottom+6+ph<=innerHeight-8?r.bottom+6:Math.max(8,r.top-ph-6))+'px';
   }
 
   apply() {

@@ -53,6 +53,43 @@ class CompanionTests(unittest.TestCase):
         event=normalize_events([{'title':'x','time':'2026-11-12T08:30:00Z','actual':'3.1%','status':'tentative'}])[0]
         self.assertEqual(event['actual'],'3.1%')
         self.assertTrue(event['tentative'])
+
+    def test_calendar_retains_and_persists_recent_past_events_across_restarts(self):
+        from datetime import datetime, timezone
+        ts=lambda s:datetime.fromisoformat(s.replace('Z','+00:00')).timestamp()
+        clock=[ts('2026-11-18T15:00:00Z')]
+        feeds=[
+            {'generated_at':'2026-11-18T15:00:00Z','events':[
+                {'title':'Old Release','time':'2026-10-28T13:30:00Z','currency':'USD','impact':'High'},
+                {'title':'FOMC Statement','time':'2026-11-18T19:00:00Z','currency':'USD','impact':'High','forecast':'4.50%'}]},
+            {'generated_at':'2026-11-19T15:00:00Z','events':[
+                {'title':'FOMC Statement','time':'2026-11-18T19:00:00Z','currency':'USD','impact':'High','actual':'4.50%'},
+                {'title':'Unemployment Claims','time':'2026-11-19T13:30:00Z','currency':'USD','impact':'High'}]},
+            {'generated_at':'2026-11-20T15:00:00Z','events':[
+                {'title':'Flash PMI','time':'2026-11-20T14:45:00Z','currency':'USD','impact':'High'}]},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            cache_file=Path(directory)/'calendar_cache.json'
+            first=EconomicCalendar(lambda:feeds[0],lambda:clock[0],history_path=cache_file)
+            res1=first.get()
+            self.assertEqual([e['title'] for e in res1['events']],['FOMC Statement'])
+            self.assertTrue(cache_file.exists())
+
+            clock[0]=ts('2026-11-19T15:00:00Z')
+            second=EconomicCalendar(lambda:feeds[1],lambda:clock[0],history_path=cache_file)
+            res2=second.get()
+            self.assertEqual([e['title'] for e in res2['events']],['FOMC Statement','Unemployment Claims'])
+            self.assertEqual(res2['events'][0]['actual'],'4.50%')
+
+            clock[0]=ts('2026-11-20T15:00:00Z')
+            third=EconomicCalendar(lambda:feeds[2],lambda:clock[0],history_path=cache_file)
+            res3=third.get()
+            self.assertEqual([e['title'] for e in res3['events']],['FOMC Statement','Unemployment Claims','Flash PMI'])
+
+            reloaded=EconomicCalendar(lambda:(_ for _ in ()).throw(OSError('offline')),lambda:clock[0],history_path=cache_file)
+            res4=reloaded.get()
+            self.assertEqual([e['title'] for e in res4['events']],['FOMC Statement','Unemployment Claims','Flash PMI'])
+            self.assertIn('offline',res4['error'])
     def test_metadata_is_limited_to_provider_endpoints(self):
         for url in ['file:///etc/passwd','https://127.0.0.1/','https://www.youtube.com.evil.test/x','https://user:secret@www.youtube.com/x','https://soundcloud.com:8000/x']:
             with self.assertRaises(ValueError):metadata_endpoint(url)

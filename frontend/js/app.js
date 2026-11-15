@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let socket, reconnect, retry = 1000,preloadRequested=false;
   const pendingNative=new Map();
   const requestNative=requirement=>{
+    if(!requirement||!symbols.includes(requirement.symbol)||!TF_MAP[requirement.timeframe]||requirement.timeframe==='12h')return;
     const key=requirement.symbol+':'+requirement.timeframe;
     if(pendingNative.has(key))return;pendingNative.set(key,requirement);
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'request_native',charts:[requirement]}));
@@ -255,13 +256,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertEdit:id=>{const a=alerts.find(a=>a.id===id);if(a)openAlert(charts.find(c=>c.symbol===a.symbol)||active,undefined,id);},onAlertRemove:index=>saveAlerts(alerts.filter((_,i)=>i!==index))});
   new ToolbarClusters(()=>chartSettings.open(),()=>{desktop.fitToolbar?.();charts.forEach(c=>c.positionSymbolBadge());});
-  new ChartContextMenu({charts,drawing,desktop,activate,openAlert});
+  const contextMenu=new ChartContextMenu({charts,drawing,desktop,activate,openAlert,chartSettings,paperPanel,sync,toast});
+  drawing.editor.onAlert=(chart,price)=>openAlert(chart,price);
+  drawing.editor.onCopy=d=>{contextMenu.copyDrawing(d);toast('Đã sao chép đối tượng');};
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { document.querySelectorAll('.modal.show:not(#settings-modal)').forEach(closeModal); $('layout-popover').classList.remove('show'); }
     if (event.target.closest('input, textarea, select, [contenteditable]')) return;
-    if (event.altKey && event.key.toLowerCase() === 'r') { event.preventDefault(); sync.syncEnabled ? sync.resetAllCharts() : active.resetView(); }
-    if (event.altKey && event.key.toLowerCase() === 'a') { event.preventDefault(); openAlert(active); }
-    if (event.key === 'F10') { event.preventDefault(); replayNext(); }
+    const key = event.key.toLowerCase();
+    if (event.altKey && !event.ctrlKey && !event.metaKey && key === 'r') { event.preventDefault(); sync.syncEnabled ? sync.resetAllCharts() : active.resetView(); }
+    else if (event.altKey && !event.ctrlKey && !event.metaKey && key === 'a') { event.preventDefault(); openAlert(active); }
+    else if (event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && key === 't') {
+      event.preventDefault();
+      const bar = cache.get(active.symbol)?.['1m']?.at(-1);
+      $('paper-panel')?.dispatchEvent(new CustomEvent('paper-new-ticket', { detail: { price: bar?.close ?? '' } }));
+    }
+    else if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && key === 'c' && drawing.editor.drawing && !window.getSelection?.()?.toString()) {
+      event.preventDefault();
+      contextMenu.copyDrawing(drawing.editor.drawing);
+      toast('Đã sao chép đối tượng');
+    }
+    else if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && key === 'v' && contextMenu.clipboard) {
+      event.preventDefault();
+      contextMenu.pasteClipboard(active, null);
+    }
+    else if (event.key === 'F10') { event.preventDefault(); replayNext(); }
   });
 
   function statusText() {
@@ -275,6 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHeader();desktop?.refresh();
   }
   function receive(message) {
+    if (message.type === 'native_request_error') { for (const key of message.rejected || []) pendingNative.delete(key); toast(message.error || 'Khung dữ liệu không hỗ trợ native', 'alert'); return; }
     if (message.type === 'bridge_status') { bridge = message;if(!preloadRequested&&socket?.readyState===WebSocket.OPEN){preloadRequested=true;if(!['loading','waiting'].includes(bridge.native_loading?.state))socket.send(JSON.stringify({action:'preload_native'}));} statusText(); return; }
     if (message.type === 'htf_history') { for (const [tf, data] of Object.entries(message.data || {})) for (const [symbol, bars] of Object.entries(data)) receive({ type: 'history', symbol, timeframe: tf, bars }); return; }
     const { symbol, type } = message, tf = message.timeframe || '1m';

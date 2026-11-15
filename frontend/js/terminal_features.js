@@ -341,20 +341,19 @@ class TerminalFeatures{
     const pop=$('layout-popover');pop.querySelectorAll('.layout-row').forEach(n=>n.remove());
     const layouts=document.createElement('div');layouts.className='complete-layouts';pop.prepend(layouts);
     const saved=Workspace.read('terminal_layout_v2',{count:3,columns:3});
-    for(let count=1;count<=16;count++){
+    for(let count=1;count<=3;count++){
       const row=document.createElement('div');row.className='layout-row';const number=document.createElement('span');number.textContent=count;number.className='layout-row-num';row.appendChild(number);
-      const choices=[...new Set([count,1,Math.ceil(Math.sqrt(count)),Math.ceil(count/2)])];
+      const choices=count===1?[1]:[count,1];
       for(const columns of choices){const button=document.createElement('button');button.type='button';button.className='layout-choice';button.title=`${count} charts · ${columns} columns`;button.setAttribute('aria-label',button.title);
+        button.dataset.layoutKey=`${count}:${columns}`;
         const rows=Math.ceil(count/columns);let rects='';for(let i=0;i<count;i++)rects+=`<rect x="${2+i%columns*24/columns}" y="${2+Math.floor(i/columns)*24/rows}" width="${24/columns-1}" height="${24/rows-1}"/>`;
         button.innerHTML=`<svg viewBox="0 0 28 28" aria-hidden="true">${rects}</svg>`;button.onclick=()=>{this.layout(count,columns);pop.classList.remove('show');};row.appendChild(button);}
       if(count>=3){
         const patterns=[[1,count-1],[count-1,1]];
-        if(count===4)patterns.push([1,1,2],[2,1,1]);
-        if(count===5)patterns.push([1,2,2],[2,2,1]);
-        if(count>=5)patterns.push([2,count-2],[count-2,2]);
-        for(const groups of patterns)for(const axis of ['row','column']){
+        for(const axis of ['column','row'])for(const groups of patterns){
           const b=document.createElement('button');b.type='button';b.className='layout-choice';b.title=`${count} charts · ${axis} ${groups.join('+')}`;b.setAttribute('aria-label',b.title);let rects='';
           groups.forEach((size,g)=>{for(let j=0;j<size;j++){const x=axis==='row'?j/size:g/groups.length,y=axis==='row'?g/groups.length:j/size,w=axis==='row'?1/size:1/groups.length,h=axis==='row'?1/groups.length:1/size;rects+=`<rect x="${2+x*24}" y="${2+y*24}" width="${w*24-1}" height="${h*24-1}"/>`;}});
+          b.dataset.layoutKey=`${count}:${axis}:${groups.join(',')}`;
           b.innerHTML=`<svg viewBox="0 0 28 28" aria-hidden="true">${rects}</svg>`;b.onclick=()=>{this.layout(count,1,true,{groups,axis});pop.classList.remove('show');};row.appendChild(b);
         }
       }
@@ -372,13 +371,14 @@ class TerminalFeatures{
       for(const node of [...button.childNodes])if(node.nodeType===3){const span=document.createElement('span');span.textContent=node.textContent;node.replaceWith(span);}
       button.dataset.label=label;button.setAttribute('aria-label',label);
     }
-    const cursor=document.querySelector('[data-tool="crosshair"]');if(cursor)cursor.innerHTML='<svg class="tt-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+    const cursor=document.querySelector('[data-tool="crosshair"]');if(cursor)cursor.innerHTML=TerminalIcons.svg('crosshair');
     this.installFavorites();
     this.installPolish();
     this.companions=new TerminalCompanions({getReplay:this.getReplay,getActive:this.getActive});
     const sensor=document.createElement('div');sensor.id='fullscreen-timeframe';const group=document.querySelector('.timeframe-group'),anchor=document.createComment('timeframe-home');group.before(anchor);document.body.appendChild(sensor);
     document.addEventListener('fullscreenchange',()=>{const full=!!document.fullscreenElement;document.body.classList.toggle('terminal-fullscreen',full);if(full){sensor.appendChild(group);sensor.hidden=false;}else{anchor.after(group);sensor.hidden=true;}document.querySelectorAll('.toolbar-overflow').forEach(n=>n.hidden=true);});sensor.hidden=true;
-    this.layout(Math.min(16,Math.max(1,saved.count||3)),Math.max(1,saved.columns||3),false,saved.shape||null);
+    const restoredCount=Math.min(3,Math.max(1,saved.count||3));
+    this.layout(restoredCount,saved.count>3?3:Math.min(restoredCount,Math.max(1,saved.columns||3)),false,saved.count>3?null:saved.shape||null);
     for(const c of this.charts){c.appearance.countdown=true;c.updateCountdown();}
     window.addEventListener('resize',()=>this.clampFavorites());
   }
@@ -386,6 +386,8 @@ class TerminalFeatures{
   visibleCharts(){return this.charts.slice(0,this.count);}
   layout(count,columns,persist=true,shape=null){
     if(!shape&&count>columns&&count%columns)shape={axis:'row',groups:Array.from({length:Math.ceil(count/columns)},(_,i)=>Math.min(columns,count-i*columns))};
+    const selectedKey=shape?`${count}:${shape.axis}:${shape.groups.join(',')}`:`${count}:${columns}`;
+    document.querySelectorAll('.layout-choice').forEach(button=>{const active=button.dataset.layoutKey===selectedKey;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
     this.count=count;const grid=document.getElementById('chart-grid');grid.className='terminal-layout';grid.style.display='grid';grid.style.gridTemplateColumns=`repeat(${columns},minmax(0,1fr))`;grid.style.gridTemplateRows=`repeat(${Math.ceil(count/columns)},minmax(0,1fr))`;delete grid.dataset.expanded;
     const replay=this.getReplay?.();
     if(replay?.selecting)replay.clearSelection();
@@ -410,16 +412,16 @@ class TerminalFeatures{
   }
   installFavorites(){
     this.favorites=Workspace.read('terminal_drawing_favorites_v1',[]);if(!Array.isArray(this.favorites))this.favorites=[];
-    const bar=document.createElement('div');bar.id='drawing-favorites';bar.setAttribute('aria-label','Favorite drawing tools');this.favoriteBar=bar;document.body.appendChild(bar);
+    const bar=document.createElement('div');bar.id='drawing-favorites';bar.setAttribute('aria-label','Favorite drawing tools');this.favoriteBar=bar;document.getElementById('left-sidebar').appendChild(bar);
     const draw=()=>{document.querySelectorAll('#left-sidebar .favorite-star').forEach(star=>{
       const selected=this.favorites.includes(star.previousElementSibling?.dataset.tool);
       star.textContent=selected?'★':'☆';
       star.setAttribute('aria-pressed',String(selected));
       star.title=selected?'Remove from Favourites':'Add to Favourites';
-    });bar.replaceChildren();const handle=document.createElement('button');handle.className='favorite-handle';handle.textContent='⠿';handle.title='Drag favorite tools';handle.setAttribute('aria-label',handle.title);bar.appendChild(handle);this.draggable(handle,bar);handle.onclick=()=>{if(this.justDragged)return;menu.replaceChildren();for(const direction of ['Horizontal','Vertical']){const b=document.createElement('button');b.textContent=direction;b.onclick=()=>{bar.dataset.orientation=direction.toLowerCase();Workspace.write('terminal_favorites_orientation_v1',bar.dataset.orientation);menu.hidden=true;this.clampFavorites();};menu.appendChild(b);}const r=handle.getBoundingClientRect();menu.style.left=Math.min(innerWidth-180,r.left)+'px';menu.style.top=Math.min(innerHeight-90,r.bottom+5)+'px';menu.hidden=false;};
+    });bar.replaceChildren();
       const manage=document.createElement('button');manage.textContent='☆';manage.className='tool-btn';manage.title='Manage favourite drawing tools';manage.setAttribute('aria-label',manage.title);manage.onclick=()=>this.openFavorites(manage.getBoundingClientRect());bar.appendChild(manage);
       for(const key of this.favorites){const original=document.querySelector(`#left-sidebar [data-tool="${CSS.escape(key)}"]`);if(!original)continue;const b=original.cloneNode(true);b.removeAttribute('id');b.querySelector('.favorite-star')?.remove();b.onclick=()=>this.drawing.setTool(key);b.oncontextmenu=e=>{e.preventDefault();this.favorites=this.favorites.filter(x=>x!==key);Workspace.write('terminal_drawing_favorites_v1',this.favorites);draw();};bar.appendChild(b);}bar.hidden=false;this.clampFavorites();};
-    this.renderFavorites=draw;bar.dataset.orientation=Workspace.read('terminal_favorites_orientation_v1','horizontal');
+    this.renderFavorites=draw;bar.dataset.orientation='vertical';
     const menu=document.createElement('div');menu.id='favorite-tool-menu';menu.hidden=true;document.body.appendChild(menu);
     this.openFavorites=rect=>{menu.replaceChildren();for(const tool of document.querySelectorAll('#left-sidebar [data-tool]')){const key=tool.dataset.tool;if(['trash','lock','hide','eye','magnet'].includes(key))continue;const label=document.createElement('label');label.textContent=tool.title||tool.getAttribute('aria-label')||key;const input=document.createElement('input');input.type='checkbox';input.checked=this.favorites.includes(key);input.setAttribute('aria-label','Favourite '+label.textContent);input.onchange=()=>{this.favorites=input.checked?[...new Set([...this.favorites,key])]:this.favorites.filter(k=>k!==key);Workspace.write('terminal_drawing_favorites_v1',this.favorites);draw();};label.prepend(input);menu.appendChild(label);}menu.style.left=Math.max(0,Math.min(innerWidth-230,rect.left))+'px';menu.style.top=Math.max(0,Math.min(innerHeight-320,rect.bottom+4))+'px';menu.hidden=false;};
     for(const b of document.querySelectorAll('#left-sidebar [data-tool]')){
@@ -428,7 +430,7 @@ class TerminalFeatures{
       b.addEventListener('contextmenu',e=>{e.preventDefault();const key=b.dataset.tool;menu.replaceChildren();const toggle=document.createElement('button');toggle.textContent=this.favorites.includes(key)?'★ Remove favourite':'☆ Add favourite';toggle.onclick=()=>{this.favorites=this.favorites.includes(key)?this.favorites.filter(x=>x!==key):[...this.favorites,key];Workspace.write('terminal_drawing_favorites_v1',this.favorites);menu.hidden=true;draw();};menu.appendChild(toggle);menu.style.left=Math.min(innerWidth-180,e.clientX)+'px';menu.style.top=Math.min(innerHeight-50,e.clientY)+'px';menu.hidden=false;});
     }
     document.addEventListener('pointerdown',e=>{if(!menu.contains(e.target))menu.hidden=true;});
-    const position=Workspace.read('terminal_favorites_position_v1',{x:100,y:70});bar.style.left=position.x+'px';bar.style.top=position.y+'px';draw();
+    draw();
   }
   draggable(handle,bar){handle.onpointerdown=e=>{if(e.button!==0)return;e.preventDefault();this.justDragged=false;handle.setPointerCapture(e.pointerId);const r=bar.getBoundingClientRect(),dx=e.clientX-r.left,dy=e.clientY-r.top,x=e.clientX,y=e.clientY;handle.onpointermove=m=>{if(Math.hypot(m.clientX-x,m.clientY-y)<4&&!this.justDragged)return;this.justDragged=true;bar.style.left=Math.max(0,Math.min(innerWidth-bar.offsetWidth,m.clientX-dx))+'px';bar.style.top=Math.max(0,Math.min(innerHeight-bar.offsetHeight,m.clientY-dy))+'px';};handle.onpointerup=()=>{handle.onpointermove=null;Workspace.write('terminal_favorites_position_v1',{x:parseFloat(bar.style.left),y:parseFloat(bar.style.top)});};handle.onpointercancel=()=>{handle.onpointermove=null;};};}
   clampFavorites(){const b=this.favoriteBar;if(!b||b.hidden)return;b.style.left=Math.max(0,Math.min(innerWidth-b.offsetWidth,parseFloat(b.style.left)||0))+'px';b.style.top=Math.max(0,Math.min(innerHeight-b.offsetHeight,parseFloat(b.style.top)||0))+'px';}

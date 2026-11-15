@@ -22,7 +22,7 @@ class DesktopShell {
     for(const [key,label] of [['watch','Watchlist'],['alerts','Alerts panel'],['objects','Object tree and data window'],['editor','Indicator editor']]){
       const b=this.button(label,key,()=>{key==='editor'?$('btn-indicator').click():this.open(this.mode===key?null:key);$('layout-popover').classList.remove('show');});b.dataset.panel=key;this.rail.appendChild(b);
     }
-    $('app-body').appendChild(this.root);$('layout-popover').appendChild(this.rail);
+    $('app-body').appendChild(this.root);document.body.appendChild(this.rail);
     const spread=$('trade-spread'),size=document.createElement('input'),center=document.createElement('div');
     center.className='trade-center';spread.before(center);center.appendChild(spread);size.id='trade-inline-qty';size.type='number';size.min='1';size.step='1';size.value=$('order-qty').value;size.setAttribute('aria-label','Order quantity');
     size.oninput=()=>{$('order-qty').value=size.value;};$('order-qty').addEventListener('input',()=>{size.value=$('order-qty').value;});center.appendChild(size);
@@ -40,10 +40,7 @@ class DesktopShell {
       const go=this.button('Scroll to the most recent bar','arrow',()=>{const range=DesktopShell.latestRange(c);if(range)c.chart.timeScale().setVisibleLogicalRange(range);});go.className='chart-go-realtime';go.hidden=true;c.container.appendChild(go);c.goRealtimeButton=go;
       c.chart.subscribeCrosshairMove(p=>{if(c!==this.getActive())return;const bar=p.seriesData?.get(c.series);this.hoverBar=bar?{...bar,time:p.time}:null;if(this.mode==='objects'&&this.objectTab==='data')this.renderData();});
       c.chart.timeScale().subscribeVisibleLogicalRangeChange(()=>this.updateRealtime(c));
-      const controls=document.createElement('div');controls.className='chart-window-controls';
-      const properties=this.button('Chart settings','settings',()=>c.onChartSettings?.());
-      const expand=this.button('Maximize chart','box',()=>{const grid=$('chart-grid'),expanded=grid.dataset.expanded===c.id;grid.dataset.expanded=expanded?'':c.id;expand.setAttribute('aria-label',expanded?'Maximize chart':'Restore charts');expand.title=expanded?'Maximize chart':'Restore charts';});
-      controls.append(properties,expand);c.container.appendChild(controls);
+
     }
     const panel=Workspace.read('terminal_desktop_panel_v1',{});this.objectTab=panel.objectTab==='data'?'data':'tree';
     this.open(['watch','objects','alerts'].includes(panel.mode)?panel.mode:null,false);
@@ -76,7 +73,7 @@ class DesktopShell {
     for(const node of rail.querySelectorAll('.tool-separator'))node.remove();
     for(const key of ['crosshair','line','box','text','fib','position','measure','brush','magnet','lock','eye','trash']){
       const b=rail.querySelector(`[data-tool="${key}"]`);if(!b)continue;
-      const importedIcon={crosshair:'crosshair',line:'trend',box:'rectangle',text:'text',fib:'fib',position:'forecast',magnet:'magnet',lock:'lock',eye:'eye',trash:'trash'}[key];
+      const importedIcon={crosshair:'crosshair',line:'trend',box:'rectangle',text:'text',fib:'fib',position:'forecast',measure:'ruler',brush:'brush',magnet:'magnet',lock:'lock',eye:'eye',trash:'trash'}[key];
       if(importedIcon)b.innerHTML=TerminalIcons.svg(importedIcon);
       rail.appendChild(b);
       if(key==='line'){
@@ -134,7 +131,7 @@ class DesktopShell {
     for(const entry of entries){const row=document.createElement('div');row.className='object-row';const title=document.createElement('button');title.textContent=entry.name||entry.record.name;title.onclick=()=>{c.runner.select(entry.record.id);c.onIndicatorSettings?.();};const eye=this.button(entry.record.view?.hidden?'Show indicator':'Hide indicator','eye',()=>{c.runner.toggle(entry.record.id);this.signature='';this.refresh();});const remove=this.button('Remove indicator','close',()=>{c.runner.remove(entry.record.id);this.signature='';this.refresh();});row.classList.toggle('object-hidden',!!entry.record.view?.hidden);row.append(title,eye,remove);this.content.appendChild(row);}
     for(const value of c.drawings.filter(d=>!d.isTemp).slice().reverse()){
       const row=document.createElement('div');row.className='object-row';row.classList.toggle('object-hidden',!!value.hidden);
-      const select=document.createElement('button');select.textContent=DrawingModel.names[value.type]||value.type;select.title=value.text||select.textContent;select.onclick=()=>{this.drawing.setTool('crosshair');this.drawing.editor.select(c,value);this.drawing.editor.open();};
+      const select=document.createElement('button');select.textContent=value.title||DrawingModel.names[value.type]||value.type;select.title=value.text||select.textContent;select.onclick=()=>{this.drawing.setTool('crosshair');this.drawing.editor.select(c,value);this.drawing.editor.open();};
       const eye=this.button(value.hidden?'Show drawing':'Hide drawing','eye',()=>{value.hidden=!value.hidden;if(value.hidden)this.drawing.editor.clear();this.drawing.saveDrawings(c);c.renderDrawings();this.signature='';this.refresh();});
       const lock=this.button(value.locked?'Unlock drawing':'Lock drawing','lock',()=>{value.locked=!value.locked;this.drawing.saveDrawings(c);c.renderDrawings();this.signature='';this.refresh();});lock.classList.toggle('active',!!value.locked);row.append(select,eye,lock);this.content.appendChild(row);
     }

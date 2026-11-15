@@ -20,13 +20,14 @@ from market_store import MarketStore, RESOLUTIONS, SYMBOLS
 from companion_services import EconomicCalendar, music_metadata, resolve_music_share, MusicProviderError
 from native_warmup import NativeWarmup, NATIVE_INTERVALS
 from derived_history import aggregate_six_hour
-calendar_service = EconomicCalendar()
 
 ROOT = Path(__file__).resolve().parent
+DATA_DIR = Path(os.getenv('TERMINAL_DATA_DIR', str(ROOT)))
 HTTP_PORT = int(os.getenv('TERMINAL_HTTP_PORT', '3000'))
 WS_PORT = int(os.getenv('TERMINAL_WS_PORT', '8080'))
 CDP_PORT = int(os.getenv('TERMINAL_CDP_PORT', '9222'))
-store = MarketStore(os.getenv('TERMINAL_DATA_DIR', str(ROOT)))
+store = MarketStore(str(DATA_DIR))
+calendar_service = EconomicCalendar(history_path=DATA_DIR / 'calendar_cache.json')
 clients = set()
 refresh = asyncio.Event()
 status = {'type': 'bridge_status', 'state': 'connecting', 'last_update': None,
@@ -167,7 +168,7 @@ async def native_warmup_loop():
                     report({'state':'waiting','message':'Đang chờ tab TradingView nguồn sẵn sàng'});await asyncio.sleep(3);continue
                 await asyncio.to_thread(evaluate_target,target,ENSURE_PANES_JS)
                 await native_warmup.cycle()
-                await asyncio.to_thread(store.save,copy.deepcopy(store.data),copy.deepcopy(store.metadata))
+                await asyncio.to_thread(store.save, snapshot_market_data(), snapshot_metadata())
                 refresh.set()
         except asyncio.CancelledError:raise
         except Exception as error:
@@ -519,8 +520,26 @@ async def automatic_sources():
             await asyncio.gather(worker,return_exceptions=True)
 
 
+def snapshot_market_data():
+    return {tf: {symbol: list(bars) for symbol, bars in symbols.items()} for tf, symbols in store.data.items()}
+
+
+def snapshot_metadata():
+    return {symbol: copy.deepcopy(meta) for symbol, meta in store.metadata.items()}
+
+
+def encode_initial_snapshot(status_snapshot, data_snapshot, metadata_snapshot):
+    frames = [json.dumps(status_snapshot)]
+    for tf, symbols in data_snapshot.items():
+        for symbol, bars in symbols.items():
+            if bars:
+                frames.append(json.dumps({'type': 'history', 'symbol': symbol, 'timeframe': tf,
+                                          'bars': bars, 'metadata': metadata_snapshot.get(symbol), 'source': 'cache'}))
+    return frames
+
+
 async def frontend_ws_handler(socket):
-    queue = asyncio.Queue(maxsize=64)
+    queue = asyncio.Queue(maxsize=256)
 
     async def send_loop():
         try:
@@ -538,12 +557,9 @@ async def frontend_ws_handler(socket):
 
     sender = None
     try:
-        queue.put_nowait(json.dumps(status))
-        for tf, symbols in store.data.items():
-            for symbol, bars in symbols.items():
-                if bars:
-                    queue.put_nowait(json.dumps({'type': 'history', 'symbol': symbol, 'timeframe': tf,
-                                                'bars': bars, 'metadata': store.metadata.get(symbol), 'source': 'cache'}))
+        frames = await asyncio.to_thread(encode_initial_snapshot, copy.deepcopy(status), snapshot_market_data(), snapshot_metadata())
+        for frame in frames:
+            queue.put_nowait(frame)
         clients.add(queue)
         sender = asyncio.create_task(send_loop())
         async for raw in socket:
@@ -557,8 +573,25 @@ async def frontend_ws_handler(socket):
                 elif request.get('action') == 'preload_native':
                     enqueue_native(list(NATIVE_INTERVALS))
                 elif request.get('action') == 'request_native':
-                    pairs=validate_subscription(request.get('charts',[]))
-                    enqueue_native([tf for _,tf in pairs],priority=True)
+                    requested = request.get('charts', [])
+                    if not isinstance(requested, list) or len(requested) > 16:
+                        queue.put_nowait(json.dumps({'type': 'native_request_error', 'error': 'Invalid native request list'}))
+                        continue
+                    valid_tfs, rejected = [], []
+                    for item in requested:
+                        if not isinstance(item, dict):
+                            rejected.append(str(item))
+                            continue
+                        sym, tf = item.get('symbol'), item.get('timeframe')
+                        if sym in SYMBOLS and (tf in NATIVE_INTERVALS or tf == '6h'):
+                            valid_tfs.append(tf)
+                        else:
+                            rejected.append(f'{sym}:{tf}')
+                    if valid_tfs:
+                        enqueue_native(valid_tfs, priority=True)
+                    if rejected:
+                        queue.put_nowait(json.dumps({'type': 'native_request_error', 'rejected': rejected,
+                                                     'error': f'Khung/mã chưa hỗ trợ native: {", ".join(rejected)}'}))
                 elif request.get('action') in ('refresh', 'refresh_htf'):
                     refresh.set()
                 elif request.get('action') == 'ping':
@@ -631,7 +664,7 @@ async def save_loop():
     while True:
         await asyncio.sleep(20)
         try:
-            await asyncio.to_thread(store.save, copy.deepcopy(store.data), copy.deepcopy(store.metadata))
+            await asyncio.to_thread(store.save, snapshot_market_data(), snapshot_metadata())
         except OSError:
             logging.exception('Could not persist market data')
 

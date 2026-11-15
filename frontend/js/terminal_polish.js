@@ -5,9 +5,9 @@ TerminalFeatures.prototype.installPolish=function(){
   const old=modal.querySelector('.toolbar-settings'),controls=document.createElement('div'),parking=document.createElement('div');
   parking.hidden=true;modal.appendChild(parking);settings.toolbarControls=controls;settings.toolbarParking=parking;
   for(const child of [...old.children])if(child.tagName!=='SUMMARY')controls.appendChild(child);old.remove();parking.appendChild(controls);
-  const labels=['Top left toolbar','Top right toolbar','Drawing toolbar','Bottom left toolbar','Bottom right toolbar','Toolbar transparency'];
+  const labels=['Top left toolbar','Top right toolbar','Drawing toolbar','Bottom left toolbar','Bottom right toolbar','Toolbar background (fixed)'];
   controls.querySelectorAll('.setting-row>span:first-child').forEach((el,i)=>el.textContent=labels[i]);
-  controls.querySelector('.editor-help').textContent='Ctrl + , opens Settings even when toolbars are hidden. Toolbar preferences save automatically.';
+  controls.querySelector('.editor-help').textContent='Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.';
   const nav=document.createElement('button');nav.type='button';nav.setAttribute('role','tab');nav.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v5H3zM3 14h5v7H3zM12 14h9v7h-9z"/></svg><span>Toolbars</span>';nav.onclick=()=>settings.select('Toolbars');settings.nav.appendChild(nav);
   const add=(text,el)=>{const label=document.createElement('label');label.className='setting-row';const name=document.createElement('span');name.textContent=text;label.append(name,el);controls.appendChild(label);};
   const compact=document.createElement('input');compact.type='checkbox';compact.id='set-hide-labels';compact.checked=Workspace.read('terminal_compact_labels_v1',false);compact.onchange=()=>{document.body.classList.toggle('icon-labels-only',compact.checked);Workspace.write('terminal_compact_labels_v1',compact.checked);};add('Hide labels (keep symbol and timeframes)',compact);
@@ -35,10 +35,8 @@ TerminalFeatures.prototype.installPolish=function(){
   // Dismiss only the small popup being clicked away from; never the large Settings dialog.
   const small=['#layout-popover','.toolbar-overflow','.chart-context-menu','.drawing-menu','.tool-submenu','.drawing-more'];
   document.addEventListener('pointerdown',e=>{if(e.target.closest('#btn-layout,.toolbar-more,[data-menu],.tool-group'))return;for(const node of document.querySelectorAll(small.join(',')))if(!node.contains(e.target)){if(node.matches('.toolbar-overflow,.drawing-more'))node.hidden=true;else node.classList.remove('show');}},true);
-  // Left drawing toolbar has its own saved position; drag grip never changes the drawing tool.
-  const sidebar=document.getElementById('left-sidebar'),grip=document.createElement('button');grip.type='button';grip.className='sidebar-grip';grip.title='Move drawing toolbar';grip.setAttribute('aria-label',grip.title);sidebar.prepend(grip);
-  const position=Workspace.read('terminal_sidebar_position_v1',null);if(position){sidebar.style.position='fixed';sidebar.style.left=position.x+'px';sidebar.style.top=position.y+'px';}
-  grip.onpointerdown=e=>{if(e.button!==0)return;e.preventDefault();const r=sidebar.getBoundingClientRect(),dx=e.clientX-r.left,dy=e.clientY-r.top;sidebar.style.position='fixed';sidebar.style.margin='0';sidebar.style.height='auto';grip.setPointerCapture(e.pointerId);grip.onpointermove=m=>{sidebar.style.left=Math.max(0,Math.min(innerWidth-sidebar.offsetWidth,m.clientX-dx))+'px';sidebar.style.top=Math.max(0,Math.min(innerHeight-sidebar.offsetHeight,m.clientY-dy))+'px';};grip.onpointerup=grip.onpointercancel=()=>{grip.onpointermove=null;Workspace.write('terminal_sidebar_position_v1',{x:parseFloat(sidebar.style.left)||r.left,y:parseFloat(sidebar.style.top)||r.top});};};
+  // The drawing rail is attached to the viewport; ignore legacy floating coordinates.
+
 };
 
 TerminalFeatures.prototype.installChartDividers=function(grid,charts){

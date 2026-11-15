@@ -26,13 +26,14 @@ const TerminalMusicLinks={
 class TerminalCompanions{
   constructor(ctx){
     Object.assign(this,ctx);this.calendarData=null;this.playing=false;this.epoch=0;this.currentTrack='';this.impacts=new Set(Workspace.read('terminal_calendar_impacts_v1',['High','Medium','Low']));this.currency=Workspace.read('terminal_calendar_currency_v1','USD');
-    this.dock=document.createElement('aside');this.dock.id='terminal-edge-dock';this.dock.setAttribute('aria-label','Calendar and music');document.body.appendChild(this.dock);
+    const savedProtocols=Workspace.read('terminal_protocol_events_v1',[]);this.protocolEvents=Array.isArray(savedProtocols)?savedProtocols:[];
+    this.dock=document.createElement('aside');this.dock.id='terminal-edge-dock';this.dock.setAttribute('aria-label','Calendar and music');(document.getElementById('right-sidebar')||document.body).appendChild(this.dock);
     this.panels={};for(const [key,title,path] of [['calendar','Calendar','M7 3v4m10-4v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM8 14h2m4 0h2M8 17h2'],['music','Music','M9 18V5l11-2v13M9 8l11-2M9 18a3 2.5 0 1 1-6 0 3 2.5 0 0 1 6 0Zm11-2a3 2.5 0 1 1-6 0 3 2.5 0 0 1 6 0Z']]){
       const button=document.createElement('button');button.className='edge-handle';button.id='edge-'+key;button.type='button';button.setAttribute('aria-label',title);button.setAttribute('aria-expanded','false');button.innerHTML=`<span>${title}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;this.dock.appendChild(button);
       const panel=document.createElement('section');panel.id=key+'-panel';panel.className='companion-panel';panel.inert=true;panel.setAttribute('aria-label',title);panel.innerHTML=`<header><h2>${title==='Calendar'?'Economic Calendar':title}</h2><button type="button" aria-label="Close ${title}">×</button></header>`;panel.querySelector('button').onclick=()=>this.toggle(key,false);document.body.appendChild(panel);this.panels[key]=panel;button.onclick=()=>this.toggle(key);
     }
-    this.buildCalendar();this.buildMusic();this.news=new NewsProtocolPanel(this);this.loadCalendar();this.tick=setInterval(()=>{this.syncDockWidth();if(this.open==='calendar')this.renderCalendar();this.news.render();this.loadCalendar();this.updateMusic();},1000);this.syncDockWidth();
-    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&this.open&&!e.target.closest('.modal'))this.toggle(this.open,false);});
+    this.buildCalendar();this.buildMusic();this.loadCalendar();this.tick=setInterval(()=>{this.syncDockWidth();if(this.open==='calendar')this.renderCalendar();this.loadCalendar();this.updateMusic();},1000);this.syncDockWidth();
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(this.protocolLightbox&&!this.protocolLightbox.hidden){this.protocolLightbox.hidden=true;return;}if(this.open&&!e.target.closest('.modal'))this.toggle(this.open,false);}});
   }
   syncDockWidth(){
     const axis=this.getActive?.()?.chart?.priceScale('right').width()||65;
@@ -83,11 +84,22 @@ class TerminalCompanions{
     const now=new Date();
     const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     const tomorrow=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
-    const events=replay?[]:(data?.events||[]).filter(event=>
+    const rawEvents=replay?[]:data?.events||[];
+    const events=rawEvents.filter(event=>
       this.impacts.has(event.impact)&&(this.currency==='All'||event.currency===this.currency)&&event.time*1000>=+today);
+    if(!replay&&data&&data!==this.calendarSyncedData&&typeof NewsProtocols!=='undefined'){
+      this.calendarSyncedData=data;
+      const archived=Array.isArray(this.protocolEvents)?this.protocolEvents:Array.isArray(this.news?.events)?this.news.events:[];
+      const merged=NewsProtocols.merge(archived,rawEvents,+now/1000);
+      this.protocolEvents=merged;
+      if(this.news)this.news.events=merged;
+      if(merged.length)Workspace.write('terminal_protocol_events_v1',merged);
+    }
+    const protocolEnabled=!replay&&typeof NewsProtocols!=='undefined'&&(this.currency==='All'||this.currency==='USD');
+    const protocolEvents=protocolEnabled?NewsProtocols.merge(this.protocolEvents||this.news?.events||[],rawEvents,+now/1000):[];
     const next=events.find(event=>!event.tentative&&event.time*1000>+now);
     const nextToday=events.find(event=>event.time*1000>+now&&event.time*1000<+tomorrow);
-    const key=JSON.stringify([replay,this.currency,[...this.impacts],data?.checked_at,data?.error,+today,next?.time,nextToday?.time]);
+    const key=JSON.stringify([replay,this.currency,[...this.impacts],data?.checked_at,data?.error,+today,next?.time,nextToday?.time,protocolEnabled?[protocolEvents.length,protocolEvents[0]?.time,protocolEvents.at(-1)?.time]:0]);
     this.calendarTimeFormat??=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
     if(key!==this.calendarRenderKey){
       this.calendarRenderKey=key;
@@ -109,7 +121,7 @@ class TerminalCompanions{
       }else if(!data){
         this.calendarList.textContent='Loading economic events…';
       }else{
-        this.buildCalendarList(events,next,nextToday,today,tomorrow);
+        this.buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents,protocolEnabled);
       }
       this.calendarList.scrollTop=scroll;
     }
@@ -125,23 +137,46 @@ class TerminalCompanions{
     }
     if(!replay)this.loadCalendar();
   }
-  buildCalendarList(events,next,nextToday,today,tomorrow){
+  buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents=[],protocolEnabled=false){
     const data=this.calendarData;
-    const todayKey=today.toDateString(),tomorrowKey=tomorrow.toDateString();
-    const groups=new Map([[todayKey,[]]]);
+    const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const todayIso=iso(today),tomorrowIso=iso(tomorrow);
+    const groups=new Map([[todayIso,{date:today,events:[],cards:[],checked:false}]]);
     for(const event of events){
-      const day=new Date(event.time*1000).toDateString();
-      if(!groups.has(day))groups.set(day,[]);
-      groups.get(day).push(event);
+      const ed=new Date(event.time*1000),day=new Date(ed.getFullYear(),ed.getMonth(),ed.getDate()),k=iso(day);
+      if(!groups.has(k))groups.set(k,{date:day,events:[],cards:[],checked:false});
+      groups.get(k).events.push(event);
+    }
+    if(protocolEnabled&&protocolEvents.length){
+      const limit=+today+21*86400000;
+      let maxMs=+today;
+      for(const event of protocolEvents)if(event.time*1000>=+today&&event.time*1000<=limit)maxMs=Math.max(maxMs,event.time*1000);
+      const endMs=Math.min(limit,maxMs+5*86400000);
+      for(let d=new Date(today);+d<=endMs;d.setDate(d.getDate()+1)){
+        const k=iso(d),cards=NewsProtocols.matchDay(protocolEvents,k);
+        if(cards.length){
+          if(!groups.has(k))groups.set(k,{date:new Date(d),events:[],cards,checked:true});
+          else Object.assign(groups.get(k),{cards,checked:true});
+        }else if(groups.has(k)){
+          groups.get(k).checked=true;
+        }
+      }
+      for(const [k,entry] of groups)if(!entry.checked){entry.cards=NewsProtocols.matchDay(protocolEvents,k);entry.checked=true;}
     }
     const dateFormat=new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
     this.calendarNow=document.createElement('div');
     this.calendarNow.className='calendar-now';
-    for(const [day,group] of groups){
+    for(const [dayIso,entry] of [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0]))){
       const heading=document.createElement('h3');
-      heading.textContent=day===todayKey?'Today':day===tomorrowKey?'Tomorrow':dateFormat.format(new Date(group[0].time*1000));
+      heading.textContent=dayIso===todayIso?'Today':dayIso===tomorrowIso?'Tomorrow':dateFormat.format(entry.date);
       this.calendarList.appendChild(heading);
-      for(const event of group){
+      if(entry.cards.length){
+        const box=document.createElement('div');
+        box.className='calendar-day-protocols';
+        for(const card of entry.cards)box.appendChild(this.buildCalendarProtocol(card,dayIso,dateFormat));
+        this.calendarList.appendChild(box);
+      }
+      for(const event of entry.events){
         if(event===nextToday)this.calendarList.appendChild(this.calendarNow);
         this.calendarList.appendChild(this.buildCalendarEvent(event));
         if(event===next){
@@ -150,7 +185,7 @@ class TerminalCompanions{
           this.calendarList.appendChild(this.calendarCountdown);
         }
       }
-      if(day===todayKey&&!nextToday)this.calendarList.appendChild(this.calendarNow);
+      if(dayIso===todayIso&&!nextToday)this.calendarList.appendChild(this.calendarNow);
     }
     if(!events.length){
       const message=document.createElement('p');
@@ -160,16 +195,96 @@ class TerminalCompanions{
     }
     const updated=Number.isFinite(data.updated_at)
       ?' · Updated '+dateFormat.format(new Date(data.updated_at*1000))+' '+this.calendarTimeFormat.format(new Date(data.updated_at*1000)):'';
-    if(data.source){
-      const link=document.createElement('a');
-      link.href=data.website;
-      link.target='_blank';
-      link.rel='noopener noreferrer';
-      link.textContent='From '+data.source;
-      this.calendarStatus.append(link);
-    }
-    this.calendarStatus.append(updated+(data.source?' · ':'')+'Times on this computer'+(data.error&&events.length?' · Showing cached data':''));
+    this.calendarStatus.append((updated?updated.slice(3)+' · ':'')+'Times on this computer'+(data.error&&events.length?' · Showing cached data':''));
     this.calendarStatus.title=data.notice||'';
+  }
+  buildCalendarProtocol(card,dayIso,dateFormat){
+    const item=document.createElement('article');
+    item.className='calendar-protocol-card';
+    item.dataset.protocol=card.id;
+    item.title=card.reasons?.join('\n')||card.title;
+    const info=document.createElement('div');
+    info.className='calendar-protocol-info';
+    const head=document.createElement('div');
+    head.className='calendar-protocol-head';
+    const title=document.createElement('strong');
+    title.textContent=card.title;
+    head.appendChild(title);
+    const evts=card.events||[];
+    const hasShifted=evts.some(e=>{
+      if(!dayIso||!Number.isFinite(e?.time))return false;
+      const d=new Date(e.time*1000);
+      const localDay=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      return localDay!==dayIso;
+    });
+    const tagText=card.id.endsWith('-after')?'Sau tin':card.id.endsWith('-before')?'Trước tin':card.id==='nfp-week'?'Tuần NFP':hasShifted?'Phiên NY':'';
+    if(tagText){
+      const tag=document.createElement('span');
+      tag.className='calendar-protocol-tag';
+      tag.textContent=tagText;
+      head.appendChild(tag);
+    }
+    const list=document.createElement('div');
+    list.className='calendar-protocol-events';
+    const dayFmt=dateFormat||new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    for(const e of evts){
+      const row=document.createElement('div');
+      row.className='calendar-protocol-event';
+      const dot=document.createElement('i');
+      if(e.impact)dot.dataset.impact=e.impact;
+      const when=document.createElement('span');
+      when.className='calendar-protocol-when';
+      if(Number.isFinite(e.time)){
+        const d=new Date(e.time*1000);
+        const localDay=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        const clock=e.tentative?'TBD':(this.calendarTimeFormat?this.calendarTimeFormat.format(d):'');
+        when.textContent=localDay!==dayIso?`${clock} (${dayFmt.format(d)})`:clock;
+      }
+      const cur=document.createElement('b');
+      cur.textContent=e.currency||'USD';
+      const name=document.createElement('span');
+      name.className='calendar-protocol-name';
+      name.textContent=e.title||'';
+      row.append(dot,when,cur,name);
+      const vals=[e.actual&&'A '+e.actual,e.forecast&&'F '+e.forecast,e.previous&&'P '+e.previous].filter(Boolean).join(' · ');
+      if(vals){
+        const nums=document.createElement('small');
+        nums.textContent=vals;
+        row.appendChild(nums);
+      }
+      list.appendChild(row);
+    }
+    info.append(head,list);
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='calendar-protocol-thumb';
+    btn.setAttribute('aria-label','Enlarge '+card.title);
+    const img=document.createElement('img');
+    img.src='assets/news-protocols/'+card.id+'.png';
+    img.alt=card.title;
+    btn.appendChild(img);
+    btn.onclick=()=>this.openProtocolLightbox(card);
+    item.append(info,btn);
+    return item;
+  }
+  openProtocolLightbox(card){
+    if(!this.protocolLightbox){
+      const overlay=document.createElement('div');
+      overlay.className='calendar-protocol-lightbox';
+      overlay.hidden=true;
+      overlay.setAttribute('role','dialog');
+      overlay.setAttribute('aria-modal','true');
+      overlay.innerHTML='<div class="calendar-protocol-dialog"><header><strong></strong><button type="button" aria-label="Close protocol image">×</button></header><img></div>';
+      overlay.onclick=e=>{if(e.target===overlay)overlay.hidden=true;};
+      overlay.querySelector('button').onclick=()=>overlay.hidden=true;
+      document.body.appendChild(overlay);
+      this.protocolLightbox=overlay;
+    }
+    this.protocolLightbox.querySelector('strong').textContent=card.title+(card.events?.length?' · '+card.events.map(e=>e.title).join(', '):'');
+    const img=this.protocolLightbox.querySelector('img');
+    img.src='assets/news-protocols/'+card.id+'.png';
+    img.alt=card.title;
+    this.protocolLightbox.hidden=false;
   }
   buildCalendarEvent(event){
     const row=document.createElement('article');

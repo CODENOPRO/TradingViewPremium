@@ -27,7 +27,7 @@ class IndicatorRunner {
     this.onStatus('Đang nạp script…');
     const worker = new Worker('js/indicator_worker.js');
     this.worker = worker;
-    const initBudget=this.runtime==='pine6'?15000:4000;
+    const initBudget=this.runtime==='pine6'?20000:4000;
     this.timeout = setTimeout(() => this.fail(`Script khởi tạo quá ${initBudget/1000} giây; đã dừng, code vẫn được lưu.`), initBudget);
     worker.onmessage = ({ data }) => {
       if (this.worker !== worker) return;
@@ -111,7 +111,7 @@ class IndicatorRunner {
     if(dispatchKey===this.lastDispatchKey)return;
     this.lastDispatchKey=dispatchKey;this.busy = true;
     this.revision++;this.runScope=[this.chart.symbol,this.chart.currentTimeframe,this.chart.sessionMode,!!this.chart.replayMode].join('|');this.runEndTime=this.chart.bars.at(-1).time;
-    const runBudget=this.runtime==='pine6'?12000:4000;
+    const runBudget=this.runtime==='pine6'?25000:4000;
     this.timeout = setTimeout(() => this.fail(`Tính indicator quá ${runBudget/1000} giây; đã dừng. Script vẫn được lưu.`), runBudget);
     const supplied=this.getContext({markets:this.usesMarkets,viewport:this.usesViewport})||{};
     const {markets,viewport:contextViewport,...shared}=supplied;
@@ -132,12 +132,14 @@ class IndicatorRunner {
   validate(result) {
     const allSeries=[...(result.series||[]),...(result.pane?.series||[])];
     if (allSeries.length > 30 || (result.drawings?.length || 0) > 2000) throw new Error('Indicator vượt giới hạn 30 series / 2000 hình.');
-    if(allSeries.reduce((n,s)=>n+(s.data?.length||0),0)>100000)throw Error('Indicator vượt giới hạn 100.000 plot points.');
+    if(allSeries.reduce((n,s)=>n+(s.data?.length||0),0)>300000)throw Error('Indicator vượt giới hạn 300.000 plot points.');
     for (const series of allSeries) {
-      if (!['line', 'histogram','area'].includes(series.type || 'line') || !Array.isArray(series.data)) throw new Error('Series chưa hỗ trợ hoặc dữ liệu không hợp lệ.');
+      const type=series.type||'line';
+      if (!['line', 'histogram','area','candle','bar'].includes(type) || !Array.isArray(series.data)) throw new Error('Series chưa hỗ trợ hoặc dữ liệu không hợp lệ.');
       let previous = -Infinity;
       for (const point of series.data) {
-        if (!Number.isFinite(point.time) || point.time <= previous || point.value!==undefined&&!Number.isFinite(point.value)) throw new Error('Series phải có time tăng dần và value hữu hạn.');
+        const validValue=(type==='candle'||type==='bar')?(point.open===undefined||['open','high','low','close'].every(k=>Number.isFinite(point[k]))):(point.value===undefined||Number.isFinite(point.value));
+        if (!Number.isFinite(point.time) || point.time <= previous || !validValue) throw new Error('Series phải có time tăng dần và value hữu hạn.');
         previous = point.time;
       }
     }
@@ -149,9 +151,13 @@ class IndicatorRunner {
     }
     if ((result.tables?.length || 0) > 10 || (result.tables || []).some(t => !Array.isArray(t.rows) || t.rows.length > 100 || t.rows.some(row => !Array.isArray(row) || row.length > 30))) throw new Error('Bảng indicator không hợp lệ.');
     for(const descriptor of [result,result.pane].filter(Boolean)){
-      if((descriptor.paints?.length||0)>60)throw Error('Quá nhiều Pine paint layers.');
-      if((descriptor.paints||[]).reduce((n,p)=>n+(p.data?.length||0)+(p.top?.length||0)+(p.bottom?.length||0),0)>100000)throw Error('Pine paint vượt 100.000 points.');
-      for(const paint of descriptor.paints||[]){if(!['background','fill','shape'].includes(paint.type))throw Error('Pine paint type chưa hỗ trợ.');for(const values of [paint.data,paint.top,paint.bottom].filter(Boolean))if(!Array.isArray(values)||values.length>100000||values.some(p=>!Number.isFinite(p.time)))throw Error('Pine paint points không hợp lệ.');}
+      if((descriptor.paints?.length||0)>100)throw Error('Quá nhiều Pine paint layers.');
+      if((descriptor.paints||[]).reduce((n,p)=>n+(p.data?.length||0)+(p.top?.length||0)+(p.bottom?.length||0)+(p.points?.length||0),0)>200000)throw Error('Pine paint vượt 200.000 points.');
+      for(const paint of descriptor.paints||[]){
+        if(!['background','fill','shape','quad','polyline'].includes(paint.type))throw Error('Pine paint type chưa hỗ trợ.');
+        for(const values of [paint.data,paint.top,paint.bottom].filter(Boolean))if(!Array.isArray(values)||values.length>100000||values.some(p=>!Number.isFinite(p.time)))throw Error('Pine paint points không hợp lệ.');
+        if(paint.points&&(!Array.isArray(paint.points)||paint.points.length>50000||paint.points.some(p=>!Number.isFinite(p.time)||!Number.isFinite(p.price))))throw Error('Pine paint polygon không hợp lệ.');
+      }
     }
   }
 

@@ -7,7 +7,17 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 from market_store import MarketStore, clean_bar, atomic_json, read_json
-from bridge_server import CDPConnection, clients, publish
+from bridge_server import (
+    CDPConnection,
+    clients,
+    encode_initial_snapshot,
+    frontend_ws_handler,
+    pending_native,
+    publish,
+    snapshot_market_data,
+    status,
+    store,
+)
 
 
 def bar(time=60, **changes):
@@ -86,6 +96,57 @@ class CDPTests(unittest.IsolatedAsyncioTestCase):
             self.assertNotIn(queue, clients)
         finally:
             clients.discard(queue)
+
+    async def test_unsupported_request_native_does_not_close_websocket(self):
+        class FakeSocket:
+            def __init__(self, messages):
+                self._messages = iter(messages)
+                self.sent = []
+                self.closed = []
+
+            async def send(self, message):
+                self.sent.append(json.loads(message))
+
+            async def close(self, code=1000, reason=""):
+                self.closed.append((code, reason))
+
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                await asyncio.sleep(0)
+                try:
+                    return next(self._messages)
+                except StopIteration:
+                    await asyncio.sleep(0.01)
+                    raise StopAsyncIteration
+
+        prev_data = {tf: dict(syms) for tf, syms in store.data.items()}
+        prev_pending = list(pending_native)
+        store.data["1m"]["NQ1!"] = [bar(60)]
+        pending_native.clear()
+        try:
+            snap = snapshot_market_data()
+            self.assertEqual(snap["1m"]["NQ1!"], [bar(60)])
+            frames = encode_initial_snapshot(status, snap, {})
+            self.assertGreaterEqual(len(frames), 2)
+            socket = FakeSocket([
+                json.dumps({"action": "request_native", "charts": [
+                    {"symbol": "NQ1!", "timeframe": "30m"},
+                    {"symbol": "NQ1!", "timeframe": "12h"},
+                    {"symbol": "UNKNOWN", "timeframe": "1m"},
+                ]}),
+                json.dumps({"action": "ping"}),
+            ])
+            await frontend_ws_handler(socket)
+            self.assertEqual(socket.closed, [])
+            self.assertIn("30m", pending_native)
+            self.assertTrue(any(m.get("type") == "native_request_error" for m in socket.sent))
+            self.assertTrue(any(m.get("type") == "pong" for m in socket.sent))
+        finally:
+            store.data.clear()
+            store.data.update(prev_data)
+            pending_native[:] = prev_pending
 
 
 if __name__ == "__main__":

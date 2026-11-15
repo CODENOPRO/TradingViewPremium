@@ -6,6 +6,7 @@ class DrawingManager {
     this.drawingsLocked = false;
     this.drawingsHidden = false;
     this.drawingState = null;
+    this.lastPointer = null;
 
     this.undoStacks = new Map();
     this.redoStacks = new Map();
@@ -51,6 +52,7 @@ class DrawingManager {
     this.activeTool = tool;
     for(const chart of window.charts||[]){chart.container.style.cursor='';chart.container.style.removeProperty('--drawing-cursor');for(const button of chart.alertOverlay?.buttons.values()||[])button.style.pointerEvents=tool==='crosshair'?'auto':'none';}
     this.drawingState = null;
+    this.lastPointer = null;
 
     document.querySelectorAll('.tool-btn, .ft-btn').forEach(btn => {
       if (btn.dataset.tool === 'magnet' || btn.dataset.tool === 'lock' || btn.dataset.tool === 'eye') return;
@@ -121,6 +123,52 @@ class DrawingManager {
 
   }
 
+  resolvePoint(chartEngine, clientX, clientY, event = {}, anchor = null) {
+    const rect = chartEngine.container.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    let time = chartEngine.coordinateToTime(x);
+    let price = chartEngine.coordinateToPrice(y);
+    if (time === null || !Number.isFinite(price)) return null;
+
+    ({ time, price } = this.snapPoint(chartEngine, time, price, {
+      clientX, clientY, ctrlKey: event.ctrlKey, metaKey: event.metaKey
+    }));
+    if (anchor && event.shiftKey && this.activeTool === 'line') {
+      return DrawingModel.constrainLinePoint(chartEngine, anchor, { time, price }, { x, y });
+    }
+    return { time, price };
+  }
+
+  updatePreview(chartEngine, clientX, clientY, event = {}) {
+    if (!this.drawingState || this.drawingState.chart !== chartEngine || this.drawingsLocked) return;
+    const anchor = this.drawingState.step === 2 ? this.drawingState.p1 : null;
+    const point = this.resolvePoint(chartEngine, clientX, clientY, event, anchor);
+    if (!point) return;
+
+    if (this.drawingState.step === 3) {
+      const [p1, p2] = this.drawingState.points;
+      chartEngine.drawings = chartEngine.drawings.filter(d => !d.isTemp);
+      chartEngine.drawings.push({ id: 'temp', isTemp: true, type: 'position', p1, p2: p2 || point, p3: point, ...DrawingModel.defaults('position') });
+      chartEngine.renderDrawings();
+      return;
+    }
+
+    chartEngine.drawings = chartEngine.drawings.filter(d => !d.isTemp);
+    chartEngine.drawings.push({
+      id: 'temp',
+      isTemp: true,
+      type: this.activeTool,
+      p1: this.drawingState.p1,
+      p2: point,
+      color: '#2962ff',
+      fillColor: 'rgba(41, 98, 255, 0.2)',
+      borderColor: '#2962ff'
+    });
+    chartEngine.renderDrawings();
+  }
+
   bindChart(chartEngine) {
     const container = chartEngine.container;
     this.editor.bind(chartEngine);
@@ -132,15 +180,10 @@ class DrawingManager {
       if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.activeTool==='brush' || this.drawingsLocked) return;
       if (this.drawingState?.chart !== chartEngine) this.drawingState = null;
 
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      let time = chartEngine.coordinateToTime(x);
-      let price = chartEngine.coordinateToPrice(y);
-      if (!time || !price) return;
-
-      ({time,price}=this.snapPoint(chartEngine,time,price,e));
+      const anchor = this.drawingState?.step === 2 ? this.drawingState.p1 : null;
+      const point = this.resolvePoint(chartEngine, e.clientX, e.clientY, e, anchor);
+      if (!point) return;
+      const { time, price } = point;
 
       // Horizontal Line: 1-click drop
       if (this.activeTool === 'hline') {
@@ -194,6 +237,7 @@ class DrawingManager {
         this.saveDrawings(chartEngine);
 
         this.drawingState = null;
+        this.lastPointer = null;
         this.setTool('crosshair');
         chartEngine.renderDrawings();
       }
@@ -201,36 +245,8 @@ class DrawingManager {
 
     container.addEventListener('mousemove', (e) => {
       if (!this.drawingState || this.drawingState.chart !== chartEngine || this.drawingsLocked) return;
-
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      let time = chartEngine.coordinateToTime(x);
-      let price = chartEngine.coordinateToPrice(y);
-      if (!time || !price) return;
-
-      ({time,price}=this.snapPoint(chartEngine,time,price,e));
-
-      if(this.drawingState.step===3){
-        const [p1,p2]=this.drawingState.points;
-        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);
-        chartEngine.drawings.push({id:'temp',isTemp:true,type:'position',p1,p2:p2||{time,price},p3:{time,price},...DrawingModel.defaults('position')});
-        chartEngine.renderDrawings();return;
-      }
-
-      chartEngine.drawings = chartEngine.drawings.filter(d => !d.isTemp);
-      chartEngine.drawings.push({
-        id: 'temp',
-        isTemp: true,
-        type: this.activeTool,
-        p1: this.drawingState.p1,
-        p2: { time, price },
-        color: '#2962ff',
-        fillColor: 'rgba(41, 98, 255, 0.2)',
-        borderColor: '#2962ff'
-      });
-      chartEngine.renderDrawings();
+      this.lastPointer = { chart: chartEngine, clientX: e.clientX, clientY: e.clientY, ctrlKey: e.ctrlKey, metaKey: e.metaKey };
+      this.updatePreview(chartEngine, e.clientX, e.clientY, e);
     });
   }
 
@@ -282,10 +298,19 @@ class DrawingManager {
             window.currentActiveChart.renderDrawings();
           }
           this.drawingState = null;
+          this.lastPointer = null;
           this.setTool('crosshair');
         }
       }
     });
+    for (const type of ['keydown', 'keyup']) {
+      window.addEventListener(type, (e) => {
+        if (e.key !== 'Shift' || (type === 'keydown' && e.repeat) || !this.drawingState || this.activeTool !== 'line' || this.lastPointer?.chart !== this.drawingState.chart) return;
+        this.updatePreview(this.lastPointer.chart, this.lastPointer.clientX, this.lastPointer.clientY, {
+          ctrlKey: e.ctrlKey, metaKey: e.metaKey, shiftKey: type === 'keydown' || e.shiftKey
+        });
+      });
+    }
   }
 
   saveDrawings(chartEngine) {

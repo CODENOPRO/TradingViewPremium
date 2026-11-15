@@ -73,3 +73,95 @@ test('FOMC before/after skips weekends, NFP spans its workweek and calendar arch
   assert.equal(News.match([nfp],now('2026-11-09T16:00:00Z'))[0].id,'nfp-week');
   assert.equal(News.merge([fomc],[fomc,nfp],now('2026-11-16T16:00:00Z')).length,2);
 });
+
+test('matchDay supports possessive Fed Chair and Retail Sales Control Group while rejecting non-Chair speakers',()=>{
+  const warsh=event("Fed's Chair Warsh speech",'2026-11-16T17:00:00Z');
+  const barr=event("Fed's Barr speech",'2026-11-16T10:00:00Z',{impact:'Medium'});
+  const ctrl=event('Retail Sales Control Group','2026-11-17T13:30:00Z');
+  assert.deepEqual(News.matchDay([warsh,barr,ctrl],'2026-11-13').map(x=>x.id),['fed-before']);
+  assert.deepEqual(News.matchDay([warsh,barr,ctrl],'2026-11-16').map(x=>x.id),['fed-day']);
+  assert.deepEqual(News.matchDay([warsh,barr,ctrl],'2026-11-17').map(x=>x.id),['0830']);
+  assert.deepEqual(News.matchDay([barr],'2026-11-16'),[]);
+});
+
+test('calendar attaches protocol images to matching day headings and omits them in Replay or EUR-only filter',()=>{
+  const makeEl=tag=>{
+    const el={tagName:tag.toUpperCase(),children:[],dataset:{},attributes:{},className:'',textContent:'',src:'',alt:'',title:'',hidden:false,
+      setAttribute(k,v){this.attributes[k]=String(v);},removeAttribute(k){delete this.attributes[k];},
+      append(...nodes){for(const n of nodes)this.children.push(typeof n==='string'?{textContent:n,children:[]}:n);},
+      appendChild(n){this.children.push(n);return n;},
+      replaceChildren(){this.children=[];},
+      querySelectorAll(){return [];},querySelector(){return null;}};
+    return el;
+  };
+  const RealDate=Date,fixedNow=RealDate.parse('2026-11-15T12:00:00Z');
+  class FakeDate extends RealDate{constructor(...a){super(...(a.length?a:[fixedNow]));}static now(){return fixedNow;}}
+  const doc={createElement:makeEl,getElementById:()=>null,body:makeEl('body'),addEventListener(){}};
+  const ctx=vm.createContext({document:doc,Date:FakeDate,Intl,NewsProtocols:News,Workspace:{read:(_,d)=>d,write(){}}});
+  vm.runInContext(fs.readFileSync('frontend/js/terminal_companions.js','utf8')+';this.Companions=TerminalCompanions;',ctx);
+  const comp=Object.assign(Object.create(ctx.Companions.prototype),{
+    currency:'USD',impacts:new Set(['High']),calendarFilters:makeEl('div'),calendarList:makeEl('div'),calendarStatus:makeEl('footer'),
+    news:{events:[]},getReplay:()=>({running:false}),loadCalendar(){},
+    calendarData:{checked_at:fixedNow/1000,events:[event('FOMC Statement','2026-11-18T19:00:00Z')]}
+  });
+  comp.renderCalendar();
+  const walk=(node,fn)=>{fn(node);for(const c of node.children||[])walk(c,fn);};
+  const imgs=[];walk(comp.calendarList,n=>{if(n.tagName==='IMG')imgs.push(n.src);});
+  assert.deepEqual(imgs,['assets/news-protocols/fomc-before.png','assets/news-protocols/fomc-day.png','assets/news-protocols/fomc-after.png']);
+  comp.currency='EUR';comp.renderCalendar();
+  const eurImgs=[];walk(comp.calendarList,n=>{if(n.tagName==='IMG')eurImgs.push(n.src);});
+  assert.deepEqual(eurImgs,[]);
+  comp.currency='USD';comp.getReplay=()=>({running:true});comp.renderCalendar();
+  const replayImgs=[];walk(comp.calendarList,n=>{if(n.tagName==='IMG')replayImgs.push(n.src);});
+  assert.deepEqual(replayImgs,[]);
+});
+
+test('calendar preserves post-news Day After predictions across yesterday, weekends, empty day rows and far windows',()=>{
+  const makeEl=tag=>{
+    const el={tagName:tag.toUpperCase(),children:[],dataset:{},attributes:{},className:'',textContent:'',src:'',alt:'',title:'',hidden:false,
+      setAttribute(k,v){this.attributes[k]=String(v);},removeAttribute(k){delete this.attributes[k];},
+      append(...nodes){for(const n of nodes)this.children.push(typeof n==='string'?{textContent:n,children:[]}:n);},
+      appendChild(n){this.children.push(n);return n;},
+      replaceChildren(){this.children=[];},
+      querySelectorAll(){return [];},querySelector(){return null;}};
+    return el;
+  };
+  const RealDate=Date;
+  const runAt=(isoNow,events)=>{
+    const fixedNow=RealDate.parse(isoNow),writes=[];
+    class FakeDate extends RealDate{constructor(...a){super(...(a.length?a:[fixedNow]));}static now(){return fixedNow;}}
+    const doc={createElement:makeEl,getElementById:()=>null,body:makeEl('body'),addEventListener(){}};
+    const ctx=vm.createContext({document:doc,Date:FakeDate,Intl,NewsProtocols:News,Workspace:{read:(_,d)=>d,write:(k,v)=>writes.push([k,v])}});
+    vm.runInContext(fs.readFileSync('frontend/js/terminal_companions.js','utf8')+';this.Companions=TerminalCompanions;',ctx);
+    const comp=Object.assign(Object.create(ctx.Companions.prototype),{
+      currency:'USD',impacts:new Set(['High']),calendarFilters:makeEl('div'),calendarList:makeEl('div'),calendarStatus:makeEl('footer'),
+      protocolEvents:[],getReplay:()=>({running:false}),loadCalendar(){},
+      calendarData:{checked_at:fixedNow/1000,events}
+    });
+    comp.renderCalendar();
+    const walk=(node,fn)=>{fn(node);for(const c of node.children||[])walk(c,fn);};
+    const imgs=[],texts=[],dots=[],smalls=[];
+    walk(comp.calendarList,n=>{
+      if(n.tagName==='IMG')imgs.push(n.src);
+      if(n.tagName==='SPAN'&&n.textContent)texts.push(n.textContent);
+      if(n.tagName==='I'&&n.dataset?.impact)dots.push(n.dataset.impact);
+      if(n.tagName==='SMALL'&&n.textContent)smalls.push(n.textContent);
+    });
+    return {comp,imgs,texts,dots,smalls,writes};
+  };
+
+  const dayAfter=runAt('2026-11-19T12:00:00Z',[event('FOMC Statement','2026-11-18T19:00:00Z',{actual:'4.50%',forecast:'4.50%'})]);
+  assert.deepEqual(dayAfter.imgs,['assets/news-protocols/fomc-after.png']);
+  assert.ok(dayAfter.texts.includes('Sau tin'));
+  assert.ok(dayAfter.texts.includes('FOMC Statement'));
+  assert.ok(dayAfter.dots.includes('High'));
+  assert.ok(dayAfter.smalls.some(s=>s.includes('A 4.50%')&&s.includes('F 4.50%')));
+  assert.equal(dayAfter.comp.protocolEvents.length,1);
+  assert.ok(dayAfter.writes.some(([k,v])=>k==='terminal_protocol_events_v1'&&v.length===1));
+
+  const mondayAfterFri=runAt('2026-11-16T12:00:00Z',[event('FOMC Statement','2026-11-13T19:00:00Z')]);
+  assert.deepEqual(mondayAfterFri.imgs,['assets/news-protocols/fomc-after.png']);
+
+  const farWindow=runAt('2026-11-01T12:00:00Z',[event('FOMC Statement','2026-11-13T19:00:00Z')]);
+  assert.deepEqual(farWindow.imgs,['assets/news-protocols/fomc-before.png','assets/news-protocols/fomc-day.png','assets/news-protocols/fomc-after.png']);
+});

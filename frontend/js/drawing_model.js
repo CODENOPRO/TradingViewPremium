@@ -3,8 +3,8 @@ const DrawingModel = (() => {
   const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure',brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
   function defaults(type) {
-    return { color:'#211f1d', borderColor:'#211f1d', width:1, lineStyle:'solid', strokeOpacity:100,
-      fillEnabled:true, fillColor:'#916966', fillOpacity:32, extend:'none', locked:false,
+    return { title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
       textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
@@ -55,6 +55,19 @@ const DrawingModel = (() => {
     const time=timeAt(chart,chart.chart.timeScale().coordinateToLogical(x),continuous);
     const price=chart.series.coordinateToPrice(y);
     return time !== null && Number.isFinite(price) ? {time,price} : null;
+  }
+  function constrainLinePoint(chart, anchor, targetPoint, pixel=null) {
+    if (!anchor || !targetPoint) return targetPoint;
+    const a=point(chart, anchor);
+    const b=pixel && Number.isFinite(pixel.x) && Number.isFinite(pixel.y) ? pixel : point(chart, targetPoint);
+    if (!a || !b || !Number.isFinite(a.x) || !Number.isFinite(a.y) || !Number.isFinite(b.x) || !Number.isFinite(b.y)) return targetPoint;
+    const dx=b.x-a.x, dy=b.y-a.y;
+    if (Math.hypot(dx, dy) < 1e-6) return {time:anchor.time, price:anchor.price};
+    const angle=Math.round(Math.atan2(dy, dx)/(Math.PI/4))*(Math.PI/4);
+    if (Math.abs(Math.sin(angle)) < 1e-6) return {time:targetPoint.time, price:anchor.price};
+    if (Math.abs(Math.cos(angle)) < 1e-6) return {time:anchor.time, price:targetPoint.price};
+    const ux=Math.cos(angle), uy=Math.sin(angle), proj=dx*ux+dy*uy;
+    return fromPixel(chart, a.x+proj*ux, a.y+proj*uy) || targetPoint;
   }
   function rgba(color, opacity) {
     if (!/^#[0-9a-f]{6}$/i.test(color || '')) return color || '#211f1d';
@@ -125,9 +138,14 @@ const DrawingModel = (() => {
         line(g.a.x,0,g.a.x,(chart.plotHeight??chart.container.clientHeight)-26);ctx.restore();return;
       }
       let a={...(g.a.x <= g.b.x ? g.a : g.b)},b={...(g.a.x <= g.b.x ? g.b : g.a)};
-      const slope=(b.y-a.y)/(b.x-a.x || .001);
-      if(d.extend === 'left' || d.extend === 'both'){const x=Math.min(a.x,b.x);const y=a.x<=b.x?a.y:b.y;a={x:0,y:y-x*slope};}
-      if(d.extend === 'right' || d.extend === 'both'){const x=Math.max(g.a.x,g.b.x);const y=g.a.x>=g.b.x?g.a.y:g.b.y;b={x:width,y:y+(width-x)*slope};}
+      if (Math.abs(b.x-a.x) >= 1e-6) {
+        const slope=(b.y-a.y)/(b.x-a.x);
+        if(d.extend === 'left' || d.extend === 'both'){const x=Math.min(a.x,b.x);const y=a.x<=b.x?a.y:b.y;a={x:0,y:y-x*slope};}
+        if(d.extend === 'right' || d.extend === 'both'){const x=Math.max(g.a.x,g.b.x);const y=g.a.x>=g.b.x?g.a.y:g.b.y;b={x:width,y:y+(width-x)*slope};}
+      } else if (d.extend === 'both') {
+        a={x:a.x,y:0};
+        b={x:a.x,y:(chart.plotHeight??chart.container.clientHeight)-26};
+      }
       line(a.x,a.y,b.x,b.y);
       const items=[],change=d.p2.price-d.p1.price;
       if(d.stats.price)items.push(change.toFixed(2));
@@ -140,17 +158,17 @@ const DrawingModel = (() => {
     } else if(d.type === 'hline') line(0,g.a.y,width,g.a.y);
     else if(d.type === 'box') {
       if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}
-      ctx.strokeRect(left,top,right-left,bottom-top);
+      if(d.strokeOpacity>0&&d.width>0&&d.borderColor!=='transparent')ctx.strokeRect(left,top,right-left,bottom-top);
       if(d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=d.middleLine.width;ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
     } else if(d.type === 'fib') {
-      for(const level of d.levels){const y=g.a.y+(g.b.y-g.a.y)*level;line(left,y,right,y);ctx.fillStyle=d.color;ctx.font='10px Arial';ctx.fillText(`${level} (${(d.p1.price+(d.p2.price-d.p1.price)*level).toFixed(2)})`,left+4,y-4);}
+      for(const level of d.levels){const y=g.a.y+(g.b.y-g.a.y)*level;line(left,y,right,y);ctx.fillStyle=rgba(d.borderColor,d.strokeOpacity);ctx.font='10px Arial';ctx.fillText(`${level} (${(d.p1.price+(d.p2.price-d.p1.price)*level).toFixed(2)})`,left+4,y-4);}
     } else if(d.type === 'position'&&g.c) {
       const span=Math.max(30,right-left),entry=g.a.y,target=g.b.y,stop=g.c.y,isLong=d.p2.price>=d.p1.price;
       const reward=Math.abs(d.p2.price-d.p1.price),risk=Math.abs(d.p1.price-d.p3.price),rr=risk?reward/risk:0;
       const rewardTop=Math.min(entry,target),rewardBottom=Math.max(entry,target),riskTop=Math.min(entry,stop),riskBottom=Math.max(entry,stop);
-      ctx.fillStyle='rgba(8,153,129,.22)';ctx.fillRect(left,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
-      ctx.fillStyle='rgba(242,54,69,.22)';ctx.fillRect(left,riskTop,span,Math.max(1,riskBottom-riskTop));
-      ctx.setLineDash([5,5]);ctx.strokeStyle='rgba(220,225,232,.76)';line(left,entry,left+span,entry);ctx.setLineDash([]);
+      ctx.fillStyle=rgba(d.profitColor,d.profitOpacity);ctx.fillRect(left,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
+      ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(left,riskTop,span,Math.max(1,riskBottom-riskTop));
+      ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[5,5]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(left,entry,left+span,entry);ctx.setLineDash([]);
       const pill=(text,x,y,fill)=>{ctx.font='600 11px Arial';const w=ctx.measureText(text).width+10;ctx.fillStyle=fill;ctx.fillRect(x-w/2,y-10,w,19);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(text,x,y+3);};
       pill(`PnL: ${isLong?'+':'-'}${reward.toFixed(2)}`,left+span/2,rewardTop+9,'#3c7b9e');
       pill(`PnL: ${isLong?'-':'+'}${risk.toFixed(2)}`,left+span/2,riskBottom+9,'#616b77');
@@ -162,16 +180,39 @@ const DrawingModel = (() => {
       ctx.fillText(`${change.toFixed(2)} (${d.p1.price ? (change/d.p1.price*100).toFixed(2) : '—'}%)`,left+5,top+16);
     }
     if(d.text || d.type === 'text') {
-      const style=d.textStyle;
-      ctx.setLineDash([]);ctx.fillStyle=style.color;ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${style.size}px Arial`;
-      ctx.textAlign=style.horizontal;
-      const x=d.type === 'text'?g.a.x:style.horizontal === 'left'?left+6:style.horizontal === 'center'?(left+right)/2:right-6;
-      const lines=(d.text||'Text').split('\n');
-      const y=style.vertical === 'above'?top-8-(lines.length-1)*style.size*1.3:style.vertical === 'below'?bottom+style.size+6:d.type === 'text'?g.a.y:(top+bottom)/2-(lines.length-1)*style.size*.65;
-      lines.forEach((text,index)=>ctx.fillText(text,x,y+index*style.size*1.3));
+      const style=d.textStyle,lh=style.size*1.28,lines=(d.text||(d.type==='text'?'Text':'')).split('\n');
+      const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
+      ctx.setLineDash([]);ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${style.size}px ${family}`;
+      if(d.type==='text'&&style.pine){
+        const place=style.placement||'center',padX=6,padY=3;
+        const align=place==='label_left'?'left':place==='label_right'?'right':(style.horizontal||'center');
+        const x=place==='label_left'?g.a.x+6:place==='label_right'?g.a.x-6:g.a.x;
+        const base=place==='above'?'bottom':place==='below'?'top':'middle';
+        const anchorY=place==='above'?g.a.y-6:place==='below'?g.a.y+6:g.a.y;
+        const startY=base==='bottom'?anchorY-(lines.length-1)*lh:base==='middle'?anchorY-(lines.length-1)*lh*.5:anchorY;
+        if(d.labelBg){
+          const maxW=lines.reduce((m,l)=>Math.max(m,ctx.measureText(l).width),0),boxW=maxW+padX*2,boxH=lines.length*lh+padY*2;
+          const bx=align==='left'?x-padX:align==='right'?x-maxW-padX:x-boxW/2;
+          const by=base==='top'?anchorY-padY:base==='bottom'?anchorY-lines.length*lh-padY:anchorY-boxH/2;
+          ctx.fillStyle=d.labelBg;ctx.fillRect(bx,by,boxW,boxH);
+        }
+        ctx.textAlign=align;ctx.textBaseline=base;ctx.fillStyle=style.color;
+        lines.forEach((text,index)=>ctx.fillText(text,x,startY+index*lh));
+      }else{
+        ctx.textAlign=style.horizontal;ctx.fillStyle=style.color;
+        const x=d.type === 'text'?g.a.x:style.horizontal === 'left'?left+6:style.horizontal === 'center'?(left+right)/2:right-6;
+        if(d.type==='box'&&['top','bottom','inside'].includes(style.vertical)){
+          ctx.textBaseline=style.vertical==='top'?'top':style.vertical==='bottom'?'bottom':'middle';
+          const y=style.vertical==='top'?top+4:style.vertical==='bottom'?bottom-4-(lines.length-1)*lh:(top+bottom)/2-(lines.length-1)*lh*.5;
+          lines.forEach((text,index)=>ctx.fillText(text,x,y+index*lh));
+        }else{
+          const y=style.vertical === 'above'?top-8-(lines.length-1)*style.size*1.3:style.vertical === 'below'?bottom+style.size+6:d.type === 'text'?g.a.y:(top+bottom)/2-(lines.length-1)*style.size*.65;
+          lines.forEach((text,index)=>ctx.fillText(text,x,y+index*style.size*1.3));
+        }
+      }
     }
     ctx.restore();
   }
-  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,hex,rgba,geometry,hit,draw,boxEdges,resizeBox};
+  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,draw,boxEdges,resizeBox};
 })();
 if(typeof module !== 'undefined')module.exports=DrawingModel;

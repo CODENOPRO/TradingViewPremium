@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Terminal</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=ctx-tpl-1">
   <link rel="stylesheet" href="css/imported_toolbars.css">
   <link rel="stylesheet" href="css/terminal_features.css">
   <link rel="stylesheet" href="css/terminal_polish.css">
-  <link rel="stylesheet" href="css/terminal_companions.css">
-  <link rel="stylesheet" href="css/terminal_studio.css?v=alert-delete-1">
+  <link rel="stylesheet" href="css/terminal_companions.css?v=calendar-protocols-2">
+  <link rel="stylesheet" href="css/terminal_studio.css?v=alert-delete-2">
+  <link rel="stylesheet" href="css/fixed_shell.css?v=14">
 </head>
 <body>
 
@@ -437,7 +438,7 @@
       </details>
       <p class="chart-settings-error" role="alert"></p>
       <p class="library-credit">TradingView Lightweight Charts™ · <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView, Inc.</a></p>
-      <div class="modal-footer"><select id="chart-template" aria-label="Chart template"><option value="">Template</option><option value="save">Save template</option><option value="load">Apply template</option><option value="reset">Reset settings</option></select><button id="cancel-settings" class="btn-secondary">Cancel</button><button id="save-settings" class="btn-primary">Ok</button></div>
+      <div class="modal-footer"><button type="button" id="chart-template" class="tv-template-trigger" aria-haspopup="menu" aria-expanded="false" aria-label="Chart template"><span>Template</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button id="cancel-settings" class="btn-secondary">Cancel</button><button id="save-settings" class="btn-primary">Ok</button></div>
     </div>
   </div>
 
@@ -450,33 +451,35 @@
   <script src="js/workspace.js"></script>
   <script src="js/market_data.js"></script>
   <script src="js/bridge_protocol.js"></script>
-  <script src="js/drawing_model.js"></script>
+  <script src="js/drawing_model.js?v=line-shift-1"></script>
   <script src="js/pine_painter.js"></script>
   <script src="js/chart_engine.js?v=interaction-news-1"></script>
   <script src="js/native_cycle_pane.js"></script>
-  <script src="js/drawing_settings.js"></script>
-  <script src="js/drawing_editor.js"></script>
-  <script src="js/drawing_tools.js"></script>
+  <script src="js/color_picker.js?v=1"></script>
+  <script src="js/template_menu.js?v=ctx-tpl-1"></script>
+  <script src="js/drawing_settings.js?v=cp-1"></script>
+  <script src="js/drawing_editor.js?v=cp-1"></script>
+  <script src="js/drawing_tools.js?v=line-shift-1"></script>
   <script src="js/sync_controller.js"></script>
   <script src="js/indicator_runner.js"></script>
   <script src="js/indicator_pane_stack.js"></script>
   <script src="js/indicator_collection.js"></script>
   <script src="js/pine_editor.js"></script>
   <script src="js/indicator_library.js"></script>
-  <script src="js/indicator_settings.js"></script>
+  <script src="js/indicator_settings.js?v=cp-1"></script>
   <script src="js/paper_trading.js?v=interaction-news-1"></script>
   <script src="js/replay_paper.js?v=interaction-news-1"></script>
   <script src="js/paper_panel.js?v=interaction-news-1"></script>
-  <script src="js/chart_settings.js"></script>
-  <script src="js/terminal_icons.js"></script>
-  <script src="js/desktop_shell.js"></script>
-  <script src="js/toolbar_clusters.js"></script>
-  <script src="js/chart_context_menu.js?v=interaction-news-1"></script>
-  <script src="js/terminal_features.js?v=interaction-news-1"></script>
-  <script src="js/terminal_polish.js"></script>
-  <script src="js/news_protocols.js?v=interaction-news-1"></script>
-  <script src="js/terminal_companions.js?v=interaction-news-1"></script>
+  <script src="js/chart_settings.js?v=cp-1"></script>
+  <script src="js/terminal_icons.js?v=tdv-icons-2"></script>
+  <script src="js/desktop_shell.js?v=tdv-settings-1"></script>
+  <script src="js/toolbar_clusters.js?v=fixed-shell-1"></script>
+  <script src="js/chart_context_menu.js?v=ctx-tpl-1"></script>
+  <script src="js/terminal_features.js?v=layout-menu-1"></script>
+  <script src="js/terminal_polish.js?v=fixed-shell-1"></script>
+  <script src="js/news_protocols.js?v=calendar-protocols-3"></script>
+  <script src="js/terminal_companions.js?v=calendar-protocols-4"></script>
   <script src="js/price_alerts.js?v=alert-delete-1"></script>
-  <script src="js/app.js?v=alert-delete-1"></script>
+  <script src="js/app.js?v=ctx-tpl-2"></script>
 </body>
 </html>

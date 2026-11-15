@@ -6,16 +6,13 @@ function create(stored=new Map(),canWrite=true){
  vm.runInContext(fs.readFileSync('frontend/js/toolbar_clusters.js','utf8')+';this.Clusters=ToolbarClusters;',context);
  const controller=new context.Clusters(()=>opened++);return {controller,element,styles,hotkey,get opened(){return opened;},stored};
 }
-test('floating cluster visibility and background transparency persist; shortcut recovers Settings with all clusters hidden',()=>{
- const first=create();
- for(const key of Object.keys(first.controller.elements))first.element('set-show-'+key).events.change({target:{checked:false}});
- first.element('set-toolbar-opacity').events.input({target:{value:'65'}});assert.equal(first.styles.get('--toolbar-opacity'),'0.35');
- const reopened=create(first.stored);assert.equal(reopened.styles.get('--toolbar-opacity'),'0.35');for(const e of Object.values(reopened.controller.elements))assert.equal(e.hidden,true);
- let prevented=false;reopened.hotkey({ctrlKey:true,code:'Comma',preventDefault(){prevented=true;},stopPropagation(){}});assert.equal(reopened.opened,1);assert.equal(prevented,true);
- reopened.element('set-show-topRight').events.change({target:{checked:true}});assert.equal(reopened.controller.elements.topRight.hidden,false);assert.equal(reopened.controller.elements.topLeft.hidden,true);
+test('pinned chrome ignores legacy hidden/transparent settings without overwriting them',()=>{
+ const initial=new Map([['terminal_cluster_visibility_v2',{topLeft:false,topRight:false,sidebar:false}],['terminal_toolbar_opacity_v1',0]]),snapshot=structuredClone(initial),h=create(initial);
+ for(const [key,e]of Object.entries(h.controller.elements)){assert.equal(e.hidden,false);assert.equal(h.element('set-show-'+key).checked,true);assert.equal(h.element('set-show-'+key).disabled,true);}
+ assert.equal(h.styles.get('--toolbar-opacity'),'1');assert.equal(h.element('set-toolbar-opacity').disabled,true);assert.equal(h.element('set-toolbar-opacity').value,0);assert.deepEqual(initial,snapshot);
 });
-test('failed saves restore controls to the last persisted value instead of reporting unsaved preferences as saved',()=>{
- const initial=new Map([['terminal_cluster_visibility_v2',{topLeft:false}],['terminal_toolbar_opacity_v1',40]]),h=create(initial,false);
- h.element('set-show-topLeft').events.change({target:{checked:true}});assert.equal(h.controller.elements.topLeft.hidden,true);assert.equal(h.element('set-show-topLeft').checked,false);
- h.element('set-toolbar-opacity').events.input({target:{value:'100'}});assert.equal(h.element('set-toolbar-opacity').value,60);assert.equal(h.styles.get('--toolbar-opacity'),'0.4');
+test('Settings shortcut remains available when storage cannot be written',()=>{
+ const h=create(new Map(),false);let prevented=false;
+ h.hotkey({ctrlKey:true,code:'Comma',preventDefault(){prevented=true;},stopPropagation(){}});
+ assert.equal(h.opened,1);assert.equal(prevented,true);assert.equal(h.controller.elements.sidebar.hidden,false);
 });

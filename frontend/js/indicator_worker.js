@@ -8,6 +8,19 @@ self.onmessage = async ({ data }) => {
       if (/^\s*(?:\/\/\s*@version|indicator\s*\(|import\s+\w+\/)/m.test(data.code)) {
         isPine=true;
         if(typeof importScripts!=='function')throw Error('Pine runtime unavailable in this host.');
+        if(typeof Intl==='object'&&typeof Intl.DateTimeFormat==='function'&&!Intl.DateTimeFormat.__cached){
+          const NativeDTF=Intl.DateTimeFormat,dtfCache=new Map();
+          function CachedDateTimeFormat(locales,options){
+            const key=(typeof locales==='string'?locales:JSON.stringify(locales))+'|'+(options?JSON.stringify(options):'');
+            let formatter=dtfCache.get(key);
+            if(!formatter){formatter=new NativeDTF(locales,options);if(dtfCache.size<512)dtfCache.set(key,formatter);}
+            return formatter;
+          }
+          CachedDateTimeFormat.prototype=NativeDTF.prototype;
+          CachedDateTimeFormat.supportedLocalesOf=NativeDTF.supportedLocalesOf.bind(NativeDTF);
+          CachedDateTimeFormat.__cached=true;
+          Intl.DateTimeFormat=CachedDateTimeFormat;
+        }
         importScripts('../vendor/pinets-0.13.1/pinets.min.browser.js','pine_runtime.js');
         const runtime=new PineRuntime(PineTSLib,data.code),metadata=await runtime.initialize();
         calculate=(bars,context)=>runtime.run(bars,context);self.postMessage({type:'ready',...metadata,initElapsed:performance.now()-started});return;

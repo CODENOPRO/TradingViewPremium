@@ -357,12 +357,17 @@ class ChartEngine {
       this.customSeries=[];
     }
     descriptors.forEach((descriptor,i) => {
-      const options = { color: descriptor.color || '#2962ff', lineWidth: Math.max(1, Math.min(4, Math.round(descriptor.width || 1))),
-        title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false,
-        lineStyle:descriptor.lineStyle==='dashed'?2:descriptor.lineStyle==='dotted'?1:0,lineType:descriptor.step?1:0 };
-      if(descriptor.type==='area')Object.assign(options,{lineColor:options.color,topColor:options.color,bottomColor:'transparent'});
-      const series = this.customSeries[i] || this.addSeries(descriptor.type==='histogram'?'Histogram':descriptor.type==='area'?'Area':'Line',options);
-      series._indicatorType=descriptor.type||'line'; series.applyOptions({...options,lastValueVisible:this.appearance?.indicatorValues==='Value'});
+      const kind=descriptor.type||'line';
+      const options = (kind==='candle'||kind==='bar')
+        ? { title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false }
+        : { color: descriptor.color || '#2962ff', lineWidth: Math.max(1, Math.min(4, Math.round(descriptor.width || 1))),
+            title: descriptor.title || '', priceLineVisible: false, lastValueVisible: false,
+            lineStyle:descriptor.lineStyle==='dashed'?2:descriptor.lineStyle==='dotted'?1:0,lineType:descriptor.step?1:0,
+            ...(descriptor.markersOnly?{lineVisible:false,pointMarkersVisible:true,pointMarkersRadius:Math.max(2,Math.round(descriptor.width||2))}:{}) };
+      if(kind==='area')Object.assign(options,{lineColor:options.color,topColor:options.color,bottomColor:'transparent'});
+      const seriesType=kind==='histogram'?'Histogram':kind==='area'?'Area':kind==='candle'?'Candlestick':kind==='bar'?'Bar':'Line';
+      const series = this.customSeries[i] || this.addSeries(seriesType,options);
+      series._indicatorType=kind; series.applyOptions({...options,lastValueVisible:this.appearance?.indicatorValues==='Value'});
       series.setData(descriptor.data);
       this.customSeries[i]=series;
     });
@@ -400,10 +405,12 @@ class ChartEngine {
         panel.appendChild(group);groups.set(key,group);
       }
       const table = document.createElement('table');
+      if (descriptor.bgcolor) table.style.background = descriptor.bgcolor;
+      if (descriptor.frameWidth && descriptor.frameColor) table.style.border = `${descriptor.frameWidth}px solid ${descriptor.frameColor}`;
       if (descriptor.title) { const caption = table.createCaption(); caption.textContent = descriptor.title; }
       for (const row of descriptor.rows || []) {
         const tr = table.insertRow();
-        for (const value of row) { const td = tr.insertCell(); td.textContent = String(value && typeof value==='object' ? value.text??'' : value??''); if(value?.color)td.style.color=value.color;if(value?.background)td.style.background=value.background;if(value?.align)td.style.textAlign=value.align;if(value?.size)td.style.fontSize=Math.max(8,Math.min(72,value.size))+'px'; }
+        for (const value of row) { const td = tr.insertCell(); td.textContent = String(value && typeof value==='object' ? value.text??'' : value??''); if(value?.color)td.style.color=value.color;if(value?.background)td.style.background=value.background;if(value?.align)td.style.textAlign=value.align;if(value?.size)td.style.fontSize=Math.max(8,Math.min(72,value.size))+'px';if(value?.bold)td.style.fontWeight='700';if(value?.italic)td.style.fontStyle='italic';if(value?.fontFamily==='monospace')td.style.fontFamily='Consolas, "Courier New", monospace';if(descriptor.borderWidth===0)td.style.border='none';else if(descriptor.borderColor)td.style.borderColor=descriptor.borderColor; }
       }
       for(const merge of (descriptor.merges||[]).slice(0,3000)){if(![merge.startRow,merge.endRow,merge.startCol,merge.endCol].every(Number.isInteger)||merge.startRow<0||merge.startCol<0||merge.endRow<merge.startRow||merge.endCol<merge.startCol||merge.endRow>=table.rows.length||merge.endCol>=30)continue;const cell=table.rows[merge.startRow]?.cells[merge.startCol];if(!cell)continue;cell.colSpan=merge.endCol-merge.startCol+1;cell.rowSpan=merge.endRow-merge.startRow+1;for(let r=merge.startRow;r<=merge.endRow;r++)for(let c=merge.startCol;c<=merge.endCol;c++)if(r!==merge.startRow||c!==merge.startCol){const covered=table.rows[r]?.cells[c];if(covered)covered.hidden=true;}}
       groups.get(key).appendChild(table);

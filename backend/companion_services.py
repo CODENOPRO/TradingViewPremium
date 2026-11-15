@@ -1,5 +1,7 @@
 """Provider-owned calendar export and oEmbed metadata; no audio extraction."""
 import json
+import math
+from pathlib import Path
 import threading
 import time
 from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
@@ -8,9 +10,30 @@ from urllib.parse import urlencode, urljoin, urlsplit, urlunsplit, parse_qs
 from email.utils import parsedate_to_datetime
 from datetime import datetime
 
+try:
+    from market_store import atomic_json
+except ImportError:
+    from backend.market_store import atomic_json
+
 CALENDAR_URL = 'https://showmytrades.com/api/public/calendar/v1?impact=all&days=7'
 CALENDAR_WEBSITE = 'https://showmytrades.com/tools/economic-calendar'
 CALENDAR_REFRESH_SECONDS = 900
+CALENDAR_RETENTION_SECONDS = 14 * 86400
+CALENDAR_MAX_EVENTS = 4000
+
+
+def _merge_events(existing, incoming, now):
+    cutoff = now - CALENDAR_RETENTION_SECONDS
+    merged = {}
+    for item in (*existing, *incoming):
+        if not isinstance(item, dict) or not isinstance(item.get('title'), str):
+            continue
+        ts = item.get('time')
+        if not isinstance(ts, (int, float)) or isinstance(ts, bool) or not math.isfinite(ts) or ts < cutoff:
+            continue
+        key = (round(float(ts)), str(item.get('currency', '')), item['title'])
+        merged[key] = item
+    return sorted(merged.values(), key=lambda value: value['time'])[-CALENDAR_MAX_EVENTS:]
 
 
 def normalize_events(values):
@@ -36,15 +59,39 @@ def normalize_events(values):
 
 
 class EconomicCalendar:
-    def __init__(self, fetch=None, clock=time.time):
+    def __init__(self, fetch=None, clock=time.time, history_path=None):
         self.fetch = fetch or self._fetch
         self.clock = clock
+        self.history_path = Path(history_path) if history_path else None
         self.lock = threading.Lock()
         self.events = []
         self.checked = None
         self.updated = None
         self.error = None
         self.next_check = None
+        if self.history_path:
+            self._load_history()
+
+    def _load_history(self):
+        if not self.history_path or not self.history_path.exists():
+            return
+        try:
+            payload = json.loads(self.history_path.read_text(encoding='utf-8'))
+            raw = payload.get('events', []) if isinstance(payload, dict) else payload
+            if isinstance(raw, list):
+                self.events = _merge_events([], raw, self.clock())
+            if isinstance(payload, dict) and isinstance(payload.get('updated_at'), (int, float)):
+                self.updated = payload['updated_at']
+        except (OSError, ValueError, TypeError):
+            pass
+
+    def _save_history(self):
+        if not self.history_path:
+            return
+        try:
+            atomic_json(self.history_path, {'events': self.events, 'updated_at': self.updated})
+        except OSError:
+            pass
 
     @staticmethod
     def _fetch():
@@ -66,9 +113,10 @@ class EconomicCalendar:
                     generated = datetime.fromisoformat(payload['generated_at'].replace('Z', '+00:00'))
                     if generated.tzinfo is None:
                         raise ValueError('Calendar update time has no UTC offset')
-                    self.events = events
+                    self.events = _merge_events(self.events, events, now)
                     self.updated = generated.timestamp()
                     self.error = None
+                    self._save_history()
                 except Exception as exc:
                     self.error = 'Calendar feed unavailable: ' + str(exc)[:180]
                     if isinstance(exc, HTTPError) and exc.code in (403, 429, 503):
