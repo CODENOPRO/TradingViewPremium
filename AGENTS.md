@@ -764,3 +764,7 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-17 — Use the web setting for reduced motion
 - Settings → Toolbars → Reduce motion now controls toolbar and Studio motion independently of Windows, and preserves existing saved web preferences.
 - Checked JavaScript syntax, the diff, and nine existing frontend tests. Browser rendering was not verified.
+
+### 2026-11-17 — Bấm lại icon để đóng bảng
+- Icon Chart Settings, tìm mã, thư viện indicator, cài đặt indicator và tạo cảnh báo mở hoặc đóng bảng tương ứng. Phím tắt Chart Settings dùng cùng thao tác; đóng Chart Settings từ icon xử lý như Cancel.
+- Cập nhật frontend/js/app.js và phiên bản tài nguyên ở frontend/index.html. Kiểm tra cú pháp, mô phỏng click, bàn phím và backdrop, cùng 9 kiểm thử hiện có. Chưa kiểm tra giao diện trực quan.

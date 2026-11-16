@@ -54,7 +54,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = $(id); modal.classList.add('show'); modal.dataset.opener = document.activeElement?.id || '';
     modal.querySelector('input, textarea, select, button')?.focus();
   }
-  function closeModal(modal) { modal.classList.remove('show'); $(modal.dataset.opener)?.focus(); }
+  function closeModal(modal) { if (!modal.classList.contains('show')) return; modal.classList.remove('show'); if (modal.id === 'indicator-modal') modal.dispatchEvent(new Event('close')); $(modal.dataset.opener)?.focus(); }
+  function bindDialogToggle(button, modal, open, close = () => closeModal(modal)) {
+    button.setAttribute('aria-haspopup', 'dialog');
+    if (modal.id) button.setAttribute('aria-controls', modal.id);
+    if (button.tagName !== 'BUTTON') {
+      button.setAttribute('role', 'button');
+      button.tabIndex = 0;
+      button.addEventListener('keydown', event => {
+        if (!['Enter', ' '].includes(event.key)) return;
+        event.preventDefault();
+        if (!event.repeat) button.click();
+      });
+    }
+    button.addEventListener('click', () => {
+      if (modal.classList.contains('show')) close();
+      else open();
+    });
+    // A modal backdrop can sit above its trigger even while the icon stays visible.
+    modal.addEventListener('click', event => {
+      if (event.target !== modal || event.detail === 0 || !modal.classList.contains('show')) return;
+      const {left, right, top, bottom} = button.getBoundingClientRect();
+      if (event.clientX < left || event.clientX >= right || event.clientY < top || event.clientY >= bottom) return;
+      event.stopImmediatePropagation();
+      close();
+    }, true);
+  }
   document.querySelectorAll('.modal').forEach(modal => {
     modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true');
     modal.addEventListener('click', event => { if (modal.id!=='settings-modal' && event.target === modal) closeModal(modal); });
@@ -106,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   let indicatorLibrary;
   const indicatorSettingsButton=document.createElement('button');indicatorSettingsButton.id='btn-indicator-settings';indicatorSettingsButton.className='btn-icon';indicatorSettingsButton.textContent='⚙';indicatorSettingsButton.title='Indicator settings';indicatorSettingsButton.setAttribute('aria-label','Active indicator settings');
-  $('btn-indicator').after(indicatorSettingsButton);indicatorSettingsButton.onclick=()=>indicatorSettings.open(active);
+  $('btn-indicator').after(indicatorSettingsButton);
+  bindDialogToggle(indicatorSettingsButton, indicatorSettings.modal, () => indicatorSettings.open(active), () => indicatorSettings.close());
   for (const chart of charts) {
     chart.onIndicatorSettings=()=>{activate(chart);indicatorSettings.open(chart);};
     chart.container.addEventListener('pointerdown', () => activate(chart));
@@ -162,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chart.savedRange && chart.bars.length) { chart.chart.timeScale().setVisibleLogicalRange(chart.savedRange); chart.savedRange = null; }
   }
   function changeSymbol(c,symbol){drawing.saveDrawings(c);c.runner.stop();c.clearCustomSeries();c.symbol=symbol;c.clearData();drawing.loadDrawings(c);hydrate(c);c.runner.restart();}
-  $('btn-symbol-search').addEventListener('click', () => { showModal('symbol-modal'); $('symbol-search-input').value = ''; $('symbol-search-input').focus(); });
+  bindDialogToggle($('btn-symbol-search'), $('symbol-modal'), () => { showModal('symbol-modal'); $('symbol-search-input').value = ''; $('symbol-search-input').focus(); });
   $('symbol-search-input').addEventListener('input', event => document.querySelectorAll('.symbol-item').forEach(el => { el.hidden = !el.textContent.toLowerCase().includes(event.target.value.toLowerCase()); }));
   document.querySelectorAll('.symbol-item').forEach(item => item.addEventListener('click', () => {
     drawing.saveDrawings(active); drawing.setTool('crosshair');
@@ -176,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   indicatorLibrary=new IndicatorLibrary({getChart:()=>active,openSettings:(chart,id)=>{chart.runner.select(id);indicatorSettings.open(chart);},onChange:()=>{updateHeader();if(desktop){desktop.signature='';desktop.refresh();}}});
   indicatorLibrary.migrate(charts);
-  $('btn-indicator').addEventListener('click',()=>indicatorLibrary.open());
+  bindDialogToggle($('btn-indicator'), indicatorLibrary.modal, () => indicatorLibrary.open());
 
   function stopReplay(){replay?.stop();}
   function replayNext(){replay?.step(1);}
@@ -201,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveAlerts(alerts.map(a=>a.id===id?{...a,price}:a));
   }
   charts.forEach(c=>c.alertOverlay=new AlertChartControls(c,{getAlerts:()=>alerts,canDrag:()=>drawing.activeTool==='crosshair',update:updateAlert,remove:removeAlert,edit:(id,chart)=>openAlert(chart,undefined,id)}));
-  $('btn-alert').addEventListener('click',()=>openAlert(active));
+  bindDialogToggle($('btn-alert'), $('alert-modal'), () => openAlert(active));
   $('btn-save-alert').addEventListener('click',()=>{
     const price=Number($('alert-price-input').value);if(!alertEdit||!Number.isFinite(price)||!$('alert-price-input').value)return toast('Nhập giá hợp lệ','alert');
     const value=AlertPrice.round(price,alertEdit.tick),condition=$('alert-condition').value;
@@ -247,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(chart.sessionMode!==settings.session){stopReplay();chart.sessionMode=settings.session;chart.renderCurrentTimeframe();saveWorkspace();}
     updateHeader();return true;
   });
-  $('btn-settings').addEventListener('click',()=>chartSettings.open());
+  bindDialogToggle($('btn-settings'), chartSettings.modal, () => chartSettings.open(), () => chartSettings.cancel());
   charts.forEach(c=>c.onChartSettings=()=>{activate(c);chartSettings.open();});
   $('timezone-quick').addEventListener('change',event=>{
     const settings={...active.appearance,timezone:event.target.value,session:active.sessionMode};
@@ -255,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHeader();
   });
   desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertEdit:id=>{const a=alerts.find(a=>a.id===id);if(a)openAlert(charts.find(c=>c.symbol===a.symbol)||active,undefined,id);},onAlertRemove:index=>saveAlerts(alerts.filter((_,i)=>i!==index))});
-  new ToolbarClusters(()=>chartSettings.open(),()=>{desktop.fitToolbar?.();charts.forEach(c=>c.positionSymbolBadge());});
+  new ToolbarClusters(()=>$('btn-settings').click(),()=>{desktop.fitToolbar?.();charts.forEach(c=>c.positionSymbolBadge());});
   const contextMenu=new ChartContextMenu({charts,drawing,desktop,activate,openAlert,chartSettings,paperPanel,sync,toast});
   drawing.editor.onAlert=(chart,price)=>openAlert(chart,price);
   drawing.editor.onCopy=d=>{contextMenu.copyDrawing(d);toast('Đã sao chép đối tượng');};
