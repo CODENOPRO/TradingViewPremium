@@ -760,3 +760,7 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Giới hạn & còn lại:
   - PineTS 0.13.1 chỉ hỗ trợ tập cú pháp/built-in của engine hiện tại (chưa hỗ trợ `import` thư viện ngoài thiếu source, `strategy()`, hoặc mọi cấu trúc Pine v6 nâng cao chưa được PineTS biên dịch).
   - Theo xác nhận của người dùng (“push lên git hộ CODENOPRO/TradingViewPremium”), giữ remote cũ thành `ztadqa` (`ztadqa-main` tại `7f31684`), chuyển `origin` về `https://github.com/CODENOPRO/TradingViewPremium.git`, commit toàn bộ hiện trạng sạch đang chạy (37 file đã kiểm chứng, không gồm `.backups/`, cache JSON hay file tạm) nối tiếp trực tiếp trên `735b260` và fast-forward push lên `origin/main` (không force-push).
+
+### 2026-11-17 — Use the web setting for reduced motion
+- Settings → Toolbars → Reduce motion now controls toolbar and Studio motion independently of Windows, and preserves existing saved web preferences.
+- Checked JavaScript syntax, the diff, and nine existing frontend tests. Browser rendering was not verified.

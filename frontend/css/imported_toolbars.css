@@ -56,4 +56,4 @@ body { background:var(--chart); }
 .toolbar-overflow .timeframe-group { display:flex; flex-wrap:wrap; max-width:250px; padding:6px; }
 .toolbar-overflow .timeframe-group>.btn-icon { display:none; }
 .toolbar-overflow { max-height:calc(100vh - 70px); overflow-y:auto; }
-@media(prefers-reduced-motion:no-preference) { #topbar .btn-icon,#left-sidebar .tool-btn { transition:color .15s ease,background .15s ease; } }
+#topbar .btn-icon,#left-sidebar .tool-btn { transition:color .15s ease,background .15s ease; }

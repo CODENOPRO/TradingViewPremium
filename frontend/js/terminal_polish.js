@@ -11,7 +11,19 @@ TerminalFeatures.prototype.installPolish=function(){
   const nav=document.createElement('button');nav.type='button';nav.setAttribute('role','tab');nav.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v5H3zM3 14h5v7H3zM12 14h9v7h-9z"/></svg><span>Toolbars</span>';nav.onclick=()=>settings.select('Toolbars');settings.nav.appendChild(nav);
   const add=(text,el)=>{const label=document.createElement('label');label.className='setting-row';const name=document.createElement('span');name.textContent=text;label.append(name,el);controls.appendChild(label);};
   const compact=document.createElement('input');compact.type='checkbox';compact.id='set-hide-labels';compact.checked=Workspace.read('terminal_compact_labels_v1',false);compact.onchange=()=>{document.body.classList.toggle('icon-labels-only',compact.checked);Workspace.write('terminal_compact_labels_v1',compact.checked);};add('Hide labels (keep symbol and timeframes)',compact);
-  const reduced=document.createElement('input');reduced.type='checkbox';reduced.checked=Workspace.read('terminal_reduce_motion_v1',false);reduced.onchange=()=>{document.body.classList.toggle('reduce-motion',reduced.checked);Workspace.write('terminal_reduce_motion_v1',reduced.checked);};add('Reduce motion',reduced);reduced.onchange();
+  const motionKey='terminal_motion_preference_v1';
+  const reduced=document.createElement('input');
+  reduced.type='checkbox';
+  reduced.id='set-reduce-motion';
+  const legacyMotion=Workspace.read('terminal_reduce_motion_v1',false)===true?'reduce':'full';
+  reduced.checked=Workspace.read(motionKey,legacyMotion)==='reduce';
+  const applyMotion=()=>document.body.classList.toggle('reduce-motion',reduced.checked);
+  reduced.addEventListener('change',()=>{
+    Workspace.write(motionKey,reduced.checked?'reduce':'full');
+    applyMotion();
+  });
+  add('Reduce motion',reduced);
+  applyMotion();
   const opacity=document.createElement('input');opacity.type='range';opacity.id='set-calendar-opacity';opacity.min=0;opacity.max=90;opacity.step=5;opacity.value=Workspace.read('terminal_calendar_transparency_v1',0);opacity.setAttribute('aria-label','Calendar transparency');opacity.oninput=()=>{document.documentElement.style.setProperty('--calendar-opacity',String(1-opacity.value/100));Workspace.write('terminal_calendar_transparency_v1',+opacity.value);};add('Calendar transparency',opacity);opacity.oninput();
   const songToast=document.createElement('input');songToast.type='checkbox';songToast.id='set-music-toast';songToast.checked=Workspace.read('terminal_music_toast_v1',true);songToast.onchange=()=>Workspace.write('terminal_music_toast_v1',songToast.checked);add('Show song-change notification (2 seconds)',songToast);
   // Keep vendor notices and a product link, outside the Settings dialog.
