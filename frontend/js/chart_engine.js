@@ -11,6 +11,9 @@ class ChartEngine {
     return {from:DrawingModel.logicalIndex(after,DrawingModel.timeAt(before,range.from)),to:DrawingModel.logicalIndex(after,DrawingModel.timeAt(before,range.to))};
   }
   get plotHeight() { return this.container.clientHeight-(this.paneHeight||0); }
+  get plotBottom() {
+    return Math.max(0, this.plotHeight - (this.chart?.timeScale().height?.() ?? 26));
+  }
   constructor(container, symbol, config = {}) {
     this.container = container;
     this.symbol = symbol;
@@ -80,7 +83,7 @@ class ChartEngine {
       },
       crosshair: {
         mode: LightweightCharts.CrosshairMode.Normal,
-        vertLine: { color: '#434651', style: LightweightCharts.LineStyle.Dashed, width: 1 },
+        vertLine: { labelVisible: false, color: '#434651', style: LightweightCharts.LineStyle.Dashed, width: 1 },
         horzLine: { color: '#434651', style: LightweightCharts.LineStyle.Dashed, width: 1 }
       },
       rightPriceScale: {
@@ -133,6 +136,14 @@ class ChartEngine {
 
     this.symbolBadge=document.createElement('img');this.symbolBadge.className='chart-symbol-badge';
     this.symbolBadge.draggable=false;this.updateSymbolBadge();this.container.appendChild(this.symbolBadge);
+    this.setupScaleControls();
+    this.chart.timeScale().subscribeVisibleLogicalRangeChange(()=>this.applyPriceRatio());
+    this.series.attachPrimitive?.({
+      paneViews:()=>[{
+        zOrder:()=> 'bottom',
+        renderer:()=>({draw:target=>target.useMediaCoordinateSpace(({context,mediaSize})=>this.drawEthBackground(context,mediaSize))})
+      }]
+    });
 
     // Double click to reset view
     this.container.addEventListener('dblclick', (e) => {
@@ -143,6 +154,99 @@ class ChartEngine {
     });
   }
 
+  setupScaleControls(){
+    this.scaleControls=document.createElement('div');
+    this.scaleControls.className='chart-scale-modes';
+    for(const [label,title,option] of [['A','Auto scale','autoScale'],['L','Logarithmic scale','mode']]){
+      const button=document.createElement('button');
+      button.type='button';
+      button.textContent=label;
+      button.title=title;
+      button.setAttribute('aria-label',title);
+      button.onclick=()=>{
+        const scale=this.series.priceScale(),options=scale.options();
+        scale.applyOptions({[option]:option==='mode'?(options.mode===1?0:1):!options.autoScale});
+        this.updateScaleControls();
+      };
+      this.scaleControls.append(button);
+    }
+    this.currencyLabel=document.createElement('span');
+    this.currencyLabel.className='chart-scale-currency';
+    this.pricePlus=document.createElement('button');
+    this.pricePlus.type='button';
+    this.pricePlus.className='chart-price-plus';
+    this.pricePlus.textContent='+';
+    this.pricePlus.setAttribute('aria-label','Add alert at cursor price');
+    this.pricePlus.hidden=true;
+    this.pricePlus.onpointerenter=()=>{this.pointerOnPricePlus=true;};
+    this.pricePlus.onpointerleave=()=>{this.pointerOnPricePlus=false;this.pricePlus.hidden=true;};
+    this.pricePlus.onclick=()=>this.onPricePlus?.(this.pricePlusValue);
+    this.container.append(this.scaleControls,this.currencyLabel,this.pricePlus);
+    this.chart.subscribeCrosshairMove(({point})=>{
+      if(this.pointerOnPricePlus)return;
+      const price=point?this.coordinateToPrice(point.y):null;
+      const height=this.plotBottom;
+      this.pricePlus.hidden=!this.appearance?.plusButton||!point||!Number.isFinite(price)||point.y>=height;
+      if(this.pricePlus.hidden)return;
+      const tick=this.metadata?.tickSize;
+      this.pricePlusValue=tick>0?Math.round(price/tick)*tick:price;
+      this.pricePlus.style.top=Math.max(0,Math.min(height-24,point.y-12))+'px';
+    });
+  }
+
+  updateScaleControls(){
+    if(!this.scaleControls||!this.appearance)return;
+    const visibility=this.appearance.scaleModes;
+    this.scaleControls.dataset.visibility=visibility||'Hidden';
+    this.currencyLabel.dataset.visibility=this.appearance.currencyUnit||'Hidden';
+    this.currencyLabel.textContent=this.metadata?.currencyCode||this.metadata?.currency||'USD';
+    const options=this.series.priceScale().options();
+    this.scaleControls.children[0].setAttribute('aria-pressed',String(options.autoScale));
+    this.scaleControls.children[1].setAttribute('aria-pressed',String(options.mode===1));
+    if(!this.appearance.plusButton)this.pricePlus.hidden=true;
+  }
+
+  applyPriceRatio(){
+    const appearance=this.appearance;
+    const scale=this.series.priceScale();
+    if(!appearance?.priceRatio){
+      if(this.priceRatioRestore!==undefined){
+        scale.applyOptions({autoScale:this.priceRatioRestore});
+        this.priceRatioRestore=undefined;
+      }
+      return;
+    }
+    if(!this.bars.length||!scale.setVisibleRange||!scale.getVisibleRange||scale.options().mode!==0)return;
+    const spacing=this.chart.timeScale().options().barSpacing;
+    const margins=scale.options().scaleMargins;
+    const height=(this.plotBottom)*(1-margins.top-margins.bottom);
+    if(!(spacing>0&&height>0))return;
+    const current=scale.getVisibleRange();
+    if(!current)return;
+    const span=appearance.priceUnitsPerBar*height/spacing;
+    if(!Number.isFinite(span)||span<=0||Math.abs(current.to-current.from-span)/span<.001)return;
+    if(this.priceRatioRestore===undefined)this.priceRatioRestore=scale.options().autoScale;
+    const middle=(current.from+current.to)/2;
+    scale.setVisibleRange({from:middle-span/2,to:middle+span/2});
+  }
+
+  drawEthBackground(ctx,size){
+    const color=this.appearance?.ethBackground;
+    if(!color||color==='transparent'||this.appearance.sessionMode==='RTH'||this.tfSeconds>=86400||!this.metadata?.sessionRegular?.session)return;
+    const scale=this.chart.timeScale(),range=scale.getVisibleLogicalRange();
+    if(!range)return;
+    const step=scale.options().barSpacing;
+    ctx.save();
+    ctx.fillStyle=color;
+    const from=Math.max(0,Math.floor(range.from)),to=Math.min(this.bars.length-1,Math.ceil(range.to));
+    for(let i=from;i<=to;i++){
+      if(MarketData.inRegularSession(this.bars[i],this.metadata))continue;
+      const x=scale.timeToCoordinate(this.bars[i].time);
+      if(x!==null)ctx.fillRect(x-step/2,0,step,size.height);
+    }
+    ctx.restore();
+  }
+
   addSeries(type,options,paneIndex=0) {
     return typeof this.chart.addSeries==='function'?this.chart.addSeries(LightweightCharts[type+'Series'],options,paneIndex):this.chart['add'+type+'Series'](options);
   }
@@ -150,7 +254,7 @@ class ChartEngine {
   updateSymbolBadge(){
     if(!this.symbolBadge)return;
     const file={'NQ1!':'nasdaq-100','ES1!':'s-and-p-500','YM1!':'dow-30'}[this.symbol];
-    this.symbolBadge.hidden=!file;this.symbolBadge.alt=this.symbol;this.symbolBadge.title=this.symbol;
+    this.symbolBadge.hidden=!file||this.appearance?.logo===false;this.symbolBadge.alt=this.symbol;this.symbolBadge.title=this.symbol;
     if(file)this.symbolBadge.src='assets/symbols/'+file+'.svg';
   }
 
@@ -241,13 +345,31 @@ class ChartEngine {
     // Rendering the active timeframe already emits a data invalidation.
     // For an inactive timeframe, still invalidate request.* consumers once.
     if (this.currentTimeframe === tf) this.renderCurrentTimeframe(false);
-    else { this.dataUpdateKind = 'keep'; this.dataRevision++; this.onDataChange?.(); }
+    else {
+      if(tf==='D'&&this.appearance&&(this.appearance.lastDayChange||this.appearance.prevDayLine!=='Hidden')){
+        this.updateLegend(this.bars.at(-1));
+        this.renderDrawings();
+      }
+      this.dataUpdateKind = 'keep'; this.dataRevision++; this.onDataChange?.();
+    }
+  }
+
+  displaySessionMetadata(tf=this.currentTimeframe){
+    const regular=this.metadata?.sessionRegular;
+    if(this.appearance?.sessionMode!=='RTH'||!regular?.session||TF_MAP[tf]>=86400)return this.metadata;
+    return {...this.metadata,session:regular.session,sessionCorrections:regular.corrections,sessionType:'RTH'};
   }
 
   getBarsForTimeframe(tf) {
-    if (this.sessionMode === 'RTH') {
-      const filtered = this.rawBars.filter(b => MarketData.inRegularSession(b, this.metadata));
-      return MarketData.aggregate(filtered, tf, { ...this.metadata, session: this.metadata.sessionRegular?.session, sessionType: 'RTH' });
+    if(this.appearance?.sessionMode==='RTH'&&this.metadata?.sessionRegular?.session&&TF_MAP[tf]<86400){
+      if(this.regularBarsSource!==this.rawBars||!this.regularBarsByTf)this.regularBarsByTf=new Map();
+      this.regularBarsSource=this.rawBars;
+      if(!this.regularBarsByTf.has(tf)){
+        const minutes=this.rawBars.filter(bar=>MarketData.inRegularSession(bar,this.metadata));
+        const regular=this.displaySessionMetadata(tf);
+        this.regularBarsByTf.set(tf,MarketData.aggregate(minutes,tf,regular));
+      }
+      return this.regularBarsByTf.get(tf).slice();
     }
     if (tf === '1m') return this.rawBars.map(b => ({ ...b }));
     return (this.htfData[tf] || []).map(b => ({ ...b }));
@@ -257,13 +379,13 @@ class ChartEngine {
     const previous = this.chart.timeScale().getVisibleLogicalRange();
     const previousBars=this.bars;
     const available = this.getBarsForTimeframe(this.currentTimeframe);
-    if(this.replayMode&&Number.isFinite(this.replayClock))this.replayIndex=TerminalTime.closedIndex(available,this.currentTimeframe,this.metadata,this.replayClock);
+    if(this.replayMode&&Number.isFinite(this.replayClock))this.replayIndex=TerminalTime.closedIndex(available,this.currentTimeframe,this.displaySessionMetadata(),this.replayClock);
     this.bars = this.replayMode ? available.slice(0, this.replayIndex) : available;
     this.renderCandleData();
     if (reset && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
-    this.container.dataset.empty = this.bars.length ? '' : 'Không có dữ liệu cho mã/khung này';
+    this.container.dataset.empty = this.bars.length ? '' : ui('Không có dữ liệu cho mã/khung này');
     this.renderDrawings();
     this.dataUpdateKind = 'replace';
     this.dataRevision++;this.onDataChange?.();
@@ -298,7 +420,12 @@ class ChartEngine {
     else if (this.rawBars[index].time === bar.time) this.rawBars[index] = bar;
     else this.rawBars.splice(index, 0, bar);
     this.htfData['1m'] = this.rawBars;
+    this.regularBarsByTf=null;
     if (this.replayMode) return;
+    if(this.appearance?.sessionMode==='RTH'&&this.metadata?.sessionRegular?.session&&this.tfSeconds<86400){
+      this.renderCurrentTimeframe(false);
+      return;
+    }
     const next = this.getBarsForTimeframe(this.currentTimeframe);
     const last = this.bars[this.bars.length - 1];
     const tail = next[next.length - 1];
@@ -499,28 +626,25 @@ class ChartEngine {
 
   // NAVIGATION & ZOOM CONTROLS
   initNavControls() {
-    const btnZoomOut = this.container.querySelector('.btn-zoom-out');
-    const btnZoomIn = this.container.querySelector('.btn-zoom-in');
-    const btnScrollLeft = this.container.querySelector('.btn-scroll-left');
-    const btnScrollRight = this.container.querySelector('.btn-scroll-right');
-    const btnReset = this.container.querySelector('.btn-reset');
-
-    if (btnZoomOut) btnZoomOut.addEventListener('click', (e) => { e.stopPropagation(); this.zoomOut(); });
-    if (btnZoomIn) btnZoomIn.addEventListener('click', (e) => { e.stopPropagation(); this.zoomIn(); });
-    if (btnScrollLeft) btnScrollLeft.addEventListener('click', (e) => { e.stopPropagation(); this.scrollLeft(); });
-    if (btnScrollRight) btnScrollRight.addEventListener('click', (e) => { e.stopPropagation(); this.scrollRight(); });
-    if (btnReset) btnReset.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (window.syncCtrl && window.syncCtrl.syncEnabled) {
-        window.syncCtrl.resetAllCharts();
-      } else {
-        this.resetView();
-      }
-    });
+    const controls = [
+      ['.btn-zoom-out', () => this.zoomOut()],
+      ['.btn-zoom-in', () => this.zoomIn()],
+      ['.btn-scroll-left', () => this.scrollLeft()],
+      ['.btn-scroll-right', () => this.scrollRight()],
+      ['.btn-reset', () => this.resetView()]
+    ];
+    for (const [selector, action] of controls) {
+      this.container.querySelector(selector)?.addEventListener('click', event => {
+        event.stopPropagation();
+        if (window.syncCtrl) window.syncCtrl.runLocalNavigation(this, action);
+        else action();
+      });
+    }
   }
 
   resetView() {
     this.chart.priceScale('right').applyOptions({ autoScale: true });
+    this.updateScaleControls();
     this.chart.timeScale().resetTimeScale();
     if (this.bars && this.bars.length > 0) {
       const lastIdx = this.bars.length - 1;
@@ -637,7 +761,23 @@ class ChartEngine {
 
   // LEGEND
   initLegendListener() {
+    const label = document.createElement('span');
+    label.className = 'chart-crosshair-time';
+    label.hidden = true;
+    label.setAttribute('aria-hidden', 'true');
+    this.container.append(label);
+    const timeScale = this.chart.timeScale();
     this.chart.subscribeCrosshairMove((param) => {
+      const axisHeight = timeScale.height();
+      label.hidden = !param?.point || !Number.isFinite(param.time) || axisHeight === 0;
+      if (!label.hidden) {
+        const formatter = this.chart.options().localization.timeFormatter;
+        label.textContent = formatter(param.time);
+        const half = label.offsetWidth / 2;
+        const width = timeScale.width();
+        label.style.left = Math.max(half, Math.min(width - half, param.point.x)) + 'px';
+        label.style.bottom = Math.max(0, (axisHeight - label.offsetHeight) / 2) + 'px';
+      }
       if (!param || !param.time || !param.seriesData) {
         if (this.bars.length > 0) {
           this.updateLegend(this.bars[this.bars.length - 1]);
@@ -654,41 +794,69 @@ class ChartEngine {
   updateLegend(bar) {
     const legendEl = this.container.querySelector('.chart-legend');
     if (!legendEl) return;
-    if (!bar) { legendEl.textContent = this.symbol + ' · Chưa có dữ liệu'; return; }
-
     const s=this.appearance,precision=s?.precision==='Default'||!s?2:Number(s.precision),format=n=>Number(n).toFixed(precision);
-    const index=this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
-    const diff=bar.close-previous,diffPct=previous?diff/previous*100:0;
     legendEl.replaceChildren();legendEl.style.color=s?.textColor||this.config.textColor;
     const add=(text,className)=>{const span=document.createElement('span');span.className=className||'';span.textContent=text;legendEl.appendChild(span);};
-    if(s?.logo)add(({ 'NQ1!':'100','ES1!':'500','YM1!':'30' })[this.symbol]||this.symbol.slice(0,1),'legend-logo '+(this.symbol==='ES1!'?'legend-logo-es':''));
-    if(s?.title!==false){const description=this.metadata?.description||this.symbol;const title=s?.titleMode==='Name'?description:s?.titleMode==='Name and ticker'?description+' · '+this.symbol:this.symbol;add(`${title} · ${this.currentTimeframe} · ${this.sessionMode||'ETH'}`,'legend-symbol');}
-    if(s?.marketStatus)add(this.marketLive?'● Live':'○ Stale','legend-market');
+    if(s?.title!==false){const description=this.metadata?.description||this.symbol;const title=s?.titleMode==='Name'?description:s?.titleMode==='Name and ticker'?description+' · '+this.symbol:this.symbol;add(`${title} · ${this.currentTimeframe}`,'legend-symbol');}
+    if(s?.marketStatus&&this.metadata?.session){
+      const now=this.replayMode?this.replayClock:Date.now()/1000;
+      add(TerminalTime.activeSession(now,this.metadata)?'● Open':'○ Closed','legend-market');
+    }
+    legendEl.hidden=!legendEl.childElementCount;
+    if(!bar)return;
+    const index=this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
+    const diff=bar.close-previous,diffPct=previous?diff/previous*100:0;
     if(s?.chartValues!==false)add(`O ${format(bar.open)}  H ${format(bar.high)}  L ${format(bar.low)}  C ${format(bar.close)}`,'legend-ohlc');
     if(s?.barChange!==false)add(`${diff>=0?'+':''}${format(diff)} (${diffPct.toFixed(2)}%)`,diff>=0?'price-up':'price-down');
     if(s?.volume)add(`Vol ${Number(bar.volume||0).toLocaleString('en-US')}`,'legend-volume');
+    const close=s?.lastDayChange?this.previousDayClose(bar.time):null;
+    if(Number.isFinite(close)&&close!==0){
+      const change=bar.close-close;
+      add(`Day ${change>=0?'+':''}${format(change)} (${(100*change/close).toFixed(2)}%)`,change>=0?'price-up':'price-down');
+    }
+    legendEl.hidden=!legendEl.childElementCount;
+  }
+
+  previousDayClose(time){
+    const daily=this.htfData.D||[];
+    if(!this.metadata?.timezone||this.tfSeconds>86400)return null;
+    if(this.currentTimeframe==='D')return daily.findLast(bar=>bar.time<time)?.close;
+    const start=MarketData.bucket(time,'D',this.metadata);
+    const date=MarketData.parts(start,this.metadata.timezone);
+    const session=(this.metadata.session||'').match(/^(\d{4})-(\d{4})/);
+    const overnight=session&&session[1]>=session[2]?1:0;
+    const cutoff=Date.UTC(date.year,date.month-1,date.day+overnight)/1000;
+    return daily.findLast(bar=>bar.time<cutoff)?.close;
   }
 
   updateCountdown(){
     const a=this.appearance,visible=a?.symbolLine?.toLowerCase().includes('value')??true;
-    if(!a?.countdown||!visible){this.countdownLabel?.remove();this.countdownLabel=null;return;}
+    const showName=a?.symbolLine?.toLowerCase().includes('name');
+    if((!a?.countdown&&!showName&&a?.symbolValueMode!=='Raw price')||!visible){this.countdownLabel?.remove();this.countdownLabel=null;return;}
     if(!this.countdownLabel){const el=document.createElement('div');el.className='chart-countdown';el.innerHTML='<span class="axis-price"></span><span class="axis-countdown"></span>';this.container.appendChild(el);this.countdownLabel=el;}
     this.series.applyOptions({lastValueVisible:false});
     const b=this.bars.at(-1),now=this.replayMode?this.replayClock:Date.now()/1000;
-    const metadata=this.sessionMode==='RTH'?{...this.metadata,session:this.metadata.sessionRegular?.session,sessionCorrections:this.metadata.sessionRegular?.corrections}:this.metadata;
-    const raw=this.currentTimeframe==='1m'?this.rawBars:this.htfData[this.currentTimeframe]||[];
+    const metadata=this.displaySessionMetadata();
+    const raw=metadata.sessionType==='RTH'&&this.appearance?.sessionMode==='RTH'?this.getBarsForTimeframe(this.currentTimeframe):this.currentTimeframe==='1m'?this.rawBars:this.htfData[this.currentTimeframe]||[];
     let lo=0,hi=raw.length;while(lo<hi){const mid=(lo+hi)>>1;if(raw[mid].time<=now)lo=mid+1;else hi=mid;}
     // Read timestamps only for the in-progress interval; Replay price/indicators stay closed-bar only.
     const current=raw[lo-1],session=TerminalTime.activeSession(now,metadata),seconds=current?Math.max(0,Math.ceil(TerminalTime.end({time:current.time},this.currentTimeframe,metadata)-now)):0;
-    const label=this.countdownLabel,y=b?this.series.priceToCoordinate(b.close):null;label.hidden=!b||y===null||y<0||y>this.plotHeight-26;
-    if(!b)return;label.querySelector('.axis-price').textContent=this.series.priceFormatter().format(b.close);
-    const timer=label.querySelector('.axis-countdown');timer.hidden=!session||seconds<=0;timer.textContent=timer.hidden?'':TerminalTime.format(seconds);
+    const label=this.countdownLabel,y=b?this.series.priceToCoordinate(b.close):null;label.hidden=!b||y===null||y<0||y>this.plotBottom;
+    if(!b)return;label.querySelector('.axis-price').textContent=(showName?this.symbol+' ':'')+this.series.priceFormatter().format(b.close);
+    const timer=label.querySelector('.axis-countdown');timer.hidden=!a.countdown||!session||seconds<=0;timer.textContent=timer.hidden?'':TerminalTime.format(seconds);
     label.style.background=a.symbolLineColor||'#211f1d';label.style.color=TerminalFeatures.contrast(a.symbolLineColor||'#211f1d');
-    label.style.fontSize=(a.fontSize||12)+'px';label.style.top=Math.max(0,Math.min(this.plotHeight-label.offsetHeight-26,(y??0)-(a.fontSize||12)*.7))+'px';
+    label.style.fontSize=(a.fontSize ?? 10)+'px';
     this.positionCountdown();
   }
   positionCountdown(){
-    const label=this.countdownLabel;if(!label)return;const b=this.bars?.at(-1);if(!b)return;const y=this.series.priceToCoordinate(b.close);label.hidden=y===null||y<0||y>this.plotHeight-26;if(label.hidden)return;label.style.top=Math.max(0,Math.min(this.plotHeight-label.offsetHeight-26,y-(this.appearance?.fontSize||12)*.7))+'px';label.style.width=Math.max(50,this.chart.priceScale('right').width())+'px';
+    const label = this.countdownLabel;
+    const bar = this.bars?.at(-1);
+    if (!label || !bar) return;
+    const y = this.series.priceToCoordinate(bar.close);
+    label.hidden = y === null || y < 0 || y > this.plotBottom;
+    if (label.hidden) return;
+    label.style.width = (this.chart.priceScale('right').width() || 44) + 'px';
+    label.style.top = Math.max(0, Math.min(this.plotBottom - label.offsetHeight, y - label.offsetHeight / 2)) + 'px';
   }
 
   // MAGNET HELPER (SNAP TO CANDLE OHLC)
@@ -712,7 +880,7 @@ class ChartEngine {
   snapToOHLC(time,price){return this.snapToBar(time,price).price;}
 
   // DRAWINGS RENDERING
-  renderDrawings() {
+  renderDrawings({includePaper=true}={}) {
     this.positionSymbolBadge();
     this.positionCountdown();
     if (!this.overlayCtx) return;
@@ -722,14 +890,14 @@ class ChartEngine {
 
     if(this.appearance)ChartAppearance.draw(this,ctx,rect);
     this.alertOverlay?.draw(ctx,rect);
-    if(this.paperOverlay)this.paperOverlay.draw(ctx,rect);
-    else {
+    if(includePaper&&this.paperOverlay)this.paperOverlay.draw(ctx,rect);
+    else if(includePaper) {
     // 1. Render Active Paper Positions (Entry line + Live PnL)
     if (this.appearance?.positions!==false && this.positions && this.positions.length) {
       const currentPrice = this.bars.length ? this.bars[this.bars.length - 1].close : 0;
       for (const pos of this.positions) {
         const y = this.series.priceToCoordinate(pos.price);
-        if (y !== null && y >= 0 && y <= this.plotHeight-26) {
+        if (y !== null && y >= 0 && y <= this.plotBottom) {
           const isBuy = pos.type === 'buy';
           const pnlPoints = isBuy ? (currentPrice - pos.price) : (pos.price - currentPrice);
           const pnlUsd = (pnlPoints * pos.pointValue * pos.qty).toFixed(2);
@@ -763,7 +931,7 @@ class ChartEngine {
       }
     }
 
-    if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotHeight-26){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-65,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
+    if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotBottom){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-this.chart.priceScale('right').width(),y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
     }
     ctx.save();
     ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - 65), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
@@ -776,9 +944,32 @@ class ChartEngine {
     ctx.restore();
   }
 
+  saveSnapshot(){
+    if(!this.overlayCanvas||typeof this.chart.takeScreenshot!=='function')return;
+    const screenshot=this.chart.takeScreenshot(true);
+    const context=screenshot.getContext('2d');
+    if(!context)return;
+    const includePaper=this.appearance?.snapshotOrders!==false;
+    if(!includePaper)this.renderDrawings({includePaper:false});
+    try{
+      context.drawImage(this.overlayCanvas,0,0,screenshot.width,screenshot.width*this.container.clientHeight/this.container.clientWidth);
+    }finally{
+      if(!includePaper)this.renderDrawings();
+    }
+    screenshot.toBlob(blob=>{
+      if(!blob)return;
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.href=url;
+      link.download=this.symbol+'-'+this.currentTimeframe+'.png';
+      link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+    });
+  }
+
   // COORDINATE HELPERS FOR DRAWING MANAGER
   coordinateToPrice(y) {
-    if(y<0||y>this.plotHeight-26)return null;
+    if(y<0||y>this.plotBottom)return null;
     return this.series.coordinateToPrice(y);
   }
 

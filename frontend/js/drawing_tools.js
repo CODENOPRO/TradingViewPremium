@@ -63,7 +63,9 @@ class DrawingManager {
   updateMagnetButtons(){
     document.querySelectorAll('.tool-btn[data-tool="magnet"], .ft-btn[data-tool="magnet"]').forEach(btn=>{
       btn.classList.toggle('active',this.magnetEnabled);btn.setAttribute('aria-pressed',String(this.magnetEnabled));
-      btn.title=`Magnet: ${this.magnetEnabled?'On':'Off'} · ${this.magnetMode==='weak'?'Weak':'Strong'} (Ctrl: temporary toggle)`;
+      const label = `Magnet: ${this.magnetEnabled?'On':'Off'} · ${this.magnetMode==='weak'?'Weak':'Strong'} (Ctrl: temporary toggle)`;
+      if (btn.closest('#left-sidebar')) btn.setAttribute('aria-label', label);
+      else btn.title = label;
     });
   }
   setMagnet(enabled,mode=this.magnetMode){this.magnetEnabled=!!enabled;this.magnetMode=mode==='weak'?'weak':'strong';this.updateMagnetButtons();Workspace.write('terminal_magnet_v1',{enabled:this.magnetEnabled,mode:this.magnetMode});}
@@ -85,7 +87,7 @@ class DrawingManager {
     chart.container.addEventListener('mouseleave',()=>{pointer=null;chart.chart.clearCrosshairPosition();});
     chart.chart.subscribeCrosshairMove(param=>{
       if(updating||!pointer||!param.point||param.paneIndex>0||chart.container.hidden)return;
-      if(pointer.x<0||pointer.x>=chart.container.clientWidth-(chart.chart.priceScale('right').width()||65)||pointer.y<0||pointer.y>=chart.plotHeight-26)return;
+      if(pointer.x<0||pointer.x>=chart.container.clientWidth-(chart.chart.priceScale('right').width()||65)||pointer.y<0||pointer.y>=chart.plotBottom)return;
       const temporary=!!(pointer.ctrlKey||pointer.metaKey);
       if(this.magnetEnabled===temporary)return;
       const time=chart.coordinateToTime(pointer.x),price=chart.coordinateToPrice(pointer.y);
@@ -264,7 +266,7 @@ class DrawingManager {
     node.addEventListener('pointerdown',event=>{
       if(this.activeTool!=='brush'||this.drawingsLocked||event.button!==0||event.target.closest('button,input,select,.indicator-tables'))return;
       const r=node.getBoundingClientRect(),x=event.clientX-r.left,y=event.clientY-r.top;
-      if(x<0||x>=node.clientWidth-(chart.chart.priceScale('right').width()||65)||y<0||y>=chart.plotHeight-26)return;
+      if(x<0||x>=node.clientWidth-(chart.chart.priceScale('right').width()||65)||y<0||y>=chart.plotBottom)return;
       const p=DrawingModel.fromPixel(chart,x,y,true);if(!p)return;
       event.preventDefault();event.stopImmediatePropagation();node.dispatchEvent(new CustomEvent('chart-activate'));
       const d={...DrawingModel.defaults('brush'),type:'brush',id:crypto.randomUUID(),isTemp:true,p1:{...p},points:[p],width:2};
@@ -274,7 +276,7 @@ class DrawingManager {
     node.addEventListener('pointermove',event=>{
       if(!stroke)return;if(this.activeTool!=='brush'||this.drawingsLocked||stroke.symbol!==chart.symbol)return finish(event,true);
       event.preventDefault();event.stopImmediatePropagation();const r=node.getBoundingClientRect(),x=event.clientX-r.left,y=event.clientY-r.top;
-      if(x<0||x>=node.clientWidth-65||y<0||y>=chart.plotHeight-26||Math.hypot(x-stroke.x,y-stroke.y)<2||stroke.drawing.points.length>=8192)return;
+      if(x<0||x>=node.clientWidth-(chart.chart.priceScale('right').width()||65)||y<0||y>=chart.plotBottom||Math.hypot(x-stroke.x,y-stroke.y)<2||stroke.drawing.points.length>=8192)return;
       const p=DrawingModel.fromPixel(chart,x,y,true);if(!p)return;stroke.drawing.points.push(p);stroke.x=x;stroke.y=y;chart.renderDrawings();
     },true);
     node.addEventListener('pointerup',event=>{if(stroke){event.preventDefault();event.stopImmediatePropagation();finish(event);}},true);

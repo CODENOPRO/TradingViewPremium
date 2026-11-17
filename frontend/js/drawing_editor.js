@@ -234,8 +234,7 @@ class DrawingEditor {
     const rect=this.selection.chart.container.getBoundingClientRect();
     const width=this.toolbar.offsetWidth||Math.min(420,window.innerWidth-24);
     const height=this.toolbar.offsetHeight||38;
-    const sidebarRight=document.getElementById?.('left-sidebar')?.getBoundingClientRect?.().right;
-    const minLeft=Math.max(12,Number.isFinite(sidebarRight)?Math.round(sidebarRight)+8:12);
+    const minLeft=12;
     const left=this.manualPos?this.manualPos.left:rect.left+rect.width/2-width/2;
     const top=this.manualPos?this.manualPos.top:rect.top+75;
     this.toolbar.style.left=`${Math.max(minLeft,Math.min(window.innerWidth-width-12,left))}px`;
@@ -250,7 +249,7 @@ class DrawingEditor {
   }
   remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.('Mở khóa bản vẽ trước khi xóa.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
   open(tab='style'){if(this.drawing)this.settings.open(this.selection.chart,this.drawing,tab);}
-  find(chart,x,y){if(chart.drawingsHidden||y>chart.plotHeight-26)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
+  find(chart,x,y){if(chart.drawingsHidden||y>chart.plotBottom)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
   cursor(chart,hit){
     if(!hit)return '';
     if(hit.drawing.locked||this.manager.drawingsLocked)return 'not-allowed';

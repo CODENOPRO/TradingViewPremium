@@ -1,7 +1,9 @@
 /* One context menu per workspace; actions reuse the existing controllers and template stores. */
 class ChartContextMenu {
   static clickedPoint(chart, x, y) {
-    if (y < 0 || y > chart.plotHeight - 26 || x < 0 || x > chart.container.clientWidth - 65) return null;
+    const plotBottom = chart.plotBottom ?? chart.plotHeight - 26;
+    const priceAxisWidth = chart.chart?.priceScale('right').width() ?? 65;
+    if (y < 0 || y > plotBottom || x < 0 || x > chart.container.clientWidth - priceAxisWidth) return null;
     const time = chart.coordinateToTime(x), raw = chart.coordinateToPrice(y), tick = chart.metadata.tickSize;
     if (!Number.isFinite(time) || !Number.isFinite(raw)) return null;
     const price = Number.isFinite(tick) && tick > 0 ? Math.round(raw / tick) * tick : raw;
@@ -86,6 +88,11 @@ class ChartContextMenu {
       buy: 'M7 11.5 12 6.5 17 11.5M7 17 12 12 17 17',
       order: 'M4 16.5l4-4 3 2.5 4.5-5.5M15.5 17h5M18 14.5v5M3.5 5.5v13a1 1 0 0 0 1 1h8.5',
       check: 'M5 12.5 9.5 17 19 7.5',
+      cursor: 'M12 3v18M3 12h18M9 9h6v6H9z',
+      paste: 'M9 5H6v15h12V5h-3M9 4h6v3H9z',
+      table: 'M4 5h16v14H4zM4 10h16M10 10v9M15 10v9',
+      snapshot: 'M4 7h4l2-3h4l2 3h4v12H4zM12 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+      template: 'M4 4h16v16H4zM4 9h16M10 9v11',
       settings: 'M12 14.8a2.8 2.8 0 1 0 0-5.6 2.8 2.8 0 0 0 0 5.6zM19.2 13.3l1.3-1.3-1.3-1.3a1.3 1.3 0 0 1-.3-1.4l.7-1.7-1.6-.9-1.1 1.4a1.3 1.3 0 0 1-1.4.4l-1.7-.4-.6-1.7h-2.4l-.6 1.7-1.7.4a1.3 1.3 0 0 1-1.4-.4L6.4 6.7l-1.6.9.7 1.7a1.3 1.3 0 0 1-.3 1.4L3.9 12l1.3 1.3a1.3 1.3 0 0 1 .3 1.4l-.7 1.7 1.6.9 1.1-1.4a1.3 1.3 0 0 1 1.4-.4l1.7.4.6 1.7h2.4l.6-1.7 1.7-.4a1.3 1.3 0 0 1 1.4.4l1.1 1.4 1.6-.9-.7-1.7a1.3 1.3 0 0 1 .3-1.4z',
       text: 'M5 6V4.5h14V6M12 4.5v15M9 19.5h6',
       layers: 'M12 3.5 3.5 8l8.5 4.5L20.5 8 12 3.5zM3.5 12l8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5',
@@ -110,6 +117,7 @@ class ChartContextMenu {
     this.root.hidden = true;
     this.root.setAttribute('role', 'menu');
     this.root.setAttribute('aria-label', 'Chart context menu');
+    this.root.addEventListener('scroll', () => this.closeSubmenu(), { passive: true });
     document.body.appendChild(this.root);
 
     for (const chart of charts) {
@@ -183,6 +191,7 @@ class ChartContextMenu {
     button.type = 'button';
     button.setAttribute('role', 'menuitem');
     button.disabled = disabled;
+    if (iconName) button.dataset.icon = iconName;
     const icon = document.createElement('span');
     icon.className = 'tv-ctx-icon';
     icon.setAttribute('aria-hidden', 'true');
@@ -247,13 +256,13 @@ class ChartContextMenu {
       populateFn(sub, () => this.close());
       document.body.appendChild(sub);
       const triggerRect = button.getBoundingClientRect();
-      const subRect = sub.getBoundingClientRect();
       const margin = 8;
       let left = triggerRect.right + 2;
-      if (left + subRect.width > window.innerWidth - margin) {
-        left = Math.max(margin, triggerRect.left - subRect.width - 2);
+      if (left + sub.offsetWidth > window.innerWidth - margin) {
+        left = triggerRect.left - sub.offsetWidth - 2;
       }
-      const top = Math.max(margin, Math.min(window.innerHeight - subRect.height - margin, triggerRect.top));
+      left = Math.max(margin, Math.min(left, innerWidth - sub.offsetWidth - margin));
+      const top = Math.max(margin, Math.min(window.innerHeight - sub.offsetHeight - margin, triggerRect.top));
       sub.style.left = `${left}px`;
       sub.style.top = `${top}px`;
       sub.addEventListener('pointerenter', () => clearTimeout(this.submenuTimer));
@@ -340,7 +349,7 @@ class ChartContextMenu {
             onSaveAs: () => { closeAll(); opts.onSaveAs(); },
             onDone: closeAll
           });
-        });
+        }, 'template');
       }
       if (['box', 'line', 'hline', 'text'].includes(target.type)) {
         this.item('Text…', () => this.drawing.editor.open('text'), '', false, 'text');
@@ -380,11 +389,11 @@ class ChartContextMenu {
         this.item(`Copy price ${value}`, async () => {
           if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable in this browser.');
           await navigator.clipboard.writeText(String(point.price));
-        });
+        }, '', false, 'copy');
         this.item('Paste', () => {
           if (!this.clipboard) throw new Error('Chưa có đối tượng đã sao chép.');
           this.pasteClipboard(chart, point);
-        }, 'Ctrl + V', !this.clipboard);
+        }, 'Ctrl + V', !this.clipboard, 'paste');
         this.divider();
 
         const lastClose = chart.bars?.at(-1)?.close ?? this.paperPanel?.paper?.quotes?.get(chart.symbol)?.price;
@@ -393,9 +402,8 @@ class ChartContextMenu {
         const placeOrder = (side, type) => {
           if (!this.paperPanel) throw new Error('Paper Trading chưa sẵn sàng.');
           this.paperPanel.guard(chart.symbol);
-          this.paperPanel.paper.place({ symbol: chart.symbol, side, type, qty, price: point.price }, chart.metadata);
+          this.paperPanel.placeFromChart(chart, { symbol: chart.symbol, side, type, qty, price: point.price });
           this.paperPanel.render();
-          this.toast?.(`Đã đặt ${side.toUpperCase()} ${qty} ${chart.symbol} @ ${value} ${type}`);
         };
 
         this.item(`Add alert on ${chart.symbol} at ${value}…`, () => this.openAlert(chart, point.price), 'Alt + A', false, 'alert');
@@ -409,16 +417,17 @@ class ChartContextMenu {
         this.item('Paste', () => {
           if (!this.clipboard) throw new Error('Chưa có đối tượng đã sao chép.');
           this.pasteClipboard(chart, null);
-        }, 'Ctrl + V', !this.clipboard);
+        }, 'Ctrl + V', !this.clipboard, 'paste');
       }
 
       this.divider();
       const cursorLocked = this.sync ? !!this.sync.options?.crosshair : false;
-      this.item('Lock vertical cursor line by time', () => this.toggleVerticalCursorLock(), '', !this.sync, cursorLocked ? 'check' : '');
+      this.item('Lock vertical cursor line by time', () => this.toggleVerticalCursorLock(), '', !this.sync, cursorLocked ? 'check' : 'cursor');
 
       this.divider();
-      this.item('Table view', () => { this.desktop.objectTab = 'data'; this.desktop.open('objects'); });
-      this.item('Object tree', () => { this.desktop.objectTab = 'tree'; this.desktop.open('objects'); });
+      this.item('Table view', () => { this.desktop.objectTab = 'data'; this.desktop.open('objects'); }, '', false, 'table');
+      this.item('Save chart snapshot', () => chart.saveSnapshot(), '', false, 'snapshot');
+      this.item('Object tree', () => { this.desktop.objectTab = 'tree'; this.desktop.open('objects'); }, '', false, 'layers');
       if (typeof TemplateMenu !== 'undefined' && this.chartSettings?.templateMenuOptions) {
         this.submenu('Chart template', (sub, closeAll) => {
           const opts = this.chartSettings.templateMenuOptions(chart, false);
@@ -429,7 +438,7 @@ class ChartContextMenu {
             onSaveAs: () => { closeAll(); opts.onSaveAs(); },
             onDone: closeAll
           });
-        });
+        }, 'template');
       }
 
       this.divider();
@@ -437,11 +446,11 @@ class ChartContextMenu {
       const indicatorCount = chart.runner?.entries?.length || 0;
       const drawingLabel = drawingCount > 0 ? `Remove ${drawingCount} ${drawingCount === 1 ? 'drawing' : 'drawings'}` : 'Remove drawings';
       const indicatorLabel = indicatorCount > 0 ? `Remove ${indicatorCount} ${indicatorCount === 1 ? 'indicator' : 'indicators'}` : 'Remove indicators';
-      this.item(drawingLabel, () => this.drawing.setTool('trash'), '', this.drawing.drawingsLocked || !drawingCount);
+      this.item(drawingLabel, () => this.drawing.setTool('trash'), '', this.drawing.drawingsLocked || !drawingCount, 'trash');
       this.item(indicatorLabel, () => {
         for (const entry of [...(chart.runner?.entries || [])]) chart.runner.remove(entry.record.id);
         this.desktop?.refresh?.();
-      }, '', !indicatorCount);
+      }, '', !indicatorCount, 'trash');
 
       this.divider();
       this.item('Settings…', () => chart.onChartSettings?.(), '', false, 'settings');
@@ -452,9 +461,9 @@ class ChartContextMenu {
     this.status.setAttribute('role', 'alert');
     this.root.appendChild(this.status);
     this.root.hidden = false;
-    const rect = this.root.getBoundingClientRect();
-    this.root.style.left = Math.max(8, Math.min(innerWidth - rect.width - 8, clientX)) + 'px';
-    this.root.style.top = Math.max(8, Math.min(innerHeight - rect.height - 8, clientY)) + 'px';
+    this.root.scrollTop = 0;
+    this.root.style.left = Math.max(8, Math.min(innerWidth - this.root.offsetWidth - 8, clientX)) + 'px';
+    this.root.style.top = Math.max(8, Math.min(innerHeight - this.root.offsetHeight - 8, clientY)) + 'px';
     this.root.querySelector('button:not([disabled])')?.focus();
   }
 }

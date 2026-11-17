@@ -197,7 +197,7 @@ const TemplateMenu = (() => {
   }
 
   /** Populate a menu container with Save As, Apply Defaults, and template rows (with delete). */
-  function buildMenuItems(container, { getItems, saveLabel = 'Save as…', defaultLabel = 'Apply defaults', onSaveAs, onDefault, onApply, onDelete, onDone }) {
+  function buildMenuItems(container, { getItems, saveLabel = 'Save as…', defaultLabel = 'Apply defaults', onSaveAs, onDefault, onApplyAll, onApply, onDelete, onDone }) {
     const render = () => {
       container.replaceChildren();
       const addAction = (label, handler, cls = '') => {
@@ -217,6 +217,7 @@ const TemplateMenu = (() => {
       };
       if (onSaveAs) addAction(saveLabel, onSaveAs, 'tv-tpl-action');
       if (onDefault) addAction(defaultLabel, onDefault, 'tv-tpl-action');
+      if (onApplyAll) addAction('Apply all charts', onApplyAll, 'tv-tpl-action');
       const items = getItems() || [];
       const div = document.createElement('div');
       div.className = 'chart-context-divider';

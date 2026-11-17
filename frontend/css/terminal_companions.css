@@ -154,6 +154,129 @@
 .music-seek {display:block;width:100%;margin:8px 0 4px;accent-color:#acbedc}
 .music-controls button[data-command=toggle] {width:46px;height:38px;border-radius:20px}
 .music-notice:empty,.music-player-host:empty {display:none}
+
+#music-panel {
+  color: var(--text);
+  background: var(--bg) !important;
+}
+#music-panel > header { justify-content: flex-start; gap: 8px; }
+#music-panel > header h2 { margin-right: auto; }
+#music-panel :is(.music-link-form button,.music-controls button,.music-popup-button) {
+  color: var(--text);
+  background: var(--glass2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+#music-panel > header .music-popup-button { font-size: 12px; padding: 6px 9px; }
+#music-panel .music-link-form input[type="url"] {
+  background: var(--glass2);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+#music-panel :is(.music-notice,.music-metadata-status,.music-now p,.music-clock) { color: var(--muted); }
+#music-panel .music-source-link { color: var(--text); font-size: 12px; text-underline-offset: 3px; }
+#music-panel .music-tab-audio {
+  align-self: flex-start;
+  margin: 6px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+#music-panel .music-tab-audio[hidden] { display: none; }
+#music-panel[data-provider="youtube"] .music-player-host iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
+}
+#music-panel.music-mini {
+  inset: auto 76px 22px auto !important;
+  z-index: 130;
+  width: min(360px, calc(100vw - 24px));
+  max-width: none;
+  height: auto;
+  max-height: min(560px, calc(100dvh - 34px));
+  padding: 10px;
+  border: 1px solid var(--line) !important;
+  border-radius: 15px;
+  animation: none !important;
+  overflow: auto;
+}
+#music-panel.music-mini > header { margin-bottom: 8px; }
+#music-panel.music-mini :is(.music-link-form,.music-metadata-status) { display: none; }
+#music-panel.music-mini:not([data-provider="audio"]) :is(.music-now,.music-controls) { display: none; }
+#music-panel.music-mini[data-provider="audio"] .music-now { margin: 6px 0; gap: 12px; }
+#music-panel.music-mini[data-provider="audio"] .music-disc { width: 42px; height: 42px; }
+#music-panel.music-mini[data-provider="audio"] .music-controls { margin: 8px 0 0; }
+#music-panel.music-mini[data-provider="tiktok"] { width: min(296px, calc(100vw - 24px)); }
+#music-panel.music-mini[data-provider="tiktok"] iframe { height: min(365px, 64dvh); }
+@media (max-width: 719px) {
+  #music-panel.music-mini { right: 12px !important; bottom: 12px !important; }
+}
+
+.video-popup-tools { display: none; }
+/* Clip TikTok visually while keeping its iframe mounted and playable. */
+#music-panel[data-provider="tiktok"].music-video-hidden .music-player-host {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+#music-panel:not([data-provider="tiktok"]).music-video-hidden .music-player-host,
+#music-panel .music-controls button[hidden],
+#music-panel .music-popup-button[hidden] { display: none; }
+#music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]):has(.music-player-host iframe) {
+  padding: 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+  overflow: visible;
+  max-height: none;
+  border-radius: 0;
+}
+#music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]):has(.music-player-host iframe) > :is(header,.music-notice,.music-source-link) {
+  display: none;
+}
+#music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]):has(.music-player-host iframe) .video-popup-tools {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  gap: 3px;
+  inset: -26px 0 auto auto;
+  opacity: 0;
+  pointer-events: none;
+}
+#music-panel.music-mini:is(:hover,:focus-within) .video-popup-tools {
+  opacity: 1;
+  pointer-events: auto;
+}
+#music-panel .video-popup-tools button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  color: #fff;
+  border: 1px solid #ffffff50;
+  border-radius: 6px;
+  background: #151515d9;
+  cursor: pointer;
+}
+#music-panel .video-popup-tools button:first-child { cursor: grab; touch-action: none; user-select: none; }
+#music-panel .video-popup-tools button:first-child:active { cursor: grabbing; }
+#music-panel.music-mini-large[data-provider="youtube"] { width: min(420px, calc(100vw - 24px)); }
+#music-panel.music-mini-large[data-provider="tiktok"] { width: min(340px, calc(100vw - 24px)); }
+#music-panel.music-mini-large[data-provider="tiktok"] iframe { height: min(420px, 76dvh); }
+#music-panel.music-mini[data-floating-position]:is([data-provider="youtube"],[data-provider="tiktok"]) {
+  inset: var(--music-top) auto auto var(--music-left) !important;
+}
+@media (hover: none) {
+  #music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]) .video-popup-tools { opacity: 1; pointer-events: auto; }
+}
 .calendar-day-protocols {display: flex; flex-direction: column; gap: 6px; margin: 4px 0 8px}
 .calendar-protocol-card {
   display: grid;

@@ -1,0 +1,607 @@
+/* ==========================================================================
+   Chart settings panel (#settings-modal) - the only stylesheet that styles it.
+
+   A floating dock sheet on the right. The chart behind stays sharp, undimmed
+   and interactive, because every change previews live on it. No backdrop
+   blur, no scrim. Colours come from the dock theme tokens (--bg, --text,
+   --muted, --line, --accent, --accent-ink), so light/dark follows the app.
+   ========================================================================== */
+
+#settings-modal {
+  --cs-card: color-mix(in srgb, var(--text) 5.5%, var(--bg));
+  --cs-field: var(--bg);
+  --cs-hair: color-mix(in srgb, var(--text) 9%, transparent);
+  --cs-off: color-mix(in srgb, var(--text) 22%, transparent);
+  --cs-ease: cubic-bezier(.3, 1, .3, 1);
+}
+
+/* ---------- shell: no scrim, panel docked right, chart stays live ---------- */
+
+#settings-modal.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  padding: var(--frame-top, 68px) 12px 12px 12px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+#settings-modal.modal.show { display: flex; }
+
+#settings-modal > .tv-chart-color-popover { pointer-events: auto; }
+
+#settings-modal .chart-settings-dialog {
+  pointer-events: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(468px, 100%);
+  height: min(740px, 100%);
+  max-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--text) 8%, transparent) inset,
+    0 28px 70px -12px rgb(0 0 0 / .5),
+    0 6px 20px rgb(0 0 0 / .22);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+#settings-modal.show .chart-settings-dialog { animation: cs-in .34s var(--cs-ease) both; }
+@keyframes cs-in {
+  from { opacity: 0; transform: translateX(32px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- header ---------- */
+
+#settings-modal .modal-header {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 0;
+  padding: 20px 18px 14px 22px;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+#settings-modal .cs-heading { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+#settings-modal #chart-settings-title {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  color: var(--text);
+}
+#settings-modal .cs-sub {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+#settings-modal .cs-sub::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok, #4ade80);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok, #4ade80) 22%, transparent);
+}
+#settings-modal .modal-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cs-card);
+  color: var(--muted);
+  transition: background-color .15s, color .15s, transform .2s var(--cs-ease);
+}
+#settings-modal .modal-close svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+#settings-modal .modal-close:hover { background: var(--text); color: var(--bg); transform: rotate(90deg); }
+
+/* ---------- tabs: icon pills, the active one opens to show its name ---------- */
+
+#settings-modal .chart-settings-layout {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+#settings-modal .chart-settings-nav {
+  --nav-dur: 460ms;
+  --nav-ease: var(--dock-reveal-ease, cubic-bezier(.3, .65, .3, 1));
+  --fl: 0px;
+  --fr: 0px;
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: auto;
+  margin: 0 14px;
+  padding: 5px;
+  background: var(--cs-card);
+  border: 0;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%);
+}
+#settings-modal .chart-settings-nav::-webkit-scrollbar { display: none; }
+#settings-modal .chart-settings-nav button {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-width: 40px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: var(--muted);
+  font: 600 12px/1 var(--dock-font);
+  letter-spacing: .01em;
+  white-space: nowrap;
+  transition: background-color .25s, color .25s, box-shadow .35s;
+}
+#settings-modal .chart-settings-nav button svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#settings-modal .chart-settings-nav button svg .d { fill: currentColor; fill-opacity: .22; }
+#settings-modal .chart-settings-nav button svg .dot { fill: currentColor; stroke: none; }
+#settings-modal .chart-settings-nav .chart-tab-label {
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns var(--nav-dur) var(--nav-ease);
+}
+#settings-modal .chart-settings-nav .chart-tab-label > span {
+  min-width: 0;
+  overflow: hidden;
+  padding-left: 0;
+  opacity: 0;
+  transition: padding-left var(--nav-dur) var(--nav-ease), opacity .2s ease;
+}
+#settings-modal .chart-settings-nav button:hover {
+  background: var(--glass2);
+  color: var(--text);
+}
+#settings-modal .chart-settings-nav button[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 6px 16px -8px var(--accent);
+}
+#settings-modal .chart-settings-nav button[aria-selected="true"] .chart-tab-label {
+  grid-template-columns: 1fr;
+}
+#settings-modal .chart-settings-nav button[aria-selected="true"] .chart-tab-label > span {
+  padding-left: 9px;
+  opacity: 1;
+  transition: padding-left var(--nav-dur) var(--nav-ease), opacity .3s ease .1s;
+}
+#settings-modal .chart-settings-nav button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+body.reduce-motion #settings-modal .chart-settings-nav :is(button, span) { transition: none; }
+.chart-sound-preview { flex:none; min-height:32px; padding:6px 9px; font-size:11px; white-space:nowrap; }
+#settings-modal.theme-mode .chart-settings-dialog { width:min(860px,calc(100vw - 32px)); }
+#settings-modal.theme-mode .chart-settings-body { padding-top:10px; }
+.theme-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; max-height:min(54vh,520px); overflow:auto; padding:8px 2px 4px; }
+.theme-option { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; min-height:52px; padding:0 12px; border:1px solid color-mix(in srgb,var(--theme-text) 18%,transparent); border-radius:14px; background:var(--theme-bg); color:var(--theme-text); text-align:left; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+.theme-option:hover { transform:translateY(-1px); border-color:color-mix(in srgb,var(--theme-text) 45%,transparent); }
+.theme-option[aria-pressed="true"] { border-color:#89a9ff; box-shadow:0 0 0 2px color-mix(in srgb,#89a9ff 65%,transparent); }
+.theme-option-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:600; }
+.theme-option-dots { display:flex; flex:none; align-items:center; gap:4px; }
+.theme-option-dots i { width:11px; height:11px; border-radius:50%; box-shadow:0 0 0 1px #0002; }
+@media(max-width:700px) { .theme-gallery { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:460px) { .theme-gallery { grid-template-columns:1fr; } }
+
+/* ---------- body ---------- */
+
+#settings-modal .chart-settings-body {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  padding: 6px 14px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-off) transparent;
+}
+#settings-modal .chart-settings-body h3 {
+  margin: 20px 8px 9px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-transform: none;
+  color: var(--muted);
+}
+#settings-modal .chart-settings-body h3:first-child { margin-top: 14px; }
+
+#settings-modal .chart-setting-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  background: var(--cs-card);
+  border: 0;
+  border-radius: 18px;
+}
+
+#settings-modal .chart-setting-row,
+#settings-modal .setting-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 52px;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--cs-hair);
+  font-size: 13.5px;
+  color: var(--text);
+}
+#settings-modal .chart-setting-card > :last-child { border-bottom: 0; }
+#settings-modal .chart-setting-row label,
+#settings-modal .setting-row > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text);
+  cursor: pointer;
+}
+#settings-modal .chart-setting-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  max-width: none;
+}
+#settings-modal .chart-setting-controls > span:not(.chart-color-pair) {
+  min-width: 26px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* rows whose feature is not wired to the engine yet: visible, honest, inert */
+#settings-modal .chart-setting-row.unimplemented { opacity: .5; }
+#settings-modal .chart-setting-row.unimplemented label { cursor: default; }
+#settings-modal .chart-unavailable-note {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  border-radius: 50%;
+  border: 1px solid var(--cs-off);
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: help;
+}
+
+/* ---------- switch ---------- */
+
+#settings-modal .chart-settings-body input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  position: relative;
+  width: 40px;
+  min-width: 40px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cs-off);
+  cursor: pointer;
+  transition: background-color .22s;
+}
+#settings-modal .chart-settings-body input[type="checkbox"]::before { content: none; }
+#settings-modal .chart-settings-body input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .35);
+  transition: transform .32s cubic-bezier(.3, 1.55, .5, 1), background-color .22s;
+}
+#settings-modal .chart-settings-body input[type="checkbox"]:checked { background: var(--accent); }
+#settings-modal .chart-settings-body input[type="checkbox"]:checked::after {
+  background: var(--accent-ink);
+  transform: translateX(16px);
+}
+#settings-modal .chart-settings-body input[type="checkbox"]:disabled { cursor: default; opacity: .55; }
+
+/* ---------- selects, numbers, range ---------- */
+
+#settings-modal .chart-settings-body select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: auto;
+  min-width: 118px;
+  max-width: 200px;
+  height: 34px;
+  padding: 0 32px 0 12px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--cs-field) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%238a8a93' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E") no-repeat right 11px center / 12px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  font: 500 12.5px/1 inherit;
+  font-family: inherit;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: box-shadow .15s;
+}
+#settings-modal .chart-settings-body select:hover { box-shadow: inset 0 0 0 1px var(--cs-off); }
+#settings-modal .chart-settings-body select option { background: var(--bg); color: var(--text); }
+#settings-modal .chart-settings-body select.chart-line-style { min-width: 0; width: 74px; padding-left: 10px; letter-spacing: -.5px; }
+#settings-modal .chart-settings-body select:disabled { cursor: default; }
+
+#settings-modal .chart-settings-body input[type="number"] {
+  width: 86px;
+  height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--cs-field);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  font: 500 13px/1 inherit;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+#settings-modal .chart-settings-body input[type="number"]:focus { outline: none; box-shadow: inset 0 0 0 1.5px var(--text); }
+
+#settings-modal .chart-settings-body input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 150px;
+  max-width: 150px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+#settings-modal .chart-settings-body input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: var(--cs-off); }
+#settings-modal .chart-settings-body input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--cs-card), 0 1px 4px rgb(0 0 0 / .4);
+  transition: transform .15s;
+}
+#settings-modal .chart-settings-body input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.12); }
+#settings-modal .chart-settings-body input[type="range"]::-moz-range-track { height: 4px; border-radius: 4px; background: var(--cs-off); }
+#settings-modal .chart-settings-body input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--cs-card);
+}
+
+#settings-modal .chart-setting-controls > .chart-range-value {
+  min-width: 4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+#chart-grid .chart-legend:not([hidden]) { display: flex !important; }
+#chart-grid .tv-trade-pill:not([hidden]) { display: flex !important; }
+.chart-scale-modes, .chart-scale-currency, .chart-price-plus {
+  position: absolute;
+  right: 2px;
+  z-index: 21;
+  color: var(--chart-text);
+}
+.chart-scale-modes { bottom: 28px; display: flex; gap: 2px; }
+.chart-scale-currency { top: 8px; pointer-events: none; font-size: 10px; }
+.chart-scale-modes button, .chart-price-plus {
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: var(--pane-background);
+  color: var(--chart-text);
+  cursor: pointer;
+}
+.chart-scale-modes button[aria-pressed="true"] { font-weight: 800; }
+.chart-scale-modes[data-visibility="Hidden"], .chart-scale-currency[data-visibility="Hidden"],
+.chart-wrapper:not(:hover):not(:focus-within) [data-visibility="Visible on mouse over"],
+.chart-price-plus[hidden], .chart-wrapper:not(:hover) .chart-price-plus { display: none; }
+
+.indicator-status-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.paper-order-confirmation {
+  max-width: min(420px, 90vw);
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.paper-order-confirmation::backdrop { background: transparent; }
+.paper-order-confirmation form { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ---------- colour chips: up/down pairs overlap, then part on hover ---------- */
+
+#settings-modal .chart-color-pair { display: flex; align-items: center; }
+#settings-modal .chart-color {
+  flex: none;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background:
+    conic-gradient(#8884 25%, transparent 0 50%, #8884 0 75%, transparent 0) 0 0 / 8px 8px;
+  outline: 2.5px solid var(--cs-card);
+  box-shadow: 0 0 0 1px var(--cs-off);
+  transition: transform .18s var(--cs-ease), margin .25s var(--cs-ease), box-shadow .15s;
+}
+#settings-modal .chart-color > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(127 127 127 / .35);
+}
+#settings-modal .chart-color-pair .chart-color + .chart-color { margin-left: -10px; }
+#settings-modal .chart-color-pair:hover .chart-color + .chart-color { margin-left: 3px; }
+#settings-modal .chart-color:not(:disabled):hover { transform: translateY(-1px) scale(1.08); z-index: 1; }
+#settings-modal .chart-color.active { box-shadow: 0 0 0 2px var(--text); z-index: 2; }
+#settings-modal .chart-color:disabled { opacity: .45; pointer-events: none; }
+#settings-modal .tv-palette-swatch { transition: transform .15s; }
+#settings-modal .tv-palette-swatch:not(:disabled):hover { transform: scale(1.12); }
+
+#settings-modal .chart-data-settings .chart-setting-row {
+  min-height: 42px;
+  gap: 10px;
+  padding-block: 4px;
+}
+#settings-modal .chart-data-settings select:is(#chart-set-precision, #chart-set-timezone) {
+  width: 132px;
+  height: 32px;
+}
+
+/* ---------- notes and the Toolbars tab ---------- */
+
+#settings-modal .desktop-panel-note,
+#settings-modal .editor-help {
+  margin: 14px 4px 0;
+  padding: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+#settings-modal .chart-setting-card > .editor-help { order: -1; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--cs-hair); }
+#settings-modal .setting-row input[type="range"] { flex: none; }
+
+/* ---------- error + footer ---------- */
+
+#settings-modal .chart-settings-error {
+  flex: none;
+  margin: 0 22px 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #f23645;
+}
+#settings-modal .chart-settings-error:empty { display: none; }
+
+#settings-modal .modal-footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--cs-hair);
+  background: transparent;
+}
+#settings-modal .modal-footer button {
+  height: 38px;
+  min-height: 0;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  font: 500 13px/1 inherit;
+  font-family: inherit;
+  transition: background-color .15s, color .15s, transform .15s var(--cs-ease);
+}
+#settings-modal .modal-footer button:active { transform: scale(.97); }
+#settings-modal #chart-template {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 14px 0 16px;
+  background: var(--cs-card);
+  color: var(--text);
+}
+#settings-modal #chart-template:hover,
+#settings-modal #chart-template[aria-expanded="true"] { background: var(--cs-off); }
+#settings-modal #chart-template svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#settings-modal #reset-dock-settings { background: transparent; color: var(--muted); padding: 0 12px; }
+#settings-modal #reset-dock-settings:hover { color: var(--text); }
+#settings-modal #cancel-settings { background: var(--cs-card); color: var(--text); }
+#settings-modal #cancel-settings:hover { background: var(--cs-off); }
+#settings-modal #save-settings { padding: 0 26px; background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+#settings-modal #save-settings:hover { filter: brightness(1.12); }
+
+/* ---------- focus ---------- */
+
+#settings-modal :is(button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* ---------- small screens: bottom sheet ---------- */
+
+@media (max-width: 640px) {
+  #settings-modal.modal { padding: 0; align-items: flex-end; justify-content: center; }
+  #settings-modal .chart-settings-dialog {
+    width: 100%;
+    height: min(88dvh, 100%);
+    border-radius: 24px 24px 0 0;
+    border-bottom: 0;
+  }
+  #settings-modal.show .chart-settings-dialog { animation-name: cs-up; }
+  @keyframes cs-up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+  #settings-modal .chart-setting-controls > select { max-width: 150px; min-width: 96px; }
+}
+
+
+/* Toolbars tab rows are plain .setting-row elements: keep their inputs inside the card */
+#settings-modal .setting-row > input[type="range"],
+#settings-modal .setting-row > .toolbar-transparency { flex: none; margin: 0; }
+#settings-modal .setting-row > input:not([type="checkbox"]) { width: 150px; max-width: 150px; }

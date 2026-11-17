@@ -1,0 +1,551 @@
+/* ==========================================================================
+   Dialog redesign — Indicators library (#indicator-modal).
+   Chart settings now live in settings.css.
+
+   Loaded last on purpose: these two dialogs were previously styled by
+   fragments spread across style.css, terminal_studio.css, chart_dock.css,
+   chart_desktop.css and fixed_shell.css, several of them fighting each
+   other with !important. Instead of unpicking six cascades, this file is
+   the single place both dialogs are visually defined from now on. It reuses
+   the app's existing design tokens (--bg/--text/--muted/--line/--glass2/
+   --accent/--accent-ink) so both dialogs automatically follow the dock's
+   light/dark theme switch instead of being hard-coded to one theme.
+   ========================================================================== */
+
+/* ---------- shared dialog chrome ---------- */
+#indicator-modal.show{
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#indicator-modal:not(.studio-editing) .modal-content.script-dialog{
+  background: var(--bg) !important;
+  color: var(--text);
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 64px rgb(0 0 0 / .45), inset 0 1px 0 rgb(255 255 255 / .04) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#indicator-modal:not(.studio-editing) .modal-header{
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line) !important;
+  background: transparent !important;
+}
+
+#indicator-modal:not(.studio-editing) .modal-close{
+  width: 30px; height: 30px; border-radius: 8px;
+  display: grid; place-items: center;
+  color: var(--muted) !important; font-size: 20px; font-weight: 400;
+  transition: background .12s, color .12s;
+}
+#indicator-modal:not(.studio-editing) .modal-close:hover{
+  background: var(--glass2) !important; color: var(--text) !important;
+}
+
+/* ================================================================
+   INDICATORS LIBRARY — the "Your scripts. Your workspace." browser
+   ================================================================ */
+
+#indicator-modal:not(.studio-editing) .modal-content.script-dialog {
+  width: min(760px, calc(100vw - 32px));
+}
+
+#indicator-modal:not(.studio-editing) .studio-heading { gap: 12px; }
+#indicator-modal:not(.studio-editing) .studio-mark {
+  width: 38px; height: 38px; font-size: 20px; border-radius: 10px;
+  background: var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center; line-height: 1;
+}
+#indicator-modal:not(.studio-editing) .studio-heading > div {
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 16px; font-weight: 600; color: var(--text);
+}
+#indicator-modal:not(.studio-editing) .studio-subtitle {
+  font-size: 12px; font-weight: 400; color: var(--muted);
+}
+
+.indicator-browser { padding: 16px 20px 20px; min-height: 0; min-width: 0; }
+
+.indicator-search-wrap { position: relative; margin-bottom: 14px; }
+.indicator-search-wrap > svg {
+  position: absolute;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+#indicator-modal .indicator-browser .indicator-search.search-input {
+  box-sizing: border-box;
+  width: 100%; margin: 0; height: 38px;
+  padding: 0 14px 0 36px; border-radius: 9px;
+  background: var(--glass2); border: 1px solid var(--line); color: var(--text);
+  transition: border-color .12s, background-color .12s;
+}
+.indicator-browser .indicator-search.search-input::placeholder { color: var(--muted); }
+.indicator-browser .indicator-search.search-input:focus {
+  outline: none; border-color: var(--accent); background-color: var(--bg);
+}
+
+.indicator-browser-columns { grid-template-columns: 184px minmax(0,1fr); gap: 18px; min-height: 340px; }
+
+.indicator-browser nav {
+  border-right: 1px solid var(--line) !important; padding-right: 14px; gap: 2px;
+}
+.indicator-browser nav button {
+  font-size: 13px; color: var(--muted); border-radius: 8px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 9px; white-space: nowrap;
+  transition: background .12s, color .12s;
+}
+.indicator-browser nav button:hover { background: var(--glass2); color: var(--text); }
+.indicator-browser nav button.active {
+  background: var(--accent); color: var(--accent-ink); font-weight: 600; box-shadow: none;
+}
+
+.indicator-script-list { padding-left: 0; max-height: 52vh; min-width: 0; }
+#indicator-modal :is(.indicator-browser, .indicator-script-list) {
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--indicator-scroll-thumb, #18181b) transparent;
+}
+:root[data-dock-theme="dark"] { --indicator-scroll-thumb: #71717a; }
+#indicator-modal .indicator-create { box-sizing: border-box; width: 100%; margin-inline: 0; }
+#indicator-modal .indicator-script-row { min-width: 0; flex-wrap: wrap; }
+#indicator-modal .indicator-script-row > span { min-width: 0; overflow-wrap: anywhere; }
+
+body:not(.reduce-motion) #indicator-modal.show:not(.studio-editing) > .modal-content.script-dialog {
+  animation: indicator-dialog-in .2s cubic-bezier(.2,.8,.2,1) both !important;
+}
+@keyframes indicator-dialog-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.indicator-script-row {
+  border: 1px solid transparent; border-radius: 10px; padding: 9px 10px;
+  gap: 8px; min-height: 48px; transition: background .12s, border-color .12s;
+}
+.indicator-script-row:hover { background: var(--glass2); border-color: var(--line); }
+.indicator-script-row > span { font-size: 13px; font-weight: 500; color: var(--text); }
+.indicator-script-row small { color: var(--accent); font-size: 11px; }
+
+.indicator-script-row button {
+  background: transparent; border: 1px solid transparent; border-radius: 7px;
+  color: var(--muted); padding: 6px 9px; font-size: 12px; transition: all .12s;
+}
+.indicator-script-row button:hover { background: var(--bg); border-color: var(--line); color: var(--text); }
+
+.indicator-script-row button[title^="Add to chart"],
+.indicator-script-row button[aria-label^="Add "] {
+  background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600;
+}
+.indicator-script-row button[title^="Add to chart"]:hover,
+.indicator-script-row button[aria-label^="Add "]:hover { filter: brightness(1.08); }
+
+.indicator-empty {
+  padding: 48px 20px; color: var(--muted); text-align: center; line-height: 1.8; font-size: 13px;
+  border: 1px dashed var(--line); border-radius: 12px; background: var(--glass2);
+}
+.indicator-empty::before {
+  content: "☆"; display: block; font-size: 26px; margin-bottom: 8px; color: var(--muted);
+}
+
+.indicator-create {
+  margin-top: 14px; width: 100%; height: 40px; border-radius: 9px;
+  background: transparent; border: 1px dashed var(--line); color: var(--muted); font-weight: 500;
+}
+.indicator-create:hover { border-color: var(--accent); color: var(--text); background: var(--glass2); }
+
+#indicator-modal:not(.studio-editing) .modal-footer {
+  border-top: 1px solid var(--line) !important; background: transparent !important; padding: 14px 20px;
+}
+#indicator-modal:not(.studio-editing) .indicator-save-state { color: var(--muted); font-size: 12px; }
+
+@media (max-width: 600px) {
+  .indicator-browser-columns { grid-template-columns: 1fr; }
+  .indicator-browser nav { display: flex; flex-wrap: wrap; border-right: 0; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 10px; }
+  .indicator-browser nav button { flex: 1 1 auto; justify-content: center; }
+}
+
+/* Symbol search */
+#symbol-modal .symbol-dialog {
+  box-sizing: border-box;
+  width: min(490px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--text);
+  background: var(--bg);
+  box-shadow: 0 20px 54px rgb(0 0 0 / .28);
+  font: 400 13px/1.4 var(--dock-font);
+}
+#symbol-modal .modal-header { padding: 14px 16px; background: transparent; border-color: var(--line); }
+#symbol-modal .modal-header h2 { margin: 0; font-size: 16px; font-weight: 650; }
+#symbol-modal .modal-close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--glass2);
+  color: var(--muted);
+}
+#symbol-modal .modal-close:hover { color: var(--text); }
+#symbol-modal .modal-body { padding: 12px 14px; }
+.symbol-query { position: relative; }
+.symbol-query svg {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.75;
+  pointer-events: none;
+}
+#symbol-modal #symbol-search-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px 0 36px;
+  background: var(--glass2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font: inherit;
+}
+#symbol-modal #symbol-search-input::placeholder { color: var(--muted); }
+#symbol-modal #symbol-search-input:focus { outline: none; border-color: var(--muted); box-shadow: none; }
+.symbol-results-heading {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 8px 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+#symbol-modal .symbol-list { margin: 0; display: grid; gap: 3px; }
+#symbol-modal .symbol-item {
+  min-height: 52px;
+  padding: 8px;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--text);
+}
+#symbol-modal .symbol-item:hover { background: var(--glass2); }
+#symbol-modal .symbol-item[aria-selected="true"] { background: var(--glass2); border-color: var(--line); }
+#symbol-modal .badge-circle { width: 30px; height: 30px; border-radius: 9px; }
+#symbol-modal .symbol-oil { background: #23734e; color: #fff; }
+#symbol-modal .symbol-info { min-width: 0; gap: 2px; }
+#symbol-modal .symbol-name { color: var(--text); font-weight: 650; }
+#symbol-modal .symbol-desc { color: var(--muted); }
+.symbol-current { color: var(--muted); font-size: 10px; white-space: nowrap; }
+#symbol-search-empty { text-align: center; margin: 18px 0; color: var(--muted); }
+.symbol-search-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 9px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+.symbol-search-footer kbd { border: 1px solid var(--line); border-radius: 4px; padding: 1px 4px; font: inherit; }
+
+/* Indicators identity and Pine editor */
+#indicator-modal .studio-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: var(--glass2);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+#indicator-modal .studio-mark svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#indicator-modal .studio-mark svg path:last-child { stroke: var(--editor-accent, #22a187); }
+#indicator-modal:not(.studio-editing) :is(.pine-editor-title,.editor-toolbar),
+#indicator-modal.studio-editing .indicator-library-title { display: none; }
+#indicator-modal :is(.indicator-browser,.script-body,.modal-footer)[hidden] { display: none; }
+
+#indicator-modal.studio-editing {
+  --editor-gutter: 52px;
+  --editor-pad: 14px;
+  --editor-font: 13px / 21px Consolas, "Cascadia Code", monospace;
+  --editor-accent: #55cfb4;
+  --editor-code-bg: #141417;
+  --editor-selection: rgb(85 207 180 / .2);
+  --editor-comment: #9a9aa4;
+  --editor-string: #abe2a1;
+  --editor-number: #f0bd83;
+  --editor-keyword: #c8b5f8;
+  --editor-function: #88d5e5;
+  --editor-error: #ffaaa5;
+  box-sizing: border-box;
+  padding: 0;
+}
+:root[data-dock-theme="light"] #indicator-modal.studio-editing {
+  --editor-accent: #087660;
+  --editor-code-bg: #fff;
+  --editor-selection: rgb(8 118 96 / .16);
+  --editor-comment: #666674;
+  --editor-string: #28652f;
+  --editor-number: #965116;
+  --editor-keyword: #6640a3;
+  --editor-function: #085b76;
+  --editor-error: #a12925;
+}
+#indicator-modal.studio-editing .script-dialog {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -8px 32px rgb(0 0 0 / .2);
+}
+#indicator-modal.studio-editing .modal-header {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 8px 14px;
+  min-height: 50px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+#indicator-modal.studio-editing .studio-heading {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: 8px;
+  color: var(--text);
+  font: 650 13px/1.3 var(--dock-font);
+}
+#indicator-modal.studio-editing .studio-mark { width: 32px; height: 32px; border-radius: 8px; }
+#indicator-modal.studio-editing .studio-mark svg { width: 21px; height: 21px; }
+#indicator-modal .editor-toolbar { display: flex; flex: 1; align-items: center; gap: 8px; min-width: 0; }
+#indicator-modal.studio-editing .indicator-back {
+  position: static;
+  max-width: none;
+  white-space: nowrap;
+  flex: none;
+}
+#indicator-modal.studio-editing #indicator-name {
+  box-sizing: border-box;
+  width: min(100%, 280px);
+  min-width: 0;
+  height: 32px;
+  padding: 0 9px;
+  background: var(--glass2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+#indicator-modal.studio-editing #indicator-name::placeholder { color: var(--muted); }
+#indicator-modal.studio-editing .studio-window-actions { margin-left: auto; flex: none; }
+#indicator-modal.studio-editing :is(.indicator-back,#editor-expand,#close-indicator-modal,.modal-footer .btn-secondary) {
+  background: var(--glass2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+}
+#indicator-modal.studio-editing :is(#editor-expand,#close-indicator-modal) {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+#indicator-modal.studio-editing .editor-filebar {
+  min-height: 34px;
+  padding: 0 14px;
+  gap: 9px;
+  border-color: var(--line);
+  color: var(--muted);
+}
+#indicator-modal .editor-language { color: var(--editor-accent); letter-spacing: 0; white-space: nowrap; }
+#editor-target { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#indicator-modal .editor-shortcuts { color: var(--muted); white-space: nowrap; }
+.editor-shortcuts kbd { font: inherit; margin-left: 6px; }
+#indicator-modal .editor-surface { min-height: 35px; background: var(--editor-code-bg); }
+#indicator-modal :is(#editor-lines,.editor-highlight,#indicator-code) {
+  box-sizing: border-box;
+  font: var(--editor-font);
+  padding-block: 9px;
+}
+#indicator-modal #editor-lines {
+  width: var(--editor-gutter);
+  min-width: var(--editor-gutter);
+  padding-inline: 0 10px;
+  border-color: var(--line);
+  color: var(--muted);
+  background: var(--bg);
+}
+#indicator-modal .editor-highlight {
+  left: var(--editor-gutter);
+  padding-inline: var(--editor-pad);
+  color: var(--text);
+}
+#indicator-modal.studio-editing #indicator-code {
+  padding-inline: var(--editor-pad);
+  caret-color: var(--text);
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+#indicator-modal.studio-editing #indicator-code:focus-visible { box-shadow: inset 2px 0 var(--editor-selection); }
+#indicator-modal #indicator-code::placeholder { color: var(--muted); }
+#indicator-modal.studio-editing #indicator-code::selection { background: var(--editor-selection); }
+#indicator-modal .pine-comment { color: var(--editor-comment); }
+#indicator-modal .pine-string { color: var(--editor-string); }
+#indicator-modal .pine-number { color: var(--editor-number); }
+#indicator-modal .pine-keyword { color: var(--editor-keyword); }
+#indicator-modal .pine-builtin { color: var(--editor-function); }
+#indicator-modal .editor-position { padding: 4px 14px; color: var(--muted); border-color: var(--line); }
+#indicator-modal .editor-output { flex: none; border-top: 1px solid var(--line); }
+#indicator-modal .editor-console-heading { padding: 5px 14px; color: var(--text); cursor: pointer; letter-spacing: 0; }
+#indicator-modal.studio-editing .indicator-console {
+  padding: 0 14px 8px;
+  min-height: 0;
+  max-height: min(72px, 14dvh);
+  color: var(--muted);
+}
+#indicator-modal.studio-editing .indicator-console.is-error { color: var(--editor-error); }
+#indicator-modal.studio-editing .modal-footer {
+  min-height: 0;
+  padding: 7px 14px;
+  flex-wrap: wrap;
+  background: var(--bg);
+  border-color: var(--line);
+}
+#indicator-modal.studio-editing .indicator-save-state { color: var(--muted); }
+#indicator-modal.studio-editing #apply-indicator { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--line); }
+@media (max-width: 600px) {
+  #indicator-modal.studio-editing { --editor-gutter: 34px; --editor-pad: 9px; }
+  #indicator-modal.studio-editing .modal-header { flex-wrap: wrap; gap: 6px 8px; padding: 6px 8px; }
+  #indicator-modal .editor-toolbar { order: 1; flex-basis: 100%; }
+  #indicator-modal .editor-toolbar #indicator-name { flex: 1; width: auto; max-width: none; }
+  #indicator-modal .editor-filebar { min-height: 28px; }
+}
+
+#alert-modal .alert-dialog {
+  box-sizing: border-box;
+  width: min(420px, 100%);
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 20px 54px rgb(0 0 0 / .28);
+  font: 400 13px/1.4 var(--dock-font);
+}
+#alert-modal :is(.modal-header,.modal-footer) { background: transparent; border-color: var(--line); padding: 13px 16px; }
+.alert-dialog-heading { display: flex; align-items: center; gap: 10px; }
+.alert-dialog-heading h2 { margin: 0; color: var(--text); font-size: 16px; }
+.alert-dialog-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--glass2); }
+.alert-dialog-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#alert-modal .modal-close { width: 30px; height: 30px; border: 0; border-radius: 8px; background: var(--glass2); color: var(--muted); }
+#alert-modal .modal-body { display: grid; gap: 9px; padding: 12px 16px 16px; }
+#alert-modal .setting-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(126px, 1.35fr); align-items: center; gap: 8px; margin: 0; min-height: 40px; color: var(--text); }
+.alert-symbol-chip { justify-self: end; padding: 5px 9px; border-radius: 7px; background: var(--glass2); }
+#alert-modal :is(#alert-condition,#alert-price-input) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--glass2);
+  color: var(--text);
+  color-scheme: var(--dock-color-scheme, dark);
+  font: inherit;
+  padding: 8px;
+}
+#alert-modal #alert-price-input { font-variant-numeric: tabular-nums; }
+#alert-modal .modal-footer { flex-wrap: wrap; }
+#alert-modal #btn-save-alert { background: var(--accent); color: var(--accent-ink); }
+#alert-modal #alert-rearm-row { margin-right: auto; color: var(--muted); }
+
+/* ================================================================
+   CHART SETTINGS — "Cài đặt"
+   ================================================================ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* toggle switches */
+
+
+
+
+
+
+/* colour swatches */
+
+
+
+
+
+
+/* segmented controls (Precision / Timezone) — scroll instead of wrapping */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

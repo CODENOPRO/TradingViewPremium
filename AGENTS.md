@@ -761,10 +761,48 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   - PineTS 0.13.1 chỉ hỗ trợ tập cú pháp/built-in của engine hiện tại (chưa hỗ trợ `import` thư viện ngoài thiếu source, `strategy()`, hoặc mọi cấu trúc Pine v6 nâng cao chưa được PineTS biên dịch).
   - Theo xác nhận của người dùng (“push lên git hộ CODENOPRO/TradingViewPremium”), giữ remote cũ thành `ztadqa` (`ztadqa-main` tại `7f31684`), chuyển `origin` về `https://github.com/CODENOPRO/TradingViewPremium.git`, commit toàn bộ hiện trạng sạch đang chạy (37 file đã kiểm chứng, không gồm `.backups/`, cache JSON hay file tạm) nối tiếp trực tiếp trên `735b260` và fast-forward push lên `origin/main` (không force-push).
 
-### 2026-11-17 — Use the web setting for reduced motion
-- Settings → Toolbars → Reduce motion now controls toolbar and Studio motion independently of Windows, and preserves existing saved web preferences.
-- Checked JavaScript syntax, the diff, and nine existing frontend tests. Browser rendering was not verified.
+### 2026-11-16 — Đồng bộ UI Concept 2 Dock: vòng nạp luôn hiện, điều khiển góc phải cùng nền kính, sheet Settings trượt mượt
+- Yêu cầu: đưa UI Concept 2 (kể cả animation và vòng tròn nạp dữ liệu góc phải) vào dự án; người dùng đã có bản sao lưu nên không tạo backup.
+- Đã có sẵn trong code (xác nhận qua đọc file và chạy headless): bảng màu, font Sora, dock phóng to, nhãn nav trượt, lệnh nhanh Ctrl K, đổi theme, preview nến, công tắc có hiệu ứng nảy. Không đổi các phần này.
+- File đã sửa:
+  - `frontend/js/app.js`: vòng `.dock-load-ring` luôn hiện; khi không nạp thì đầy 100%, khi nạp vẫn theo `completed/total`.
+  - `frontend/index.html`: bỏ thuộc tính `hidden` của vòng; nâng `?v=motion-3` cho `chart_dock.css` và `app.js` để trình duyệt không dùng cache cũ.
+  - `frontend/css/chart_dock.css`: `#timezone-quick`, `#btn-settings`, `#btn-fullscreen` dùng cùng nền kính như nút theme (trước đó bị `fixed_shell.css`/`style.css` ghi đè thành trong suốt, nhìn như ô trắng trên nền chart); vòng đổi sang màu hổ phách khi trạng thái không phải connected/loading; transition cho `stroke-dasharray`; tắt `animation` `studio-appear` của `terminal_studio.css` trên sheet Settings vì nó đè hiệu ứng trượt từ cạnh phải.
+- Kiểm chứng: chạy frontend tĩnh bằng headless Chromium (không có backend/TradingView): console không lỗi, vòng hiện, dock phóng 1.55 khi rê chuột, sheet trượt từ phải (`translateX` đang giảm ở 60 ms rồi về `none`), nền các nút góc phải đồng nhất. `node --test tests/*.test.cjs`: 137/138 đạt; test lỗi duy nhất `color_picker.test.cjs` (ChartSettings mount ColorPicker) đã lỗi sẵn trên bản zip gốc, không do đợt này.
+- Giới hạn: chưa chạy với dữ liệu TradingView thật nên chưa thấy vòng chạy theo tiến độ nạp thật; mục Settings → Thanh công cụ → "Reduce motion" bật sẽ tắt mọi animation (đúng thiết kế sẵn có).
 
-### 2026-11-17 — Bấm lại icon để đóng bảng
-- Icon Chart Settings, tìm mã, thư viện indicator, cài đặt indicator và tạo cảnh báo mở hoặc đóng bảng tương ứng. Phím tắt Chart Settings dùng cùng thao tác; đóng Chart Settings từ icon xử lý như Cancel.
-- Cập nhật frontend/js/app.js và phiên bản tài nguyên ở frontend/index.html. Kiểm tra cú pháp, mô phỏng click, bàn phím và backdrop, cùng 9 kiểm thử hiện có. Chưa kiểm tra giao diện trực quan.
+### 2026-11-16 — Dock phóng to kiểu macOS không bị tắt bởi cờ giảm chuyển động của hệ điều hành
+- Nguyên nhân: `dockMotion` trong `frontend/js/app.js` yêu cầu `prefers-reduced-motion: no-preference`; khi Windows tắt animation effects, hiệu ứng không chạy (đã tái hiện bằng headless: `reduce` → không phóng, `no-preference` → `scale(1.55)`).
+- Sửa: bỏ điều kiện đó khỏi `dockMotion` (vẫn tôn trọng công tắc "Reduce motion" trong app); `frontend/css/chart_dock.css` giữ transition `.12s` cho `.tool-btn` của dock khi hệ điều hành báo giảm chuyển động nhưng công tắc trong app đang tắt; nâng `?v=motion-4` cho `app.js` và `chart_dock.css`.
+- Giới hạn: các animation khác (nhãn nav, sheet Settings, lệnh nhanh) vẫn tắt theo cờ của hệ điều hành như trước.
+
+### 2026-11-16 — Căn giữa biểu tượng và hiệu ứng hover của dock công cụ
+- Yêu cầu: sửa biểu tượng trên thanh vẽ bị thấp; rê chuột làm biểu tượng nhấc/phóng theo kiểu macOS Dock.
+- Sao lưu trước sửa: `.backups/dock-icon-alignment-20261116/` (`chart_dock.css`, `index.html`).
+- File đã sửa: `frontend/css/chart_dock.css` đặt `.drawing-favourite-slot` cao 44px như nút con (trước đó slot 34px nhưng nút 44px, làm tâm icon lệch xuống 5px); bỏ rule `prefers-reduced-motion` ép transform về `none` cho dock để chuyển động hoạt động khi công tắc trong app đang tắt. `frontend/index.html` tăng query cache lên `motion-6`.
+- Hiệu ứng phóng/nhấc icon đã có trong `frontend/js/app.js`; công tắc Reduce motion trong app vẫn tắt hiệu ứng khi được bật.
+- Kiểm chứng: trình duyệt báo OS reduce-motion=true nhưng `body.reduce-motion=false`; trước sửa, CSS ghi đè transform. Sau tải lại, slot và nút đều cao 44px, tâm dock/slot/nút trùng nhau ở `839.67px`, transition `.12s` được giữ. Bộ test tự động không chạy; thao tác hover thật chưa được mô phỏng trong lượt này.
+- Giới hạn: khi người dùng bật Reduce motion trong Settings, hiệu ứng dock vẫn tắt theo lựa chọn đó.
+
+### 2026-11-16 - Chart Settings controls in the Settings Redesigned preview
+- Added live percentage readouts, instrument and indicator status fields, intraday session selection and background, additional price and time scale options, alert colors, and Paper Trading display/execution options.
+- Added PNG export to the chart context menu, with the option to include the paper overlay. Paper confirmations apply to placing orders and reversing positions.
+- RTH uses the available 1-minute history. Bid/Ask, contract adjustment and rollover, Ideas, instrument news, and left scale placement require more work or upstream data.
+- Verified the existing chart settings, context menu, indicator collection, paper trading, and Replay Paper suites. Live source behavior and visual layout were not verified in a browser.
+
+### 2026-11-16 - Right dock and watchlist
+- Restyled the side panel and watchlist for the dock themes and gave the toolbar clearance beside the panel. Added a clock icon and shortened the visible connection status.
+- Removed the Layers button from the right dock. Object Tree and Data Window remain accessible from the chart menu and through the command palette.
+- Updated frontend asset versions. Syntax checked the changed JavaScript files. Browser layout was not verified.
+
+### 2026-11-16 - Music playback and floating player
+- Enabled the official YouTube video and playlist embed. Kept SoundCloud and TikTok embeds and added resolution for TikTok /t/ links.
+- Added Popup and Expand controls. The same player stays mounted while switching between layouts.
+- Added open_music_preview.bat and a loopback HTTP preview with music metadata and short-link endpoints. The preview does not start TradingView or the market bridge.
+- Verified JS syntax, 10 existing frontend checks and 5 existing backend music checks. Live provider playback was not verified. YouTube embeds require an HTTP page that supplies a referrer, and providers may block individual items.
+
+### 2026-11-17 — Giảm chuyển động trong Settings
+- Yêu cầu: cho phép bật lại hiệu ứng của terminal nếu hệ điều hành đang bật giảm chuyển động.
+- Settings → Thanh công cụ → Giảm chuyển động có ba lựa chọn: Theo hệ thống, Bật, Tắt. Tùy chọn lưu cục bộ; thiết lập cũ đang bật được giữ lại. CSS và cuộn tab Settings dùng chung trạng thái này.
+- File: `frontend/index.html`, `js/terminal_polish.js`, `js/chart_settings.js`, `js/ui_language.js` và các CSS frontend từng đọc trực tiếp prefers-reduced-motion. Sao lưu tại `.backups/motion-preference-20261117/`.
+- Kiểm chứng: kiểm tra cú pháp JS, logic ba chế độ/lưu/di trú/phản ứng hệ điều hành. Các bộ test liên quan đạt 14/15; lỗi window is not defined trong chart_settings.test.cjs đã tái hiện với file gốc. Chưa xác nhận hiệu ứng trực quan trong trình duyệt; môi trường kiểm thử Edge không cho dùng cổng debug loopback. Bản ZIP làm việc không có Git remote.

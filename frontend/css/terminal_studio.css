@@ -41,9 +41,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .btn-primary:hover{background:#c0f4df;box-shadow:0 2px 12px #82e2c11a}
 .btn-secondary{background:#ffffff05;color:#bac6d4;border:1px solid #ffffff16;border-radius:8px;padding:8px 12px}
 .btn-secondary:hover{background:#ffffff0c;border-color:#ffffff28}
-.chart-settings-dialog{background:linear-gradient(135deg,#202936f5,#121923f5)!important;border-color:#ffffff24!important}
-.chart-settings-nav{border-color:#ffffff12;background:#0e141b55}
-.chart-settings-nav button.active,.indicator-settings-tabs button.active{color:#a3e7cd;background:#82e2c110}
+
+
+.indicator-settings-tabs button.active{color:#a3e7cd;background:#82e2c110}
 .setting-row{color:#bdc9d7}.setting-row select{color:#d6e0ed}
 #desktop-panel{top:66px;bottom:12px;border-radius:12px;background:#151c25}
 .desktop-panel-header{background:#1a222d;border-color:#ffffff12}.desktop-panel-tabs button.active{color:var(--accent)}
@@ -54,7 +54,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 #editor-expand{display:none}
 .script-dialog{width:900px;max-height:min(740px,calc(100dvh - 48px));overflow:hidden;display:flex;flex-direction:column}
 .indicator-browser{padding:22px 24px 0;min-height:440px;overflow:auto}
-.indicator-search{width:100%;margin-bottom:22px!important;padding:12px 15px!important}
 .indicator-browser-columns{grid-template-columns:170px minmax(0,1fr);min-height:340px}
 .indicator-browser nav{border-color:#ffffff0c;padding:0 18px 20px 0;gap:5px}
 .indicator-browser nav button{font-size:12px;color:#8f9eb0;border-radius:8px;padding:11px 12px;white-space:nowrap}

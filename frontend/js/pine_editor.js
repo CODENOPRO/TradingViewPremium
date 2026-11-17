@@ -23,9 +23,13 @@ class PineEditor {
         event.preventDefault();event.stopPropagation();library.save(event.key==='Enter');
       }
     });
-    document.getElementById('editor-expand').onclick=()=>{
-      this.modal.classList.toggle('editor-expanded');
-      document.getElementById('editor-expand').setAttribute('aria-label',this.modal.classList.contains('editor-expanded')?'Restore editor':'Expand editor');
+    const expand=document.getElementById('editor-expand');
+    expand.onclick=()=>{
+      const expanded=this.modal.classList.toggle('editor-expanded');
+      expand.title=ui(expanded?'Restore editor':'Expand editor');
+      expand.setAttribute('aria-label',expand.title);
+      expand.setAttribute('aria-pressed',String(expanded));
+      expand.textContent=expanded?'↙':'↗';
     };
     this.observer=new MutationObserver(()=>this.sync());
     this.observer.observe(this.modal,{attributes:true,attributeFilter:['class']});

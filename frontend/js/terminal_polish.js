@@ -3,47 +3,36 @@ TerminalFeatures.contrast=color=>{const hex=String(color).replace('#','');if(!/^
 TerminalFeatures.prototype.installPolish=function(){
   const settings=this.chartSettings,modal=settings.modal,dialog=settings.dialog;
   const old=modal.querySelector('.toolbar-settings'),controls=document.createElement('div'),parking=document.createElement('div');
-  parking.hidden=true;modal.appendChild(parking);settings.toolbarControls=controls;settings.toolbarParking=parking;
+  parking.hidden=true;modal.appendChild(parking);controls.className='chart-setting-card';settings.toolbarControls=controls;settings.toolbarParking=parking;
   for(const child of [...old.children])if(child.tagName!=='SUMMARY')controls.appendChild(child);old.remove();parking.appendChild(controls);
   const labels=['Top left toolbar','Top right toolbar','Drawing toolbar','Bottom left toolbar','Bottom right toolbar','Toolbar background (fixed)'];
   controls.querySelectorAll('.setting-row>span:first-child').forEach((el,i)=>el.textContent=labels[i]);
   controls.querySelector('.editor-help').textContent='Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.';
-  const nav=document.createElement('button');nav.type='button';nav.setAttribute('role','tab');nav.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v5H3zM3 14h5v7H3zM12 14h9v7h-9z"/></svg><span>Toolbars</span>';nav.onclick=()=>settings.select('Toolbars');settings.nav.appendChild(nav);
   const add=(text,el)=>{const label=document.createElement('label');label.className='setting-row';const name=document.createElement('span');name.textContent=text;label.append(name,el);controls.appendChild(label);};
-  const compact=document.createElement('input');compact.type='checkbox';compact.id='set-hide-labels';compact.checked=Workspace.read('terminal_compact_labels_v1',false);compact.onchange=()=>{document.body.classList.toggle('icon-labels-only',compact.checked);Workspace.write('terminal_compact_labels_v1',compact.checked);};add('Hide labels (keep symbol and timeframes)',compact);
   const motionKey='terminal_motion_preference_v1';
-  const reduced=document.createElement('input');
-  reduced.type='checkbox';
-  reduced.id='set-reduce-motion';
-  const legacyMotion=Workspace.read('terminal_reduce_motion_v1',false)===true?'reduce':'full';
-  reduced.checked=Workspace.read(motionKey,legacyMotion)==='reduce';
-  const applyMotion=()=>document.body.classList.toggle('reduce-motion',reduced.checked);
-  reduced.addEventListener('change',()=>{
-    Workspace.write(motionKey,reduced.checked?'reduce':'full');
-    applyMotion();
-  });
-  add('Reduce motion',reduced);
+  const systemMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const motion=document.createElement('select');
+  motion.id='set-reduce-motion';
+  for(const [value,label] of [['system','Follow system'],['reduce','On'],['full','Off']]){
+    const option=document.createElement('option');
+    option.value=value;
+    option.textContent=label;
+    motion.appendChild(option);
+  }
+  const savedMotion=Workspace.read(motionKey,Workspace.read('terminal_reduce_motion_v1',false)===true?'reduce':'system');
+  motion.value=['system','reduce','full'].includes(savedMotion)?savedMotion:'system';
+  const applyMotion=()=>document.body.classList.toggle('reduce-motion',
+    motion.value==='reduce'||(motion.value==='system'&&systemMotion.matches));
+  motion.addEventListener('change',()=>{Workspace.write(motionKey,motion.value);applyMotion();});
+  systemMotion.addEventListener('change',applyMotion);
+  add('Reduce motion',motion);
+  controls.prepend(motion.parentElement);
   applyMotion();
   const opacity=document.createElement('input');opacity.type='range';opacity.id='set-calendar-opacity';opacity.min=0;opacity.max=90;opacity.step=5;opacity.value=Workspace.read('terminal_calendar_transparency_v1',0);opacity.setAttribute('aria-label','Calendar transparency');opacity.oninput=()=>{document.documentElement.style.setProperty('--calendar-opacity',String(1-opacity.value/100));Workspace.write('terminal_calendar_transparency_v1',+opacity.value);};add('Calendar transparency',opacity);opacity.oninput();
   const songToast=document.createElement('input');songToast.type='checkbox';songToast.id='set-music-toast';songToast.checked=Workspace.read('terminal_music_toast_v1',true);songToast.onchange=()=>Workspace.write('terminal_music_toast_v1',songToast.checked);add('Show song-change notification (2 seconds)',songToast);
   // Keep vendor notices and a product link, outside the Settings dialog.
   modal.querySelector('.library-credit')?.remove();
   const credit=document.createElement('a');credit.id='terminal-library-link';credit.href='https://www.tradingview.com/';credit.target='_blank';credit.rel='noopener noreferrer';credit.title='TradingView Lightweight Charts™';credit.textContent='TradingView';document.querySelector('.bottom-ranges')?.appendChild(credit);
-  const header=dialog.querySelector('.modal-header');header.title='Drag to move Settings';
-  header.addEventListener('pointerdown',event=>{
-    if(event.button!==0||event.target.closest('button'))return;
-    event.preventDefault();
-    const rect=dialog.getBoundingClientRect();
-    const offsetX=event.clientX-rect.left,offsetY=event.clientY-rect.top;
-    Object.assign(dialog.style,{position:'fixed',margin:'0',left:rect.left+'px',top:rect.top+'px'});
-    header.setPointerCapture(event.pointerId);
-    header.onpointermove=move=>{
-      if(move.pointerId!==event.pointerId)return;
-      dialog.style.left=(move.clientX-offsetX)+'px';
-      dialog.style.top=(move.clientY-offsetY)+'px';
-    };
-    header.onlostpointercapture=()=>{header.onpointermove=null;};
-  });
   // Dismiss only the small popup being clicked away from; never the large Settings dialog.
   const small=['#layout-popover','.toolbar-overflow','.chart-context-menu','.drawing-menu','.tool-submenu','.drawing-more'];
   document.addEventListener('pointerdown',e=>{if(e.target.closest('#btn-layout,.toolbar-more,[data-menu],.tool-group'))return;for(const node of document.querySelectorAll(small.join(',')))if(!node.contains(e.target)){if(node.matches('.toolbar-overflow,.drawing-more'))node.hidden=true;else node.classList.remove('show');}},true);

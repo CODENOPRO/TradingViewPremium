@@ -116,7 +116,7 @@ class IndicatorRunner {
     const supplied=this.getContext({markets:this.usesMarkets,viewport:this.usesViewport})||{};
     const {markets,viewport:contextViewport,...shared}=supplied;
     const context = { ...shared, ...(this.usesMarkets?{markets}:{}), ...(this.usesViewport?{viewport:contextViewport}:{}), settings: this.settings, symbol: this.chart.symbol, timeframe: this.chart.currentTimeframe, metadata: this.chart.metadata,
-      timeframeSeconds: this.chart.tfSeconds, now: this.chart.replayMode?this.chart.replayClock:Date.now()/1000, dataRevision, sessionMode:this.chart.sessionMode, replay:!!this.chart.replayMode };
+      timeframeSeconds: this.chart.tfSeconds, now: this.chart.replayMode?this.chart.replayClock:Date.now()/1000, dataRevision, sessionMode:this.chart.sessionMode || 'ETH', replay:!!this.chart.replayMode };
     const currentBars=this.chart.bars;
     const state=this.workerBarsState;
     let barsPayload;

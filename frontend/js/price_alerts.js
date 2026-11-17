@@ -11,7 +11,7 @@ class AlertChartControls{
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&this.drag){e.preventDefault();this.cancel();}});
   }
   draw(ctx,rect){
-    const chart=this.chart,width=rect.width-(chart.chart.priceScale('right').width()||65),height=chart.plotHeight-26,seen=new Set();
+    const chart=this.chart,width=rect.width-(chart.chart.priceScale('right').width()||65),height=chart.plotBottom,seen=new Set();
     if(this.drag&&(this.drag.symbol!==chart.symbol||this.drag.replay!==!!chart.replayMode||!this.getAlerts().some(a=>a.id===this.drag.id)))this.cancel(false);
     for(const a of this.getAlerts()){
       if(a.symbol!==chart.symbol)continue;
@@ -38,7 +38,7 @@ class AlertChartControls{
       button.title='Kéo để đổi giá · Bấm để chỉnh alert';button.setAttribute('aria-label',`${a.symbol} alert ${price}${a.triggered?' · Triggered':''}`);
       button.style.pointerEvents=this.canDrag?.()===false?'none':'auto';
       Object.assign(button.style,{left:'0px',top:(y-7)+'px',width:width+'px',height:'14px'});
-      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();ctx.strokeStyle=chart.appearance?.alertColor||'#f23645';ctx.fillStyle=ctx.strokeStyle;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);ctx.font='11px Arial';ctx.fillText(`Alert ${price}${a.triggered?' · Triggered':''}`,Math.max(8,width-145),y-5);ctx.restore();
+      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();ctx.strokeStyle=(a.condition==='greater'?chart.appearance?.alertUpColor:chart.appearance?.alertColor)||'#f23645';ctx.fillStyle=ctx.strokeStyle;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);ctx.font='11px Arial';ctx.fillText(`Alert ${price}${a.triggered?' · Triggered':''}`,Math.max(8,width-145),y-5);ctx.restore();
     }
     for(const [id,button]of this.buttons)if(!seen.has(id)){button.remove();this.buttons.delete(id);this.removeButtons.get(id)?.remove();this.removeButtons.delete(id);}
   }
@@ -51,7 +51,7 @@ class AlertChartControls{
   move(e){
     if(!this.drag)return;e.preventDefault();e.stopPropagation();
     const rect=this.chart.container.getBoundingClientRect(),y=e.clientY-rect.top;
-    if(y<0||y>=this.chart.plotHeight-26)return;
+    if(y<0||y>=this.chart.plotBottom)return;
     const price=this.chart.coordinateToPrice(y);if(!Number.isFinite(price))return;
     this.drag.price=AlertPrice.round(price,this.chart.metadata.tickSize||.01);this.drag.changed ||= Math.abs(e.clientY-this.drag.startY)>3;this.chart.renderDrawings();
   }

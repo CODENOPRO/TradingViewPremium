@@ -4,14 +4,15 @@ class IndicatorLibrary {
     this.modal=document.getElementById('indicator-modal');this.body=this.modal.querySelector('.script-body');
     this.sources=Workspace.read('indicator_library_v1',[]);if(!Array.isArray(this.sources))this.sources=[];
     this.panel=document.createElement('div');this.panel.className='indicator-browser';
-    this.panel.innerHTML='<input class="indicator-search search-input" aria-label="Search scripts" placeholder="Search"><div class="indicator-browser-columns"><nav aria-label="Indicator categories"><button data-section="favorites">☆ Favorites</button><button data-section="scripts">‹/› My scripts</button><button data-section="chart">▤ On chart</button><button data-section="editor">＋ New script</button><button data-section="archived">Archived scripts</button></nav><div class="indicator-script-list"></div></div>';
+    this.panel.innerHTML='<div class="indicator-search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 4.5 4.5"/></svg><input type="search" class="indicator-search search-input" aria-label="Search scripts" placeholder="Search scripts…" autocomplete="off"></div><div class="indicator-browser-columns"><nav aria-label="Indicator categories"><button data-section="favorites">☆ Favorites</button><button data-section="scripts">‹/› My scripts</button><button data-section="chart">▤ On chart</button><button data-section="editor">＋ New script</button><button data-section="archived">Archived scripts</button></nav><div class="indicator-script-list"></div></div>';
+    TerminalLanguage.markup(this.panel);
     this.body.before(this.panel);this.list=this.panel.querySelector('.indicator-script-list');this.search=this.panel.querySelector('.indicator-search');this.search.oninput=()=>this.renderList();
     for(const b of this.panel.querySelectorAll('[data-section]'))b.onclick=()=>b.dataset.section==='editor'?this.edit():this.showSection(b.dataset.section);
-    const back=document.createElement('button');back.type='button';back.className='btn-secondary indicator-back';back.textContent='‹ My scripts';back.onclick=()=>this.showSection('scripts');this.body.prepend(back);
+    document.getElementById('editor-back').onclick=()=>this.showSection('scripts');
     this.footer=this.modal.querySelector('.modal-footer');this.saved=document.createElement('span');this.saved.className='indicator-save-state';this.footer.prepend(this.saved);
-    const save=document.createElement('button');save.type='button';save.className='btn-secondary';save.textContent='Save script';save.onclick=()=>this.save(false);document.getElementById('apply-indicator').before(save);
+    const save=document.createElement('button');save.type='button';save.className='btn-secondary';save.textContent=ui('Save script');save.onclick=()=>this.save(false);document.getElementById('apply-indicator').before(save);
     this.console=document.getElementById('indicator-console');this.editor=new PineEditor(this);
-    for(const id of ['indicator-code','indicator-name'])document.getElementById(id).addEventListener('input',()=>{this.clean=false;clearTimeout(this.timer);this.timer=setTimeout(()=>this.saveDraft(),250);this.saved.textContent='Draft…';this.report('');});
+    for(const id of ['indicator-code','indicator-name'])document.getElementById(id).addEventListener('input',()=>{this.clean=false;clearTimeout(this.timer);this.timer=setTimeout(()=>this.saveDraft(),250);this.saved.textContent=ui('Draft…');this.report('');});
     this.modal.addEventListener('close',()=>this.saveDraft());
     window.addEventListener('pagehide',()=>{if(this.section==='editor')this.saveDraft();});
     document.getElementById('apply-indicator').onclick=()=>this.save(true);
@@ -36,7 +37,7 @@ class IndicatorLibrary {
   renderList(){
     this.list.replaceChildren();const query=this.search.value.trim().toLowerCase();
     const records=this.section==='chart'?this.chart.runner.entries.map(e=>({...e.record})):this.sources.filter(s=>this.section==='archived'?s.archived:!s.archived&&(this.section!=='favorites'||s.favorite));
-    const button=(text,label,action)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.title=label;b.setAttribute('aria-label',label);b.onclick=action;return b;};
+    const button=(text,label,action)=>{const b=document.createElement('button');b.type='button';b.textContent=ui(text);b.title=ui(label);b.setAttribute('aria-label',ui(label));b.onclick=action;return b;};
     for(const record of records.filter(s=>s.name.toLowerCase().includes(query))){
       const row=document.createElement('div');row.className='indicator-script-row';const name=document.createElement('span');name.textContent=record.name;row.appendChild(name);
       if(this.section==='chart'){
@@ -49,7 +50,7 @@ class IndicatorLibrary {
       }
       this.list.appendChild(row);
     }
-    if(!this.list.children.length){const empty=document.createElement('p');empty.className='indicator-empty';empty.textContent=query?'No matching scripts':this.section==='chart'?'No indicators on this chart':this.section==='favorites'?'Star a script in My scripts to keep it here.':'Your saved scripts appear here.';this.list.appendChild(empty);}
+    if(!this.list.children.length){const empty=document.createElement('p');empty.className='indicator-empty';empty.textContent=ui(query?'No matching scripts':this.section==='chart'?'No indicators on this chart':this.section==='favorites'?'Star a script in My scripts to keep it here.':'Your saved scripts appear here.');this.list.appendChild(empty);}
     const create=button('＋ New script','Create a script',()=>this.edit());create.className='btn-secondary indicator-create';this.list.appendChild(create);
   }
   edit(source,instanceId){
@@ -57,19 +58,26 @@ class IndicatorLibrary {
     this.sourceId=source?.sourceId||(!instanceId?source?.id:null)||this.sources.find(s=>s.code===source?.code)?.id||null;
     const draft=!source?Workspace.read('indicator_draft_v1',{}):source;
     document.getElementById('indicator-name').value=draft?.name||'';document.getElementById('indicator-code').value=draft?.code||'';document.getElementById('indicator-settings').value=draft?.settingsText??JSON.stringify(draft?.settings||{},null,2);
-    document.getElementById('apply-indicator').textContent=instanceId?'Update on chart':'Add to chart';
+    document.getElementById('apply-indicator').textContent=ui(instanceId?'Update on chart':'Add to chart');
     document.getElementById('remove-indicator').hidden=document.getElementById('stop-indicator-run').hidden=!instanceId;this.saved.textContent='';this.report(instanceId?this.chart.runner.entries.find(e=>e.record.id===instanceId)?.status:'');this.editor.sync();document.getElementById('indicator-code').focus();
   }
   readEditor(){const code=document.getElementById('indicator-code').value;if(!/^\s*\/\/\s*@version\s*=\s*6\b/m.test(code))throw Error('Pine Editor chỉ nhận Pine Script v6: thêm //@version=6 ở đầu file.');if(!/\bindicator\s*\(/.test(code))throw Error('Script cần declaration indicator(). Strategy và library không thể thêm vào chart này.');return {name:document.getElementById('indicator-name').value.trim()||'Untitled script',code,settings:{...(this.chart.runner.entries.find(e=>e.record.id===this.instanceId)?.record.settings||this.sources.find(s=>s.id===this.sourceId)?.settings||{})}};}
-  saveDraft(){clearTimeout(this.timer);if(this.section!=='editor'||this.clean)return;const draft={name:document.getElementById('indicator-name').value,code:document.getElementById('indicator-code').value,settingsText:document.getElementById('indicator-settings').value};if(Workspace.write('indicator_draft_v1',draft))this.saved.textContent='Draft saved';}
+  saveDraft(){clearTimeout(this.timer);if(this.section!=='editor'||this.clean)return;const draft={name:document.getElementById('indicator-name').value,code:document.getElementById('indicator-code').value,settingsText:document.getElementById('indicator-settings').value};if(Workspace.write('indicator_draft_v1',draft))this.saved.textContent=ui('Draft saved');}
   save(add){
     try{
       const script=this.readEditor();if(!script.code.trim())throw Error('Dán code indicator trước khi lưu.');
       const id=this.sourceId||this.chart.runner.id(),previous=this.sources.find(s=>s.id===id);
       const source={...previous,...script,id,updatedAt:Date.now()};const next=[...this.sources.filter(s=>s.id!==id),source];
-      if(!Workspace.write('indicator_library_v1',next))return;this.sources=next;this.sourceId=id;this.clean=true;Workspace.write('indicator_draft_v1',null);this.saved.textContent='Saved';
-      if(add){const ok=this.instanceId?this.chart.runner.update(this.instanceId,{...script,sourceId:id,enabled:true}):this.chart.runner.add({...script,sourceId:id,view:{}});if(ok){if(!this.instanceId)this.instanceId=ok.id;document.getElementById('apply-indicator').textContent='Update on chart';document.getElementById('remove-indicator').hidden=document.getElementById('stop-indicator-run').hidden=false;this.report(this.chart.runner.entries.find(e=>e.record.id===this.instanceId)?.status||'Đang nạp script…');this.onChange?.();}}
+      if(!Workspace.write('indicator_library_v1',next))return;this.sources=next;this.sourceId=id;this.clean=true;Workspace.write('indicator_draft_v1',null);this.saved.textContent=ui('Saved');
+      if(add){const ok=this.instanceId?this.chart.runner.update(this.instanceId,{...script,sourceId:id,enabled:true}):this.chart.runner.add({...script,sourceId:id,view:{}});if(ok){if(!this.instanceId)this.instanceId=ok.id;document.getElementById('apply-indicator').textContent=ui('Update on chart');document.getElementById('remove-indicator').hidden=document.getElementById('stop-indicator-run').hidden=false;this.report(this.chart.runner.entries.find(e=>e.record.id===this.instanceId)?.status||'Đang nạp script…');this.onChange?.();}}
     }catch(error){this.saved.textContent='';this.report('Lỗi: '+error.message);}
   }
-  report(message,chart,instanceId){if(!this.console||chart&&chart!==this.chart||instanceId&&this.instanceId&&instanceId!==this.instanceId)return;this.console.textContent=message||'Ready · Paste a Pine v6 indicator, save, then add to chart. External imports require library source.';if(chart&&this.section==='chart')this.renderList();this.console.classList.toggle('is-error',/Lỗi:|\b(error|unsupported|không hỗ trợ|thiếu)\b/i.test(message||''));}
+  report(message,chart,instanceId){
+    if(!this.console||chart&&chart!==this.chart||instanceId&&this.instanceId&&instanceId!==this.instanceId)return;
+    this.console.textContent=ui(message||'Ready. Paste a Pine v6 indicator to get started.');
+    if(chart&&this.section==='chart')this.renderList();
+    const isError=/Lỗi:|\b(error|unsupported|không hỗ trợ|thiếu)\b/i.test(message||'');
+    this.console.classList.toggle('is-error',isError);
+    if(isError)this.console.closest('details').open=true;
+  }
 }

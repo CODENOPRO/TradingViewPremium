@@ -76,7 +76,19 @@ class IndicatorCollection {
   }
   renderLegends(){
     if(!this.stack)return;
-    const signature=JSON.stringify(this.entries.map(e=>[e.record.id,e.name,e.record.name,e.record.view?.hidden,e.record.enabled]));
+    const appearance=this.chart.appearance||{};
+    const details=new Map();
+    for(const entry of this.entries){
+      if(entry.record.view?.hidden||entry.record.enabled===false)continue;
+      const inputs=appearance.indicatorInputs?Object.entries(entry.runner.settings||{}).map(([key,value])=>key+': '+String(value)):[];
+      const series=[...(entry.result?.series||[]),...(entry.result?.pane?.series||[])];
+      const values=appearance.statusIndicatorValues?series.flatMap(plot=>{
+        const value=plot.data?.at(-1)?.value;
+        return Number.isFinite(value)?[(plot.title?plot.title+': ':'')+String(Number(value.toPrecision(7)))]:[];
+      }):[];
+      details.set(entry.record.id,[...inputs,...values].join(' · '));
+    }
+    const signature=JSON.stringify(this.entries.map(e=>[e.record.id,e.name,e.record.name,e.record.view?.hidden,e.record.enabled,details.get(e.record.id)]));
     if(this.legendSignature===signature){for(const row of this.legends?.children||[])row.title=this.entries.find(e=>e.record.id===row.dataset.indicatorId)?.status||'';return;}
     this.legendSignature=signature;
     if(!this.legends){this.legends=document.createElement('div');this.legends.className='indicator-legends';this.chart.container.appendChild(this.legends);}
@@ -85,6 +97,13 @@ class IndicatorCollection {
       const row=document.createElement('div');row.className='indicator-legend';row.dataset.indicatorId=e.record.id;row.classList.toggle('indicator-muted',!!e.record.view?.hidden);row.title=e.status||'';
       const button=(text,label,action)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.title=label;b.setAttribute('aria-label',label);b.onclick=event=>{event.stopPropagation();this.select(e.record.id);action();};return b;};
       const title=button(e.name||e.record.name,'Settings: '+(e.name||e.record.name),()=>this.chart.onIndicatorSettings?.());title.className='indicator-title';row.appendChild(title);
+      const detail=details.get(e.record.id);
+      if(detail){
+        const label=document.createElement('span');
+        label.className='indicator-status-detail';
+        label.textContent=detail;
+        row.appendChild(label);
+      }
       row.append(button(e.record.view?.hidden?'◌':'◉','Hide / show '+e.record.name,()=>this.toggle(e.record.id)),button('⚙','Settings '+e.record.name,()=>this.chart.onIndicatorSettings?.()),button('‹/›','Edit source '+e.record.name,()=>this.chart.onIndicatorEdit?.(e.record.id)),button('×','Remove '+e.record.name,()=>this.remove(e.record.id)));
       if(e.record.enabled===false)row.append(button('▶','Resume '+e.record.name,()=>this.update(e.record.id,{enabled:true})));
       this.legends.appendChild(row);

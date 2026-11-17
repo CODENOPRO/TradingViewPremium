@@ -40,7 +40,7 @@ body { background:var(--chart); }
 .toolbar-transparency { display:flex; align-items:center; gap:8px; }
 .toolbar-transparency input { width:120px; padding:0; }
 .toolbar-transparency output { min-width:38px; text-align:right; }
-.chart-settings-layout { flex:1; min-height:130px; }
+
 .chart-legend,.tv-trade-pill,.chart-data-status { display:none !important; }
 .chart-wrapper { cursor:crosshair; }
 .chart-symbol-badge { position:absolute; left:10px; bottom:30px; width:28px; height:28px; border-radius:50%; z-index:20; pointer-events:none; }

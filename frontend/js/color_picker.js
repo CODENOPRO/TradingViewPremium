@@ -158,57 +158,32 @@ const ColorPicker = (() => {
     return list;
   }
 
-  function positionSubPanel(panel, anchor) {
-    const btnRect = anchor.getBoundingClientRect?.() || { left: 100, top: 100, bottom: 120, right: 120 };
-    const w = panel.offsetWidth || 244;
-    const h = panel.offsetHeight || 244;
-    const vw = typeof window !== 'undefined' ? window.innerWidth : 1280;
-    const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
-    const left = Math.max(8, Math.min(vw - w - 8, btnRect.left));
-    const top = btnRect.bottom + 8 + h <= vh - 8
-      ? btnRect.bottom + 8
-      : Math.max(8, btnRect.top - h - 8);
-    panel.style.left = left + 'px';
-    panel.style.top = top + 'px';
+  function keepInView(pop) {
+    if (!pop.isConnected) return;
+    const bounds = pop.getBoundingClientRect();
+    pop.style.left = Math.max(8, Math.min(bounds.left, innerWidth - bounds.width - 8)) + 'px';
+    pop.style.top = Math.max(8, Math.min(bounds.top, innerHeight - bounds.height - 8)) + 'px';
   }
 
   function bindAreaDrag(el, onRatio) {
-    let active = false;
+    let pointer = null;
     const update = event => {
       const r = el.getBoundingClientRect?.() || { left: 0, top: 0, width: 180, height: 180 };
       const rx = clamp((event.clientX - r.left) / (r.width || 1), 0, 1);
       const ry = clamp((event.clientY - r.top) / (r.height || 1), 0, 1);
       onRatio(rx, ry);
     };
-    const cleanup = () => {
-      active = false;
-      if (typeof window !== 'undefined' && window.removeEventListener) {
-        window.removeEventListener('pointermove', onMove);
-        window.removeEventListener('pointerup', onUp);
-        window.removeEventListener('pointercancel', onUp);
-      }
-    };
-    const onMove = event => {
-      if (!active) return;
-      if (el.isConnected === false) { cleanup(); return; }
-      update(event);
-    };
-    const onUp = () => cleanup();
     el.addEventListener('pointerdown', event => {
-      if (event.button !== undefined && event.button !== 0) return;
+      if (event.button !== 0 || pointer !== null) return;
       event.preventDefault();
       event.stopPropagation();
-      active = true;
+      el.focus({ preventScroll: true });
+      pointer = event.pointerId;
+      el.setPointerCapture(pointer);
       update(event);
-      if (typeof window !== 'undefined' && window.addEventListener) {
-        window.addEventListener('pointermove', onMove);
-        window.addEventListener('pointerup', onUp);
-        window.addEventListener('pointercancel', onUp);
-      }
     });
-    el.addEventListener('pointermove', event => { if (active) update(event); });
-    el.addEventListener('pointerup', cleanup);
-    el.addEventListener('pointercancel', cleanup);
+    el.addEventListener('pointermove', event => { if (event.pointerId === pointer) update(event); });
+    el.addEventListener('lostpointercapture', event => { if (event.pointerId === pointer) pointer = null; });
   }
 
   function closeActiveSub(pop) {
@@ -217,6 +192,8 @@ const ColorPicker = (() => {
   }
 
   function mount(pop, options = {}) {
+    const label = text => typeof ui === 'function' ? ui(text) : text;
+    pop.classList.add('tv-color-picker');
     const parsed = parseColor(options.value, options.opacity ?? 100);
     const state = {
       hex: parsed.hex,
@@ -264,10 +241,7 @@ const ColorPicker = (() => {
     const addBtn = document.createElement('button');
     addBtn.type = 'button';
     addBtn.className = 'tv-cp-add-btn';
-    addBtn.title = 'Add custom color';
-    addBtn.setAttribute('aria-label', 'Add custom color');
-    addBtn.setAttribute('aria-expanded', 'false');
-    addBtn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3.2v9.6M3.2 8h9.6"/></svg>';
+    addBtn.textContent = label('Custom color');
 
     let subPanel = null;
     let previewBox = null;
@@ -275,7 +249,8 @@ const ColorPicker = (() => {
     let svBox = null;
     let svThumb = null;
     let hueBox = null;
-    let hueThumb = null;
+    let opacityRange = null;
+    let opacityValue = null;
 
     const syncSelectionHighlight = () => {
       for (const container of [grid, customGrid]) {
@@ -286,16 +261,22 @@ const ColorPicker = (() => {
     };
 
     const syncSubUI = (syncInputText = true) => {
-      if (previewBox) previewBox.style.background = state.hex;
+      if (previewBox) previewBox.style.setProperty('--cp-preview', toCss(state.hex, state.opacity));
       if (hexInput && syncInputText) hexInput.value = state.hex;
+      if (hexInput && syncInputText) hexInput.removeAttribute('aria-invalid');
+      if (opacityRange) {
+        opacityRange.value = String(state.opacity);
+        opacityRange.setAttribute('aria-valuetext', state.opacity + '%');
+        opacityValue.textContent = state.opacity + '%';
+      }
       if (svBox) svBox.style.backgroundColor = hsvToHex(state.h, 1, 1);
       if (svThumb) {
         svThumb.style.left = `${(state.s * 100).toFixed(2)}%`;
         svThumb.style.top = `${((1 - state.v) * 100).toFixed(2)}%`;
       }
-      if (hueThumb) {
-        hueThumb.style.top = `${((state.h / 360) * 100).toFixed(2)}%`;
-        hueThumb.style.backgroundColor = hsvToHex(state.h, 1, 1);
+      if (hueBox) {
+        hueBox.value = String(Math.round(state.h));
+        hueBox.style.setProperty('--cp-hue', hsvToHex(state.h, 1, 1));
       }
     };
 
@@ -350,25 +331,29 @@ const ColorPicker = (() => {
         wrap.append(sw, del);
         customGrid.appendChild(wrap);
       }
-      customGrid.appendChild(addBtn);
+      customSection.hidden = !customGrid.childElementCount || !!subPanel;
     };
 
     const closeSub = () => {
       if (!subPanel) return false;
+      const restoreFocus = subPanel.contains(document.activeElement);
       subPanel.remove();
       subPanel = null;
-      previewBox = hexInput = svBox = svThumb = hueBox = hueThumb = null;
-      addBtn.setAttribute('aria-expanded', 'false');
+      previewBox = hexInput = svBox = svThumb = hueBox = null;
+      grid.hidden = false;
+      customSection.hidden = !customGrid.childElementCount;
+      addBtn.textContent = label('Custom color');
+      keepInView(pop);
+      if (restoreFocus) addBtn.focus({ preventScroll: true });
       return true;
     };
     pop._closeCustomSub = closeSub;
 
-    const openSub = () => {
-      if (subPanel) { closeSub(); return; }
+    const openSub = (focusInput = false) => {
       const panel = document.createElement('div');
       panel.className = 'tv-cp-panel';
-      panel.setAttribute('role', 'dialog');
-      panel.setAttribute('aria-label', 'Custom color picker');
+      panel.setAttribute('role', 'group');
+      panel.setAttribute('aria-label', label('Custom color'));
 
       const head = document.createElement('div');
       head.className = 'tv-cp-head';
@@ -377,115 +362,150 @@ const ColorPicker = (() => {
       hexInput = document.createElement('input');
       hexInput.type = 'text';
       hexInput.className = 'tv-cp-hex-input';
-      hexInput.setAttribute('aria-label', 'Hex color code');
+      hexInput.setAttribute('aria-label', label('Hex color code'));
       hexInput.maxLength = 9;
       hexInput.spellcheck = false;
+      hexInput.autocomplete = 'off';
       const submit = document.createElement('button');
       submit.type = 'button';
       submit.className = 'tv-cp-submit';
-      submit.textContent = 'Add';
+      submit.textContent = label('Save swatch');
       head.append(previewBox, hexInput, submit);
 
       const body = document.createElement('div');
       body.className = 'tv-cp-body';
       svBox = document.createElement('div');
       svBox.className = 'tv-cp-sv';
+      svBox.tabIndex = 0;
+      svBox.setAttribute('role', 'group');
+      svBox.setAttribute('aria-label', label('Color area. Use left and right for saturation and up and down for brightness.'));
       svThumb = document.createElement('span');
       svThumb.className = 'tv-cp-sv-thumb';
       svBox.appendChild(svThumb);
 
-      hueBox = document.createElement('div');
+      hueBox = document.createElement('input');
       hueBox.className = 'tv-cp-hue';
-      hueThumb = document.createElement('span');
-      hueThumb.className = 'tv-cp-hue-thumb';
-      hueBox.appendChild(hueThumb);
+      hueBox.type = 'range';
+      hueBox.min = '0';
+      hueBox.max = '360';
+      hueBox.setAttribute('aria-label', label('Hue'));
       body.append(svBox, hueBox);
 
-      panel.append(head, body);
-      pop.appendChild(panel);
+      panel.append(body, head);
+      grid.before(panel);
       subPanel = panel;
-      addBtn.setAttribute('aria-expanded', 'true');
+      grid.hidden = true;
+      customSection.hidden = true;
+      addBtn.textContent = label('Preset colors');
       syncSubUI(true);
-      positionSubPanel(panel, addBtn);
+      keepInView(pop);
 
+      const applyHsv = () => {
+        state.hex = hsvToHex(state.h, state.s, state.v);
+        syncSelectionHighlight();
+        syncSubUI(true);
+        notify();
+      };
       bindAreaDrag(svBox, (rx, ry) => {
         state.s = rx;
         state.v = 1 - ry;
-        state.hex = hsvToHex(state.h, state.s, state.v);
-        syncSelectionHighlight();
-        syncSubUI(true);
-        notify();
+        applyHsv();
       });
+      svBox.onkeydown = event => {
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const step = event.shiftKey ? .1 : .01;
+        if (event.key === 'ArrowLeft') state.s = clamp(state.s - step, 0, 1);
+        if (event.key === 'ArrowRight') state.s = clamp(state.s + step, 0, 1);
+        if (event.key === 'ArrowUp') state.v = clamp(state.v + step, 0, 1);
+        if (event.key === 'ArrowDown') state.v = clamp(state.v - step, 0, 1);
+        applyHsv();
+      };
+      hueBox.oninput = () => {
+        state.h = Number(hueBox.value);
+        applyHsv();
+      };
 
-      bindAreaDrag(hueBox, (_rx, ry) => {
-        state.h = clamp(ry * 360, 0, 359.999);
-        state.hex = hsvToHex(state.h, state.s, state.v);
-        syncSelectionHighlight();
-        syncSubUI(true);
-        notify();
-      });
-
-      hexInput.oninput = () => {
+      const applyInput = () => {
         const raw = hexInput.value.trim().replace(/^#/, '');
-        if (/^[0-9a-f]{6}$/i.test(raw)) {
-          applyHex('#' + raw, { syncHsv: true, syncInput: false });
-          notify();
+        if (!/^(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(raw)) return false;
+        if (showOpacity && raw.length === 8) {
+          state.opacity = parseColor('#' + raw).opacity;
+          options.onOpacity?.(state.opacity);
         }
+        applyHex(raw, { syncInput: false });
+        return true;
+      };
+      hexInput.oninput = () => {
+        hexInput.removeAttribute('aria-invalid');
+        const raw = hexInput.value.trim().replace(/^#/, '');
+        if (raw.length >= 6 && applyInput()) notify();
       };
 
       const commitCustom = () => {
-        const parsedHex = normalizeHex(hexInput.value) || state.hex;
-        applyHex(parsedHex, { syncHsv: true, syncInput: true });
+        if (!applyInput()) {
+          hexInput.setAttribute('aria-invalid', 'true');
+          hexInput.focus();
+          return;
+        }
+        syncSubUI(true);
         addCustomColor(state.hex, storage);
         renderCustomSwatches();
         notify();
         closeSub();
+        customGrid.querySelector('.selected')?.focus({ preventScroll: true });
       };
 
       hexInput.onkeydown = e => {
         if (e.key === 'Enter') { e.preventDefault(); commitCustom(); }
-        else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSub(); addBtn.focus?.(); }
+        else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSub(); }
       };
       submit.onclick = e => {
         e.stopPropagation();
         commitCustom();
       };
 
-      hexInput.focus?.();
-      hexInput.select?.();
+      if (focusInput) {
+        hexInput.focus({ preventScroll: true });
+        hexInput.select();
+      }
     };
 
     addBtn.onclick = e => {
       e.stopPropagation();
-      openSub();
+      if (!closeSub()) openSub(true);
     };
 
     renderCustomSwatches();
-    pop.append(grid, customSection);
+    pop.append(addBtn, grid, customSection);
 
     if (showOpacity) {
       const row = document.createElement('div');
       row.className = 'tv-pop-row';
       const lbl = document.createElement('span');
-      lbl.textContent = 'Opacity';
+      lbl.textContent = label('Opacity');
       const range = document.createElement('input');
       range.type = 'range';
       range.min = '0';
       range.max = '100';
       range.value = String(state.opacity);
-      range.setAttribute('aria-label', 'Opacity');
+      range.setAttribute('aria-label', label('Opacity'));
       const val = document.createElement('span');
       val.className = 'tv-pop-val';
       val.textContent = state.opacity + '%';
+      opacityRange = range;
+      opacityValue = val;
       range.oninput = () => {
         state.opacity = clamp(Math.round(Number(range.value)), 0, 100);
-        val.textContent = state.opacity + '%';
+        syncSubUI(false);
         if (options.onOpacity) options.onOpacity(state.opacity);
         notify();
       };
       row.append(lbl, range, val);
       pop.appendChild(row);
     }
+    openSub();
 
     return {
       setHex: hex => applyHex(hex, { syncHsv: true, syncInput: true }),

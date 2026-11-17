@@ -4,6 +4,7 @@ class PaperPanel {
   Object.assign(this,{paper,charts,getActive,isLive,isReplay,toast,onRender});this.root=document.getElementById('paper-panel');this.tab='positions';this.editing=null;
   this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Paper Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><span class="paper-dot"></span><strong>Paper Trading</strong><small>LOCAL SIMULATOR</small></div><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" class="btn-secondary">+ Tài khoản</button><button class="paper-export btn-secondary" title="Export account history CSV">Export CSV</button><button class="paper-close" aria-label="Close Paper Trading">×</button></header><div id="paper-balance" class="paper-summary"></div><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><strong id="paper-symbol"></strong><span id="paper-quote-status"></span></div><div class="paper-ticket-grid"><label>Loại lệnh<select id="order-type"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select></label><label>Hợp đồng<input id="order-qty" type="number" min="1" step="1" value="1"></label><label class="paper-price-label">Giá lệnh<input id="order-price" type="number" step="any" placeholder="Theo giá live"></label><label>Stop Loss<input id="order-sl" type="number" step="any" placeholder="Không đặt"></label><label>Take Profit<input id="order-tp" type="number" step="any" placeholder="Không đặt"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell">Sell</button><button type="button" id="paper-buy" class="paper-side buy">Buy</button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Cập nhật</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy sửa</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer">Khớp theo giá last quan sát được. Chưa mô phỏng bid/ask, phí, slippage hoặc thanh lý margin.</p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button data-paper-tab="positions">Vị thế <span></span></button><button data-paper-tab="orders">Lệnh chờ <span></span></button><button data-paper-tab="history">Lịch sử <span></span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
   this.$=id=>document.getElementById(id);
+  TerminalLanguage.markup(this.root);
   this.root.querySelector('.paper-close').onclick=()=>this.open(false);this.$('btn-new-account').onclick=()=>{const modal=document.getElementById('account-modal');modal.dataset.opener='btn-new-account';modal.classList.add('show');modal.querySelector('input').focus();};
   this.$('paper-account').onchange=e=>this.action(()=>{this.paper.select(e.target.value);this.reset();});
   this.root.querySelector('.paper-export').onclick=()=>this.export();const archive=document.createElement('button');archive.className='btn-secondary';archive.textContent='Lưu phiên Replay';archive.onclick=()=>this.exportReplay?.();this.root.querySelector('.paper-heading').insertBefore(archive,this.root.querySelector('.paper-close'));this.archiveButton=archive;this.root.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();if(this.editing)this.reset();else this.open(false);}});
@@ -28,9 +29,103 @@ class PaperPanel {
  edit(kind,item,field){this.editing={kind,id:item.id,symbol:item.symbol,account:this.paper.state.active};this.open();this.$('order-type').value=kind==='order'?item.type:'market';this.$('order-qty').value=item.qty;for(const k of ['price','sl','tp'])this.$('order-'+k).value=item[k]??'';this.$('paper-error').textContent='';this.ticket();this.$('order-'+(field||'sl')).focus();}
  submit(side){this.action(()=>{const symbol=this.symbol();this.guard(symbol);const optional=id=>this.$(id).value.trim()?Number(this.$(id).value):null;const fields={qty:Number(this.$('order-qty').value),price:optional('order-price'),sl:optional('order-sl'),tp:optional('order-tp')};
    if(this.editing){if(this.editing.account!==this.paper.state.active)throw Error('Tài khoản đã đổi.');if(this.editing.kind==='order')this.paper.amendOrder(this.editing.id,fields);else this.paper.amendPosition(this.editing.id,{sl:fields.sl,tp:fields.tp});this.reset();}
-   else this.paper.place({symbol,side,type:this.$('order-type').value,...fields},this.getActive().metadata);
+   else this.placeFromChart(this.getActive(),{symbol,side,type:this.$('order-type').value,...fields});
    this.open();
   });}
+ placeFromChart(chart,order){
+  this.guard(order.symbol);
+  const settings=chart.appearance||{};
+  const reference=this.paper.quote(order.symbol);
+  this.paper.validateOrder(order,chart.metadata,reference);
+  const project=settings.projectOrder&&order.type==='market';
+  const execute=()=>{
+   this.guard(order.symbol);
+   this.unlockExecutionAudio(settings);
+   const item=this.paper.place(order,chart.metadata);
+   if(!settings.rejectionOnly&&!this.paper.account.history.some(h=>h.id===item.id&&h.event==='filled')){
+    this.toast?.('Paper order placed');
+   }
+  };
+  if(settings.oneClick!==false&&!project){execute();return;}
+  this.confirmOrder(chart,order,reference,project,execute);
+ }
+ confirmOrder(chart,order,reference,project,execute){
+  const paper=this.paper,account=paper.state.active;
+  const dialog=document.createElement('dialog');
+  dialog.className='paper-order-confirmation';
+  const message=document.createElement('p');
+  message.textContent=order.side.toUpperCase()+' '+order.qty+' '+order.symbol+' · '+order.type.toUpperCase()+' · '+this.price(order.type==='market'?reference:order.price);
+  const form=document.createElement('form');
+  form.method='dialog';
+  for(const [label,value] of [['Cancel','cancel'],['Confirm paper order','confirm']]){
+   const button=document.createElement('button');
+   button.type='submit';button.value=value;button.textContent=label;
+   button.className=value==='confirm'?'btn-primary':'btn-secondary';form.append(button);
+  }
+  dialog.setAttribute('aria-label','Confirm paper order');
+  dialog.append(message,form);
+  document.body.append(dialog);
+  if(project){chart.projectedOrder={...order,price:reference};chart.renderDrawings();}
+  dialog.addEventListener('close',()=>{
+   chart.projectedOrder=null;
+   chart.renderDrawings();
+   const confirmed=dialog.returnValue==='confirm';
+   dialog.remove();
+   if(confirmed)this.action(()=>{
+    if(this.paper!==paper||paper.state.active!==account||chart.symbol!==order.symbol)throw Error('Tài khoản hoặc chart đã đổi.');
+    execute();
+   });
+  },{once:true});
+  dialog.showModal();
+ }
+ reverse(chart,position){
+  this.action(()=>{
+   const live=this.paper.account?.positions.find(item=>item.id===position.id);
+   if(!live)throw Error('Vị thế không còn tồn tại.');
+   const side=live.side==='buy'?'sell':'buy';
+   const quantity=this.paper.account.positions.filter(item=>item.symbol===live.symbol&&item.side===live.side).reduce((total,item)=>total+item.qty,0);
+   this.placeFromChart(chart,{symbol:live.symbol,side,type:'market',qty:quantity*2});
+  });
+ }
+ playExecution(settings){
+  if(!settings.executionSound||!settings.executionVolume)return;
+  const Audio=window.AudioContext||window.webkitAudioContext;
+  if(!Audio)return;
+  const audio=this.executionAudio||=new Audio();
+  if(audio.state!=='running'){audio.resume().then(()=>{if(audio.state==='running')this.playExecution(settings);}).catch(()=>{});return;}
+  const notes=settings.executionTone==='Single Chime'?[659]:[523,659,784];
+  const volume=settings.executionVolume/100*.12;
+  notes.forEach((frequency,index)=>{
+   const oscillator=audio.createOscillator(),gain=audio.createGain(),when=audio.currentTime+index*.085;
+   oscillator.frequency.value=frequency;
+   oscillator.connect(gain);gain.connect(audio.destination);
+   gain.gain.setValueAtTime(volume,when);
+   gain.gain.exponentialRampToValueAtTime(.001,when+.22);
+   oscillator.start(when);oscillator.stop(when+.22);
+  });
+ }
+ unlockExecutionAudio(settings){
+  if(!settings.executionSound)return;
+  const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
+  const audio=this.executionAudio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});
+ }
+ previewExecution(settings){this.playExecution({...settings,executionSound:true});}
+ notifyExecutions(account){
+  const prior=this.executionCursor;
+  const history=account?.history||[];
+  this.executionCursor={paper:this.paper,id:account?.id,length:history.length,last:history.at(-1)?.id,at:history.at(-1)?.at};
+  if(prior?.paper!==this.paper||prior.id!==account?.id||prior.length>history.length)return;
+  const previous=history[prior.length-1];
+  if(prior.length&&(previous?.id!==prior.last||previous?.at!==prior.at))return;
+  const latest=history.slice(prior.length);
+  const executions=latest.filter(item=>item.event==='filled'||item.event==='closed'&&item.reason!=='offset');
+  if(executions.length){
+   const event=executions.at(-1),chart=this.charts.find(item=>item.symbol===event.symbol)||this.getActive(),settings=chart.appearance||{};
+   this.playExecution(settings);
+   if(!settings.rejectionOnly)this.toast?.(event.symbol+(event.event==='filled'?' · Paper order filled':' · Paper position closed'));
+  }
+  for(const event of latest.filter(item=>item.event==='rejected'))this.toast?.(event.reason,'alert');
+ }
  ticket(){
   const e=this.editing,active=this.getActive(),symbol=this.symbol(),q=this.paper.quotes.get(symbol),fresh=!this.replayBlocked&&!!q&&(this.isReplay()||(Date.now()-q.received<=5000&&this.isLive(symbol)));
   this.$('paper-symbol').textContent=symbol+(e?' · '+(e.kind==='order'?'Sửa lệnh':'SL / TP'):'');this.$('paper-quote-status').textContent=fresh?(this.isReplay()?'● Replay · ':'● Live · ')+this.price(q.price):this.isReplay()?'Chưa có nến Replay 1m':'Chờ giá live';this.$('paper-quote-status').dataset.live=String(fresh);
@@ -49,8 +144,9 @@ class PaperPanel {
   this.root.querySelector('.paper-disclaimer').textContent=this.isReplay()?'Replay khớp theo close nến 1m đã đóng. Tua lùi khôi phục tài khoản; nhánh cũ được lưu riêng.':'Khớp theo giá last quan sát được. Chưa mô phỏng bid/ask, phí, slippage hoặc thanh lý margin.';
   this.closeModal.querySelector('[data-close-confirm]').textContent=this.isReplay()?'Đóng theo giá Replay':'Đóng theo giá live';
   const a=this.paper.account,accounts=this.paper.state.accounts,signature=JSON.stringify([accounts.map(a=>[a.id,a.name]),this.paper.state.active]);
+  this.notifyExecutions(a);
   if(signature!==this.accountSignature){this.accountSignature=signature;const select=this.$('paper-account');select.replaceChildren();if(!accounts.length)select.add(new Option('Chưa có tài khoản',''));for(const a of accounts)select.add(new Option(a.name,a.id));select.value=this.paper.state.active||'';}
-  const stats=this.paper.summary(),unknownMark=a?.positions.some(p=>!this.paper.quotes.has(p.symbol));const summary=this.$('paper-balance');if(!summary.children.length)for(const [key,label] of [['balance','Balance'],['equity','Equity'],['unrealized','PnL mở'],['realized','PnL đã chốt'],['margin','Margin'],['available','Khả dụng']]){const cell=document.createElement('div');cell.innerHTML='<small></small><strong></strong>';cell.querySelector('small').textContent=label;cell.dataset.stat=key;summary.appendChild(cell);}
+  const stats=this.paper.summary(),unknownMark=a?.positions.some(p=>!this.paper.quotes.has(p.symbol));const summary=this.$('paper-balance');if(!summary.children.length)for(const [key,label] of [['balance','Balance'],['equity','Equity'],['unrealized','PnL mở'],['realized','PnL đã chốt'],['margin','Margin'],['available','Khả dụng']]){const cell=document.createElement('div');cell.innerHTML='<small></small><strong></strong>';cell.querySelector('small').textContent=ui(label);cell.dataset.stat=key;summary.appendChild(cell);}
   for(const cell of summary.children){const value=stats[cell.dataset.stat];cell.querySelector('strong').textContent=a&&!(unknownMark&&['equity','unrealized','available'].includes(cell.dataset.stat))?this.money(value):'—';cell.dataset.sign=['unrealized','realized'].includes(cell.dataset.stat)?value>0?'positive':value<0?'negative':'':'';}
   for(const button of this.root.querySelectorAll('[data-paper-tab]')){const tab=button.dataset.paperTab;button.classList.toggle('active',tab===this.tab);button.setAttribute('aria-selected',String(tab===this.tab));button.querySelector('span').textContent=tab==='positions'?a?.positions.length||0:tab==='orders'?a?.orders.length||0:a?.history.length||0;}
   this.ticket();this.renderTable();
@@ -80,26 +176,73 @@ class PaperChartOrders {
  constructor(panel,chart){this.panel=panel;this.chart=chart;this.buttons=new Map();this.layer=document.createElement('div');this.layer.className='paper-chart-controls';chart.container.appendChild(this.layer);}
  records(){const a=this.panel.paper.account;return {positions:(a?.positions||[]).filter(p=>p.symbol===this.chart.symbol),orders:(a?.orders||[]).filter(p=>p.symbol===this.chart.symbol)};}
  draw(ctx,rect){
-  const {positions,orders}=this.records(),seen=new Set(),width=rect.width-(this.chart.chart.priceScale('right').width()||65),height=this.chart.plotHeight-26;
-  if(this.chart.appearance?.positions===false||Boolean(this.chart.replayMode)!==Boolean(this.panel.isReplay())){for(const button of this.buttons.values())button.hidden=true;return;}
+  const settings=this.chart.appearance||{};
+  const {positions,orders}=this.records(),seen=new Set(),width=rect.width-(this.chart.chart.priceScale('right').width()||65),height=this.chart.plotBottom;
+  if(Boolean(this.chart.replayMode)!==Boolean(this.panel.isReplay())){for(const button of this.buttons.values())button.hidden=true;return;}
   const line=(record,kind,price,text,color,x,labelWidth,ghost=false)=>{
    const key=record.id+':'+kind;seen.add(key);if(this.drag?.id===record.id&&this.drag.kind===kind)price=this.drag.price;
    const y=this.chart.series.priceToCoordinate(price);let button=this.buttons.get(key);
-   if(!button){button=document.createElement('button');button.type='button';button.className='paper-chart-hit';button.dataset.key=key;button.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();const current=this.find(record.id);if(current){if(kind==='close')this.panel.closeDialog(current);else this.panel.edit(kind==='price'?'order':'position',current,kind==='price'?'price':kind==='entry'?'sl':kind);}}};button.onpointerdown=e=>this.start(e,record.id,kind);button.onpointermove=e=>this.move(e);button.onpointerup=e=>this.end(e);button.onpointercancel=()=>this.cancel();button.onlostpointercapture=()=>{if(this.drag)this.cancel();};this.layer.appendChild(button);this.buttons.set(key,button);}
+   if(!button){button=document.createElement('button');button.type='button';button.className='paper-chart-hit';button.dataset.key=key;button.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();const current=this.find(record.id);if(current){if(kind==='close')this.panel.closeDialog(current);else if(kind==='reverse')this.panel.reverse(this.chart,current);else this.panel.edit(kind==='price'?'order':'position',current,kind==='price'?'price':kind==='entry'?'sl':kind);}}};button.onpointerdown=e=>this.start(e,record.id,kind);button.onpointermove=e=>this.move(e);button.onpointerup=e=>this.end(e);button.onpointercancel=()=>this.cancel();button.onlostpointercapture=()=>{if(this.drag)this.cancel();};this.layer.appendChild(button);this.buttons.set(key,button);}
    button.setAttribute('aria-label',text+' '+this.panel.price(price));button.title=kind==='entry'?'Sửa SL/TP vị thế':kind==='close'?'Đóng vị thế':ghost?'Kéo để đặt '+kind.toUpperCase():'Kéo để sửa '+kind.toUpperCase();button.dataset.id=record.id;button.dataset.kind=kind;
    button.hidden=y===null||y<10||y>height-10;if(button.hidden)return;
-   Object.assign(button.style,{left:x+'px',top:(y-10)+'px',width:labelWidth+'px',height:'20px',cursor:['entry','close'].includes(kind)?'pointer':'ns-resize'});
-   ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();ctx.strokeStyle=color;ctx.fillStyle=ghost?'#18202bdd':'#151d27f0';ctx.lineWidth=1;ctx.setLineDash([4,4]);if(!ghost){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();}ctx.setLineDash([]);ctx.fillRect(x,y-10,labelWidth,20);ctx.strokeRect(x+.5,y-9.5,labelWidth-1,19);ctx.fillStyle=color;ctx.font='10px Consolas,monospace';ctx.textBaseline='middle';ctx.fillText(text,x+5,y,labelWidth-10);ctx.restore();
+   Object.assign(button.style,{left:x+'px',top:(y-10)+'px',width:labelWidth+'px',height:'20px',cursor:['entry','close','reverse'].includes(kind)?'pointer':'ns-resize'});
+   ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();ctx.strokeStyle=color;ctx.fillStyle=ghost?'#18202bdd':'#151d27f0';ctx.lineWidth=1;ctx.setLineDash([4,4]);if(!ghost){ctx.beginPath();ctx.moveTo(settings.extendedLines===false?x:0,y);ctx.lineTo(settings.extendedLines===false?x+labelWidth:width,y);ctx.stroke();}ctx.setLineDash([]);ctx.fillRect(x,y-10,labelWidth,20);ctx.strokeRect(x+.5,y-9.5,labelWidth-1,19);ctx.fillStyle=color;ctx.font='10px Consolas,monospace';ctx.textBaseline='middle';ctx.fillText(text,x+5,y,labelWidth-10);ctx.restore();
   };
   const chartRect=this.chart.container.getBoundingClientRect(),sidebar=document.getElementById('left-sidebar')?.getBoundingClientRect();const safeLeft=sidebar&&sidebar.right>chartRect.left&&sidebar.left<chartRect.left+width&&sidebar.top<chartRect.bottom&&sidebar.bottom>chartRect.top?Math.max(8,sidebar.right-chartRect.left+8):8;
-  for(const p of positions){const ghosts=Number(p.sl==null)+Number(p.tp==null),entryWidth=Math.max(80,Math.min(166,width-safeLeft-30-ghosts*36)),left=Math.max(safeLeft,width-entryWidth-22-ghosts*36-8);let ghostIndex=0;const pnl=this.panel.paper.quotes.has(p.symbol)?this.panel.money(this.panel.paper.pnl(p)):'—',color=p.side==='buy'?'#70d9b5':'#ef9393';line(p,'entry',p.price,`${p.side.toUpperCase()} ${p.qty} · ${pnl}`,color,left,entryWidth);line(p,'close',p.price,'×',color,left+entryWidth,22,true);for(const [kind,color] of [['sl','#ef9393'],['tp','#70d9b5']]){const price=p[kind]??p.price,label=p[kind]!=null?kind.toUpperCase()+' '+this.panel.price(this.drag?.id===p.id&&this.drag.kind===kind?this.drag.price:price):'+'+kind.toUpperCase();line(p,kind,price,label,color,p[kind]!=null?Math.max(safeLeft,width-132):left+entryWidth+26+ghostIndex++*36,p[kind]!=null?126:32,p[kind]==null&&!(this.drag?.id===p.id&&this.drag.kind===kind));}}
-  for(const o of orders){const price=this.drag?.id===o.id?this.drag.price:o.price;line(o,'price',price,`${o.type.toUpperCase()} ${o.side.toUpperCase()} ${o.qty} · ${this.panel.price(price)}`,'#edc284',Math.max(8,width-220),210);}
+  if(settings.positions!==false)for(const p of positions){const ghosts=Number(p.sl==null)+Number(p.tp==null),entryWidth=Math.max(80,Math.min(166,width-safeLeft-30-ghosts*36)),left=settings.alignment==='Left'?safeLeft:Math.max(safeLeft,width-entryWidth-22-ghosts*36-(settings.reversePosition?26:0)-8);let ghostIndex=0;const pnl=this.panel.paper.quotes.has(p.symbol)?this.pnlText(p,this.panel.paper.quotes.get(p.symbol).price,settings.pnlUnit):'—',color=p.side==='buy'?'#70d9b5':'#ef9393';line(p,'entry',p.price,`${p.side.toUpperCase()} ${p.qty}${settings.pnl!==false&&settings.positionPnl!==false?' · '+pnl:''}`,color,left,entryWidth);line(p,'close',p.price,'×',color,left+entryWidth,22,true);if(settings.reversePosition)line(p,'reverse',p.price,'↔',color,left+entryWidth+23,23,true);for(const [kind,color] of [['sl','#ef9393'],['tp','#70d9b5']]){const price=p[kind]??p.price,label=p[kind]!=null?kind.toUpperCase()+' '+this.panel.price(this.drag?.id===p.id&&this.drag.kind===kind?this.drag.price:price)+(settings.pnl!==false&&settings.bracketPnl?' · '+this.pnlText(p,this.drag?.id===p.id&&this.drag.kind===kind?this.drag.price:price,settings.bracketValue):''):'+'+kind.toUpperCase();line(p,kind,price,label,color,p[kind]!=null?Math.max(safeLeft,width-132):left+entryWidth+26+(settings.reversePosition?26:0)+ghostIndex++*36,p[kind]!=null?126:32,p[kind]==null&&!(this.drag?.id===p.id&&this.drag.kind===kind));}}
+  if(settings.positions!==false)for(const o of orders){const price=this.drag?.id===o.id?this.drag.price:o.price;line(o,'price',price,`${o.type.toUpperCase()} ${o.side.toUpperCase()} ${o.qty} · ${this.panel.price(price)}`,'#edc284',settings.alignment==='Left'?safeLeft:Math.max(safeLeft,width-220),210);}
+  this.drawExecutions(ctx,width,height,settings);
+  this.drawProjectedOrder(ctx,width,height);
   for(const [key,button]of this.buttons)if(!seen.has(key)){button.remove();this.buttons.delete(key);}
+ }
+ pnlText(position,price,unit){
+  const points=(price-position.price)*(position.side==='buy'?1:-1);
+  if(unit==='Ticks'&&position.tickSize>0)return (points/position.tickSize).toFixed(1)+' ticks';
+  if(unit==='Percentage')return (100*points/position.price).toFixed(2)+'%';
+  return this.panel.money(this.panel.paper.pnl(position,price));
+ }
+ drawProjectedOrder(ctx,width,height){
+  const order=this.chart.projectedOrder;
+  if(!order)return;
+  const y=this.chart.series.priceToCoordinate(order.price);
+  if(y===null||y<0||y>height)return;
+  ctx.save();
+  ctx.strokeStyle=ctx.fillStyle='#edc284';
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();
+  ctx.font='12px Arial';
+  ctx.fillText(order.side.toUpperCase()+' '+order.qty+' · Projected market order',12,Math.max(12,y-5));
+  ctx.restore();
+ }
+ drawExecutions(ctx,width,height,settings){
+  if(!settings.executionMarks)return;
+  const chart=this.chart,scale=chart.chart.timeScale(),bars=chart.bars;
+  if(!bars.length)return;
+  ctx.save();
+  ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
+  for(const event of this.panel.paper.account?.history||[]){
+   if(event.symbol!==chart.symbol||!(event.event==='filled'||event.event==='closed'&&event.reason!=='offset'))continue;
+   const time=event.at/1000;
+   const date=chart.replayMode?chart.replayClock:Date.now()/1000;
+   if(time<bars[0].time||time>date)continue;
+   let lo=0,hi=bars.length;
+   while(lo<hi){const mid=(lo+hi)>>1;if(bars[mid].time<=time)lo=mid+1;else hi=mid;}
+   const bar=bars[lo-1];
+   if(!bar||time>=TerminalTime.end(bar,chart.currentTimeframe,chart.displaySessionMetadata()))continue;
+   const x=scale.timeToCoordinate(bar.time),y=chart.series.priceToCoordinate(event.event==='closed'?event.exit:event.price);
+   if(x===null||y===null||x<0||x>width||y<0||y>height)continue;
+   const buy=event.event==='filled'?event.side==='buy':event.side==='sell';
+   const offset=buy?6:-6;
+   ctx.fillStyle=buy?'#158b70':'#e2394d';
+   ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-5,y+offset);ctx.lineTo(x+5,y+offset);ctx.fill();
+   if(settings.executionLabels){ctx.font='11px Arial';ctx.fillText((buy?'Buy ':'Sell ')+event.qty,x+6,y+offset);}
+  }
+  ctx.restore();
  }
  find(id){const values=this.records();return values.positions.find(p=>p.id===id)||values.orders.find(p=>p.id===id);}
  start(e,id,kind){
   if(e.button!==0)return;e.preventDefault();e.stopPropagation();const item=this.find(id);if(!item)return;
-  if(kind==='entry'){this.panel.edit('position',item);return;}if(kind==='close'){this.panel.closeDialog(item);return;}
+  if(kind==='entry'){this.panel.edit('position',item);return;}if(kind==='close'){this.panel.closeDialog(item);return;}if(kind==='reverse'){this.panel.reverse(this.chart,item);return;}
   try{this.panel.guard(item.symbol);this.panel.paper.quote(item.symbol);}catch(error){this.panel.toast?.(error.message,'alert');return;}
   this.drag={id,kind,symbol:item.symbol,account:this.panel.paper.state.active,startY:e.clientY,price:item[kind]??item.price,button:e.currentTarget,pointer:e.pointerId,changed:false};this.drag.button.setPointerCapture(e.pointerId);
  }

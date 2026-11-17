@@ -1,6 +1,7 @@
 """Provider-owned calendar export and oEmbed metadata; no audio extraction."""
 import json
 import math
+from html.parser import HTMLParser
 from pathlib import Path
 import threading
 import time
@@ -142,6 +143,12 @@ _SHARE_HOSTS = {
 }
 
 
+def _share_key(parsed):
+    if parsed.hostname in ('www.tiktok.com', 'tiktok.com', 'm.tiktok.com') and parsed.path.startswith('/t/'):
+        return 'vm.tiktok.com'
+    return parsed.hostname
+
+
 class _NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
@@ -149,14 +156,14 @@ class _NoRedirect(HTTPRedirectHandler):
 
 def resolve_music_share(url, opener=None):
     """Resolve official short links without following redirects outside that provider."""
-    allowed = _SHARE_HOSTS.get(urlsplit(url).hostname, set())
+    allowed = _SHARE_HOSTS.get(_share_key(urlsplit(url)), set())
     open_request = opener or build_opener(_NoRedirect()).open
     for attempt in range(6):
         parsed = urlsplit(url)
         if (len(url) > 2048 or parsed.scheme != 'https' or parsed.hostname not in allowed
                 or parsed.username is not None or parsed.password is not None or parsed.port not in (None, 443)):
             raise ValueError('Share link must stay on its official provider')
-        if parsed.hostname not in _SHARE_HOSTS:
+        if _share_key(parsed) not in _SHARE_HOSTS:
             return url
         if attempt==5:
             break
@@ -230,11 +237,36 @@ _metadata_lock = threading.Lock()
 _metadata_errors = {}
 
 
-def music_metadata(url):
+class _TikTokEmbedParser(HTMLParser):
+    def __init__(self, post_id):
+        super().__init__()
+        self.path = '/player/v1/' + post_id
+        self.player_url = None
+
+    def handle_starttag(self, tag, attrs):
+        if tag != 'iframe' or self.player_url:
+            return
+        src = dict(attrs).get('src') or ''
+        try:
+            parsed = urlsplit(src)
+            valid = (parsed.scheme == 'https' and parsed.netloc == 'www.tiktok.com'
+                     and parsed.path.rstrip('/') == self.path and not parsed.fragment)
+        except ValueError:
+            valid = False
+        if valid:
+            self.player_url = src
+
+
+def music_metadata(url, *, fresh_embed=False):
+    parsed = urlsplit(canonical_music_url(url))
+    post_id = parsed.path.rstrip('/').split('/')[-1]
+    if fresh_embed and (parsed.hostname != 'www.tiktok.com' or not post_id.isascii()
+                        or not post_id.isdecimal() or not 10 <= len(post_id) <= 25):
+        raise ValueError('A TikTok post link is required')
     endpoint = metadata_endpoint(url)
     with _metadata_lock:
         cached = _metadata.get(endpoint)
-        if cached and time.time()-cached[0] < 3600:
+        if not fresh_embed and cached and time.time()-cached[0] < 3600:
             return cached[1]
         failure=_metadata_errors.get(endpoint)
         if failure and time.time()<failure[0]:
@@ -248,7 +280,8 @@ def music_metadata(url):
             value=json.loads(raw)
         except (ValueError,UnicodeError) as exc:
             raise MusicProviderError('Nhà cung cấp trả metadata không hợp lệ.') from exc
-        if not isinstance(value,dict) or not isinstance(value.get('title'),str) or not value['title'].strip():
+        if not isinstance(value,dict) or (not fresh_embed and
+                (not isinstance(value.get('title'),str) or not value['title'].strip())):
             raise MusicProviderError('Nhà cung cấp không trả thông tin bài nhạc hợp lệ.')
     except HTTPError as exc:
         retry=exc.headers.get('Retry-After','') if exc.headers else ''
@@ -275,4 +308,14 @@ def music_metadata(url):
             _metadata.clear()
         _metadata[endpoint] = (time.time(), result)
         _metadata_errors.pop(endpoint,None)
+    if fresh_embed:
+        html = value.get('html')
+        if not isinstance(html, str):
+            raise MusicProviderError('TikTok did not return an embedded player for this post.')
+        parser = _TikTokEmbedParser(post_id)
+        parser.feed(html)
+        if not parser.player_url:
+            raise MusicProviderError('TikTok did not return a valid player URL for this post.')
+        # Do not cache a provider URL that can expire or return provider-supplied HTML.
+        return {**result, 'embed_url': parser.player_url}
     return result

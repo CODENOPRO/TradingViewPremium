@@ -5,6 +5,20 @@ class SyncController {
     this.options={symbol:false,interval:false,crosshair:true,time:false,dateRange:false,...(typeof Workspace==='undefined'?{}:Workspace.read('terminal_sync_options_v1',{}))};
     this.isBroadcasting = false;
     this.isCrosshairBroadcasting = false;
+    this.localNavigation = new WeakMap();
+  }
+
+  runLocalNavigation(chart, action) {
+    const command = {};
+    this.localNavigation.set(chart, command);
+    try {
+      return action();
+    } finally {
+      // The chart publishes its visible range during the next render.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (this.localNavigation.get(chart) === command) this.localNavigation.delete(chart);
+      }));
+    }
   }
 
   register(chartEngine) {
@@ -12,7 +26,7 @@ class SyncController {
 
     // 1. Sync Visible Logical Range (Time & Zoom Sync with Right-Aligned Offset)
     chartEngine.chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
-      if (chartEngine.container?.hidden || !this.syncEnabled || (!this.options.time && !this.options.dateRange) || this.isBroadcasting || !range) return;
+      if (chartEngine.container?.hidden || !this.syncEnabled || (!this.options.time && !this.options.dateRange) || this.isBroadcasting || this.localNavigation.has(chartEngine) || !range) return;
       if (!chartEngine.bars || chartEngine.bars.length === 0) return;
 
       this.isBroadcasting = true;

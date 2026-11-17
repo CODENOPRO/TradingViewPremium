@@ -1,32 +1,28 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en" data-dock-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Terminal</title>
-  <link rel="stylesheet" href="css/style.css?v=ctx-tpl-1">
-  <link rel="stylesheet" href="css/imported_toolbars.css?v=web-motion-1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="css/style.css?v=motion-preference-1">
+  <link rel="stylesheet" href="css/imported_toolbars.css?v=motion-preference-1">
   <link rel="stylesheet" href="css/terminal_features.css">
-  <link rel="stylesheet" href="css/terminal_polish.css">
-  <link rel="stylesheet" href="css/terminal_companions.css?v=calendar-protocols-2">
-  <link rel="stylesheet" href="css/terminal_studio.css?v=web-motion-1">
-  <link rel="stylesheet" href="css/fixed_shell.css?v=web-motion-1">
+  <link rel="stylesheet" href="css/terminal_polish.css?v=chart-scales-1">
+  <link rel="stylesheet" href="css/terminal_companions.css?v=tiktok-player-2">
+  <link rel="stylesheet" href="css/terminal_studio.css?v=motion-preference-1">
+  <link rel="stylesheet" href="css/fixed_shell.css?v=motion-preference-1">
+  <link rel="stylesheet" href="css/chart_desktop.css?v=motion-preference-1">
+  <link rel="stylesheet" href="css/chart_dock.css?v=motion-preference-1">
+  <link rel="stylesheet" href="css/dialog_redesign.css?v=motion-preference-1">
+  <link rel="stylesheet" href="css/settings.css?v=motion-preference-1">
 </head>
-<body>
+<body class="icon-labels-only">
 
   <!-- Desktop chart toolbar -->
   <header id="topbar">
     <div class="topbar-left">
-      <!-- Active Symbol Pill with '100' Badge & Compare Button -->
-      <div id="btn-symbol-search" class="symbol-selector-pill" title="Click để tìm kiếm / Đổi mã (NQ1!, ES1!, YM1!, CL1!)">
-        <span class="badge-circle">100</span>
-        <span id="active-symbol-title" style="font-size: 13px; font-weight: 700; color: #fff;">NQ1!</span>
-
-      </div>
-
-      <div class="separator"></div>
-
-      <!-- Buy / Sell Execution Pill -->
+      <!-- Paper trade actions sit beside the instrument controls. -->
       <div class="tv-trade-pill">
         <div id="btn-trade-sell" class="trade-sell" title="Click để vào lệnh BÁN (Paper Short)">
           <span style="font-size: 10px;">SELL</span>
@@ -38,44 +34,34 @@
           <span style="font-size: 10px;">BUY</span>
         </div>
       </div>
+      <div class="separator"></div>
+
+      <!-- Active Symbol Pill with '100' Badge & Compare Button -->
+      <div id="btn-symbol-search" class="symbol-selector-pill" role="button" tabindex="0" aria-haspopup="dialog" title="Click để tìm kiếm / Đổi mã (NQ1!, ES1!, YM1!, CL1!)">
+        <span class="badge-circle">100</span>
+        <span id="active-symbol-title" style="font-size: 13px; font-weight: 700; color: #fff;">NQ1!</span>
+
+      </div>
 
       <div class="separator"></div>
 
       <!-- Real Working Timeframe Buttons -->
       <div class="timeframe-group">
-        <button class="tf-btn active" data-tf="1m">1m</button>
-        <button class="tf-btn" data-tf="5m">5m</button>
-        <button class="tf-btn" data-tf="15m">15m</button>
-        <button class="tf-btn" data-tf="1h">1h</button>
-        <button class="tf-btn" data-tf="4h">4h</button>
-        <button class="tf-btn" data-tf="D">D</button>
-        <button class="tf-btn" data-tf="W">W</button>
-        <button class="tf-btn" data-tf="30m">30m</button>
-        <button class="tf-btn" data-tf="2h">2h</button>
-        <button class="tf-btn" data-tf="6h">6h</button>
-        <button class="tf-btn" data-tf="12h">12h</button>
-        <button class="tf-btn" data-tf="1M">1M</button>
-        <button class="tf-btn" data-tf="3M">3M</button>
-        <button id="btn-refresh-htf" class="btn-icon" style="padding: 2px 6px; font-size: 11px; margin-left: 2px;" title="Đọc lại dữ liệu đang có trên TradingView, không đổi timeframe gốc">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-          </svg>
-          <span id="htf-sync-pill" style="font-size: 11px; font-weight: 500; color: #787b86;">Refresh</span>
+        <div id="timeframe-favourites"></div>
+        <button id="timeframe-menu-button" type="button" class="btn-icon" popovertarget="timeframe-menu" aria-label="Timeframes and favourites" title="Timeframes and favourites">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 8 5 5 5-5"/></svg>
         </button>
+        <div id="timeframe-menu" popover aria-label="Supported timeframes"></div>
       </div>
-      <select id="timeframe-quick" aria-label="Chart timeframe" title="Chart timeframe">
-        <option value="1m">1m</option><option value="5m">5m</option><option value="15m">15m</option><option value="30m">30m</option><option value="1h">1h</option><option value="2h">2h</option><option value="4h">4h</option><option value="6h">6h</option><option value="12h">12h</option><option value="D">D</option><option value="W">W</option><option value="1M">1M</option><option value="3M">3M</option>
-      </select>
 
       <div class="separator"></div>
 
-      <!-- Indicators Button with 'fx' icon -->
+      <!-- Indicators Button -->
       <button id="btn-indicator" class="btn-icon" title="Indicators & Strategies">
-        <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 18 9 6l6 12 5-8M3 21h18"/></svg>
+        <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19h16M4 15l5-5 4 4 3-3M19 3v6m-3-3h6"/></svg>
         <span>Indicators</span>
       </button>
 
-      <select id="session-mode" aria-label="Phiên giao dịch" title="RTH dựng từ nến 1m đã tải; không dùng nến HTF ETH để giả RTH"><option value="ETH">ETH</option><option value="RTH">RTH</option></select>
       <!-- Alert Button -->
       <button id="btn-alert" class="btn-icon" title="Create Price Alert">
         <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 16h14l-2-3V9a5 5 0 0 0-10 0v4zM10 20h4M12 2v2"/></svg>
@@ -90,7 +76,6 @@
     </div>
 
     <div class="topbar-right">
-      <button id="btn-paper" class="btn-icon" title="Tài khoản mô phỏng">Paper Trading</button>
       <!-- Sync Button -->
       <button id="btn-sync" class="btn-icon active" title="Time & Crosshair Sync">
         <span>🔗 Sync: ON</span>
@@ -102,13 +87,25 @@
         <span>Layout</span>
       </button>
 
-      <span id="live-clock" aria-live="off">New York</span>
-      <select id="timezone-quick" aria-label="Chart timezone" title="Chart timezone"><option value="Etc/UTC">UTC</option><option value="America/New_York">New York</option><option value="America/Chicago">Chicago</option><option value="Asia/Ho_Chi_Minh">Ho Chi Minh</option><option value="Europe/London">London</option><option value="Asia/Tokyo">Tokyo</option></select>
-      <span id="connection-status" role="status" data-state="connecting">Đang kết nối…</span>
+      <button id="reload-chart-data" class="dock-market-status" type="button" aria-label="Reconnect chart data" title="Reconnect chart data">
+        <span id="connection-status" role="status" data-state="connecting">
+          <svg class="dock-load-ring" viewBox="0 0 20 20" aria-hidden="true">
+            <circle class="dock-load-track" cx="10" cy="10" r="8"/>
+            <circle class="dock-load-value" cx="10" cy="10" r="8" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 10 10)"/>
+          </svg>
+          <span id="connection-status-text">Đang kết nối…</span>
+        </span>
+        <span class="dock-clock">
+          <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <time id="live-clock" aria-live="off">--:--:--</time>
+        </span>
+      </button>
+
+      <button id="dock-theme" class="btn-icon" type="button" aria-label="Đổi giao diện sáng tối"></button>
 
       <!-- Settings Cog -->
       <button id="btn-settings" class="btn-icon" title="Chart Properties & Colors">
-        <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--icon-surface, #131722)"/><circle cx="15" cy="17" r="3" fill="var(--icon-surface, #131722)"/></svg>
+        <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 3h4l.6 2.5 1.5.9 2.5-.8 2 3.5-1.9 1.7v2l1.9 1.7-2 3.5-2.5-.8-1.5.9L14 21h-4l-.6-2.9-1.5-.9-2.5.8-2-3.5 1.9-1.7v-2L3.4 9.1l2-3.5 2.5.8 1.5-.9L10 3Z"/><circle cx="12" cy="12" r="3"/></svg>
       </button>
 
       <!-- Fullscreen -->
@@ -167,7 +164,8 @@
   <!-- APP BODY: LEFT SIDEBAR + MAIN CHARTS -->
   <div id="app-body">
     <!-- Drawing toolbar -->
-    <aside id="left-sidebar">
+    <div class="edge-drawing-dock">
+    <aside id="left-sidebar" role="toolbar" aria-label="Công cụ vẽ">
       <div class="user-avatar sidebar-avatar" title="Account / Profile">U</div>
 
       <!-- 1. Crosshair Tool -->
@@ -204,6 +202,7 @@
       <!-- 9. Trash / Clear Drawings -->
       <button class="tool-btn" data-tool="trash" title="Xóa toàn bộ hình vẽ (Phím Delete)"><svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></svg></button>
     </aside>
+    </div>
 
     <!-- CONTENT WRAPPER -->
     <div id="content-wrapper">
@@ -311,65 +310,101 @@
   </div>
 
   <!-- SYMBOL SEARCH MODAL -->
-  <div id="symbol-modal" class="modal">
-    <div class="modal-content" style="width: 500px;">
+  <dialog id="dock-command-dialog" aria-label="Lệnh nhanh">
+    <input id="dock-command-query" type="search" aria-label="Tìm lệnh" placeholder="Tìm mã, timeframe, công cụ…" autocomplete="off">
+    <div id="dock-command-results"></div>
+  </dialog>
+  <div id="timeframe-input-modal" class="modal">
+    <div class="modal-content timeframe-input-dialog">
+      <div class="modal-header"><h2>Đổi khung thời gian</h2><button type="button" class="modal-close" aria-label="Đóng">×</button></div>
+      <form id="timeframe-input-form">
+        <input id="timeframe-input" class="search-input" type="text" aria-label="Khung thời gian" placeholder="5, 2H, 1D, 1M" autocomplete="off">
+        <p id="timeframe-input-error" role="status" hidden>Khung thời gian chưa được hỗ trợ. Chọn một khung bên dưới.</p>
+        <div id="timeframe-suggestions" hidden></div>
+        <button type="submit" class="btn-primary">Đổi khung</button>
+      </form>
+    </div>
+  </div>
+  <div id="symbol-modal" class="modal" aria-labelledby="symbol-search-title">
+    <div class="modal-content symbol-dialog">
       <div class="modal-header">
-        <span>Tìm kiếm Mã Giao Dịch (Symbol Search)</span>
-        <button id="close-symbol" class="modal-close">&times;</button>
+        <h2 id="symbol-search-title">Tìm mã giao dịch</h2>
+        <button id="close-symbol" class="modal-close" type="button" aria-label="Đóng tìm mã">&times;</button>
       </div>
       <div class="modal-body">
-        <input type="text" id="symbol-search-input" placeholder="Tìm NQ1!, ES1!, YM1!, CL1!…" class="search-input">
-        <div class="symbol-list">
-          <div class="symbol-item" data-sym="NQ1!">
-            <span class="badge-circle">100</span>
+        <div class="symbol-query">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+          <input type="text" id="symbol-search-input" class="search-input" role="combobox" aria-label="Tìm theo mã, tên hoặc sàn" aria-autocomplete="list" aria-controls="symbol-search-results" aria-expanded="false" autocomplete="off" placeholder="Nhập mã, tên hoặc sàn…">
+        </div>
+        <div class="symbol-results-heading"><span>Hợp đồng tương lai</span><span id="symbol-result-count" aria-live="polite"></span></div>
+        <div id="symbol-search-results" class="symbol-list" role="listbox" aria-label="Kết quả tìm mã">
+          <div id="symbol-option-NQ1" class="symbol-item" role="option" aria-selected="false" data-sym="NQ1!">
+            <span class="badge-circle"><img src="assets/symbols/nasdaq-100.svg" alt=""></span>
             <div class="symbol-info">
               <span class="symbol-name">NQ1!</span>
               <span class="symbol-desc">Nasdaq 100 E-mini Futures · CME</span>
             </div>
-            <span class="symbol-cat">Futures</span>
+            <span class="symbol-current" aria-hidden="true" hidden>Đang xem</span>
           </div>
-          <div class="symbol-item" data-sym="ES1!">
-            <span class="badge-circle" style="background:#ff9800;">500</span>
+          <div id="symbol-option-ES1" class="symbol-item" role="option" aria-selected="false" data-sym="ES1!">
+            <span class="badge-circle"><img src="assets/symbols/s-and-p-500.svg" alt=""></span>
             <div class="symbol-info">
               <span class="symbol-name">ES1!</span>
               <span class="symbol-desc">S&P 500 E-mini Futures · CME</span>
             </div>
-            <span class="symbol-cat">Futures</span>
+            <span class="symbol-current" aria-hidden="true" hidden>Đang xem</span>
           </div>
-          <div class="symbol-item" data-sym="YM1!">
-            <span class="badge-circle" style="background:#e91e63;">30</span>
+          <div id="symbol-option-YM1" class="symbol-item" role="option" aria-selected="false" data-sym="YM1!">
+            <span class="badge-circle"><img src="assets/symbols/dow-30.svg" alt=""></span>
             <div class="symbol-info">
               <span class="symbol-name">YM1!</span>
               <span class="symbol-desc">Dow Jones ($5) E-mini Futures · CBOT</span>
             </div>
-            <span class="symbol-cat">Futures</span>
+            <span class="symbol-current" aria-hidden="true" hidden>Đang xem</span>
           </div>
-          <div class="symbol-item" data-sym="CL1!">
-            <span class="badge-circle" style="background:#4caf50;">OIL</span>
+          <div id="symbol-option-CL1" class="symbol-item" role="option" aria-selected="false" data-sym="CL1!">
+            <span class="badge-circle symbol-oil">OIL</span>
             <div class="symbol-info">
               <span class="symbol-name">CL1!</span>
               <span class="symbol-desc">Crude Oil Futures · NYMEX</span>
             </div>
-            <span class="symbol-cat">Futures</span>
+            <span class="symbol-current" aria-hidden="true" hidden>Đang xem</span>
           </div>
-</div>
+        </div>
+        <p id="symbol-search-empty" hidden>Không tìm thấy mã phù hợp.</p>
       </div>
+      <div class="symbol-search-footer"><span><kbd>↑</kbd> <kbd>↓</kbd> Di chuyển</span><span><kbd>Enter</kbd> Chọn mã</span></div>
     </div>
   </div>
 
   <!-- Pine Editor: personal Pine v6 scripts only. -->
   <div id="indicator-modal" class="modal">
     <div class="modal-content script-dialog">
-      <div class="modal-header"><div class="studio-heading"><span class="studio-mark">⌁</span><div>Indicators<span class="studio-subtitle">Your scripts. Your workspace.</span></div></div><div class="studio-window-actions"><button id="editor-expand" class="btn-secondary" aria-label="Expand editor" title="Expand editor">↗</button><button id="close-indicator-modal" class="modal-close" aria-label="Đóng">×</button></div></div>
-      <div class="modal-body script-body">
-        <div class="script-actions">
+      <div class="modal-header">
+        <div class="studio-heading">
+          <span class="studio-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 16h3l3-7 4 9 3-6h5"/><path d="M18 4v4m-2-2h4"/></svg>
+          </span>
+          <div><span class="indicator-library-title">Indicators</span><span class="pine-editor-title">Pine Editor</span><span class="studio-subtitle">Your scripts. Your workspace.</span></div>
+        </div>
+        <div class="editor-toolbar">
+          <button id="editor-back" class="btn-secondary indicator-back" type="button" aria-label="Back to My scripts"><span aria-hidden="true">‹</span> My scripts</button>
           <input id="indicator-name" class="search-input" aria-label="Tên script" placeholder="Untitled script">
         </div>
-        <div class="editor-filebar"><span class="editor-language">PINE v6</span><span id="editor-target"></span><span class="editor-shortcuts">Ctrl S · Save &nbsp; / &nbsp; Ctrl Enter · Run</span></div>
+        <div class="studio-window-actions">
+          <button id="editor-expand" class="btn-secondary" type="button" aria-label="Expand editor" title="Expand editor" aria-pressed="false">↗</button>
+          <button id="close-indicator-modal" class="modal-close" type="button" aria-label="Đóng">×</button>
+        </div>
+      </div>
+      <div class="modal-body script-body">
+        <div class="editor-filebar"><span class="editor-language">Pine v6</span><span id="editor-target"></span><span class="editor-shortcuts"><kbd>Ctrl S</kbd> Save <kbd>Ctrl Enter</kbd> Run</span></div>
         <div class="editor-surface"><pre id="editor-lines" aria-hidden="true">1</pre><textarea id="indicator-code" class="code-area" aria-label="Pine Script v6 source" placeholder="Paste your Pine Script v6 here…" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off"></textarea></div>
-        <div class="editor-position"><span>PineTS 0.13.1 · local Worker</span><span id="editor-cursor">Ln 1, Col 1</span></div>
+        <div class="editor-position"><span>Pine Script</span><span id="editor-cursor">Ln 1, Col 1</span></div>
         <textarea id="indicator-settings" hidden>{}</textarea>
-        <div class="editor-console-heading">OUTPUT <span>Runtime messages</span></div><p id="indicator-console" class="indicator-console" role="status" aria-live="polite"></p>
+        <details class="editor-output" open>
+          <summary class="editor-console-heading">Output</summary>
+          <p id="indicator-console" class="indicator-console" role="status" aria-live="polite"></p>
+        </details>
       </div>
       <div class="modal-footer"><button id="stop-indicator-run" class="btn-secondary">Stop</button><button id="remove-indicator" class="btn-secondary">Remove</button><button id="apply-indicator" class="btn-primary">Add to chart</button></div>
     </div>
@@ -389,27 +424,30 @@
   </div>
 
   <!-- ALERT MODAL -->
-  <div id="alert-modal" class="modal">
-    <div class="modal-content" style="width: 400px;">
+  <div id="alert-modal" class="modal" aria-labelledby="alert-modal-title">
+    <div class="modal-content alert-dialog">
       <div class="modal-header">
-        <span id="alert-modal-title">Tạo cảnh báo giá</span>
-        <button id="close-alert" class="modal-close">&times;</button>
+        <div class="alert-dialog-heading">
+          <span class="alert-dialog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 6-2 7-2 8h16c0-1-2-2-2-8m-8 12a2 2 0 0 0 4 0"/></svg></span>
+          <h2 id="alert-modal-title">Tạo cảnh báo giá</h2>
+        </div>
+        <button id="close-alert" class="modal-close" type="button" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <div class="setting-row">
           <span>Mã giao dịch:</span>
-          <strong id="alert-sym-label">NQ1!</strong>
+          <strong id="alert-sym-label" class="alert-symbol-chip">NQ1!</strong>
         </div>
         <div class="setting-row">
-          <span>Điều kiện:</span>
+          <label for="alert-condition">Điều kiện:</label>
           <select id="alert-condition" class="select-input">
             <option value="cross">Cắt qua mức giá</option>
-            <option value="greater">Lớn hơn hoặc bằng (&ge;)</option>
-            <option value="less">Nhỏ hơn hoặc bằng (&le;)</option>
+            <option value="greater">Lớn hơn hoặc bằng</option>
+            <option value="less">Nhỏ hơn hoặc bằng</option>
           </select>
         </div>
         <div class="setting-row">
-          <span>Mức giá mục tiêu:</span>
+          <label for="alert-price-input">Mức giá mục tiêu:</label>
           <input type="number" id="alert-price-input" step="0.25" class="num-input">
         </div>
       </div>
@@ -424,21 +462,24 @@
   <!-- Chart properties, matched against the open TradingView Desktop settings. -->
   <div id="settings-modal" class="modal chart-settings-modal" role="dialog" aria-modal="true" aria-labelledby="chart-settings-title">
     <div class="modal-content chart-settings-dialog">
-      <div class="modal-header"><span id="chart-settings-title">Settings</span><button id="close-settings" class="modal-close" aria-label="Close settings">×</button></div>
+      <div class="modal-header">
+        <div class="cs-heading"><span id="chart-settings-title">Settings</span><span class="cs-sub">Changes preview live on the chart</span></div>
+        <button id="close-settings" class="modal-close" aria-label="Close settings"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12"/></svg></button>
+      </div>
       <div class="chart-settings-layout"><nav class="chart-settings-nav" role="tablist" aria-label="Settings categories"></nav><div class="chart-settings-body" role="tabpanel"></div></div>
       <details class="setting-section toolbar-settings" open>
-        <summary>Cụm công cụ trên chart</summary>
-        <label class="setting-row"><span>Trên trái</span><input type="checkbox" id="set-show-topLeft" checked></label>
-        <label class="setting-row"><span>Trên phải</span><input type="checkbox" id="set-show-topRight" checked></label>
-        <label class="setting-row"><span>Công cụ vẽ bên trái</span><input type="checkbox" id="set-show-sidebar" checked></label>
-        <label class="setting-row"><span>Dưới trái</span><input type="checkbox" id="set-show-bottomLeft" checked></label>
-        <label class="setting-row"><span>Dưới phải</span><input type="checkbox" id="set-show-bottomRight" checked></label>
-        <label class="setting-row"><span>Độ trong suốt nền các cụm</span><span class="toolbar-transparency"><input type="range" id="set-toolbar-opacity" min="0" max="100" step="5" value="0"><output id="toolbar-opacity-value" for="set-toolbar-opacity">0%</output></span></label>
-        <p class="editor-help">Ctrl + , mở Settings khi đã ẩn các cụm. Các thay đổi này được lưu ngay.</p>
+        <summary>Chart toolbars</summary>
+        <label class="setting-row"><span>Top left</span><input type="checkbox" id="set-show-topLeft" checked></label>
+        <label class="setting-row"><span>Top right</span><input type="checkbox" id="set-show-topRight" checked></label>
+        <label class="setting-row"><span>Left drawing tools</span><input type="checkbox" id="set-show-sidebar" checked></label>
+        <label class="setting-row"><span>Bottom left</span><input type="checkbox" id="set-show-bottomLeft" checked></label>
+        <label class="setting-row"><span>Bottom right</span><input type="checkbox" id="set-show-bottomRight" checked></label>
+        <label class="setting-row"><span>Toolbar background transparency</span><span class="toolbar-transparency"><input type="range" id="set-toolbar-opacity" min="0" max="100" step="5" value="0"><output id="toolbar-opacity-value" for="set-toolbar-opacity">0%</output></span></label>
+        <p class="editor-help">Ctrl + , opens Settings when the toolbars are hidden. Changes here save immediately.</p>
       </details>
       <p class="chart-settings-error" role="alert"></p>
-      <p class="library-credit">TradingView Lightweight Charts™ · <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView, Inc.</a></p>
-      <div class="modal-footer"><button type="button" id="chart-template" class="tv-template-trigger" aria-haspopup="menu" aria-expanded="false" aria-label="Chart template"><span>Template</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button id="cancel-settings" class="btn-secondary">Cancel</button><button id="save-settings" class="btn-primary">Ok</button></div>
+      <p class="library-credit">TradingView Lightweight Charts&trade; &middot; <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">TradingView, Inc.</a></p>
+      <div class="modal-footer"><button type="button" id="chart-template" class="tv-template-trigger" aria-haspopup="menu" aria-expanded="false" aria-label="Chart template"><span>Template</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg></button><button id="reset-dock-settings" type="button" class="btn-secondary">Reset</button><button id="cancel-settings" type="button" class="btn-secondary">Cancel</button><button id="save-settings" type="button" class="btn-primary">Ok</button></div>
     </div>
   </div>
 
@@ -449,37 +490,41 @@
   <!-- Official TradingView Lightweight Charts Engine -->
   <script src="js/chart_loader.js"></script>
   <script src="js/workspace.js"></script>
+  <script src="js/ui_language.js?v=motion-preference-1"></script>
   <script src="js/market_data.js"></script>
   <script src="js/bridge_protocol.js"></script>
   <script src="js/drawing_model.js?v=line-shift-1"></script>
   <script src="js/pine_painter.js"></script>
-  <script src="js/chart_engine.js?v=interaction-news-1"></script>
+  <script src="js/chart_engine.js?v=chart-scales-1"></script>
   <script src="js/native_cycle_pane.js"></script>
-  <script src="js/color_picker.js?v=1"></script>
-  <script src="js/template_menu.js?v=ctx-tpl-1"></script>
+  <script src="js/color_picker.js?v=custom-color-1"></script>
+  <script src="js/template_menu.js?v=desktop-controls-1"></script>
   <script src="js/drawing_settings.js?v=cp-1"></script>
-  <script src="js/drawing_editor.js?v=cp-1"></script>
-  <script src="js/drawing_tools.js?v=line-shift-1"></script>
-  <script src="js/sync_controller.js"></script>
-  <script src="js/indicator_runner.js"></script>
+  <script src="js/drawing_editor.js?v=chart-scales-1"></script>
+  <script src="js/drawing_tools.js?v=chart-scales-1"></script>
+  <script src="js/sync_controller.js?v=local-chart-nav-1"></script>
+  <script src="js/indicator_runner.js?v=desktop-controls-1"></script>
   <script src="js/indicator_pane_stack.js"></script>
-  <script src="js/indicator_collection.js"></script>
-  <script src="js/pine_editor.js"></script>
-  <script src="js/indicator_library.js"></script>
+  <script src="js/indicator_collection.js?v=settings-controls-1"></script>
+  <script src="js/pine_editor.js?v=ui-language-1"></script>
+  <script src="js/indicator_library.js?v=ui-language-1"></script>
   <script src="js/indicator_settings.js?v=cp-1"></script>
   <script src="js/paper_trading.js?v=interaction-news-1"></script>
   <script src="js/replay_paper.js?v=interaction-news-1"></script>
-  <script src="js/paper_panel.js?v=interaction-news-1"></script>
-  <script src="js/chart_settings.js?v=cp-1"></script>
-  <script src="js/terminal_icons.js?v=tdv-icons-2"></script>
-  <script src="js/desktop_shell.js?v=tdv-settings-1"></script>
+  <script src="js/paper_panel.js?v=chart-scales-1"></script>
+  <script src="js/app_themes.js?v=trade-theme-2"></script>
+  <script src="js/chart_settings.js?v=motion-preference-1"></script>
+  <script src="js/terminal_icons.js?v=tdv-icons-3"></script>
+  <script src="js/desktop_shell.js?v=toolbar-actions-1"></script>
   <script src="js/toolbar_clusters.js?v=fixed-shell-1"></script>
-  <script src="js/chart_context_menu.js?v=ctx-tpl-1"></script>
-  <script src="js/terminal_features.js?v=layout-menu-1"></script>
-  <script src="js/terminal_polish.js?v=web-motion-1"></script>
+  <script src="js/chart_context_menu.js?v=chart-scales-1"></script>
+  <script src="js/terminal_features.js?v=replay-dock-1"></script>
+  <script src="js/terminal_polish.js?v=motion-preference-1"></script>
   <script src="js/news_protocols.js?v=calendar-protocols-3"></script>
-  <script src="js/terminal_companions.js?v=calendar-protocols-4"></script>
-  <script src="js/price_alerts.js?v=alert-delete-1"></script>
-  <script src="js/app.js?v=dialog-toggle-1"></script>
+  <script src="js/terminal_companions.js?v=vinyl-icon-1"></script>
+  <script src="js/price_alerts.js?v=chart-scales-1"></script>
+  <script src="js/app.js?v=chart-scales-1"></script>
 </body>
 </html>
+
+

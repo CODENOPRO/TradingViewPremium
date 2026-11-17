@@ -18,7 +18,7 @@ import websockets
 from websockets.sync.client import connect as sync_connect
 from market_store import MarketStore, RESOLUTIONS, SYMBOLS
 from companion_services import EconomicCalendar, music_metadata, resolve_music_share, MusicProviderError
-from native_warmup import NativeWarmup, NATIVE_INTERVALS
+from native_warmup import NativeWarmup, NATIVE_INTERVALS, SourceChanged
 from derived_history import aggregate_six_hour
 
 ROOT = Path(__file__).resolve().parent
@@ -30,6 +30,7 @@ store = MarketStore(str(DATA_DIR))
 calendar_service = EconomicCalendar(history_path=DATA_DIR / 'calendar_cache.json')
 clients = set()
 refresh = asyncio.Event()
+reconnect_source = asyncio.Event()
 status = {'type': 'bridge_status', 'state': 'connecting', 'last_update': None,
           'message': 'Đang kết nối TradingView', 'symbols': [],
           'service': 'trading-terminal', 'protocol_version': 2, 'pid': os.getpid()}
@@ -37,6 +38,8 @@ history_progress = {}
 subscriptions = {}
 native_warmup = None
 pending_native = []
+pending_startup = False
+startup_preloaded = False
 source_updates = {}
 source_config = Path(os.getenv('TERMINAL_DATA_DIR', str(ROOT))) / 'source_requests.json'
 try:
@@ -127,19 +130,40 @@ def enqueue_native(timeframes,priority=False):
         pending_native.extend(tf for tf in timeframes if tf in NATIVE_INTERVALS and tf not in pending_native)
 
 
+def enqueue_startup():
+    global pending_startup, startup_preloaded
+    if native_warmup is None:
+        pending_startup = True
+        return
+    native_warmup.request_startup(initial=not startup_preloaded)
+    startup_preloaded = True
+
+
 async def native_warmup_loop():
-    global native_warmup
+    global native_warmup, pending_startup
     target=None
     async def evaluate(expression):
         return await asyncio.to_thread(evaluate_target,target,expression)
     async def read():
         return await evaluate("String(window._exposed_chartWidgetCollection.activeChartWidget.value().model().mainSeries().interval())")
     async def change(expected,resolution):
-        expression='''(() => {const w=window._exposed_chartWidgetCollection.activeChartWidget.value();
-        const raw=String(w.model().mainSeries().interval()),current=raw==='1D'?'D':raw==='1W'?'W':raw;
-        if(current!==__EXPECTED__)throw Error('Source changed before interval request');
-        w.setResolution(__RESOLUTION__);return true;})()'''
-        await evaluate(expression.replace('__EXPECTED__',json.dumps(expected)).replace('__RESOLUTION__',json.dumps(resolution)))
+        expression='''(async () => {
+        const w=window._exposed_chartWidgetCollection.activeChartWidget.value();
+        const interval=()=>{const raw=String(w.model().mainSeries().interval());return raw==='1D'?'D':raw==='1W'?'W':raw;};
+        if(interval()!==__EXPECTED__)return 'changed';
+        w.setResolution(__RESOLUTION__);
+        for(let n=0;n<40;n++){
+          const current=interval();
+          if(current===__RESOLUTION__)return 'ready';
+          if(current!==__EXPECTED__)return 'changed';
+          await new Promise(resolve=>setTimeout(resolve,100));
+        }
+        return 'timeout';})()'''
+        result=await evaluate(expression.replace('__EXPECTED__',json.dumps(expected)).replace('__RESOLUTION__',json.dumps(resolution)))
+        if result=='changed':
+            raise SourceChanged('Source interval changed by user')
+        if result!='ready':
+            raise RuntimeError('TradingView chưa chuyển được sang khung '+resolution)
     async def snapshot():
         return await evaluate(SNAPSHOT_JS.replace('__FULL__','true')) or []
     async def history():
@@ -158,6 +182,9 @@ async def native_warmup_loop():
     native_warmup=NativeWarmup(read,change,snapshot,history,accept,report)
     if pending_native:
         native_warmup.request(pending_native[:]);pending_native.clear()
+    if pending_startup:
+        pending_startup=False
+        enqueue_startup()
     while True:
         await native_warmup.wake.wait();native_warmup.wake.clear()
         try:
@@ -166,7 +193,10 @@ async def native_warmup_loop():
                 target=next((t for t in with_targets if t.get('id')==status.get('source_target') and is_chart_target(t)),None)
                 if not target:
                     report({'state':'waiting','message':'Đang chờ tab TradingView nguồn sẵn sàng'});await asyncio.sleep(3);continue
-                await asyncio.to_thread(evaluate_target,target,ENSURE_PANES_JS)
+                try:
+                    await asyncio.to_thread(evaluate_target,target,ENSURE_PANES_JS)
+                except RuntimeError as error:
+                    logging.warning('Native preload will use available panes: %s',error)
                 await native_warmup.cycle()
                 await asyncio.to_thread(store.save, snapshot_market_data(), snapshot_metadata())
                 refresh.set()
@@ -428,8 +458,8 @@ async def poll_source(source_url=None, expected=None):
                 key = ':'.join(expected)
                 source_updates[key] = {**source_updates.get(key, {}), 'symbol': expected[0], 'timeframe': expected[1], 'updated': 0, 'error': str(exc)}
                 set_status(status['state'], 'Một nguồn TradingView gián đoạn', sources=list(source_updates.values()))
-            if not source_url:
-                set_status('disconnected', str(exc), symbols=[])
+            if expected is None:
+                set_status('disconnected', str(exc) or 'TradingView không phản hồi', symbols=[])
         finally:
             if reader:
                 reader.cancel()
@@ -468,6 +498,17 @@ async def automatic_sources():
     retry_setup=0
     try:
         while True:
+            if reconnect_source.is_set():
+                reconnect_source.clear()
+                if worker:
+                    worker.cancel()
+                    await asyncio.gather(worker, return_exceptions=True)
+                    worker = None
+                source_updates.clear()
+                history_progress.clear()
+                retry_setup = 0
+                set_status('connecting', 'Đang kết nối lại TradingView', symbols=[],
+                           sources=[], source_target=None, last_update=None, source_setup_error=None)
             try:
                 def discover():
                     with urlopen(f'http://localhost:{CDP_PORT}/json/list',timeout=3) as response:
@@ -511,9 +552,14 @@ async def automatic_sources():
                                 del source_updates[key]
                 elif not worker or worker.done():
                     set_status('connecting','Mở một tab TradingView NQ/ES/YM để lấy dữ liệu ba pane')
-            except Exception:
+            except Exception as error:
                 logging.exception('Single-tab source discovery')
-            await asyncio.sleep(3)
+                if not worker or worker.done():
+                    set_status('disconnected', f'Không kết nối được TradingView: {error}', symbols=[])
+            try:
+                await asyncio.wait_for(reconnect_source.wait(), timeout=3)
+            except asyncio.TimeoutError:
+                pass
     finally:
         if worker:
             worker.cancel()
@@ -572,6 +618,8 @@ async def frontend_ws_handler(socket):
                     remember_requests()
                 elif request.get('action') == 'preload_native':
                     enqueue_native(list(NATIVE_INTERVALS))
+                elif request.get('action') == 'startup_native':
+                    enqueue_startup()
                 elif request.get('action') == 'request_native':
                     requested = request.get('charts', [])
                     if not isinstance(requested, list) or len(requested) > 16:
@@ -592,7 +640,12 @@ async def frontend_ws_handler(socket):
                     if rejected:
                         queue.put_nowait(json.dumps({'type': 'native_request_error', 'rejected': rejected,
                                                      'error': f'Khung/mã chưa hỗ trợ native: {", ".join(rejected)}'}))
-                elif request.get('action') in ('refresh', 'refresh_htf'):
+                elif request.get('action') == 'refresh':
+                    if os.getenv('TERMINAL_OFFLINE') == '1':
+                        queue.put_nowait(json.dumps(status))
+                    else:
+                        reconnect_source.set()
+                elif request.get('action') == 'refresh_htf':
                     refresh.set()
                 elif request.get('action') == 'ping':
                     queue.put_nowait(json.dumps({'type': 'pong', 'time': time.time()}))
@@ -618,10 +671,12 @@ class HTTPHandler(SimpleHTTPRequestHandler):
                 if path.path == '/api/calendar':
                     result = calendar_service.get()
                 else:
-                    url = parse_qs(path.query).get('url', [''])[0]
+                    params = parse_qs(path.query)
+                    url = params.get('url', [''])[0]
                     if len(url) > 2048:
                         raise ValueError('Link too long')
-                    result = {'url': resolve_music_share(url)} if path.path.endswith('/resolve') else music_metadata(url)
+                    result = ({'url': resolve_music_share(url)} if path.path.endswith('/resolve')
+                              else music_metadata(url, fresh_embed=params.get('embed') == ['1']))
                 code = 200
             except MusicProviderError as exc:
                 result,code={'error':str(exc)},exc.status
@@ -634,6 +689,7 @@ class HTTPHandler(SimpleHTTPRequestHandler):
             self.send_response(code)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Content-Length', str(len(body)))
+            if path.path.startswith('/api/music/'):self.send_header('Cache-Control','no-store')
             if retry_after:self.send_header('Retry-After',str(retry_after))
             self.end_headers()
             self.wfile.write(body)

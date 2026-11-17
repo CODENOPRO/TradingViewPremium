@@ -38,3 +38,8 @@ Một số chi tiết giao diện/hành vi chưa pixel parity: palette dựng t�
 - Cả bảy tab mở được, palette có swatch/hex/custom. V4 preview font 14/navigation Always visible rồi Cancel khôi phục. Không thấy console error mới trong hai tab thử.
 - Unit: màu theo previous close qua gap, indicator override/body off và raw OHLC bất biến; timezone qua midnight/DST; margin/timezone validation trước mutation; apply riêng chart và không reset rightOffset khi đổi màu.
 - Ảnh local `chart-settings-canvas.jpg`, `chart-settings-symbol.jpg` trong thư mục visualization của chat. Kết quả toàn suite ghi ở AGENTS.md.
+
+
+## Settings panel UI (2026-11-16)
+
+The panel is now a right-docked sheet styled only by `frontend/css/settings.css` (the old rules spread over six stylesheets were removed). It has no scrim or backdrop blur, so the chart stays sharp and every change previews live. All labels are English, the top preview strip is gone, and tabs are icon pills where the active tab expands to show its name. Behaviour, storage and Template/Cancel/Ok semantics are unchanged.

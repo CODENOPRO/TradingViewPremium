@@ -23,9 +23,6 @@
 #favorite-tool-menu label{display:flex;align-items:center;gap:8px;color:#ccc;font-size:12px;padding:7px;max-width:230px}
 .icon-labels-only .topbar-left button:not(.tf-btn)>span,.icon-labels-only .topbar-right button>span{display:none!important}
 .icon-labels-only .topbar-left button:not(.tf-btn),.icon-labels-only .topbar-right button{display:inline-flex;gap:0;align-items:center}
-.icon-labels-only button[data-label]:not(.tf-btn):after{content:attr(data-label);max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transform:translateX(-5px);transition:max-width .23s ease,opacity .2s,transform .23s,padding .23s;padding-left:0}
-.icon-labels-only button[data-label]:hover:after,.icon-labels-only button[data-label]:focus-visible:after{max-width:190px;opacity:1;transform:translateX(0);padding-left:7px}
-.icon-labels-only #session-mode{width:27px;font-size:0;transition:width .2s}.icon-labels-only #session-mode:hover,.icon-labels-only #session-mode:focus{width:65px;font-size:12px}
 #topbar .timeframe-group{min-width:86px;flex:1 1 auto;overflow-x:auto;scrollbar-width:thin}
 #topbar .timeframe-group .tf-btn{flex:0 0 auto}
 #fullscreen-timeframe{position:fixed;top:0;left:0;width:100%;height:12px;z-index:110;display:flex;justify-content:center}
@@ -33,7 +30,6 @@
 #fullscreen-timeframe .timeframe-group{padding:8px 12px;max-width:calc(100vw - 20px);overflow:auto;background:#111;border-radius:0 0 12px 12px;transform:translateY(-110%);transition:transform .22s ease;height:max-content;pointer-events:auto}
 #fullscreen-timeframe:hover .timeframe-group,#fullscreen-timeframe:focus-within .timeframe-group{transform:translateY(0)}
 .terminal-fullscreen #topbar,.terminal-fullscreen #left-sidebar,.terminal-fullscreen #bottombar,.terminal-fullscreen #desktop-panel,.terminal-fullscreen .chart-window-controls,.terminal-fullscreen .chart-nav-controls,.terminal-fullscreen .chart-go-realtime,.terminal-fullscreen .chart-symbol-badge,.terminal-fullscreen #layout-popover,.terminal-fullscreen .toolbar-overflow{display:none!important}
-.terminal-fullscreen #btn-refresh-htf{display:none!important}
 .terminal-fullscreen .replay-bar.show,.terminal-fullscreen .drawing-toolbar,.terminal-fullscreen .chart-context-menu,.terminal-fullscreen .modal.show{display:none!important}
 #replay-toolbar{max-width:calc(100vw - 20px);flex-wrap:wrap;gap:6px;z-index:100}
 #replay-toolbar button,#replay-toolbar select,#replay-toolbar input{background:#202020;color:#ddd;border:1px solid #444;border-radius:5px;padding:5px;font-size:12px}
