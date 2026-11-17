@@ -10,21 +10,19 @@ TerminalFeatures.prototype.installPolish=function(){
   controls.querySelector('.editor-help').textContent='Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.';
   const add=(text,el)=>{const label=document.createElement('label');label.className='setting-row';const name=document.createElement('span');name.textContent=text;label.append(name,el);controls.appendChild(label);};
   const motionKey='terminal_motion_preference_v1';
-  const systemMotion=matchMedia('(prefers-reduced-motion: reduce)');
   const motion=document.createElement('select');
   motion.id='set-reduce-motion';
-  for(const [value,label] of [['system','Follow system'],['reduce','On'],['full','Off']]){
+  for(const [value,label] of [['reduce','On'],['full','Off']]){
     const option=document.createElement('option');
     option.value=value;
     option.textContent=label;
     motion.appendChild(option);
   }
-  const savedMotion=Workspace.read(motionKey,Workspace.read('terminal_reduce_motion_v1',false)===true?'reduce':'system');
-  motion.value=['system','reduce','full'].includes(savedMotion)?savedMotion:'system';
+  const savedMotion=Workspace.read(motionKey,Workspace.read('terminal_reduce_motion_v1',false)===true?'reduce':'full');
+  motion.value=savedMotion==='reduce'?'reduce':'full';
   const applyMotion=()=>document.body.classList.toggle('reduce-motion',
-    motion.value==='reduce'||(motion.value==='system'&&systemMotion.matches));
+    motion.value==='reduce');
   motion.addEventListener('change',()=>{Workspace.write(motionKey,motion.value);applyMotion();});
-  systemMotion.addEventListener('change',applyMotion);
   add('Reduce motion',motion);
   controls.prepend(motion.parentElement);
   applyMotion();

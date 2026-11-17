@@ -806,3 +806,29 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Settings → Thanh công cụ → Giảm chuyển động có ba lựa chọn: Theo hệ thống, Bật, Tắt. Tùy chọn lưu cục bộ; thiết lập cũ đang bật được giữ lại. CSS và cuộn tab Settings dùng chung trạng thái này.
 - File: `frontend/index.html`, `js/terminal_polish.js`, `js/chart_settings.js`, `js/ui_language.js` và các CSS frontend từng đọc trực tiếp prefers-reduced-motion. Sao lưu tại `.backups/motion-preference-20261117/`.
 - Kiểm chứng: kiểm tra cú pháp JS, logic ba chế độ/lưu/di trú/phản ứng hệ điều hành. Các bộ test liên quan đạt 14/15; lỗi window is not defined trong chart_settings.test.cjs đã tái hiện với file gốc. Chưa xác nhận hiệu ứng trực quan trong trình duyệt; môi trường kiểm thử Edge không cho dùng cổng debug loopback. Bản ZIP làm việc không có Git remote.
+
+### 2026-11-17 — Giảm chuyển động theo Settings của web
+- Settings → Toolbars → Reduce motion điều khiển animation và hiệu ứng hover của ứng dụng. Ứng dụng dùng lựa chọn đã lưu của web, kể cả khi Windows đặt chế độ giảm chuyển động.
+- Cập nhật CSS toolbar/Studio, điều khiển trong terminal_polish.js và phiên bản tài nguyên ở index.html. Tùy chọn cũ đang bật vẫn được giữ lại.
+- Kiểm tra cú pháp JS, diff và 9 kiểm thử frontend liên quan. Chưa kiểm tra trực quan trong trình duyệt.
+
+### 2026-11-17 — Bấm lại icon để đóng bảng
+- Icon Chart Settings, tìm mã, thư viện indicator, cài đặt indicator và tạo cảnh báo mở hoặc đóng bảng tương ứng. Phím tắt Chart Settings dùng cùng thao tác; đóng Chart Settings từ icon xử lý như Cancel.
+- Cập nhật frontend/js/app.js và phiên bản tài nguyên ở frontend/index.html. Kiểm tra cú pháp, mô phỏng click, bàn phím và backdrop, cùng 9 kiểm thử hiện có. Chưa kiểm tra giao diện trực quan.
+
+### 2026-11-17 — Tải lại dữ liệu từ ô trạng thái kết nối
+- Nút trạng thái mở WebSocket mới để nhận snapshot nến từ backend, sau đó đăng ký lại chart đang hiển thị và yêu cầu backend đọc lại nguồn TradingView. Nếu backend chưa phản hồi, luồng retry giữ yêu cầu làm mới.
+- Cập nhật frontend/js/app.js và nhãn, phiên bản tài nguyên trong frontend/index.html. Sao lưu trước sửa ở .backups/status-reload-20261117/.
+- Kiểm tra cú pháp JS và mô phỏng click qua WebSocket, nhận lịch sử, bỏ qua dữ liệu từ socket cũ, retry sau khi HTTP lỗi. Bộ test Node đạt 132/138. Sáu lỗi thuộc các bộ Chart Settings, Color Picker, News và Magnet, không tải file đã sửa.
+- Chạy start_terminal.bat theo yêu cầu. Backend tại localhost:3000 phục vụ frontend mới; kiểm thử WebSocket với TradingView thật nhận lịch sử NQ1!, ES1!, YM1! và thấy trạng thái Connected → Connecting → Connected. Thao tác click được kiểm thử mô phỏng.
+
+### 2026-11-17 — Chạy backend ẩn khi mở web
+- Cập nhật start_terminal.bat để khởi động backend với CREATE_NO_WINDOW và ghi stdout/stderr nối tiếp vào backend/backend.log. Launcher vẫn kiểm tra backend sẵn sàng rồi mở web, và chỉ đường dẫn log khi khởi động lỗi.
+- Sao lưu tại .backups/hidden-backend-20261117/. Đã chạy lệnh khởi động trong phiên offline riêng, xác nhận /health phản hồi và log nhận thông báo backend. Phiên đang chạy được giữ để tránh ngắt dữ liệu.
+
+### 2026-11-17 — Thay cụm SELL / LAST / BUY ở thanh trên
+- Tích hợp HTML và CSS từ new.zip vào frontend. Dùng giá last của chart và khối lượng trên phiếu Paper Trading. Nút mua/bán dùng luồng đặt lệnh hiện có, phím tăng/giảm cập nhật phiếu, theme theo Terminal.
+- Sao lưu tại .backups/trade-pill-20261117/. Kiểm tra cú pháp hai file JavaScript và 18 test desktop, toolbar và Paper Trading.
+
+### 2026-11-17 — Khôi phục UI trước new.zip
+- Khôi phục ba file frontend từ bản sao trước khi chèn Trade Pill, kiểm tra hash khớp và gỡ stylesheet được thêm. Lưu phiên bản đã chèn tại .backups/trade-pill-installed-20261117/.

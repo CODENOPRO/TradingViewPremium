@@ -1,0 +1,303 @@
+/* ============================================================
+   WOW REDESIGN — Menu chuột phải · Bố cục biểu đồ · Toast ·
+   Cảnh báo giá · Thanh phát lại · Chart Settings.
+   Không dùng màu nhấn riêng (xanh) nữa — mọi điểm nhấn đi theo
+   var(--accent)/var(--accent-ink) của theme hiện tại (đen/trắng
+   tuỳ sáng-tối), còn lại dùng var(--bg/--text/--line/--glass2).
+   Không đụng HTML/JS. Nằm cuối <head> nên luôn thắng cascade.
+   ============================================================ */
+:root{
+  --wow-glass: color-mix(in srgb, var(--bg) 88%, transparent);
+  --wow-border: var(--line);
+  --wow-tint-1: var(--glass2);
+  --wow-tint-2: color-mix(in srgb, var(--text) 9%, transparent);
+  --wow-tint-3: color-mix(in srgb, var(--text) 15%, transparent);
+  --wow-divider: color-mix(in srgb, var(--text) 9%, transparent);
+  --wow-shadow: 0 20px 48px color-mix(in srgb, #000 32%, transparent);
+  --wow-ease: cubic-bezier(.22,1,.36,1);
+  --wow-spring: cubic-bezier(.34,1.56,.64,1);
+  --wow-ring: 0 0 0 3px color-mix(in srgb, var(--text) 16%, transparent);
+}
+
+/* ---------- 1. Menu chuột phải ---------- */
+.chart-context-menu[role=menu]{
+  padding:7px;
+  border:1px solid var(--wow-border);
+  border-radius:16px;
+  background:var(--wow-glass);
+  backdrop-filter:blur(18px);
+  box-shadow:var(--wow-shadow);
+}
+body:not(.reduce-motion) .chart-context-menu[role=menu]{animation:wow-menu-in .26s var(--wow-ease) both}
+@keyframes wow-menu-in{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chart-context-menu button[role=menuitem]{
+  border-radius:9px;
+  transition:background .18s var(--wow-ease), transform .18s var(--wow-ease), color .18s;
+}
+.chart-context-menu button[role=menuitem]:not([disabled]):is(:hover,:focus-visible,[aria-expanded=true]){
+  background:var(--wow-tint-2);
+  transform:translateX(2px);
+}
+.chart-context-menu button[role=menuitem]:focus-visible{outline:1.5px solid var(--text);outline-offset:-1px}
+.tv-ctx-icon{transition:transform .22s var(--wow-spring)}
+.chart-context-menu button[role=menuitem]:hover .tv-ctx-icon{transform:scale(1.12) rotate(-3deg)}
+.chart-context-menu .tv-ctx-key{background:var(--wow-tint-1)}
+.chart-context-menu .chart-context-divider{background:linear-gradient(90deg,transparent,var(--wow-divider),transparent);border:0;height:1px}
+.chart-context-menu button[role=menuitem]:hover .tv-ctx-arrow{transform:translateX(2px)}
+.tv-ctx-arrow{display:inline-block;transition:transform .18s var(--wow-ease)}
+
+/* ---------- 2. Bố cục biểu đồ (layout popover) ---------- */
+#layout-popover{
+  border:1px solid var(--wow-border) !important;
+  background:var(--wow-glass) !important;
+  backdrop-filter:blur(18px);
+  box-shadow:var(--wow-shadow);
+  animation:wow-menu-in .26s var(--wow-ease) both;
+}
+#layout-popover .layout-choice{
+  border-radius:10px;
+  transition:all .22s var(--wow-spring);
+}
+#layout-popover .layout-choice:hover{
+  border-color:color-mix(in srgb, var(--text) 35%, transparent);
+  color:var(--text);
+  transform:translateY(-1px);
+  background:var(--wow-tint-1);
+}
+#layout-popover .layout-choice.active{
+  background:var(--wow-tint-2);
+  border-color:var(--text);
+  color:var(--text);
+  box-shadow:var(--wow-ring);
+  transform:scale(1.03);
+}
+#layout-popover .layout-sync-settings label{transition:background .18s}
+#layout-popover .layout-sync-settings input{
+  background:var(--wow-tint-3) !important;
+  border-color:transparent !important;
+  transition:background .25s;
+}
+#layout-popover .layout-sync-settings input::before{
+  background:var(--muted) !important;
+  transition:transform .32s var(--wow-spring), background .2s;
+}
+#layout-popover .layout-sync-settings input:checked{
+  background:var(--accent) !important;
+}
+#layout-popover .layout-sync-settings input:checked::before{background:var(--accent-ink) !important}
+#layout-popover .sync-info{border-radius:50%}
+
+/* ---------- 3. Toast cảnh báo (giữ tông tối như bản gốc) ---------- */
+.tv-toast{
+  border-radius:13px;
+  animation:wow-toast-in .42s var(--wow-spring) both;
+  transition:opacity .22s var(--wow-ease), transform .22s var(--wow-ease);
+}
+@keyframes wow-toast-in{
+  from{opacity:0;transform:translateX(34px) scale(.95)}
+  60%{transform:translateX(-3px) scale(1.01)}
+  to{opacity:1;transform:translateX(0) scale(1)}
+}
+.tv-toast-icon{animation:wow-icon-pulse 1.9s ease-in-out infinite}
+@keyframes wow-icon-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+.tv-toast-dismiss{border-radius:7px;transition:background .18s,color .18s,transform .2s var(--wow-ease)}
+.tv-toast-dismiss:hover{transform:rotate(90deg)}
+
+/* ---------- 4. Tạo cảnh báo giá ---------- */
+#alert-modal .alert-dialog{
+  border-radius:20px;
+  box-shadow:var(--wow-shadow);
+  animation:wow-modal-in .3s var(--wow-ease) both;
+}
+@keyframes wow-modal-in{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.alert-dialog-icon{background:var(--accent);animation:wow-bell 2.4s ease-in-out infinite}
+.alert-dialog-icon svg{stroke:var(--accent-ink)}
+@keyframes wow-bell{0%,100%{transform:rotate(0)}20%{transform:rotate(-13deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(3deg)}}
+#alert-modal .modal-close{border-radius:8px;transition:background .18s,transform .2s var(--wow-ease)}
+#alert-modal .modal-close:hover{transform:rotate(90deg)}
+.alert-symbol-chip{background:var(--wow-tint-2);border:1px solid var(--wow-border);color:var(--text);font-weight:700}
+#alert-modal #alert-condition,#alert-modal #alert-price-input{
+  border-radius:10px;
+  transition:border-color .2s,box-shadow .2s;
+}
+#alert-modal #alert-condition:focus,#alert-modal #alert-price-input:focus{
+  outline:none;
+  border-color:var(--text);
+  box-shadow:var(--wow-ring);
+}
+#alert-modal #btn-save-alert{
+  background:var(--accent);
+  color:var(--accent-ink);
+  border-radius:9px;
+  transition:transform .2s var(--wow-ease), box-shadow .2s;
+}
+#alert-modal #btn-save-alert:hover{transform:translateY(-1.5px);box-shadow:0 10px 22px color-mix(in srgb,#000 22%,transparent)}
+#alert-modal #btn-delete-alert{border-radius:9px;transition:border-color .2s,background .2s}
+
+/* ---------- 5. Thanh phát lại (replay) ---------- */
+#replay-toolbar.show{
+  border-radius:16px;
+  backdrop-filter:blur(14px);
+  animation:wow-bar-in .3s var(--wow-ease) both;
+}
+@keyframes wow-bar-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+#replay-toolbar :is(button,select,summary,input){border-radius:10px;transition:background .18s,border-color .18s,transform .18s var(--wow-ease)}
+#replay-toolbar :is(button,summary):hover{transform:translateY(-1px)}
+#replay-toolbar .replay-play{
+  background:var(--accent);
+  color:var(--accent-ink);
+}
+#replay-toolbar .replay-play[data-playing="true"]{animation:wow-ring 1.7s ease-out infinite}
+@keyframes wow-ring{0%{box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent)}100%{box-shadow:0 0 0 9px color-mix(in srgb, var(--accent) 0%, transparent)}}
+#replay-toolbar .replay-select-bar[aria-pressed="true"],
+#replay-toolbar .replay-options[open] > summary{
+  border-color:var(--text);
+  box-shadow:var(--wow-ring);
+}
+#replay-toolbar .replay-options-menu{border-radius:14px;backdrop-filter:blur(14px)}
+
+/* ---------- 6. Chart Settings (#settings-modal) — toàn bộ ---------- */
+#settings-modal{ --cs-ease: var(--wow-spring); }
+#settings-modal .chart-settings-dialog{
+  background:var(--wow-glass);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--wow-border);
+  border-radius:26px;
+  box-shadow:var(--wow-shadow);
+}
+#settings-modal #chart-settings-title{letter-spacing:-.02em}
+#settings-modal .modal-close:hover{background:var(--accent);color:var(--accent-ink)}
+
+#settings-modal .chart-settings-nav{background:var(--wow-tint-1);box-shadow:inset 0 0 0 1px var(--wow-border)}
+#settings-modal .chart-settings-nav button:hover{background:var(--wow-tint-2)}
+#settings-modal .chart-settings-nav button[aria-selected="true"]{
+  background:var(--accent);
+  color:var(--accent-ink);
+  box-shadow:0 2px 10px color-mix(in srgb,#000 18%,transparent);
+}
+
+#settings-modal .chart-setting-card{
+  background:var(--wow-tint-1);
+  border:1px solid var(--wow-border);
+  transition:border-color .22s var(--wow-ease), background .22s;
+}
+#settings-modal .chart-setting-card:hover{border-color:color-mix(in srgb, var(--text) 22%, transparent)}
+#settings-modal .chart-setting-row,#settings-modal .setting-row{border-bottom-color:var(--wow-divider)}
+
+#settings-modal .chart-settings-body input[type="checkbox"]{background:var(--wow-tint-3)}
+#settings-modal .chart-settings-body input[type="checkbox"]:checked{background:var(--accent)}
+#settings-modal .chart-settings-body input[type="checkbox"]:checked::after{background:var(--accent-ink)}
+
+#settings-modal .chart-settings-body select,
+#settings-modal .chart-settings-body input[type="number"]{
+  background:var(--wow-tint-1);
+  box-shadow:inset 0 0 0 1px var(--wow-border);
+  transition:box-shadow .2s var(--wow-ease);
+}
+#settings-modal .chart-settings-body select:hover{box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--text) 25%, transparent)}
+#settings-modal .chart-settings-body input[type="number"]:focus{
+  box-shadow:inset 0 0 0 1.5px var(--text), var(--wow-ring);
+}
+
+#settings-modal .chart-settings-body input[type="range"]::-webkit-slider-runnable-track{background:var(--wow-tint-3)}
+#settings-modal .chart-settings-body input[type="range"]::-webkit-slider-thumb{
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--bg);
+}
+#settings-modal .chart-settings-body input[type="range"]::-moz-range-track{background:var(--wow-tint-3)}
+#settings-modal .chart-settings-body input[type="range"]::-moz-range-thumb{
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--bg);
+}
+
+#settings-modal .chart-color{outline-color:var(--bg);box-shadow:0 0 0 1px color-mix(in srgb, var(--text) 18%, transparent)}
+#settings-modal .chart-color:not(:disabled):hover{box-shadow:0 0 0 1px color-mix(in srgb, var(--text) 32%, transparent)}
+#settings-modal .chart-color.active{box-shadow:0 0 0 2px var(--text)}
+
+#settings-modal .modal-footer{border-top-color:var(--wow-divider)}
+#settings-modal .modal-footer button{transition:background-color .18s,color .18s,transform .2s var(--wow-ease),box-shadow .2s}
+#settings-modal #chart-template{background:var(--wow-tint-1)}
+#settings-modal #chart-template:hover,
+#settings-modal #chart-template[aria-expanded="true"]{background:var(--wow-tint-2)}
+#settings-modal #cancel-settings{background:var(--wow-tint-1)}
+#settings-modal #cancel-settings:hover{background:var(--wow-tint-2)}
+#settings-modal #save-settings{
+  background:var(--accent);
+  color:var(--accent-ink);
+}
+#settings-modal #save-settings:hover{
+  filter:none;
+  transform:translateY(-1.5px);
+  box-shadow:0 10px 22px color-mix(in srgb,#000 20%,transparent);
+}
+
+#settings-modal :is(button,input,select,[tabindex]):focus-visible{outline-color:var(--text)}
+
+.theme-option[aria-pressed="true"]{border-color:var(--text);box-shadow:0 0 0 2px color-mix(in srgb, var(--text) 35%, transparent)}
+
+/* ---------- 7. Hàng "màu + kiểu đường" (chart-setting-controls) — bố cục gọn, đều hàng ---------- */
+#settings-modal .chart-setting-controls{
+  gap:10px;
+}
+#settings-modal .chart-setting-controls > .chart-color,
+#settings-modal .chart-setting-controls > .chart-color-pair{ order:1; }
+#settings-modal .chart-setting-controls > select.chart-line-style{ order:2; }
+#settings-modal .chart-setting-controls > select:not(.chart-line-style){ order:3; }
+#settings-modal .chart-settings-body select.chart-line-style{
+  width:72px;
+  min-width:72px;
+  padding:0 26px 0 12px;
+  text-align:left;
+  letter-spacing:0;
+  font-size:15px;
+  line-height:1;
+}
+#settings-modal .chart-color{
+  width:26px;
+  height:26px;
+}
+#settings-modal .chart-color-pair .chart-color + .chart-color{ margin-left:-9px; }
+#settings-modal .chart-color-pair:hover .chart-color + .chart-color{ margin-left:4px; }
+#settings-modal .chart-color:focus-visible,
+#settings-modal .chart-settings-body select.chart-line-style:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 2px var(--text);
+}
+/* ---------- 8. Nút Mua/Bán (Buy/Sell) trên topbar ---------- */
+#topbar .tv-trade-pill{
+  box-shadow:0 6px 18px color-mix(in srgb,#000 22%,transparent), inset 0 1px 0 rgba(255,255,255,.05);
+}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy){
+  position:relative;
+  flex-direction:column;
+  justify-content:center;
+  gap:1px;
+  overflow:hidden;
+  transition:transform .18s var(--wow-ease), filter .18s, box-shadow .22s var(--wow-ease);
+}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy)::before{
+  content:"";
+  width:14px;height:2px;border-radius:2px;
+  background:currentColor;opacity:.5;
+  margin-bottom:1px;
+  transition:width .25s var(--wow-spring), opacity .2s;
+}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy):hover::before{width:20px;opacity:.85}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy)::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%, color-mix(in srgb,#fff 35%,transparent) 48%, transparent 66%);
+  transform:translateX(-120%);
+  transition:transform .55s var(--wow-ease);
+  pointer-events:none;
+}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy):hover::after{transform:translateX(120%)}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy):hover{transform:translateY(-1px);filter:brightness(1.08)}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy):active{transform:scale(.94)}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy) span{font-size:10px !important;font-weight:700;letter-spacing:.04em;line-height:1.1}
+#topbar .tv-trade-pill :is(.trade-sell,.trade-buy) span[id^="price-"]{font-size:9.5px !important;opacity:.78;font-weight:600;margin:0 !important;font-variant-numeric:tabular-nums}
+#topbar .trade-spread{font-size:9px;font-weight:700;letter-spacing:.08em}
+#trade-inline-qty{
+  border-radius:999px !important;
+  transition:box-shadow .2s var(--wow-ease);
+}
+#trade-inline-qty:focus{outline:none;box-shadow:0 0 0 2px var(--text)}

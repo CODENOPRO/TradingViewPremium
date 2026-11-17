@@ -23,13 +23,16 @@ if not errorlevel 1 (
   pause
   exit /b 1
 )
-start "Trading Terminal Backend" /min "%TERMINAL_PYTHON%" "%~dp0backend\bridge_server.py"
+rem Run the backend without a console and keep diagnostics in backend\backend.log.
+"%TERMINAL_PYTHON%" -c "import subprocess, sys; log = open('backend/backend.log', 'ab'); subprocess.Popen([sys.executable, 'backend/bridge_server.py'], stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, creationflags=subprocess.CREATE_NO_WINDOW); log.close()"
+if errorlevel 1 goto backend_failed
 for /l %%i in (1,1,8) do (
   "%TERMINAL_PYTHON%" -c "import json,urllib.request; h=json.load(urllib.request.urlopen('http://127.0.0.1:3000/health',timeout=1)); raise SystemExit(h.get('service')!='trading-terminal')" >nul 2>&1
   if not errorlevel 1 goto ready
   timeout /t 1 /nobreak >nul
 )
-echo Backend did not start. Check the error above.
+:backend_failed
+echo Backend did not start. See backend\backend.log for details.
 pause
 exit /b 1
 :ready

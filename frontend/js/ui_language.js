@@ -31,7 +31,6 @@ Alerts|Cảnh báo
 Events|Sự kiện
 Toolbars|Thanh công cụ
 Reduce motion|Giảm chuyển động
-Follow system|Theo hệ thống
 On|Bật
 Off|Tắt
 Chart toolbars|Thanh công cụ biểu đồ
