@@ -8837,9 +8837,17 @@ const DrawingModel = (() => {
     const edge=rounded < 0 ? 0 : chart.bars.length-1;
     return chart.bars[edge].time+(rounded-edge)*chart.tfSeconds;
   }
+  function logicalToX(ts, logical) {
+    if (logical === null || !Number.isFinite(logical)) return null;
+    const i0 = Math.floor(logical), frac = logical - i0;
+    if (Math.abs(frac) < 1e-6) return ts.logicalToCoordinate(i0);
+    const x0 = ts.logicalToCoordinate(i0), x1 = ts.logicalToCoordinate(i0 + 1);
+    if (Number.isFinite(x0) && Number.isFinite(x1)) return x0 + frac * (x1 - x0);
+    return ts.logicalToCoordinate(Math.round(logical));
+  }
   function point(chart, p) {
     const logical = logicalIndex(chart,p.time);
-    return { x:logical === null ? null : chart.chart.timeScale().logicalToCoordinate(logical), y:chart.series.priceToCoordinate(p.price) };
+    return { x:logical === null ? null : logicalToX(chart.chart.timeScale(), logical), y:chart.series.priceToCoordinate(p.price) };
   }
   function fromPixel(chart, x, y, continuous=false) {
     const time=timeAt(chart,chart.chart.timeScale().coordinateToLogical(x),continuous);
@@ -9328,7 +9336,8 @@ const DrawingModel = (() => {
       let exitBar=null,exitPrice=null;
       for(let i=0;i<bars.length;i++){
         const b=bars[i];
-        if(b.time<d.p1.time)continue;
+        const barEnd=bars[i+1]?.time??(b.time+(chart.tfSeconds||60));
+        if(barEnd<=d.p1.time)continue;
         if(b.time>d.p2.time)break;
         exitBar=b;exitPrice=b.close;
         if(isLong){
@@ -9342,26 +9351,27 @@ const DrawingModel = (() => {
       if(exitBar&&Number.isFinite(exitPrice)){
         const exitPt=point(chart,{time:exitBar.time,price:exitPrice});
         if(Number.isFinite(exitPt.x)&&Number.isFinite(exitPt.y)){
+          const exX=Math.max(boxLeft,Math.min(boxLeft+span,exitPt.x));
           const inProfit=isLong?exitPrice>=d.p1.price:exitPrice<=d.p1.price;
           const exTop=Math.min(entry,exitPt.y),exH=Math.max(1,Math.abs(exitPt.y-entry));
           if(drawBg){
             ctx.fillStyle=rgba(inProfit?d.profitColor:d.stopColor,Math.min(45,(inProfit?d.profitOpacity:d.stopOpacity)*0.95));
-            ctx.fillRect(boxLeft,exTop,Math.max(1,exitPt.x-boxLeft),exH);
+            ctx.fillRect(boxLeft,exTop,Math.max(1,exX-boxLeft),exH);
           }
           if(drawFg){
             ctx.save();
             ctx.strokeStyle='rgba(120, 123, 134, 0.78)';
             ctx.lineWidth=1.5;
             ctx.setLineDash([5,4]);
-            line(boxLeft,entry,exitPt.x,exitPt.y);
+            line(boxLeft,entry,exX,exitPt.y);
             ctx.setLineDash([]);
-            const dx=exitPt.x-boxLeft,dy=exitPt.y-entry,len=Math.hypot(dx,dy);
+            const dx=exX-boxLeft,dy=exitPt.y-entry,len=Math.hypot(dx,dy);
             if(len>10){
               const ux=dx/len,uy=dy/len,sz=7;
               ctx.beginPath();
-              ctx.moveTo(exitPt.x-(ux*sz-uy*4.5),exitPt.y-(uy*sz+ux*4.5));
-              ctx.lineTo(exitPt.x,exitPt.y);
-              ctx.lineTo(exitPt.x-(ux*sz+uy*4.5),exitPt.y-(uy*sz-ux*4.5));
+              ctx.moveTo(exX-(ux*sz-uy*4.5),exitPt.y-(uy*sz+ux*4.5));
+              ctx.lineTo(exX,exitPt.y);
+              ctx.lineTo(exX-(ux*sz+uy*4.5),exitPt.y-(uy*sz-ux*4.5));
               ctx.stroke();
             }
             ctx.restore();

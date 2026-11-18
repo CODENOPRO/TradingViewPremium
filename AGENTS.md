@@ -9451,3 +9451,7 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
     3. Triggered `_requestPrimitiveUpdate()` on direct `renderDrawings()` calls so bottom & top layers stay synchronized on every native frame.
     4. Added chart-background text halo (`qtText`) behind QT labels (`Q1–Q4`, `True Open`, `SSMT`) so they read cleanly over wicks and lines.
   - Verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Fix Cross-Timeframe Drawing & Position Coordinates**:
+  - Added `logicalToX(ts, logical)` in `frontend/js/drawing_model.js` and `frontend/index.html` to linearly interpolate between `Math.floor(logical)` and `Math.floor(logical) + 1` (Lightweight Charts `logicalToCoordinate()` returns `0` for fractional logical indices when 1m drawing anchors fall mid-bar on 5m/15m/1h).
+  - Updated `position` exit-bar scanning to include the containing HTF bar (`barEnd > d.p1.time`) and clamp `exX` to `[boxLeft, boxLeft + span]`.
+  - Verified in Playwright Edge (`1m -> 5m` position `ax: 189, bx: 208.2`, `ERRORS: []`) and `node --test tests/*.test.cjs` (169/169 passed).
