@@ -11,6 +11,7 @@ class DrawingSettings {
   static STROKE_SPECS = [
     { id: 'border', label: 'Border', types: 'box,line,hline,vline,fib,position,measure,brush', colorPath: 'borderColor', opacityPath: 'strokeOpacity', widthPath: 'width', stylePath: 'lineStyle', syncColor: true },
     { id: 'middleLine', label: 'Middle line', types: 'box', checkPath: 'middleLine.enabled', colorPath: 'middleLine.color', opacityPath: 'middleLine.opacity', widthPath: 'middleLine.width', stylePath: 'middleLine.style' },
+    { id: 'fibTrendline', label: 'Trend line', types: 'fib', checkPath: 'fibTrendline.visible', colorPath: 'fibTrendline.color', opacityPath: 'fibTrendline.opacity', widthPath: 'fibTrendline.width', stylePath: 'fibTrendline.style' },
     { id: 'fill', label: 'Background', types: 'box,measure,brush', checkPath: 'fillEnabled', colorPath: 'fillColor', opacityPath: 'fillOpacity' },
     { id: 'profit', label: 'Profit zone', types: 'position', colorPath: 'profitColor', opacityPath: 'profitOpacity' },
     { id: 'stop', label: 'Stop zone', types: 'position', colorPath: 'stopColor', opacityPath: 'stopOpacity' },
@@ -63,7 +64,15 @@ class DrawingSettings {
         ${tvRow('<span>Account size</span>', '<input type="number" step="any" min="1" data-field="accountSize" aria-label="Account size">', 'position')}
         ${tvRow('<span>Risk</span>', `<div class="tv-align-pair"><input type="number" step="any" min="0.01" data-field="risk" aria-label="Risk"><select data-field="riskDisplayMode" aria-label="Risk display mode">${selectOpts([['money', 'Money ($)'], ['percents', 'Percent (%)']])}</select></div>`, 'position')}
         ${tvRow('<span>Stats display</span>', `<div class="drawing-line-stats">${check('Always show stats', 'alwaysShowStats')}${check('Compact stats', 'compact')}${check('Price labels', 'showPriceLabels')}</div>`, 'position')}
-        ${tvRow('<span>Levels</span>', '<input id="drawing-levels" type="text" placeholder="0, 0.236, 0.382, 0.5, 0.618, 0.786, 1">', 'fib')}
+        ${tvRow('<label class="tv-check-label"><input data-field="fibTrendline.visible" type="checkbox"><span>Trend line</span></label>', pillHtml('fibTrendline'), 'fib')}
+        <div data-types="fib" class="fib-levels-section"><div id="drawing-fib-levels" class="fib-levels-grid"></div></div>
+        ${tvRow('<label class="tv-check-label"><input id="drawing-fib-onecolor" type="checkbox"><span>Use one color</span></label>', '<input id="drawing-fib-allcolor" type="color" value="#787b86" aria-label="Use one color">', 'fib')}
+        ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', '<input type="range" min="0" max="100" step="1" data-field="fillOpacity" aria-label="Background opacity">', 'fib')}
+        ${tvRow('<span>Reverse</span>', '<input type="checkbox" data-field="reverse" aria-label="Reverse">', 'fib')}
+        ${tvRow('<span>Prices</span>', '<input type="checkbox" data-field="showPrices" aria-label="Prices">', 'fib')}
+        ${tvRow('<label class="tv-check-label"><input data-field="showCoeffs" type="checkbox"><span>Levels</span></label>', `<select data-field="coeffsAsPercents" aria-label="Levels format">${selectOpts([['false', 'Values'], ['true', 'Percents']])}</select>`, 'fib')}
+        ${tvRow('<span>Labels</span>', `<div class="tv-align-pair"><select data-field="horzLabelsAlign" aria-label="Horizontal labels align">${selectOpts([['left', 'Left'], ['center', 'Center'], ['right', 'Right']])}</select><select data-field="vertLabelsAlign" aria-label="Vertical labels align">${selectOpts([['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']])}</select></div>`, 'fib')}
+        ${tvRow('<span>Font size</span>', `<select data-field="labelFontSize" aria-label="Font size">${[8, 10, 11, 12, 14, 16, 18, 20, 22, 24].map(n => `<option value="${n}">${n}</option>`).join('')}</select>`, 'fib')}
         <div data-types="line" class="drawing-stats-group"><div class="tv-section-label">Stats</div><div class="drawing-line-stats">${check('Price range', 'stats.price')}${check('Percent change', 'stats.percent')}${check('Bars range', 'stats.bars')}${check('Date / time range', 'stats.time')}${check('Middle point', 'stats.middle')}</div></div>
       </div>
       <div class="modal-body drawing-panel" data-panel="text" hidden>
@@ -370,7 +379,7 @@ class DrawingSettings {
     this.root.querySelector('#drawing-title-input').hidden = true;
     this.root.querySelector('#drawing-settings-title').hidden = false;
     this.root.querySelector('#drawing-rename').hidden = false;
-    const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', vline: 'Line', fib: 'Trend line', position: 'Entry line', brush: 'Line' };
+    const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', vline: 'Line', fib: 'Levels line', position: 'Entry line', brush: 'Line' };
     const titleLabel = this.draft.title || (drawing.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[drawing.type]) || drawing.type;
     this.root.querySelector('#drawing-settings-title').textContent = typeof ui === 'function' ? ui(titleLabel) : titleLabel;
     const strokeText = strokeLabels[drawing.type] || 'Border / Line';
@@ -434,7 +443,41 @@ class DrawingSettings {
     }
     this.root.querySelectorAll('[data-mirror]').forEach(input => input.value = this.value(input.dataset.mirror));
     this.root.querySelector('#drawing-text').value = this.draft.text || '';
-    this.root.querySelector('#drawing-levels').value = this.draft.levels.join(', ');
+    const legacyLevels = this.root.querySelector('#drawing-levels');
+    if (legacyLevels) legacyLevels.value = (this.draft.levels || []).join(', ');
+    const fibGrid = this.root.querySelector('#drawing-fib-levels');
+    if (fibGrid && this.draft.type === 'fib') {
+      fibGrid.replaceChildren();
+      const levels = this.draft.fibLevels || DrawingModel.defaults('fib').fibLevels;
+      this.draft.fibLevels = levels;
+      levels.forEach((lv, idx) => {
+        const cell = document.createElement('div');
+        cell.className = 'fib-level-item';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox'; cb.checked = lv.visible !== false;
+        cb.onchange = () => { lv.visible = cb.checked; this.preview(); };
+        const num = document.createElement('input');
+        num.type = 'number'; num.step = 'any'; num.value = String(lv.coeff ?? 0);
+        num.oninput = () => { const v = Number(num.value); if (Number.isFinite(v)) { lv.coeff = v; this.preview(); } };
+        const col = document.createElement('input');
+        col.type = 'color'; col.value = DrawingModel.hex(lv.color || '#787b86');
+        col.oninput = () => { lv.color = col.value; this.preview(); };
+        cell.append(cb, num, col);
+        fibGrid.appendChild(cell);
+      });
+      const oneCb = this.root.querySelector('#drawing-fib-onecolor');
+      const allCol = this.root.querySelector('#drawing-fib-allcolor');
+      if (oneCb && allCol) {
+        const applyAll = () => {
+          if (!oneCb.checked) return;
+          for (const lv of levels) lv.color = allCol.value;
+          fibGrid.querySelectorAll('input[type="color"]').forEach(c => { c.value = allCol.value; });
+          this.preview();
+        };
+        oneCb.onchange = applyAll;
+        allCol.oninput = () => { oneCb.checked = true; applyAll(); };
+      }
+    }
     this.root.querySelectorAll('[data-point]').forEach(input => {
       const point = this.draft[input.dataset.point];
       if (!point) return;
@@ -446,17 +489,21 @@ class DrawingSettings {
   read() {
     this.root.querySelectorAll('[data-field]').forEach(input => {
       if (input.closest('[data-types]')?.hidden) return;
-      const isNum = input.type === 'number' || input.type === 'range' || input.dataset.field === 'textStyle.size';
-      const value = input.type === 'checkbox' ? input.checked : isNum ? Number(input.value) : input.value;
+      const isNum = input.type === 'number' || input.type === 'range' || input.dataset.field === 'textStyle.size' || input.dataset.field === 'labelFontSize';
+      const isBool = input.dataset.field === 'coeffsAsPercents';
+      const value = input.type === 'checkbox' ? input.checked : isBool ? input.value === 'true' : isNum ? Number(input.value) : input.value;
       if (isNum && (input.value === '' || !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Value out of range.') : 'Value out of range.');
       if ((input.type === 'number' || input.type === 'range') && ((input.min !== '' && value < Number(input.min)) || (input.max !== '' && value > Number(input.max)))) throw new Error(typeof ui === 'function' ? ui('Value out of range.') : 'Value out of range.');
       this.assign(input.dataset.field, value);
     });
     for (const [name, rule] of Object.entries(this.draft.visibility)) if (rule.min > rule.max) throw new Error(`${name}: ${typeof ui === 'function' ? ui('minimum must be ≤ maximum.') : 'minimum must be ≤ maximum.'}`);
     this.draft.text = this.root.querySelector('#drawing-text').value;
-    const levels = this.root.querySelector('#drawing-levels').value.split(',').map(value => Number(value.trim()));
-    if (!levels.length || levels.length > 30 || levels.some(value => !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Invalid Fib levels.') : 'Invalid Fib levels.');
-    this.draft.levels = levels;
+    const legacyLevelsEl = this.root.querySelector('#drawing-levels');
+    if (legacyLevelsEl) {
+      const levels = legacyLevelsEl.value.split(',').map(value => Number(value.trim()));
+      if (!levels.length || levels.length > 30 || levels.some(value => !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Invalid Fib levels.') : 'Invalid Fib levels.');
+      this.draft.levels = levels;
+    }
     const brushAnchor = this.draft.type === 'brush' ? { ...this.draft.p1 } : null;
     this.root.querySelectorAll('[data-point]').forEach(input => {
       if (input.hidden) return;

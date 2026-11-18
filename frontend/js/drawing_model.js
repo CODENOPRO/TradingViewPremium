@@ -1,6 +1,33 @@
 /* Drawing properties are plain data so saved workspaces and templates share one format. */
 const DrawingModel = (() => {
   const DEFAULT_FONT = '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';
+  const DEFAULT_FIB_LEVELS = [
+    { coeff: 0, color: '#787b86', visible: true },
+    { coeff: 0.236, color: '#f23645', visible: true },
+    { coeff: 0.382, color: '#ff9800', visible: true },
+    { coeff: 0.5, color: '#4caf50', visible: true },
+    { coeff: 0.618, color: '#089981', visible: true },
+    { coeff: 0.786, color: '#00bcd4', visible: true },
+    { coeff: 1, color: '#787b86', visible: true },
+    { coeff: 1.618, color: '#2962ff', visible: true },
+    { coeff: 2.618, color: '#f23645', visible: true },
+    { coeff: 3.618, color: '#9c27b0', visible: true },
+    { coeff: 4.236, color: '#e91e63', visible: true },
+    { coeff: 1.272, color: '#ff9800', visible: false },
+    { coeff: 1.414, color: '#f23645', visible: false },
+    { coeff: 2, color: '#00bcd4', visible: false },
+    { coeff: 2.272, color: '#ff9800', visible: false },
+    { coeff: 2.414, color: '#4caf50', visible: false },
+    { coeff: 3, color: '#00bcd4', visible: false },
+    { coeff: 3.272, color: '#787b86', visible: false },
+    { coeff: 3.414, color: '#2962ff', visible: false },
+    { coeff: 4, color: '#f23645', visible: false },
+    { coeff: 4.272, color: '#9c27b0', visible: false },
+    { coeff: 4.414, color: '#e91e63', visible: false },
+    { coeff: 4.618, color: '#ff9800', visible: false },
+    { coeff: 4.764, color: '#089981', visible: false }
+  ];
+  const cloneFibLevels = () => DEFAULT_FIB_LEVELS.map(l => ({ ...l }));
   const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', vline:'Vertical Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure', brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
   const defaultVis = Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }]));
@@ -8,11 +35,13 @@ const DrawingModel = (() => {
   function baseDefaults(type) {
     return baseDefaultsCache[type] || (baseDefaultsCache[type] = {
       title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, anchored:false, showTime:true, smooth:5,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:type==='fib'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, anchored:false, showTime:true, smooth:5,
+      fibTrendline:{ visible:true, color:'#787b86', width:1, style:'dashed', opacity:100 },
+      reverse:false, showCoeffs:true, showPrices:true, coeffsAsPercents:false, horzLabelsAlign:'left', vertLabelsAlign:'middle', labelFontSize:12,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
       textStyle:{ color:type==='text'||type==='vline'?'#2962ff':type==='position'?'#ffffff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
-      levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
+      levels:[0,0.236,0.382,0.5,0.618,0.786,1], fibLevels:cloneFibLevels(), riskReward:2,
       side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
       visibility:defaultVis
     });
@@ -22,6 +51,8 @@ const DrawingModel = (() => {
     const normalized = {
       ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
       stats:value.stats ? { ...base.stats, ...value.stats } : base.stats,
+      fibTrendline:value.fibTrendline ? { ...base.fibTrendline, ...value.fibTrendline } : base.fibTrendline,
+      fibLevels:Array.isArray(value.fibLevels) ? value.fibLevels.map((l,i)=>({ ...(DEFAULT_FIB_LEVELS[i]||{color:'#787b86',visible:true}), ...l })) : (Array.isArray(value.levels)&&value.type==='fib' ? value.levels.map((c,i)=>({ coeff:c, color:(DEFAULT_FIB_LEVELS.find(x=>x.coeff===c)||DEFAULT_FIB_LEVELS[i%DEFAULT_FIB_LEVELS.length]).color, visible:true })) : base.fibLevels),
       middleLine:value.middleLine ? { ...base.middleLine, ...value.middleLine } : base.middleLine,
       textStyle:value.textStyle ? { ...base.textStyle, ...value.textStyle } : base.textStyle,
       visibility:value.visibility ? Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) : base.visibility
@@ -41,18 +72,22 @@ const DrawingModel = (() => {
   }
   function defaults(type) {
     return { title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, anchored:false, showTime:true, smooth:5,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:type==='fib'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, anchored:false, showTime:true, smooth:5,
+      fibTrendline:{ visible:true, color:'#787b86', width:1, style:'dashed', opacity:100 },
+      reverse:false, showCoeffs:true, showPrices:true, coeffsAsPercents:false, horzLabelsAlign:'left', vertLabelsAlign:'middle', labelFontSize:12,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
       textStyle:{ color:type==='text'||type==='vline'?'#2962ff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
-      levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
+      levels:[0,0.236,0.382,0.5,0.618,0.786,1], fibLevels:cloneFibLevels(), riskReward:2,
       side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
       visibility:Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }])) };
   }
   function normalize(value) {
     const base = defaults(value.type);
     const normalized={ ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
-      stats:{ ...base.stats, ...value.stats }, middleLine:{ ...base.middleLine, ...value.middleLine }, textStyle:{ ...base.textStyle, ...value.textStyle },
+      stats:{ ...base.stats, ...value.stats }, fibTrendline:{ ...base.fibTrendline, ...value.fibTrendline },
+      fibLevels:Array.isArray(value.fibLevels) ? value.fibLevels.map((l,i)=>({ ...(DEFAULT_FIB_LEVELS[i]||{color:'#787b86',visible:true}), ...l })) : (Array.isArray(value.levels)&&value.type==='fib' ? value.levels.map((c,i)=>({ coeff:c, color:(DEFAULT_FIB_LEVELS.find(x=>x.coeff===c)||DEFAULT_FIB_LEVELS[i%DEFAULT_FIB_LEVELS.length]).color, visible:true })) : cloneFibLevels()),
+      middleLine:{ ...base.middleLine, ...value.middleLine }, textStyle:{ ...base.textStyle, ...value.textStyle },
       visibility:Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) };
     if(normalized.type==='position'&&!value._statsV2){
       normalized.alwaysShowStats=false;
@@ -489,7 +524,48 @@ const DrawingModel = (() => {
       if(d.strokeOpacity>0&&d.width>0&&d.borderColor!=='transparent')ctx.strokeRect(left,top,right-left,bottom-top);
       if(d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=d.middleLine.width;ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
     } else if(d.type === 'fib') {
-      for(const level of d.levels){const y=g.a.y+(g.b.y-g.a.y)*level;line(left,y,right,y);ctx.fillStyle=rgba(d.borderColor,d.strokeOpacity);ctx.font='10px Arial';ctx.fillText(`${level} (${(d.p1.price+(d.p2.price-d.p1.price)*level).toFixed(2)})`,left+4,y-4);}
+      const levels=(d.fibLevels||cloneFibLevels()).filter(l=>l&&l.visible!==false&&Number.isFinite(Number(l.coeff))).map(l=>({coeff:Number(l.coeff),color:l.color||d.borderColor||'#787b86'})).sort((a,b)=>a.coeff-b.coeff);
+      const basePrice=d.reverse?d.p1.price:d.p2.price,endPrice=d.reverse?d.p2.price:d.p1.price;
+      const baseY=d.reverse?g.a.y:g.b.y,endY=d.reverse?g.b.y:g.a.y;
+      const pts=levels.map(l=>({ ...l, y:baseY+(endY-baseY)*l.coeff, price:basePrice+(endPrice-basePrice)*l.coeff }));
+      if(d.fillEnabled&&pts.length>1){
+        for(let i=1;i<pts.length;i++){
+          const prev=pts[i-1],cur=pts[i];
+          ctx.fillStyle=rgba(cur.color,d.fillOpacity??20);
+          ctx.fillRect(left,Math.min(prev.y,cur.y),right-left,Math.abs(cur.y-prev.y));
+        }
+      }
+      if(d.fibTrendline?.visible!==false){
+        const tl=d.fibTrendline||{};
+        ctx.save();
+        ctx.strokeStyle=rgba(tl.color||'#787b86',tl.opacity??100);
+        ctx.lineWidth=tl.width||1;
+        ctx.setLineDash(dash(tl.style||'dashed'));
+        line(g.a.x,g.a.y,g.b.x,g.b.y);
+        ctx.restore();
+      }
+      const tick=chart.metadata?.tickSize;
+      const prec=Number.isFinite(tick)&&tick>0?Math.max(0,(String(tick).split('.')[1]||'').length):2;
+      const fSize=d.labelFontSize||12;
+      const hAlign=d.horzLabelsAlign||'left',vAlign=d.vertLabelsAlign||'middle';
+      ctx.font=`${fSize}px ${DEFAULT_FONT}`;
+      ctx.textAlign=hAlign==='right'?'right':hAlign==='center'?'center':'left';
+      ctx.textBaseline=vAlign==='top'?'bottom':vAlign==='bottom'?'top':'middle';
+      const labelX=hAlign==='right'?(right-4):hAlign==='center'?((left+right)/2):(left+4);
+      const labelOffY=vAlign==='top'?-3:vAlign==='bottom'?3:0;
+      ctx.lineWidth=d.width||1;
+      ctx.setLineDash(dash(d.lineStyle||'solid'));
+      for(const lv of pts){
+        ctx.strokeStyle=rgba(lv.color,d.strokeOpacity??100);
+        line(left,lv.y,right,lv.y);
+        const parts=[];
+        if(d.showCoeffs!==false)parts.push(d.coeffsAsPercents?`${Number((lv.coeff*100).toFixed(2))}%`:String(lv.coeff));
+        if(d.showPrices!==false)parts.push(`(${lv.price.toFixed(prec)})`);
+        if(parts.length){
+          ctx.fillStyle=rgba(lv.color,d.strokeOpacity??100);
+          ctx.fillText(parts.join(' '),labelX,lv.y+labelOffY);
+        }
+      }
     } else if(d.type === 'position'&&g.c) {
       const boxLeft=g.a.x,span=Math.max(30,g.b.x-g.a.x),entry=g.a.y,target=g.b.y,stop=g.c.y;
       const isLong=d.side==='short'?false:(d.side==='long'?true:d.p2.price>=d.p1.price);

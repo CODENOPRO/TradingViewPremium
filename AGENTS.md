@@ -1196,6 +1196,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
 
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
@@ -1205,6 +1213,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
+
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
 - File đã sửa: `frontend/js/chart_engine.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1223,6 +1239,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
 
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
@@ -1232,6 +1256,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
+
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
 - File đã sửa: `frontend/js/chart_engine.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1250,6 +1282,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
 
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
@@ -1259,6 +1299,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
+
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 - File đã sửa: `frontend/index.html`, `frontend/js/chart_engine.js`, `frontend/js/desktop_shell.js`, `frontend/js/paper_panel.js`, `frontend/js/ui_language.js`, `AGENTS.md`.
 - Thay đổi:
   1. Gỡ bỏ 3 khối `.chart-nav-controls` (`-`, `+`, `<`, `>`, `reset`) trong `#box-1`/`#box-2`/`#box-3` và bỏ gọi `this.initNavControls()` trong `chart_engine.js`.
@@ -1283,6 +1331,14 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
 
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
@@ -1292,3 +1348,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
 - Thay đổi: thêm nút neo (`data-action="anchor"`, icon ⚓) trên thanh công cụ nổi của Text và checkbox `Anchor` (`Ghim vị trí`) trong tab Text của `DrawingSettings`; khi bật `anchored: true`, chữ được neo cố định theo tọa độ màn hình (`anchorX`, `anchorY`) nên đứng im một chỗ khi di chuyển/zoom chart, và tự động chuyển đổi qua lại giữa tọa độ màn hình và tọa độ giá/thời gian khi bật/tắt.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **168/168 passed**.
+
+### 2026-11-19 — Làm lại toàn bộ Fib Retracement theo đúng `LineToolFibRetracement` của TradingView Desktop (CDP `:9222`)
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_settings.js`, `frontend/js/ui_language.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
+  2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
+  3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.

@@ -91,6 +91,10 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 #drawing-settings{--accent:#eef0f4;background:rgba(0,0,0,.44)}
 #drawing-settings [hidden]{display:none!important}
 #drawing-settings .drawing-dialog{zoom:var(--toolbar-scale,1);width:400px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#d8dce3;border:1px solid rgba(255,255,255,.11)!important;border-radius:14px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
+.fib-levels-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding:6px 0 10px}
+.fib-level-item{display:flex;align-items:center;gap:6px}
+.fib-level-item input[type="number"]{width:64px;padding:4px 6px;font-size:12px}
+.fib-level-item input[type="color"]{width:24px;height:24px;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:4px;background:transparent;cursor:pointer}
 #drawing-settings .modal-header{padding:18px 20px 10px;border:0;align-items:center;gap:10px}
 #drawing-settings .drawing-title-wrap{display:flex;align-items:center;gap:8px;min-width:0}
 #drawing-settings-title{font-size:18px;font-weight:600;color:#e3e6ec;letter-spacing:-.01em}

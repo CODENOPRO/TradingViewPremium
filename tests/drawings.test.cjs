@@ -476,3 +476,28 @@ test('Anchored text keeps fixed screen coordinates regardless of chart pan/zoom'
   const g = DrawingModel.geometry(chart, anchored);
   assert.deepEqual(g.a, { x: 123, y: 45 });
 });
+
+test('TradingView Fib Retracement renders 24-level bands, trendline, reverse mode, and percent labels', () => {
+  const fDef = DrawingModel.defaults('fib');
+  assert.equal(fDef.fibLevels.length, 24);
+  assert.equal(fDef.fibTrendline.visible, true);
+  assert.equal(fDef.showCoeffs, true);
+  assert.equal(fDef.showPrices, true);
+
+  const chart = {
+    currentTimeframe: '1m', tfSeconds: 60, bars: [{ time: 60 }, { time: 120 }],
+    container: { clientWidth: 600, clientHeight: 400 }, plotHeight: 374,
+    metadata: { tickSize: 0.25 },
+    chart: { priceScale: () => ({ width: () => 60 }), timeScale: () => ({ logicalToCoordinate: i => 60 + i * 60 }) },
+    series: { priceToCoordinate: p => 300 - p }
+  };
+  const texts = [];
+  let fills = 0;
+  const ctx = {
+    save() {}, restore() {}, setLineDash() {}, beginPath() {}, moveTo() {}, lineTo() {}, stroke() {},
+    fillRect() { fills++; }, fillText(t) { texts.push(t); }
+  };
+  DrawingModel.draw(ctx, chart, { ...fDef, id: 'f1', type: 'fib', p1: { time: 60, price: 200 }, p2: { time: 120, price: 100 }, coeffsAsPercents: true });
+  assert.ok(fills > 0, 'Fib background bands should render');
+  assert.ok(texts.some(t => t.startsWith('61.8% (161.80)')), 'Fib should format percent + price from p2 to p1');
+});

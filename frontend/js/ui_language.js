@@ -335,6 +335,14 @@ Vertical Line|Đường dọc
 Vertical line|Đường dọc
 Text wrap|Xuống dòng tự động
 Anchor|Ghim vị trí
+Levels line|Đường mức
+Use one color|Dùng một màu
+Reverse|Đảo ngược
+Prices|Giá
+Values|Giá trị
+Percents|Phần trăm
+Labels|Nhãn
+Font size|Cỡ chữ
 Text orientation|Hướng chữ
 Horizontal|Ngang
 Vertical|Dọc
