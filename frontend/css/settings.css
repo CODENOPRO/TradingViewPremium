@@ -32,7 +32,7 @@
 }
 #settings-modal.modal.show { display: flex; }
 
-#settings-modal > .tv-chart-color-popover { pointer-events: auto; }
+#settings-modal > :is(.tv-chart-color-popover, .tv-indi-popover, .tv-style-popover) { pointer-events: auto; }
 
 #settings-modal .chart-settings-dialog {
   zoom: var(--toolbar-scale, 1);

@@ -4487,7 +4487,7 @@ body:not(.reduce-motion) #indicator-modal.show:not(.studio-editing) > .modal-con
 }
 #settings-modal.modal.show { display: flex; }
 
-#settings-modal > .tv-chart-color-popover { pointer-events: auto; }
+#settings-modal > :is(.tv-chart-color-popover, .tv-indi-popover, .tv-style-popover) { pointer-events: auto; }
 
 #settings-modal .chart-settings-dialog {
   zoom: var(--toolbar-scale, 1);
@@ -6556,7 +6556,7 @@ html #topbar.qt-hot #btn-indicator{box-shadow:0 0 0 1px color-mix(in srgb,var(--
 }
 #qt-settings-modal.modal.show { display: flex; }
 
-#qt-settings-modal > .tv-chart-color-popover { pointer-events: auto; }
+#qt-settings-modal > :is(.tv-chart-color-popover, .tv-indi-popover, .tv-style-popover) { pointer-events: auto; }
 
 #qt-settings-modal .chart-settings-dialog {
   zoom: var(--toolbar-scale, 1);

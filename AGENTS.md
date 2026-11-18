@@ -9437,3 +9437,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — True Open Strict Timeframe Scoping**:
   - Updated `frontend/js/qt_cycles_trueopen.js` so each chart timeframe renders only its own True Open tier (`1m`/`3m` -> `TMCO`, `5m` -> `90 Open` `TAO/TLO/TNY AM/TNY PM`, `15m`/`30m` -> `TDO`, `1h` -> `TWO`, `4h` -> `TMO`, `6h` -> `TQO`, `1D`/`1W` -> `TYO`) instead of piling all higher-TF True Opens onto LTF charts.
   - Updated `tests/qt_engine.test.cjs` and verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Fix QT Settings Color Picker Pointer Events**:
+  - Updated `frontend/css/wow_overrides.css`, `frontend/css/settings.css`, and `frontend/index.html` so `#qt-settings-modal > :is(.tv-chart-color-popover, .tv-indi-popover, .tv-style-popover)` and `#settings-modal > :is(...)` explicitly set `pointer-events: auto` (previously `.tv-indi-popover` inherited `pointer-events: none` from `#qt-settings-modal.modal`, blocking color swatch clicks).
+  - Verified in Playwright Edge (`rgb(242, 54, 69)`, `ERRORS: []`) and `node --test tests/*.test.cjs` (169/169 passed).
