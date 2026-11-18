@@ -53,6 +53,18 @@ class WarmupTests(unittest.IsolatedAsyncioTestCase):
   w.keep_one_minute=True;w.request(['1m']);await w.cycle()
   self.assertEqual(state['interval'],'1')
   self.assertEqual(reports[-1]['state'],'complete')
+ async def test_quick_boundary_sync_captures_htf_and_restores_1m_immediately(self):
+  state={'interval':'1'};changes=[];accepted=[];reports=[]
+  async def read():return state['interval']
+  async def change(expected,value):self.assertEqual(state['interval'],expected);state['interval']=value;changes.append(value)
+  async def snapshot():return [{'symbol':s,'resolution':state['interval'],'bars':[{'time':900}]} for s in ['NQ1!','ES1!','YM1!']]
+  async def history():return {'complete':False,'loading':True}
+  w=NativeWarmup(read,change,snapshot,history,accepted.extend,reports.append)
+  w.keep_one_minute=True;w.request(['15m'],priority=True,quick=True);await w.cycle()
+  self.assertEqual(changes,['15','1'])
+  self.assertEqual(state['interval'],'1')
+  self.assertEqual(len(accepted),3)
+  self.assertEqual(reports[-1]['state'],'complete')
 class DerivedSixHourTests(unittest.TestCase):
  def bars(self,date,hours):
   start=datetime.fromisoformat(date).replace(tzinfo=ZoneInfo('America/Chicago'))

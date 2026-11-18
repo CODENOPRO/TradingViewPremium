@@ -17219,7 +17219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inSession=TerminalTime.activeSession(now,active.metadata),sourceError=(bridge.sources||[]).find(s=>s.symbol===active.symbol&&s.timeframe===active.currentTimeframe&&s.error);
     const status=$('connection-status');
     const loading=bridge.native_loading;
-    const isLoading=bridge.state==='connected'&&loading?.state==='loading';
+    const isLoading=bridge.state==='connected'&&loading?.state==='loading'&&!loading?.quick;
     const isWaiting=loading?.state==='waiting'&&['connecting','connected'].includes(bridge.state);
     const ring=status.querySelector('.dock-load-ring');
     const label=$('connection-status-text');

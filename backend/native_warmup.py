@@ -32,6 +32,7 @@ class NativeWarmup:
         self.running = False
         self.finished = set()
         self.keep_one_minute = False
+        self.quick_tfs = set()
 
     def request_startup(self, initial=False):
         if initial:
@@ -40,11 +41,15 @@ class NativeWarmup:
             self.finished.discard('1m')
             self.request(['1m'], priority=True)
 
-    def request(self, timeframes, priority=False):
+    def request(self, timeframes, priority=False, quick=False):
         values = [tf for tf in dict.fromkeys(timeframes) if tf in NATIVE_INTERVALS and tf != self.active and not (self.running and tf in self.finished)]
         for tf in values:
             if tf in self.queue:
                 self.queue.remove(tf)
+        if quick:
+            self.quick_tfs.update(values)
+        else:
+            self.quick_tfs.difference_update(values)
         self.queue = values + self.queue if priority else self.queue + values
         if self.keep_one_minute and '1m' in self.queue:
             self.queue.remove('1m')
@@ -65,13 +70,14 @@ class NativeWarmup:
                 if await self.read() != expected:
                     raise SourceChanged('Source interval changed by user')
                 tf = self.queue.pop(0)
+                is_quick = tf in self.quick_tfs
                 self.active = tf
                 desired = NATIVE_INTERVALS[tf]
-                self.report({'state': 'loading', 'timeframe': tf, 'completed': done[:], 'remaining': self.queue[:], 'original_resolution': original})
+                self.report({'state': 'loading', 'timeframe': tf, 'quick': is_quick, 'completed': done[:], 'remaining': self.queue[:], 'original_resolution': original})
                 if expected != desired:
                     await self.change(expected, desired)
                 expected = desired
-                deadline = self.clock() + 120
+                deadline = self.clock() + (5 if is_quick else 120)
                 last_count = None
                 growth = self.clock()
                 captured = False
@@ -93,6 +99,11 @@ class NativeWarmup:
                         captured = True
                         last_count = counts
                         growth = self.clock()
+                    if ready and is_quick:
+                        if {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready} or self.clock() - growth >= 1.5:
+                            reason = 'quick_sync'
+                            complete = True
+                            break
                     if ready and self.keep_one_minute and tf == '1m' and not self.queue:
                         if {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready}:
                             reason = 'live_ready'
@@ -117,6 +128,7 @@ class NativeWarmup:
                 elif not complete:
                     warnings.append({'timeframe': tf, 'reason': reason, 'message': 'Đã lưu nến native nhận được; chưa xác nhận hết lịch sử'})
                 done.append(tf)
+                self.quick_tfs.discard(tf)
                 self.finished.add(tf)
                 self.active = None
         except SourceChanged:

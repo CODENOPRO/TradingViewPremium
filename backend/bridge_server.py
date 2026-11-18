@@ -149,12 +149,49 @@ def evaluate_target(target, expression):
                 return result.get('result', {}).get('value')
 
 
+TF_SECONDS = {'5m': 300, '15m': 900, '30m': 1800, '1h': 3600, '2h': 7200, '4h': 14400, 'D': 86400}
+_last_htf_sync = {}
+
+
 def enqueue_native(timeframes, priority=False):
     timeframes = ['1h' if tf == '6h' else tf for tf in timeframes]
     if native_warmup:
         native_warmup.request(timeframes, priority)
     else:
         pending_native.extend(tf for tf in timeframes if tf in NATIVE_INTERVALS and tf not in pending_native)
+
+
+def enqueue_quick_sync(timeframes):
+    if not native_warmup or native_warmup.running or status.get('state') != 'connected':
+        return
+    tfs = ['1h' if tf == '6h' else tf for tf in timeframes]
+    tfs = [tf for tf in dict.fromkeys(tfs) if tf != '1m' and tf in NATIVE_INTERVALS]
+    if not tfs:
+        return
+    native_warmup.keep_one_minute = True
+    native_warmup.finished.difference_update(tfs)
+    native_warmup.request(tfs, priority=True, quick=True)
+
+
+async def boundary_sync_loop():
+    while True:
+        await asyncio.sleep(10)
+        if not startup_preloaded or not native_warmup or native_warmup.running or status.get('state') != 'connected':
+            continue
+        now = time.time()
+        mono = time.monotonic()
+        active_tfs = {tf for pairs in subscriptions.values() for _, tf in pairs if tf != '1m'}
+        due = []
+        for tf in sorted(active_tfs):
+            sec = TF_SECONDS.get(tf)
+            if not sec:
+                continue
+            bucket = int(now // sec)
+            if (now % sec) >= 3 and _last_htf_sync.get(tf, (bucket, 0))[0] != bucket and mono - _last_htf_sync.get(tf, (0, 0))[1] >= 30:
+                _last_htf_sync[tf] = (bucket, mono)
+                due.append(tf)
+        if due:
+            enqueue_quick_sync(due)
 
 
 def enqueue_startup():
@@ -810,6 +847,20 @@ async def frontend_ws_handler(socket):
                     if request.get('action') == 'subscribe':
                         subscriptions[id(socket)] = validate_subscription(request.get('charts', []))
                         remember_requests()
+                        if startup_preloaded:
+                            now = time.time()
+                            mono = time.monotonic()
+                            due = []
+                            for _, tf in subscriptions[id(socket)]:
+                                if tf == '1m':
+                                    continue
+                                mapped = '1h' if tf == '6h' else tf
+                                sec = TF_SECONDS.get(mapped)
+                                if sec and mono - _last_htf_sync.get(mapped, (0, 0))[1] >= 45:
+                                    _last_htf_sync[mapped] = (int(now // sec), mono)
+                                    due.append(mapped)
+                            if due:
+                                enqueue_quick_sync(due)
                     elif request.get('action') == 'preload_native':
                         enqueue_native(list(NATIVE_INTERVALS))
                     elif request.get('action') == 'startup_native':
@@ -995,6 +1046,7 @@ async def main():
                         logging.warning('launch_tv.ps1 warning: %s', exc)
                 tasks.append(asyncio.create_task(automatic_sources()))
                 tasks.append(asyncio.create_task(native_warmup_loop()))
+                tasks.append(asyncio.create_task(boundary_sync_loop()))
             await asyncio.Event().wait()
     finally:
         for task in tasks:
