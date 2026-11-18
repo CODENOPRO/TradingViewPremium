@@ -113,6 +113,7 @@ class ChartSettings {
     this.nav=this.modal.querySelector('.chart-settings-nav');this.body=this.modal.querySelector('.chart-settings-body');this.error=this.modal.querySelector('.chart-settings-error');
     const tabs = [
       ['Theme', '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="d" d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1 .8-1.7 1.8-1.7H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle class="dot" cx="7.6" cy="11.2" r="1.1"/><circle class="dot" cx="10.4" cy="7.4" r="1.1"/><circle class="dot" cx="15" cy="7.6" r="1.1"/></svg>'],
+      ['Toolbars', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="3" y="4" width="18" height="5" rx="1.6"/><rect x="3" y="12" width="7" height="8" rx="1.6"/><rect x="13" y="12" width="8" height="8" rx="1.6"/></svg>'],
       ['Symbol', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v3m0 9v3m8-12v3m0 9v3"/><rect class="d" x="6" y="6" width="4" height="9" rx="1.2"/><rect x="14" y="9" width="4" height="9" rx="1.2"/></svg>'],
       ['Status line', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="3" y="4" width="18" height="16" rx="4"/><path d="M7.5 9h3.5M14 9h2.5M7.5 13.5h9"/></svg>'],
       ['Scales and lines', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M8 20v-2m4 2v-2m4 2v-2"/><path d="M7.5 14l3.5-4 3 2.5 4.2-6"/><circle class="dot" cx="18.2" cy="6.5" r="1.3"/></svg>'],
@@ -121,7 +122,6 @@ class ChartSettings {
       ['Alerts', '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="d" d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg>'],
       ['Events', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M8 3.5v4m8-4v4M4 10.5h16"/><circle class="dot" cx="12" cy="15" r="1.4"/></svg>'],
       ['Language', '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="d" cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>'],
-      ['Toolbars', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="3" y="4" width="18" height="5" rx="1.6"/><rect x="3" y="12" width="7" height="8" rx="1.6"/><rect x="13" y="12" width="8" height="8" rx="1.6"/></svg>'],
     ];
     for (const [name, icon] of tabs) {
       const button = document.createElement('button');
@@ -178,6 +178,7 @@ class ChartSettings {
     this.modal.querySelector('#close-settings').onclick=()=>this.cancel();this.modal.querySelector('#cancel-settings').onclick=()=>this.cancel();this.modal.querySelector('#save-settings').onclick=()=>this.commit();
     const resetBtn = this.modal.querySelector('#reset-dock-settings');
     if (resetBtn) resetBtn.onclick=()=>{
+      if(this.tab==='Toolbars'&&this.onToolbarReset){this.onToolbarReset();return;}
       this.draft=ChartAppearance.desktopProfile(null,{},this.chart.symbol);
       this.select(this.tab);
       this.preview();

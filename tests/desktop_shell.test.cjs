@@ -82,3 +82,53 @@ test('right-rail panels (DesktopShell and TerminalCompanions) close each other c
   shell.open(null,false);
   assert.equal(btns[0].active,true);
 });
+
+test('right-rail Paper Trading button syncs active/aria-expanded with #paper-panel.open and ChartEngine merges live 1m tail onto 5m',()=>{
+  let paperOpen=false;
+  const ctx=vm.createContext({
+    Workspace:{read:(_,d)=>d,write:()=>true},
+    ui:s=>s,
+    document:{
+      getElementById:id=>id==='paper-panel'?{classList:{contains:c=>c==='open'&&paperOpen}}:null,
+      createElement:tag=>({tag,dataset:{},setAttribute(){}})
+    }
+  });
+  vm.runInContext(fs.readFileSync('frontend/js/desktop_shell.js','utf8')+';this.Shell=DesktopShell;',ctx);
+  const mkBtn=panel=>({dataset:{panel},active:false,attrs:{},classList:{toggle(c,v){if(c==='active')this._self.active=!!v;}},setAttribute(k,v){this.attrs[k]=v;}});
+  const btns=['chart','watch','alerts','paper'].map(p=>{const b=mkBtn(p);b.classList._self=b;return b;});
+  const shell=Object.assign(Object.create(ctx.Shell.prototype),{
+    mode:null,
+    companions:{open:null},
+    rail:{querySelectorAll:()=>btns}
+  });
+  shell.syncRailActive();
+  assert.equal(btns[0].active,true);
+  assert.equal(btns[3].active,false);
+
+  paperOpen=true;
+  shell.syncRailActive();
+  assert.equal(btns[3].active,true);
+  assert.equal(btns[3].attrs['aria-expanded'],'true');
+  assert.equal(btns[0].active,false);
+
+  // Verify ChartEngine.getBarsForTimeframe('5m') appends and updates live 1m candles when rawBars has full coverage
+  const MarketData=require('../frontend/js/market_data.js');
+  const ceCtx=vm.createContext({MarketData,Intl,DrawingModel});
+  vm.runInContext(fs.readFileSync('frontend/js/chart_engine.js','utf8')+';this.Engine=ChartEngine;',ceCtx);
+  const metadata={timezone:'America/Chicago',session:'1700-1600'};
+  const t0=MarketData.bucket(Date.parse('2026-11-18T15:00:00Z')/1000,'5m',metadata);
+  const eng=Object.assign(Object.create(ceCtx.Engine.prototype),{
+    metadata,
+    htfData:{'5m':[{time:t0,open:100,high:102,low:99,close:101,volume:10}]},
+    rawBars:[
+      {time:t0,open:100,high:102,low:99,close:101,volume:10},
+      {time:t0+60,open:101,high:108,low:100,close:107,volume:5},
+      {time:t0+300,open:107,high:112,low:106,close:111,volume:8}
+    ]
+  });
+  const bars5m=eng.getBarsForTimeframe('5m');
+  assert.equal(bars5m.length,2,'New 5m candle must form in realtime from 1m ticks');
+  assert.equal(bars5m[0].high,108,'Forming 5m candle updates high/close from full 1m coverage');
+  assert.equal(bars5m[1].time,t0+300);
+  assert.equal(bars5m[1].close,111);
+});

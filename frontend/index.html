@@ -1264,70 +1264,77 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 button{transition:background-color .14s ease,color .14s ease,border-color .14s ease,box-shadow .14s ease}.modal.show:not(.studio-editing)>.modal-content{animation:studio-appear .18s ease-out}@keyframes studio-appear{from{transform:translateY(6px);opacity:0}to{transform:translateY(0);opacity:1}}
 @media(max-width:900px){#topbar{gap:6px;left:6px;right:6px;top:6px}#topbar .topbar-right{gap:2px}#live-clock,#timezone-quick{display:none!important}#connection-status{max-width:125px}.studio-editing .studio-heading{font-size:11px}.editor-shortcuts{display:none}}
 @media(max-width:600px){.indicator-browser{padding:14px}.indicator-browser-columns{grid-template-columns:115px minmax(0,1fr)}.indicator-browser nav{padding-right:8px}.indicator-browser nav button{font-size:11px;padding:10px 6px}.indicator-script-list{padding-left:10px}.indicator-script-row{flex-wrap:wrap}.indicator-script-row>span{flex-basis:70%}.studio-editing .script-actions{left:180px;right:80px}.studio-editing .indicator-back{left:95px}.studio-editing .studio-mark{display:none}:root{--studio-height:55vh}.pine-editor-expanded{--studio-height:calc(100dvh - 60px)}}
-/* Floating dock-native Paper Trading drawer. */
-body.paper-panel-open:not(.pine-editor-open) #app-body { bottom: calc(var(--paper-height, 340px) + 18px); }
-body.paper-panel-open .edge-drawing-dock { bottom: calc(var(--paper-height, 340px) + 10px); }
+/* Right-side Paper Trading window (pushes web stage to the left). */
+body.paper-panel-open { --paper-push: calc(var(--paper-width, 390px) + 18px); }
+body.paper-panel-open:not(.pine-editor-open) #app-body { right: var(--paper-push) !important; bottom: 0 !important; }
+body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100vw - var(--paper-push)) / 2) !important; }
 #paper-panel {
   position: fixed;
-  inset: auto 14px 12px 14px;
-  height: var(--paper-height, 340px);
-  max-height: 72dvh;
+  inset: 10px 10px 10px auto;
+  width: var(--paper-width, 390px);
+  max-width: calc(100vw - 80px);
+  height: auto;
+  max-height: none;
   overflow: hidden;
   padding: 0;
   border: 1px solid var(--line, rgba(255,255,255,.14));
   border-radius: 20px;
   background: linear-gradient(160deg, var(--glass2, rgba(255,255,255,.04)), transparent 55%), var(--bg, #14161b);
   color: var(--text, #eef1f6);
-  box-shadow: 0 18px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
+  box-shadow: -12px 18px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   font-family: var(--dock-font, 'Sora', Inter, sans-serif);
   z-index: 75;
 }
 :root[data-dock-theme="light"] #paper-panel {
-  box-shadow: 0 16px 42px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.7);
+  box-shadow: -10px 16px 42px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.7);
 }
 #paper-panel.open {
   display: flex;
   flex-direction: column;
-  animation: paper-dock-rise .22s cubic-bezier(.22, 1, .36, 1);
+  animation: paper-dock-rise .2s cubic-bezier(.22, 1, .36, 1);
 }
 @keyframes paper-dock-rise {
-  from { opacity: 0; transform: translateY(12px) scale(.992); }
+  from { opacity: 0; transform: translateX(14px) scale(.992); }
   to { opacity: 1; transform: none; }
 }
 .paper-resize {
   position: absolute;
-  top: 0;
-  left: 24px;
-  right: 24px;
-  height: 6px;
+  top: 24px;
+  bottom: 24px;
+  left: 0;
+  right: auto;
+  width: 7px;
+  height: auto;
   z-index: 4;
-  cursor: ns-resize;
+  cursor: ew-resize;
   touch-action: none;
 }
 .paper-resize::after {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 38px;
-  height: 3px;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 40px;
   border-radius: 99px;
   background: color-mix(in srgb, var(--text) 18%, transparent);
-  transition: background .15s ease, width .15s ease;
+  transition: background .15s ease, height .15s ease;
 }
 .paper-resize:hover::after, .paper-resize:focus-visible::after {
-  width: 54px;
+  width: 3px;
+  height: 58px;
   background: var(--accent);
 }
 .paper-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  padding: 9px 14px 9px 16px;
-  min-height: 48px;
+  gap: 8px;
+  padding: 10px 12px 10px 14px;
+  min-height: 46px;
   flex: none;
   border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--text) 2.5%, transparent);
@@ -1384,31 +1391,33 @@ body.paper-panel-open .edge-drawing-dock { bottom: calc(var(--paper-height, 340p
   border-color: color-mix(in srgb, var(--text) 24%, transparent);
 }
 .paper-summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-  overflow-x: auto;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  flex: none;
 }
-.paper-summary::-webkit-scrollbar { display: none; }
 .paper-summary > div {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 5px 9px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--text) 4%, transparent);
   border: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
   white-space: nowrap;
 }
 .paper-summary small { font-size: 10.5px; font-weight: 500; color: var(--muted); }
-.paper-summary strong { font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); }
+.paper-summary strong { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); }
 [data-sign=positive] strong, td[data-sign=positive] { color: #16a34a !important; }
 :root[data-dock-theme="dark"] [data-sign=positive] strong, :root[data-dock-theme="dark"] td[data-sign=positive] { color: #34d399 !important; }
 [data-sign=negative] strong, td[data-sign=negative] { color: #dc2626 !important; }
 :root[data-dock-theme="dark"] [data-sign=negative] strong, :root[data-dock-theme="dark"] td[data-sign=negative] { color: #f87171 !important; }
-.paper-head-actions { display: flex; align-items: center; gap: 6px; flex: none; }
+.paper-head-actions { display: flex; align-items: center; gap: 6px; flex: none; margin-left: auto; }
 .paper-close {
   display: grid;
   place-items: center;
@@ -1425,15 +1434,17 @@ body.paper-panel-open .edge-drawing-dock { bottom: calc(var(--paper-height, 340p
 }
 .paper-close:hover { color: var(--text); background: color-mix(in srgb, var(--text) 12%, transparent); }
 
-.paper-workspace { display: grid; grid-template-columns: 296px minmax(0, 1fr); flex: 1; min-height: 0; }
+.paper-workspace { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
 .paper-ticket {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  padding: 12px 14px;
+  gap: 8px;
+  padding: 10px 12px;
   overflow: auto;
-  border-right: 1px solid var(--line);
-  min-height: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+  flex: none;
+  max-height: 52%;
   scrollbar-width: thin;
 }
 .paper-ticket-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -1597,7 +1608,7 @@ body.paper-panel-open .edge-drawing-dock { bottom: calc(var(--paper-height, 340p
 #paper-error:empty { display: none; }
 .paper-disclaimer { color: var(--muted); font-size: 10px; line-height: 1.45; margin: auto 0 0; opacity: .82; }
 
-.paper-manager { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.paper-manager { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; overflow: hidden; }
 .paper-tabs {
   display: flex;
   align-items: center;
@@ -1653,11 +1664,11 @@ body.paper-panel-open .edge-drawing-dock { bottom: calc(var(--paper-height, 340p
   font-size: 10.5px;
   text-transform: uppercase;
   letter-spacing: .04em;
-  padding: 9px 14px;
+  padding: 8px 10px;
   border-bottom: 1px solid var(--line);
 }
 .paper-table-scroll td {
-  padding: 9px 14px;
+  padding: 8px 10px;
   border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
   font-variant-numeric: tabular-nums;
   color: var(--text);
@@ -1719,16 +1730,8 @@ body.paper-panel-open .edge-drawing-dock { bottom: calc(var(--paper-height, 340p
 .paper-close-dialog p { line-height: 1.6; font-size: 12.5px; color: var(--muted); }
 .paper-close-dialog label { display: flex; flex-direction: column; gap: 8px; color: var(--text); font-size: 12px; font-weight: 600; }
 .paper-close-dialog input { width: 100%; background: var(--glass2) !important; border: 1px solid var(--line) !important; color: var(--text) !important; }
-@media (max-width: 960px) {
-  .paper-heading { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
-  .paper-summary { order: 4; width: 100%; margin-left: 0; }
-  .paper-workspace { grid-template-columns: 264px minmax(0, 1fr); }
-}
 @media (max-width: 640px) {
-  #paper-panel { inset: auto 8px 8px 8px; border-radius: 16px; }
-  .paper-workspace { grid-template-columns: 1fr; overflow: auto; }
-  .paper-ticket { border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
-  .paper-manager { min-height: 190px; }
+  #paper-panel { inset: 8px 8px 8px auto; width: calc(100vw - 16px); max-width: none; border-radius: 16px; }
 }
 .alert-chart-controls{position:absolute;inset:0;pointer-events:none;z-index:17}
 .alert-chart-hit{position:absolute;background:transparent!important;border:0!important;padding:0!important;pointer-events:auto;cursor:ns-resize;touch-action:none;opacity:1!important;border-radius:0!important}
@@ -2602,7 +2605,7 @@ body, button, input, select, .modal{
 #layout-popover { top: 61px; right: 14px; }
 #desktop-panel { border-radius: 16px; border: 1px solid var(--dock-line); margin-left: 6px; }
 .companion-panel { right: 55px !important; height: calc(100dvh - var(--frame-top) - 112px); border-radius: 16px; }
-#paper-panel { bottom: calc(var(--dock-bottom) + 54px); left: 8px; right: 55px; }
+#paper-panel { inset: 10px 10px 10px auto; width: var(--paper-width, 390px); height: auto; max-height: none; }
 
 
 
@@ -5188,6 +5191,9 @@ body.reduce-motion :is(.dock-face .face, .dock-sec, .dock-face .hand) { animatio
    Không đụng HTML/JS. Nằm cuối <head> nên luôn thắng cascade.
    ============================================================ */
 :root{
+  --toolbar-scale: 0.85;
+  --frame-top: calc(22px + 46px * var(--toolbar-scale, 1));
+  --right-rail-inset: calc(20px + 52px * var(--toolbar-scale, 1));
   --wow-glass: color-mix(in srgb, var(--bg) 88%, transparent);
   --wow-border: var(--line);
   --wow-tint-1: var(--glass2);
@@ -5590,9 +5596,9 @@ body:not(.reduce-motion) .chart-context-menu[role=menu]{animation:wow-menu-in .2
 }
 /* Keep right dock visible whenever a side panel is open so active tab stays anchored cleanly */
 @media (hover: hover) and (pointer: fine){
-  body:has(#desktop-panel:not([hidden]), .companion-panel.open) .edge-panel-dock > #right-sidebar{
+  body:has(#desktop-panel:not([hidden]), .companion-panel.open, #paper-panel.open) .edge-panel-dock > #right-sidebar{
     translate:0 0 !important;
-    scale:1 !important;
+    scale:var(--toolbar-scale, 1) !important;
     opacity:1 !important;
     pointer-events:auto !important;
   }
@@ -5625,7 +5631,7 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
 /* ---------- 10. Side Panel (#desktop-panel) & Price Alerts Hub Redesign ---------- */
 #desktop-panel{
   position:fixed !important;
-  inset:calc(var(--frame-top) + 6px) 72px auto auto !important;
+  inset:calc(var(--frame-top) + 6px) var(--right-rail-inset, 72px) auto auto !important;
   width:336px !important;
   min-width:336px !important;
   max-width:calc(100vw - 84px) !important;
@@ -5660,7 +5666,7 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
 }
 .companion-panel:not(.music-mini){
   position:fixed !important;
-  inset:calc(var(--frame-top) + 6px) 72px auto auto !important;
+  inset:calc(var(--frame-top) + 6px) var(--right-rail-inset, 72px) auto auto !important;
   height:auto !important;
   max-height:calc(100dvh - var(--frame-top) - var(--dock-bottom) - 10px) !important;
   border-radius:20px !important;
@@ -6085,6 +6091,106 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
   font-size:10px;
   font-weight:600;
 }
+
+/* ---------- 11. Toolbar Scale (--toolbar-scale) ---------- */
+#topbar .topbar-left{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left top;
+}
+#topbar .topbar-right{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:right top;
+}
+@media (min-width: 720px){
+  #topbar .topbar-left{
+    position:static !important;
+    left:auto !important;
+    transform:none !important;
+    flex:0 0 auto !important;
+  }
+  #topbar .topbar-right{
+    position:absolute !important;
+    right:0 !important;
+    top:0 !important;
+    margin:0 !important;
+  }
+}
+#left-sidebar{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left bottom;
+  max-width:calc((100vw - 20px) / var(--toolbar-scale, 1)) !important;
+}
+#right-sidebar{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:right top;
+}
+@media (hover: hover) and (pointer: fine){
+  .edge-drawing-dock{
+    --dock-scale:var(--toolbar-scale, 1) calc(var(--toolbar-scale, 1) * .94);
+  }
+  .edge-panel-dock{
+    --dock-scale:calc(var(--toolbar-scale, 1) * .94) var(--toolbar-scale, 1);
+  }
+  .edge-drawing-dock #left-sidebar,
+  .edge-panel-dock #right-sidebar{
+    transform-origin:var(--dock-origin);
+    scale:var(--dock-scale);
+  }
+  :is(.edge-drawing-dock, .edge-panel-dock):is([data-dock-hover], :has(:focus-visible, > .dock-pin[aria-pressed="true"])) > :is(#left-sidebar, #right-sidebar),
+  body:has(#favorite-tool-menu:not([hidden]), .magnet-menu:not([hidden])) .edge-drawing-dock #left-sidebar{
+    scale:var(--toolbar-scale, 1) !important;
+  }
+}
+#replay-toolbar.show{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left bottom;
+  max-width:calc((100vw - 16px) / var(--toolbar-scale, 1));
+}
+#fullscreen-timeframe .timeframe-group{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:center top;
+}
+body.terminal-fullscreen > #drawing-favorites{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left top;
+}
+
+/* ---------- 12. Paper Trading Right Window (pushes entire web to the left) ---------- */
+body.paper-panel-open{
+  --paper-push:calc(var(--paper-width, 390px) + 18px);
+}
+#paper-panel{
+  position:fixed !important;
+  inset:10px 10px 10px auto !important;
+  width:var(--paper-width, 390px) !important;
+  max-width:calc(100vw - 76px) !important;
+  height:auto !important;
+  max-height:none !important;
+}
+body.paper-panel-open:not(.pine-editor-open) #app-body{
+  inset:0 var(--paper-push) 0 0 !important;
+  bottom:0 !important;
+}
+body.paper-panel-open #topbar{
+  right:calc(var(--paper-push) + 8px) !important;
+}
+body.paper-panel-open .edge-drawing-dock{
+  bottom:0 !important;
+  left:calc((100vw - var(--paper-push)) / 2) !important;
+}
+body.paper-panel-open #left-sidebar{
+  max-width:calc((100vw - var(--paper-push) - 24px) / var(--toolbar-scale, 1)) !important;
+}
+body.paper-panel-open .edge-panel-dock{
+  right:calc(var(--paper-push) - 6px) !important;
+}
+body.paper-panel-open :is(#desktop-panel, .companion-panel:not(.music-mini)){
+  right:calc(var(--paper-push) + 66px) !important;
+}
+body.paper-panel-open #replay-toolbar{
+  right:calc(var(--paper-push) + 8px) !important;
+  bottom:46px !important;
+}
 </style>
   <style>
     #dock-market-status { position: relative; color: var(--text); }
@@ -6177,12 +6283,6 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
 
       <!-- QT Mode (Quantaibay Auto) Button -->
       <button id="btn-indicator" class="btn-icon qt-mode-pill active" title="QT Mode (Quantaibay Auto) — Bấm để Bật / Tắt" aria-label="Toggle QT Mode" aria-pressed="true"><i class="qt-dot" aria-hidden="true"></i><span>QT</span></button>
-
-      <!-- Alert Button -->
-      <button id="btn-alert" class="btn-icon" title="Create Price Alert">
-        <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5.5 17.5c1.3-1.2 1.8-2.6 1.8-4.6V10a4.7 4.7 0 0 1 9.4 0v2.9c0 2 .5 3.4 1.8 4.6zM12 3v2.3M10 20.2a2.2 2.2 0 0 0 4 0"/></svg>
-        <span>Alert</span>
-      </button>
 
       <!-- Replay Button -->
       <button id="btn-replay" class="btn-icon" title="Bar Replay Mode">
@@ -6667,6 +6767,7 @@ Trading|Giao dịch
 Alerts|Cảnh báo
 Events|Sự kiện
 Toolbars|Thanh công cụ
+Toolbar scale|Kích thước thanh công cụ
 Reduce motion|Giảm chuyển động
 On|Bật
 Off|Tắt
@@ -6676,6 +6777,15 @@ Top right|Góc trên phải
 Bottom left|Góc dưới trái
 Bottom right|Góc dưới phải
 Left drawing tools|Công cụ vẽ bên trái
+Top left toolbar|Thanh công cụ trên trái
+Top right toolbar|Thanh công cụ trên phải
+Drawing toolbar|Thanh công cụ vẽ
+Bottom left toolbar|Thanh công cụ dưới trái
+Bottom right toolbar|Thanh công cụ dưới phải
+Toolbar background (fixed)|Nền thanh công cụ (cố định)
+Calendar transparency|Độ trong suốt lịch
+Show song-change notification (2 seconds)|Thông báo đổi bài nhạc (2 giây)
+Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.|Chỉnh kích thước thanh công cụ trực tiếp bên dưới (lưu tự động). Nhấn Ctrl + , để mở nhanh Cài đặt.
 Toolbar background transparency|Độ trong suốt nền thanh công cụ
 Ctrl + , opens Settings when the toolbars are hidden. Changes here save immediately.|Dùng Ctrl + , để mở Cài đặt khi thanh công cụ bị ẩn.
 Candles|Nến
@@ -7963,7 +8073,28 @@ class ChartEngine {
       return this.regularBarsByTf.get(tf).slice();
     }
     if (tf === '1m') return this.rawBars.map(b => ({ ...b }));
-    return (this.htfData[tf] || []).map(b => ({ ...b }));
+    const native = (this.htfData[tf] || []).map(b => ({ ...b }));
+    if (!this.rawBars?.length || ['1M', '3M'].includes(tf) || typeof MarketData?.aggregate !== 'function') {
+      return native;
+    }
+    if (!native.length) return MarketData.aggregate(this.rawBars, tf, this.metadata);
+    const lastOpen = native[native.length - 1].time;
+    const coversLastBucket = this.rawBars[0].time <= lastOpen;
+    let idx = this.rawBars.length;
+    while (idx > 0 && this.rawBars[idx - 1].time >= lastOpen) idx--;
+    if (idx >= this.rawBars.length) return native;
+    const tail = coversLastBucket
+      ? this.rawBars.slice(idx)
+      : this.rawBars.slice(idx).filter(b => MarketData.bucket(b.time, tf, this.metadata) > lastOpen);
+    if (!tail.length) return native;
+    const tailAgg = MarketData.aggregate(tail, tf, this.metadata);
+    if (!tailAgg.length) return native;
+    const merged = coversLastBucket && tailAgg[0].time === lastOpen ? native.slice(0, -1) : native;
+    for (const b of tailAgg) {
+      if (!merged.length || b.time > merged[merged.length - 1].time) merged.push(b);
+      else if (b.time === merged[merged.length - 1].time) merged[merged.length - 1] = b;
+    }
+    return merged;
   }
 
   renderCurrentTimeframe(reset = true) {
@@ -11640,9 +11771,9 @@ if(typeof module!=='undefined')module.exports=ReplayPaper;
   <script>
 /* Paper account manager and ticket, backed by the persistent local ledger. */
 class PaperPanel {
- constructor({paper,charts,getActive,isLive,isReplay,toast,onRender}){
-  Object.assign(this,{paper,charts,getActive,isLive,isReplay,toast,onRender});this.root=document.getElementById('paper-panel');this.tab='positions';this.editing=null;
-  this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Paper Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><span class="paper-dot"></span><strong>Paper Trade</strong><small class="paper-mode-badge">SIM</small></div><div class="paper-account-group"><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" type="button" class="paper-head-btn" title="Tạo tài khoản mới">+ Tài khoản</button></div><div id="paper-balance" class="paper-summary"></div><div class="paper-head-actions"><button type="button" class="paper-export paper-head-btn" title="Xuất lịch sử giao dịch CSV">CSV</button><button type="button" class="paper-close" aria-label="Close Paper Trading">×</button></div></header><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><div class="paper-sym-pill"><strong id="paper-symbol"></strong></div><span id="paper-quote-status"></span></div><div class="paper-type-seg" role="tablist" aria-label="Loại lệnh"><button type="button" data-order-type="market" class="active">Market</button><button type="button" data-order-type="limit">Limit</button><button type="button" data-order-type="stop">Stop</button></div><select id="order-type" hidden aria-hidden="true"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select><div class="paper-ticket-grid"><div class="paper-field paper-qty-field"><div class="paper-field-top"><span>Hợp đồng</span><div class="paper-qty-chips"><button type="button" data-qty-chip="1">1</button><button type="button" data-qty-chip="2">2</button><button type="button" data-qty-chip="5">5</button><button type="button" data-qty-chip="10">10</button></div></div><div class="paper-qty-stepper"><button type="button" data-qty-step="-1" aria-label="Giảm hợp đồng">−</button><input id="order-qty" type="number" min="1" step="1" value="1" aria-label="Hợp đồng"><button type="button" data-qty-step="1" aria-label="Tăng hợp đồng">+</button></div></div><label class="paper-field paper-price-label"><span>Giá đặt lệnh</span><input id="order-price" type="number" step="any" placeholder="Nhập mức giá"></label><label class="paper-field"><span>Stop Loss</span><input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label><label class="paper-field"><span>Take Profit</span><input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell"><span>Sell / Short</span></button><button type="button" id="paper-buy" class="paper-side buy"><span>Buy / Long</span></button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Lưu thay đổi</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer"></p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button type="button" data-paper-tab="positions">Vị thế <span>0</span></button><button type="button" data-paper-tab="orders">Lệnh chờ <span>0</span></button><button type="button" data-paper-tab="history">Lịch sử <span>0</span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
+ constructor({paper,charts,getActive,isLive,isReplay,toast,onRender,onToggle}){
+  Object.assign(this,{paper,charts,getActive,isLive,isReplay,toast,onRender,onToggle});this.root=document.getElementById('paper-panel');this.tab='positions';this.editing=null;
+  this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Paper Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><span class="paper-dot"></span><strong>Paper Trade</strong><small class="paper-mode-badge">SIM</small></div><div class="paper-account-group"><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" type="button" class="paper-head-btn" title="Tạo tài khoản mới">+ Tài khoản</button></div><div class="paper-head-actions"><button type="button" class="paper-export paper-head-btn" title="Xuất lịch sử giao dịch CSV">CSV</button><button type="button" class="paper-close" aria-label="Close Paper Trading">×</button></div></header><div id="paper-balance" class="paper-summary"></div><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><div class="paper-sym-pill"><strong id="paper-symbol"></strong></div><span id="paper-quote-status"></span></div><div class="paper-type-seg" role="tablist" aria-label="Loại lệnh"><button type="button" data-order-type="market" class="active">Market</button><button type="button" data-order-type="limit">Limit</button><button type="button" data-order-type="stop">Stop</button></div><select id="order-type" hidden aria-hidden="true"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select><div class="paper-ticket-grid"><div class="paper-field paper-qty-field"><div class="paper-field-top"><span>Hợp đồng</span><div class="paper-qty-chips"><button type="button" data-qty-chip="1">1</button><button type="button" data-qty-chip="2">2</button><button type="button" data-qty-chip="5">5</button><button type="button" data-qty-chip="10">10</button></div></div><div class="paper-qty-stepper"><button type="button" data-qty-step="-1" aria-label="Giảm hợp đồng">−</button><input id="order-qty" type="number" min="1" step="1" value="1" aria-label="Hợp đồng"><button type="button" data-qty-step="1" aria-label="Tăng hợp đồng">+</button></div></div><label class="paper-field paper-price-label"><span>Giá đặt lệnh</span><input id="order-price" type="number" step="any" placeholder="Nhập mức giá"></label><label class="paper-field"><span>Stop Loss</span><input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label><label class="paper-field"><span>Take Profit</span><input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell"><span>Sell / Short</span></button><button type="button" id="paper-buy" class="paper-side buy"><span>Buy / Long</span></button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Lưu thay đổi</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer"></p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button type="button" data-paper-tab="positions">Vị thế <span>0</span></button><button type="button" data-paper-tab="orders">Lệnh chờ <span>0</span></button><button type="button" data-paper-tab="history">Lịch sử <span>0</span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
   this.$=id=>document.getElementById(id);
   if(typeof TerminalLanguage!=='undefined')TerminalLanguage.markup(this.root);
   this.root.querySelector('.paper-close').onclick=()=>this.open(false);this.$('btn-new-account').onclick=()=>{const modal=document.getElementById('account-modal');modal.dataset.opener='btn-new-account';modal.classList.add('show');modal.querySelector('input').focus();};
@@ -11658,7 +11789,7 @@ class PaperPanel {
   this.$('paper-save-edit').onclick=()=>this.submit();this.$('paper-cancel-edit').onclick=()=>this.reset();
   this.root.querySelector('form').onsubmit=e=>{e.preventDefault();if(this.editing)this.submit();};
   for(const id of ['order-type','order-qty','order-price','order-sl','order-tp'])this.$(id).addEventListener('input',()=>this.ticket());
-  this.observer=new MutationObserver(()=>{document.body.classList.toggle('paper-panel-open',this.root.classList.contains('open'));this.render();});this.observer.observe(this.root,{attributes:true,attributeFilter:['class']});
+  this.observer=new MutationObserver(()=>{const isOpen=this.root.classList.contains('open');document.body.classList.toggle('paper-panel-open',isOpen);this.onToggle?.(isOpen);this.render();});this.observer.observe(this.root,{attributes:true,attributeFilter:['class']});
   const indModal=document.getElementById('indicator-modal');
   if(indModal){this.indicatorObserver=new MutationObserver(()=>{if(indModal.classList.contains('show'))this.open(false);});this.indicatorObserver.observe(indModal,{attributes:true,attributeFilter:['class']});}
   this.buildCloseDialog();this.resize();
@@ -11898,7 +12029,7 @@ class PaperPanel {
  }
  buildCloseDialog(){this.closeModal=document.createElement('div');this.closeModal.className='modal';this.closeModal.setAttribute('role','dialog');this.closeModal.setAttribute('aria-modal','true');this.closeModal.setAttribute('aria-label','Đóng vị thế mô phỏng');this.closeModal.innerHTML='<div class="modal-content paper-close-dialog"><div class="modal-header"><span>Đóng vị thế</span><button class="modal-close" aria-label="Hủy đóng vị thế">×</button></div><div class="modal-body"><p class="paper-close-description"></p><label>Số hợp đồng đóng<input type="number" min="1" step="1" aria-label="Số hợp đồng đóng"></label><p class="paper-close-error" role="status"></p></div><div class="modal-footer"><button class="btn-secondary" data-close-cancel>Hủy</button><button class="btn-primary" data-close-confirm>Đóng theo giá live</button></div></div>';document.body.appendChild(this.closeModal);for(const b of this.closeModal.querySelectorAll('.modal-close,[data-close-cancel]'))b.onclick=()=>this.closeModal.classList.remove('show');this.closeModal.querySelector('[data-close-confirm]').onclick=()=>{try{if(this.closeTarget.account!==this.paper.state.active)throw Error('Tài khoản đã đổi.');this.guard(this.closeTarget.symbol);this.paper.close(this.closeTarget.id,'manual',Number(this.closeModal.querySelector('input').value));this.closeModal.classList.remove('show');this.render();}catch(error){this.closeModal.querySelector('.paper-close-error').textContent=error.message;}};this.closeModal.onkeydown=e=>{if(e.key==='Escape'){e.stopPropagation();this.closeModal.classList.remove('show');}};}
  closeDialog(p){this.closeTarget={id:p.id,symbol:p.symbol,account:this.paper.state.active};this.closeModal.querySelector('.paper-close-description').textContent=`${p.side.toUpperCase()} ${p.qty} ${p.symbol} · Giá vào ${this.price(p.price)}. Có thể đóng một phần.`;const input=this.closeModal.querySelector('input');input.max=p.qty;input.value=p.qty;this.closeModal.querySelector('.paper-close-error').textContent='';this.closeModal.classList.add('show');input.focus();}
- resize(){const grip=this.root.querySelector('.paper-resize');let drag;const set=value=>{this.height=Math.max(230,Math.min(innerHeight*.72,value));this.root.style.setProperty('--paper-height',this.height+'px');document.body.style.setProperty('--paper-height',this.height+'px');};let preferred=Workspace.read('paper_panel_height_v1',340);set(preferred);window.addEventListener('resize',()=>set(preferred));grip.onpointerdown=e=>{drag={y:e.clientY,height:this.height};grip.setPointerCapture(e.pointerId);};grip.onpointermove=e=>{if(drag)set(drag.height+drag.y-e.clientY);};grip.onpointerup=grip.onpointercancel=()=>{if(drag){preferred=this.height;Workspace.write('paper_panel_height_v1',this.height);}drag=null;};grip.onkeydown=e=>{if(['ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();set(this.height+(e.key==='ArrowUp'?20:-20));preferred=this.height;Workspace.write('paper_panel_height_v1',this.height);}};}
+ resize(){const grip=this.root.querySelector('.paper-resize');let drag;const set=value=>{const maxW=typeof innerWidth==='number'&&innerWidth>500?Math.min(600,Math.round(innerWidth*.48)):520;this.width=Math.max(310,Math.min(maxW,value));this.root.style.setProperty('--paper-width',this.width+'px');document.body.style.setProperty('--paper-width',this.width+'px');};let preferred=Workspace.read('paper_panel_width_v1',390);set(preferred);window.addEventListener('resize',()=>set(preferred));grip.onpointerdown=e=>{drag={x:e.clientX,width:this.width};grip.setPointerCapture(e.pointerId);};grip.onpointermove=e=>{if(drag)set(drag.width+drag.x-e.clientX);};grip.onpointerup=grip.onpointercancel=()=>{if(drag){preferred=this.width;Workspace.write('paper_panel_width_v1',this.width);}drag=null;};grip.onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();set(this.width+(e.key==='ArrowLeft'?20:-20));preferred=this.width;Workspace.write('paper_panel_width_v1',this.height=this.width);}};}
  export(){const a=this.paper.account;if(!a)return;const rows=[['time','symbol','event','side','quantity','entry','exit','realized_pnl','reason'],...a.history.map(h=>[new Date(h.at||h.created).toISOString(),h.symbol,h.event,h.side,h.qty,h.price,h.exit,h.pnl,h.reason])];const cell=v=>{let s=String(v??'');if(typeof v!=='number'&&/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';};const url=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(cell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='paper-history.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 }
 /* Canvas labels with DOM hit targets: TopstepX-style order lines, zones, axis tags & segmented badges. */
@@ -12567,6 +12698,7 @@ class ChartSettings {
     this.nav=this.modal.querySelector('.chart-settings-nav');this.body=this.modal.querySelector('.chart-settings-body');this.error=this.modal.querySelector('.chart-settings-error');
     const tabs = [
       ['Theme', '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="d" d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1 .8-1.7 1.8-1.7H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle class="dot" cx="7.6" cy="11.2" r="1.1"/><circle class="dot" cx="10.4" cy="7.4" r="1.1"/><circle class="dot" cx="15" cy="7.6" r="1.1"/></svg>'],
+      ['Toolbars', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="3" y="4" width="18" height="5" rx="1.6"/><rect x="3" y="12" width="7" height="8" rx="1.6"/><rect x="13" y="12" width="8" height="8" rx="1.6"/></svg>'],
       ['Symbol', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v3m0 9v3m8-12v3m0 9v3"/><rect class="d" x="6" y="6" width="4" height="9" rx="1.2"/><rect x="14" y="9" width="4" height="9" rx="1.2"/></svg>'],
       ['Status line', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="3" y="4" width="18" height="16" rx="4"/><path d="M7.5 9h3.5M14 9h2.5M7.5 13.5h9"/></svg>'],
       ['Scales and lines', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M8 20v-2m4 2v-2m4 2v-2"/><path d="M7.5 14l3.5-4 3 2.5 4.2-6"/><circle class="dot" cx="18.2" cy="6.5" r="1.3"/></svg>'],
@@ -12575,7 +12707,6 @@ class ChartSettings {
       ['Alerts', '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="d" d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg>'],
       ['Events', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M8 3.5v4m8-4v4M4 10.5h16"/><circle class="dot" cx="12" cy="15" r="1.4"/></svg>'],
       ['Language', '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="d" cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>'],
-      ['Toolbars', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="d" x="3" y="4" width="18" height="5" rx="1.6"/><rect x="3" y="12" width="7" height="8" rx="1.6"/><rect x="13" y="12" width="8" height="8" rx="1.6"/></svg>'],
     ];
     for (const [name, icon] of tabs) {
       const button = document.createElement('button');
@@ -12632,6 +12763,7 @@ class ChartSettings {
     this.modal.querySelector('#close-settings').onclick=()=>this.cancel();this.modal.querySelector('#cancel-settings').onclick=()=>this.cancel();this.modal.querySelector('#save-settings').onclick=()=>this.commit();
     const resetBtn = this.modal.querySelector('#reset-dock-settings');
     if (resetBtn) resetBtn.onclick=()=>{
+      if(this.tab==='Toolbars'&&this.onToolbarReset){this.onToolbarReset();return;}
       this.draft=ChartAppearance.desktopProfile(null,{},this.chart.symbol);
       this.select(this.tab);
       this.preview();
@@ -13052,10 +13184,11 @@ class DesktopShell {
   static icon(name) {
     const paths={watch:'M4 3h16v18l-8-4-8 4z',alerts:'M12 8v5l3 2M5 4L2 7m17-3 3 3M4 13a8 8 0 1 0 16 0 8 8 0 1 0-16 0',objects:'M2 8l10-6 10 6-10 6zM2 13l10 6 10-6M2 18l10 6 10-6',editor:'M8 5L2 12l6 7m8-14 6 7-6 7',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0',lock:'M5 10h14v11H5zM8 10V6a4 4 0 0 1 8 0v4',close:'M5 5l14 14M19 5L5 19',settings:'M4 4h16v16H4zM8 8h8v8H8z',arrow:'M4 12h16m-6-6 6 6-6 6',line:'M4 20L20 4M2 18l4 4M18 2l4 4',hline:'M2 12h20M5 9v6',fib:'M3 4h18M3 10h13M3 16h18M3 22h9',box:'M4 4h16v16H4zM2 2h4v4H2zM18 18h4v4h-4z',position:'M4 4h12v7H4zM8 11h12v9H8zM2 4h20',text:'M4 5V3h16v2M12 3v18M8 21h8',brush:'M5 18c-3 0-3 4-3 4s5 0 5-3l13-13-3-3z',keep:'M3 14l11-11 7 7-11 11H3zM15 14v8m-4-4h8'};
     paths.chart='M3 4v16h18M7 15l4-5 4 2 5-6';
+    paths.paper='M4 9h16l-4-4M20 15H4l4 4';
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name]||paths.objects}"/></svg>`;
   }
-  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onSymbol,onIndicatorToggle,drawing}) {
-    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onSymbol,onIndicatorToggle,drawing});
+  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onAlertDialog,onPaperToggle,onSymbol,onIndicatorToggle,drawing}) {
+    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onAlertDialog,onPaperToggle,onSymbol,onIndicatorToggle,drawing});
     this.alertFilter='all';
     this._alertCond='cross';
     this._alertDraftSym='';
@@ -13065,17 +13198,19 @@ class DesktopShell {
     this.root.innerHTML='<div class="desktop-panel-header"><div class="desktop-panel-tabs" role="tablist"></div><button class="desktop-panel-close" aria-label="Close side panel">×</button></div><div class="desktop-panel-content"></div>';
     this.content=this.root.querySelector('.desktop-panel-content');this.tabs=this.root.querySelector('.desktop-panel-tabs');
     this.root.querySelector('.desktop-panel-close').onclick=()=>this.open(null);
-    this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout').focus();}};
+    this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout')?.focus();}};
     this.rail=document.createElement('nav');this.rail.id='right-sidebar';this.rail.setAttribute('aria-label','Chart panels');
-    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo']]){
+    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['paper','Paper Trading']]){
       const b=this.button(label,key,()=>{
-        if(key==='chart'){
+        if(key==='paper'){
+          this.onPaperToggle?.();
+        }else if(key==='chart'){
           this.companions?.closeDocked?.();
           this.open(null);
         }else{
           this.open(this.mode===key?null:key);
         }
-        $('layout-popover').classList.remove('show');
+        $('layout-popover')?.classList.remove('show');
       });
       b.dataset.panel=key;b.dataset.dockLabel=ui(label);this.rail.appendChild(b);
     }
@@ -13116,9 +13251,28 @@ class DesktopShell {
       if(document.fullscreenElement)return;
       close();for(const {node,anchor}of items)anchor.after(node);more.hidden=true;
       if(left.hidden||!header.clientWidth)return;
-      if(left.scrollWidth<=left.clientWidth+1)return;
-      more.hidden=false;
-      for(const {node}of items){menu.appendChild(node);if(left.scrollWidth<=left.clientWidth+1)break;}
+      const stacked=typeof matchMedia==='function'&&matchMedia('(max-width: 719px)').matches;
+      const scale=Math.max(.5,parseFloat(typeof getComputedStyle==='function'?getComputedStyle(document.documentElement).getPropertyValue('--toolbar-scale'):'')||1);
+      if(stacked||!header.getBoundingClientRect||!right?.getBoundingClientRect){
+        left.style.maxWidth='';left.style.marginLeft='';
+      }else{
+        const hRect=header.getBoundingClientRect(),rRect=right.getBoundingClientRect();
+        const freeVisual=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left-12);
+        left.style.maxWidth=Math.max(120,Math.floor(freeVisual/scale))+'px';
+        left.style.marginLeft='0px';
+      }
+      if(left.scrollWidth>left.clientWidth+1){
+        more.hidden=false;
+        for(const {node}of items){menu.appendChild(node);if(left.scrollWidth<=left.clientWidth+1)break;}
+      }
+      if(!stacked&&header.getBoundingClientRect&&right?.getBoundingClientRect){
+        const hRect=header.getBoundingClientRect(),rRect=right.getBoundingClientRect();
+        const freeVisual=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left-12);
+        const visualW=left.offsetWidth*scale;
+        const idealCenter=(hRect.width-visualW)/2;
+        const margin=idealCenter+visualW<=freeVisual?idealCenter:(freeVisual-visualW)/2;
+        left.style.marginLeft=Math.max(0,Math.round(margin))+'px';
+      }
     };
     this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);this.fitToolbar();
   }
@@ -13149,13 +13303,20 @@ class DesktopShell {
   }
   syncRailActive(){
     const compOpen=!!this.companions?.open;
+    const paperOpen=typeof document!=='undefined'&&!!document.getElementById('paper-panel')?.classList.contains('open');
     const mode=this.mode;
     this.rail?.querySelectorAll('[data-panel]').forEach(b=>{
-      const isChart=b.dataset.panel==='chart';
-      const active=isChart?(!mode&&!compOpen):(b.dataset.panel===mode);
+      const p=b.dataset.panel;
+      if(p==='paper'){
+        b.classList.toggle('active',paperOpen);
+        b.setAttribute('aria-expanded',String(paperOpen));
+        return;
+      }
+      const isChart=p==='chart';
+      const active=isChart?(!mode&&!compOpen&&!paperOpen):(p===mode);
       b.classList.toggle('active',active);
       if(isChart)b.setAttribute('aria-current',String(active));
-      else if(b.dataset.panel!=='editor')b.setAttribute('aria-expanded',String(b.dataset.panel===mode));
+      else if(p!=='editor')b.setAttribute('aria-expanded',String(p===mode));
     });
   }
   open(mode,persist=true){
@@ -13341,7 +13502,7 @@ class DesktopShell {
     modalBtn.title='Mở hộp thoại chi tiết (Alt + A)';
     modalBtn.setAttribute('aria-label','Open full alert dialog');
     modalBtn.textContent='Alt+A ↗';
-    modalBtn.onclick=()=>document.getElementById('btn-alert')?.click();
+    modalBtn.onclick=()=>this.onAlertDialog?this.onAlertDialog():document.getElementById('btn-alert')?.click();
 
     compTop.append(symChip,liveBtn,modalBtn);
 
@@ -13386,7 +13547,7 @@ class DesktopShell {
           this.refresh();
         }
       }else{
-        document.getElementById('btn-alert')?.click();
+        this.onAlertDialog?this.onAlertDialog():document.getElementById('btn-alert')?.click();
       }
     };
     addBtn.onclick=submitQuick;
@@ -14601,6 +14762,7 @@ if(typeof module!=='undefined')module.exports={TerminalTime,TerminalReplay};
   <script>
 /* Settings, motion and input behavior shared by the terminal chrome. */
 TerminalFeatures.contrast=color=>{const hex=String(color).replace('#','');if(!/^[\da-f]{6}$/i.test(hex))return '#fff';const rgb=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722>.179?'#111':'#fff';};
+TerminalFeatures.clampToolbarScale=value=>Math.min(125,Math.max(60,Math.round((Number.isFinite(+value)&&+value>0?+value:85)/5)*5));
 TerminalFeatures.prototype.installPolish=function(){
   const settings=this.chartSettings,modal=settings.modal,dialog=settings.dialog;
   const old=modal.querySelector('.toolbar-settings'),controls=document.createElement('div'),parking=document.createElement('div');
@@ -14610,6 +14772,23 @@ TerminalFeatures.prototype.installPolish=function(){
   controls.querySelectorAll('.setting-row>span:first-child').forEach((el,i)=>el.textContent=labels[i]);
   controls.querySelector('.editor-help').textContent='Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.';
   const add=(text,el)=>{const label=document.createElement('label');label.className='setting-row';const name=document.createElement('span');name.textContent=text;label.append(name,el);controls.appendChild(label);};
+  const scaleKey='terminal_toolbar_scale_v1';
+  const scaleWrap=document.createElement('span');scaleWrap.className='toolbar-transparency';
+  const scaleInput=document.createElement('input');scaleInput.type='range';scaleInput.id='set-toolbar-scale';scaleInput.min=60;scaleInput.max=125;scaleInput.step=5;scaleInput.setAttribute('aria-label','Toolbar scale');
+  const scaleOutput=document.createElement('output');scaleOutput.id='toolbar-scale-value';scaleOutput.setAttribute('for','set-toolbar-scale');
+  scaleWrap.append(scaleInput,scaleOutput);
+  const applyScale=(raw,persist=true)=>{
+    const pct=TerminalFeatures.clampToolbarScale(raw);
+    scaleInput.value=String(pct);
+    scaleOutput.value=scaleOutput.textContent=pct+'%';
+    scaleInput.setAttribute('aria-valuetext',pct+'%');
+    document.documentElement.style.setProperty('--toolbar-scale',(pct/100).toFixed(2));
+    if(persist)Workspace.write(scaleKey,pct);
+    this.desktop?.fitToolbar?.();
+    this.charts?.forEach(c=>c.positionSymbolBadge?.());
+  };
+  scaleInput.oninput=()=>applyScale(scaleInput.value,true);
+  scaleWrap.ondblclick=()=>applyScale(85,true);
   const motionKey='terminal_motion_preference_v1';
   const motion=document.createElement('select');
   motion.id='set-reduce-motion';
@@ -14626,6 +14805,10 @@ TerminalFeatures.prototype.installPolish=function(){
   motion.addEventListener('change',()=>{Workspace.write(motionKey,motion.value);applyMotion();});
   add('Reduce motion',motion);
   controls.prepend(motion.parentElement);
+  add('Toolbar scale',scaleWrap);
+  controls.prepend(scaleWrap.parentElement);
+  settings.onToolbarReset=()=>applyScale(85,true);
+  applyScale(Workspace.read(scaleKey,85),false);
   applyMotion();
   const opacity=document.createElement('input');opacity.type='range';opacity.id='set-calendar-opacity';opacity.min=0;opacity.max=90;opacity.step=5;opacity.value=Workspace.read('terminal_calendar_transparency_v1',0);opacity.setAttribute('aria-label','Calendar transparency');opacity.oninput=()=>{document.documentElement.style.setProperty('--calendar-opacity',String(1-opacity.value/100));Workspace.write('terminal_calendar_transparency_v1',+opacity.value);};add('Calendar transparency',opacity);opacity.oninput();
   const songToast=document.createElement('input');songToast.type='checkbox';songToast.id='set-music-toast';songToast.checked=Workspace.read('terminal_music_toast_v1',true);songToast.onchange=()=>Workspace.write('terminal_music_toast_v1',songToast.checked);add('Show song-change notification (2 seconds)',songToast);
@@ -16113,8 +16296,12 @@ class AlertChartControls{
 }
 if(typeof module!=='undefined')module.exports=AlertPrice;
 </script>
-    <script src="js/qt_engine.js?v=qt-14"></script>
-  <script src="js/qt_mode.js?v=qt-14"></script>
+  <script src="js/qt_core.js?v=qt-15"></script>
+  <script src="js/qt_cycles_trueopen.js?v=qt-15"></script>
+  <script src="js/qt_ssmt.js?v=qt-15"></script>
+  <script src="js/qt_psp.js?v=qt-15"></script>
+  <script src="js/qt_engine.js?v=qt-15"></script>
+  <script src="js/qt_mode.js?v=qt-15"></script>
   <script>
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);
@@ -16524,7 +16711,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveAlerts(alerts.map(a=>a.id===id?{...a,price}:a));
   }
   charts.forEach(c=>c.alertOverlay=new AlertChartControls(c,{getAlerts:()=>alerts,canDrag:()=>drawing.activeTool==='crosshair',update:updateAlert,remove:removeAlert,edit:(id,chart)=>openAlert(chart,undefined,id)}));
-  bindDialogToggle($('btn-alert'), $('alert-modal'), () => openAlert(active));
+  if ($('btn-alert')) bindDialogToggle($('btn-alert'), $('alert-modal'), () => openAlert(active));
   charts.forEach(chart=>chart.onPricePlus=price=>{activate(chart);openAlert(chart,price);});
   $('btn-save-alert').addEventListener('click',()=>{
     const price=Number($('alert-price-input').value);if(!alertEdit||!Number.isFinite(price)||!$('alert-price-input').value)return toast('Nhập giá hợp lệ','alert');
@@ -16546,13 +16733,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Local accounts retain the existing storage key and legacy positions.
   const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }), state => Workspace.write('terminal_paper_v1', state));
-  paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast});
+  paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast,onToggle:()=>{desktop?.syncRailActive?.();desktop?.fitToolbar?.();}});
   function renderPaper(){paperPanel.render();}
   $('create-account').addEventListener('click',()=>paperPanel.action(()=>{paperPanel.paper.create($('account-name').value,Number($('account-balance').value),Number($('account-margin')?.value||0));closeModal($('account-modal'));}));
   $('btn-trade-buy').addEventListener('click',()=>paperPanel.quickMarket('buy'));
   $('btn-trade-sell').addEventListener('click',()=>paperPanel.quickMarket('sell'));
 
-  function toggleIndicator(chart){void toggleQtMode(chart);}
+  function toggleIndicator(chart){qtMode.toggleChart(chart);}
   charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
 
   // Settings and scale controls.
@@ -16621,7 +16808,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     onAlertClearTriggered:()=>{
       saveAlerts(alerts.filter(a=>!a.triggered));
-    }
+    },
+    onAlertDialog:()=>openAlert(active),
+    onPaperToggle:()=>paperPanel.open(!$('paper-panel').classList.contains('open'))
   });
   const themeButton = $('dock-theme');
   const themeKey = 'terminal_dock_theme_v1';
@@ -16678,8 +16867,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawDock() {
       frame=0;
       if(!dockMotion.matches||document.hidden||document.body.classList.contains('reduce-motion'))return;
+      const bounds=dock.getBoundingClientRect();
+      const rawExtent=vertical?dock.offsetHeight:dock.offsetWidth;
+      const dockScale=rawExtent>0?((vertical?bounds.height:bounds.width)/rawExtent):1;
       if(!geometry){
-        const bounds=dock.getBoundingClientRect();
         const tools = [...dock.querySelectorAll(selector)].filter(tool => tool[mainAxis[0]]).map(tool => ({
           tool,
           size: tool[mainAxis[0]],
@@ -16687,11 +16878,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
         geometry = {
           tools,
-          start: vertical ? bounds.top : bounds.left,
-          extent: (vertical ? bounds.height : bounds.width) + 2
+          extent: rawExtent + 2
         };
       }
-      const pointer=pointerPosition-geometry.start;
+      const pointer=(pointerPosition-(vertical?bounds.top:bounds.left))/(dockScale||1);
       let expansion = 0;
       const tools = geometry.tools.map(tool => {
         const proximity = Math.max(0, 1 - Math.abs(pointer - tool.center) / 95);
@@ -16760,6 +16950,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandActions = [
     [ui('Đổi mã'), () => $('btn-symbol-search').click()],
     [ui('Cài đặt · Chart Settings'), () => chartSettings.open()],
+    [ui('Toolbar scale'), () => { chartSettings.tab = 'Toolbars'; chartSettings.open(); }],
     ['Đổi giao diện sáng tối', toggleDockTheme],
     ...[['Theo dõi','watch'],['Cảnh báo','alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
     [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
@@ -16768,7 +16959,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ['QT Mode · Bật / Tắt', () => $('btn-indicator').click()],
     ['QT Mode · Cài đặt (Quantaibay)', () => qtMode.openSettings(active)],
     ['Layout', () => $('btn-layout').click()],
-    ['Alerts', () => $('btn-alert').click()],
+    ['Alerts', () => openAlert(active)],
     ['Replay', () => $('btn-replay').click()],
     ['Paper Trading', () => paperPanel.open(!$('paper-panel').classList.contains('open'))],
     ...[...document.querySelectorAll('.symbol-item')].map(item =>
@@ -16996,7 +17187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scheduleReconnect();
     };
   }
-  features = new TerminalFeatures({charts,sync,drawing,activate,getActive:()=>active,getReplay:()=>replay,hydrate,saveWorkspace,updateHeader,chartSettings,changeSymbol,subscribe:()=>{
+  features = new TerminalFeatures({charts,desktop,sync,drawing,activate,getActive:()=>active,getReplay:()=>replay,hydrate,saveWorkspace,updateHeader,chartSettings,changeSymbol,subscribe:()=>{
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'subscribe',charts:features.visibleCharts().map(c=>({symbol:c.symbol,timeframe:c.currentTimeframe}))}));
   }});
   if (desktop && features?.companions) {
@@ -17025,14 +17216,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function confirmReloadChartData() {
     return new Promise(resolve => {
       if (typeof HTMLDialogElement !== 'function' || !document.createElement('dialog').showModal) {
-        resolve(typeof confirm === 'function' ? confirm('Tải lại toàn bộ dữ liệu biểu đồ từ đầu?') : true);
+        resolve(typeof confirm === 'function' ? confirm('Tắt và bật lại TradingView Desktop để tải lại dữ liệu từ đầu?') : true);
         return;
       }
       const dialog = document.createElement('dialog');
       dialog.className = 'paper-order-confirmation';
       dialog.setAttribute('aria-label', 'Xác nhận tải lại dữ liệu');
       const message = document.createElement('p');
-      message.textContent = 'Tải lại toàn bộ dữ liệu biểu đồ từ đầu?';
+      message.textContent = 'Tắt và bật lại TradingView Desktop để tải lại dữ liệu từ đầu?';
       const form = document.createElement('form');
       form.method = 'dialog';
       for (const [text, value, cls] of [['Hủy', 'cancel', 'btn-secondary'], ['Tải lại', 'confirm', 'btn-primary']]) {
@@ -17055,10 +17246,16 @@ document.addEventListener('DOMContentLoaded', () => {
     retry = 1000;
     preloadRequested = false;
     pendingNative.clear();
-    bridge = { state: 'connecting', symbols: [] };
+    bridge = { state: 'connecting', symbols: [], message: 'Đang tắt và mở lại TradingView Desktop…' };
     statusText();
-    // A new connection requests the cached snapshot before live updates resume.
-    void connect(true);
+    try {
+      await fetch('/api/restart-tv', { method: 'POST', cache: 'no-store', signal: AbortSignal.timeout(8000) });
+    } catch {
+      if (socket?.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ action: 'restart_tv' }));
+      }
+    }
+    void connect(false);
   });
   const timezoneButton = $('live-tz');
   const timezoneMenu = $('clock-timezone-menu');
@@ -17085,10 +17282,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function placeTimezoneMenu() {
       const anchor = $('dock-market-status').getBoundingClientRect();
-      const bar = $('topbar').getBoundingClientRect();
       const width = Math.min(300, window.innerWidth - 24);
       const right = Math.min(window.innerWidth - width - 12, Math.max(12, window.innerWidth - anchor.right));
-      timezoneMenu.style.setProperty('--tz-top', Math.ceil(Math.max(anchor.bottom, bar.bottom)) + 12 + 'px');
+      timezoneMenu.style.setProperty('--tz-top', Math.ceil(anchor.bottom) + 10 + 'px');
       timezoneMenu.style.setProperty('--tz-right', right + 'px');
     }
     timezoneMenu.addEventListener('beforetoggle', event => {

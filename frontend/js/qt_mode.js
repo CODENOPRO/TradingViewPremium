@@ -17,24 +17,14 @@ class QTMode {
       delete rawSettings.showSsmtTxt;
       if (rawSettings.lblClr === '#787b86cc') delete rawSettings.lblClr;
     }
-    if (!saved.v3 && Array.isArray(QuantaibayEngine.TRUE_OPEN_ITEMS)) {
-      for (const it of QuantaibayEngine.TRUE_OPEN_ITEMS) {
-        const id = it.id;
-        if (it.tier === 1 && rawSettings.tr90 === false && rawSettings[id] === undefined) rawSettings[id] = false;
-        if (rawSettings.trCol !== undefined && rawSettings[id + '_col'] === undefined) rawSettings[id + '_col'] = rawSettings.trCol;
-        if (rawSettings.trCol !== undefined && rawSettings[id + '_txt'] === undefined) rawSettings[id + '_txt'] = rawSettings.trCol;
-        if (rawSettings.trStyleIn !== undefined && rawSettings[id + '_st'] === undefined) rawSettings[id + '_st'] = rawSettings.trStyleIn;
-        if (rawSettings.trWid !== undefined && rawSettings[id + '_wid'] === undefined) rawSettings[id + '_wid'] = rawSettings.trWid;
-        if (rawSettings.trShowLbl !== undefined && rawSettings[id + '_lbl'] === undefined) rawSettings[id + '_lbl'] = rawSettings.trShowLbl;
-        if (rawSettings.trLblPos !== undefined && rawSettings[id + '_pos'] === undefined) rawSettings[id + '_pos'] = rawSettings.trLblPos;
-        if (rawSettings.trLblVert !== undefined && rawSettings[id + '_vert'] === undefined) rawSettings[id + '_vert'] = rawSettings.trLblVert;
-        if (rawSettings.trLblSizeIn !== undefined && rawSettings[id + '_sz'] === undefined) rawSettings[id + '_sz'] = rawSettings.trLblSizeIn;
-        if (rawSettings.trMaxKeep !== undefined && rawSettings[id + '_keep'] === undefined) rawSettings[id + '_keep'] = rawSettings.trMaxKeep;
-      }
+    // Clean any obsolete per-item keys from v3 while keeping unified settings
+    const validKeys = new Set(Object.keys(QuantaibayEngine.DEFAULTS));
+    for (const k of Object.keys(rawSettings)) {
+      if (!validKeys.has(k)) delete rawSettings[k];
     }
+
     this.enabled = saved.enabled !== false;
     this.settings = { ...QuantaibayEngine.DEFAULTS, ...rawSettings };
-    this.visibility = { ...(saved.visibility || {}) };
     this.chartHidden = new Set(Array.isArray(saved.chartHidden) ? saved.chartHidden : []);
 
     this._raf = 0;
@@ -46,7 +36,7 @@ class QTMode {
     this._injectStyles();
     this._buildModal();
     this._bindCharts();
-    if (!saved.v2 || !saved.v3) this._writeStorage();
+    if (!saved.v2 || saved.v3) this._writeStorage();
   }
 
   _readStorage() {
@@ -63,10 +53,8 @@ class QTMode {
   _writeStorage() {
     const payload = {
       v2: true,
-      v3: true,
       enabled: this.enabled,
       settings: this.settings,
-      visibility: this.visibility,
       chartHidden: [...this.chartHidden]
     };
     if (typeof Workspace !== 'undefined' && Workspace.write) {
@@ -149,7 +137,7 @@ class QTMode {
         background: rgba(120, 123, 134, 0.14);
       }
       .qt-settings-dialog {
-        width: 610px;
+        width: 590px;
         max-width: calc(100vw - 24px);
         max-height: calc(100vh - 36px);
         display: flex;
@@ -183,31 +171,10 @@ class QTMode {
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
-      .qt-tabs {
-        display: flex;
-        gap: 20px;
-        padding: 0 20px;
-        border-bottom: 1px solid #2a2e39;
-        background: #1e222d;
-      }
-      .qt-tabs button {
-        padding: 10px 2px;
-        background: transparent;
-        color: #868993;
-        border: 0;
-        border-bottom: 2px solid transparent;
-        font-weight: 600;
-        font-size: 13px;
-        cursor: pointer;
-      }
-      .qt-tabs button.active {
-        color: #ffffff;
-        border-bottom-color: #2962ff;
-      }
       .qt-settings-body {
         overflow-y: auto;
         min-height: 240px;
-        max-height: 64vh;
+        max-height: 66vh;
         padding: 0 20px 18px;
       }
       .qt-filter-sticky {
@@ -336,126 +303,6 @@ class QTMode {
         max-height: calc(100vh - 16px);
         overflow-y: auto;
       }
-      .qt-to-bulk {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 8px 10px;
-        margin: 6px 0 10px;
-        background: rgba(41, 98, 255, 0.08);
-        border: 1px solid rgba(82, 140, 255, 0.28);
-        border-radius: 8px;
-        font-size: 12px;
-        color: #cbd5e1;
-      }
-      .qt-to-bulk-actions {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 6px;
-      }
-      .qt-to-mini-btn {
-        padding: 4px 8px;
-        border-radius: 5px;
-        border: 1px solid #363c4e;
-        background: #161a25;
-        color: #cbd5e1;
-        font-size: 11.5px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      .qt-to-mini-btn:hover {
-        border-color: #64748b;
-        color: #ffffff;
-      }
-      .qt-to-mini-btn.primary {
-        background: rgba(41, 98, 255, 0.25);
-        border-color: rgba(82, 140, 255, 0.6);
-        color: #93c5fd;
-      }
-      .qt-to-card {
-        background: #161a25;
-        border: 1px solid #2b3040;
-        border-radius: 8px;
-        padding: 8px 11px;
-        margin-bottom: 8px;
-        transition: border-color .14s, opacity .14s;
-      }
-      .qt-to-card:hover {
-        border-color: #3b4258;
-      }
-      .qt-to-card.is-off {
-        opacity: 0.52;
-      }
-      .qt-to-line-row, .qt-to-lbl-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px 10px;
-      }
-      .qt-to-lbl-row {
-        margin-top: 6px;
-        padding-top: 6px;
-        border-top: 1px dashed rgba(255, 255, 255, 0.07);
-        font-size: 12px;
-        color: #94a3b8;
-      }
-      .qt-to-lbl-row.is-off .qt-to-ctrls {
-        opacity: 0.45;
-      }
-      .qt-to-title {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        user-select: none;
-      }
-      .qt-to-code {
-        font-weight: 700;
-        font-size: 13px;
-        color: #f1f5f9;
-        letter-spacing: 0.02em;
-      }
-      .qt-to-sub {
-        font-size: 11.5px;
-        color: #7c8599;
-      }
-      .qt-to-ctrls {
-        display: inline-flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 6px;
-      }
-      .qt-to-ctrls select, .qt-to-bulk select,
-      .qt-to-ctrls input[type="number"] {
-        background: #11151f;
-        border: 1px solid #323848;
-        border-radius: 5px;
-        color: #e2e8f0;
-        padding: 4px 6px;
-        font-size: 12px;
-        height: 28px;
-      }
-      .qt-to-ctrls input[type="number"] {
-        width: 52px;
-        text-align: center;
-      }
-      .qt-to-keep-wrap {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 11.5px;
-        color: #8b93a7;
-      }
-      .qt-to-title input[type="checkbox"] {
-        width: 15px;
-        height: 15px;
-        accent-color: #2962ff;
-        cursor: pointer;
-      }
       .qt-settings-error {
         color: #f23645;
         font-size: 12px;
@@ -522,7 +369,6 @@ class QTMode {
   mountTopbar(indicatorButton) {
     if (!indicatorButton) return;
     this.toggleButton = indicatorButton;
-    // Clone node to strip any legacy IndicatorLibrary click listeners cleanly
     const cleanBtn = indicatorButton.cloneNode(false);
     cleanBtn.className = 'btn-icon qt-mode-pill';
     cleanBtn.id = indicatorButton.id;
@@ -537,7 +383,6 @@ class QTMode {
       this.setEnabled(!this.enabled);
     });
 
-    // Remove old #btn-indicator-settings if present and mount clean #btn-qt-settings
     document.getElementById('btn-indicator-settings')?.remove();
     document.getElementById('btn-qt-settings')?.remove();
     const gear = document.createElement('button');
@@ -555,8 +400,6 @@ class QTMode {
       else this.openSettings(this.getActive());
     });
 
-    // Keep #indicator-modal hidden/inert in DOM instead of removing it, because PaperPanel
-    // attaches a MutationObserver to document.getElementById('indicator-modal') on startup.
     const legacyModal = document.getElementById('indicator-modal');
     if (legacyModal) {
       legacyModal.classList.remove('show');
@@ -574,8 +417,6 @@ class QTMode {
 
   setEnabled(next) {
     this.enabled = !!next;
-    // Keep #indicator-modal hidden/inert in DOM instead of removing it, because PaperPanel
-    // attaches a MutationObserver to document.getElementById('indicator-modal') on startup.
     const legacyModal = document.getElementById('indicator-modal');
     if (legacyModal) {
       legacyModal.classList.remove('show');
@@ -597,11 +438,9 @@ class QTMode {
 
   _bindCharts() {
     for (const chart of this.charts) {
-      // Disable any legacy IndicatorCollection workers so only QT Mode runs
       try { chart.runner?.stop?.(); } catch {}
       chart.clearCustomSeries?.();
 
-      // Create dedicated Cycle Table overlay layer (no corner indicator legend pill)
       chart.container.querySelector('.indicator-legend')?.remove();
       const tableLayer = document.createElement('div');
       tableLayer.className = 'qt-table-layer';
@@ -631,7 +470,6 @@ class QTMode {
       chart.onIndicatorToggle = () => this.toggleChart(chart);
       chart.onDataChange = () => this.schedule(chart);
 
-      // Fast O(k) Q-label Y pinning + spanning HTF True Open X pinning on scroll/zoom without recalculating SSMT
       chart.chart.timeScale().subscribeVisibleLogicalRangeChange(range => {
         const meta = this._chartMeta.get(chart);
         if (!meta || !chart.bars?.length || (!meta.qLabels?.length && !meta.trLabels?.length)) return;
@@ -671,17 +509,11 @@ class QTMode {
     return this._previewSettings || this.settings;
   }
 
-  _activeVisibility() {
-    return this._previewVisibility || this.visibility;
-  }
-
   renderChart(chart) {
     const meta = this._chartMeta.get(chart);
     if (!meta) return;
     const s = this._activeSettings();
-    const vis = this._activeVisibility();
-    const tfAllowed = vis[chart.currentTimeframe] !== false;
-    const showOnChart = this.enabled && !this.chartHidden.has(chart.id) && tfAllowed;
+    const showOnChart = this.enabled && !this.chartHidden.has(chart.id);
 
     if (!showOnChart || !chart.bars?.length) {
       chart.indicatorDrawings = [];
@@ -703,7 +535,6 @@ class QTMode {
     const chartBg = chart.appearance?.bg || chart.appearance?.background || chart.config?.bg || '#c2baae';
     const sessionMode = chart.appearance?.sessionMode || 'ETH';
 
-    // Request 6h / D / peer HTF native/derived data if needed and missing
     if ((s.showCycTbl || s.trTQO || (s.showSsmt && s.en5 && (s.showAll || chart.currentTimeframe === '6h'))) && !marketsObj[chart.symbol]?.['6h']?.length) {
       this.requestNative({ symbol: chart.symbol, timeframe: '6h' });
     }
@@ -760,7 +591,6 @@ class QTMode {
     const axisRight = (chart.chart?.priceScale?.('right')?.width?.() || 65) + 8;
     const axisBottom = (chart.chart?.timeScale?.().height?.() || 26) + 8;
 
-    // Clear floating topbar dock when chart sits at the top edge of viewport
     let topInset = 10;
     const topbar = document.getElementById('topbar');
     if (topbar && !topbar.hidden) {
@@ -838,11 +668,6 @@ class QTMode {
           </div>
           <button type="button" class="modal-close qt-close" aria-label="Close QT settings">×</button>
         </div>
-        <div class="qt-tabs" role="tablist">
-          <button type="button" role="tab" data-qt-tab="inputs" class="active">Inputs</button>
-          <button type="button" role="tab" data-qt-tab="style">Style & Colors</button>
-          <button type="button" role="tab" data-qt-tab="visibility">Visibility</button>
-        </div>
         <div class="qt-settings-body"></div>
         <div class="qt-settings-error" role="alert"></div>
         <div class="modal-footer">
@@ -859,18 +684,10 @@ class QTMode {
     modal.querySelector('.qt-cancel-btn').onclick = () => this.cancelSettings();
     modal.querySelector('.qt-ok-btn').onclick = () => this.applySettings();
     modal.querySelector('.qt-defaults-btn').onclick = () => {
-      if (this.currentTab === 'visibility') {
-        this._previewVisibility = {};
-      } else {
-        this._previewSettings = { ...QuantaibayEngine.DEFAULTS };
-      }
-      this._renderTab(this.currentTab);
+      this._previewSettings = { ...QuantaibayEngine.DEFAULTS };
+      this._renderBody();
       this.scheduleAll();
     };
-
-    for (const btn of modal.querySelectorAll('[data-qt-tab]')) {
-      btn.onclick = () => this._renderTab(btn.dataset.qtTab);
-    }
 
     const body = modal.querySelector('.qt-settings-body');
     body.addEventListener('scroll', () => this._positionPalette(), { passive: true });
@@ -888,8 +705,6 @@ class QTMode {
       if (e.target === modal) this.cancelSettings();
     });
 
-    // Capture-phase Escape handler ensures pressing Escape anywhere while QT Settings is open
-    // cleanly reverts _previewSettings instead of leaking draft state via global closeModal
     document.addEventListener('keydown', e => {
       if (e.key !== 'Escape' || !this.modal?.classList.contains('show')) return;
       e.preventDefault();
@@ -906,10 +721,9 @@ class QTMode {
     this.targetChart = chart || this.getActive();
     this.opener = document.activeElement;
     this._previewSettings = { ...this.settings };
-    this._previewVisibility = { ...this.visibility };
     this.modal.querySelector('.qt-settings-error').textContent = '';
     this.modal.classList.add('show');
-    this._renderTab(this.currentTab || 'inputs');
+    this._renderBody();
     const firstInput = this.modal.querySelector('.qt-search, .qt-close');
     if (firstInput?.focus) {
       if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => firstInput.focus({ preventScroll: true }));
@@ -941,7 +755,6 @@ class QTMode {
   cancelSettings() {
     this._closePalette();
     this._previewSettings = null;
-    this._previewVisibility = null;
     this.modal.classList.remove('show');
     this.scheduleAll();
     this.opener?.focus?.({ preventScroll: true });
@@ -959,9 +772,7 @@ class QTMode {
         }
       }
       this.settings = { ...this._previewSettings };
-      this.visibility = { ...this._previewVisibility };
       this._previewSettings = null;
-      this._previewVisibility = null;
       this._writeStorage();
       this._closePalette();
       this.modal.classList.remove('show');
@@ -972,107 +783,65 @@ class QTMode {
     }
   }
 
-  _renderTab(tab) {
-    this.currentTab = tab;
+  _renderBody() {
     this._closePalette();
-    for (const b of this.modal.querySelectorAll('[data-qt-tab]')) {
-      const sel = b.dataset.qtTab === tab;
-      b.classList.toggle('active', sel);
-      b.setAttribute('aria-selected', String(sel));
-    }
     const body = this.modal.querySelector('.qt-settings-body');
     body.replaceChildren();
 
-    if (tab === 'inputs') {
-      const sticky = document.createElement('div');
-      sticky.className = 'qt-filter-sticky';
-      const search = document.createElement('input');
-      search.type = 'search';
-      search.className = 'qt-search';
-      search.placeholder = 'Tìm nhanh setting (SSMT, AMDX, True Open, PSP, Table...)';
-      sticky.appendChild(search);
+    const sticky = document.createElement('div');
+    sticky.className = 'qt-filter-sticky';
+    const search = document.createElement('input');
+    search.type = 'search';
+    search.className = 'qt-search';
+    search.placeholder = 'Tìm nhanh setting (SSMT, AMDX, True Open, PSP, Table...)';
+    sticky.appendChild(search);
 
-      const categories = [
-        ['all', 'Tất cả', null],
-        ['general', 'General', new Set(['General'])],
-        ['ssmt', 'SSMT', new Set(['SSMT Display', 'SSMT Style'])],
-        ['cycle', 'Cycles & Q', new Set(['Cycle Lines / Q Labels', 'AMDX / XAMD'])],
-        ['trueopen', 'True Open', new Set(['True Open', 'True Open Style'])],
-        ['psp', 'PSP', new Set(['Advanced PSP'])],
-        ['table', 'Cycle Table', new Set(['Cycle Table'])]
-      ];
-      let activeCat = this._activeInputCat || 'all';
-      const chips = document.createElement('div');
-      chips.className = 'qt-chips';
-      const list = document.createElement('div');
+    const categories = [
+      ['general', 'General', new Set(['General'])],
+      ['ssmt', 'SSMT', new Set(['SSMT Display', 'SSMT Style'])],
+      ['cycle', 'Cycles & Q', new Set(['Cycle Lines / Q Labels', 'AMDX / XAMD'])],
+      ['trueopen', 'True Open', new Set(['True Open', 'True Open Style'])],
+      ['psp', 'PSP', new Set(['Advanced PSP'])],
+      ['table', 'Cycle Table', new Set(['Cycle Table'])]
+    ];
+    let activeCat = categories.some(c => c[0] === this._activeInputCat) ? this._activeInputCat : 'general';
+    this._activeInputCat = activeCat;
+    const chips = document.createElement('div');
+    chips.className = 'qt-chips';
+    const list = document.createElement('div');
 
-      const renderFiltered = () => {
-        const q = search.value.trim().toLowerCase();
-        const catEntry = categories.find(c => c[0] === activeCat) || categories[0];
-        const baseFields = catEntry[2]
-          ? QuantaibayEngine.INPUT_SCHEMA.filter(f => catEntry[2].has(f.group))
-          : QuantaibayEngine.INPUT_SCHEMA;
-        list.replaceChildren();
-        this._renderSchemaFields(list, baseFields, q);
+    const renderFiltered = () => {
+      const q = search.value.trim().toLowerCase();
+      const catEntry = categories.find(c => c[0] === activeCat) || categories[0];
+      const baseFields = q
+        ? QuantaibayEngine.INPUT_SCHEMA
+        : QuantaibayEngine.INPUT_SCHEMA.filter(f => catEntry[2].has(f.group));
+      list.replaceChildren();
+      this._renderSchemaFields(list, baseFields, q);
+    };
+
+    for (const [id, title] of categories) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'qt-chip' + (id === activeCat ? ' active' : '');
+      chip.textContent = title;
+      chip.onclick = () => {
+        activeCat = id;
+        this._activeInputCat = id;
+        for (const c of chips.children) c.classList.toggle('active', c === chip);
+        renderFiltered();
       };
-
-      for (const [id, title] of categories) {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'qt-chip' + (id === activeCat ? ' active' : '');
-        chip.textContent = title;
-        chip.onclick = () => {
-          activeCat = id;
-          this._activeInputCat = id;
-          for (const c of chips.children) c.classList.toggle('active', c === chip);
-          renderFiltered();
-        };
-        chips.appendChild(chip);
-      }
-      sticky.appendChild(chips);
-      body.append(sticky, list);
-      renderFiltered();
-      search.oninput = renderFiltered;
-    } else if (tab === 'style') {
-      // Focused view of all colors, line styles, widths, sizes, and master layer switches
-      const styleGroups = new Set(['SSMT Style', 'Cycle Lines / Q Labels', 'Cycle Table', 'True Open', 'Advanced PSP']);
-      const styleFields = QuantaibayEngine.INPUT_SCHEMA.filter(f =>
-        styleGroups.has(f.group) || ['showSsmt', 'showSsmtTxt', 'useAMDX'].includes(f.key)
-      );
-      this._renderSchemaFields(body, styleFields, '');
-    } else {
-      const head = document.createElement('div');
-      head.className = 'qt-group-heading';
-      head.textContent = 'Hiển thị QT Mode theo khung thời gian';
-      body.appendChild(head);
-      const tfs = typeof MarketData !== 'undefined' ? Object.keys(MarketData.durations) : ['1m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', 'D', 'W'];
-      for (const tf of tfs) {
-        const row = document.createElement('label');
-        row.className = 'qt-row';
-        const span = document.createElement('span');
-        span.textContent = tf;
-        const chk = document.createElement('input');
-        chk.type = 'checkbox';
-        chk.checked = this._previewVisibility[tf] !== false;
-        chk.onchange = () => {
-          this._previewVisibility[tf] = chk.checked;
-          this.scheduleAll();
-        };
-        row.append(span, chk);
-        body.appendChild(row);
-      }
+      chips.appendChild(chip);
     }
+    sticky.appendChild(chips);
+    body.append(sticky, list);
+    renderFiltered();
+    search.oninput = renderFiltered;
   }
 
   _renderSchemaFields(container, fields, query) {
-    const toItems = QuantaibayEngine.TRUE_OPEN_ITEMS || [];
-    const toMap = new Map(toItems.map(it => [it.id, it]));
     const filtered = query
-      ? fields.filter(f => {
-          const it = f.toItem ? toMap.get(f.toItem) : null;
-          const extra = it ? `${it.code} ${it.label} ${it.short}` : '';
-          return `${f.label} ${f.group} ${f.key} ${extra}`.toLowerCase().includes(query);
-        })
+      ? fields.filter(f => `${f.label} ${f.group} ${f.key}`.toLowerCase().includes(query))
       : fields;
 
     let curGroup = null;
@@ -1086,14 +855,7 @@ class QTMode {
         h.textContent = curGroup;
         container.appendChild(h);
       }
-      if (field.toItem) {
-        const matchedIds = new Set();
-        while (i < filtered.length && filtered[i].group === curGroup && filtered[i].toItem) {
-          matchedIds.add(filtered[i].toItem);
-          i++;
-        }
-        this._renderTrueOpenSection(container, toItems.filter(it => matchedIds.has(it.id)), !query);
-      } else if (field.inline && !query) {
+      if (field.inline && !query) {
         const inlineKey = field.inline;
         const row = document.createElement('div');
         row.className = 'qt-inline-row';
@@ -1107,255 +869,6 @@ class QTMode {
         i++;
       }
     }
-  }
-
-  _renderTrueOpenSection(container, items, showBulkBar = true) {
-    const target = this._previewSettings;
-    const wrap = document.createElement('div');
-
-    const rerenderSection = () => {
-      const fresh = document.createElement('div');
-      this._renderTrueOpenSection(fresh, items, showBulkBar);
-      wrap.replaceWith(...fresh.childNodes);
-    };
-
-    if (showBulkBar && items.length > 1) {
-      const bulk = document.createElement('div');
-      bulk.className = 'qt-to-bulk';
-      const title = document.createElement('span');
-      title.innerHTML = '<strong>Đồng bộ nhanh</strong> <span style="opacity:.75">(áp dụng cho tất cả True Open)</span>';
-
-      const actions = document.createElement('div');
-      actions.className = 'qt-to-bulk-actions';
-
-      const btnAllOn = document.createElement('button');
-      btnAllOn.type = 'button';
-      btnAllOn.className = 'qt-to-mini-btn';
-      btnAllOn.textContent = 'Bật hết';
-      btnAllOn.onclick = () => {
-        for (const it of items) target[it.id] = true;
-        this.scheduleAll();
-        rerenderSection();
-      };
-
-      const btnAllOff = document.createElement('button');
-      btnAllOff.type = 'button';
-      btnAllOff.className = 'qt-to-mini-btn';
-      btnAllOff.textContent = 'Tắt hết';
-      btnAllOff.onclick = () => {
-        for (const it of items) target[it.id] = false;
-        this.scheduleAll();
-        rerenderSection();
-      };
-
-      let bulkColor = target[items[0].id + '_col'] ?? '#2962ffff';
-      const bulkColorBtn = document.createElement('button');
-      bulkColorBtn.type = 'button';
-      bulkColorBtn.className = 'chart-color tv-indi-color';
-      bulkColorBtn.title = 'Chọn màu chung cho tất cả True Open';
-      const bulkSwatch = document.createElement('span');
-      bulkSwatch.style.background = QuantaibayEngine.parseColor(bulkColor).css;
-      bulkColorBtn.appendChild(bulkSwatch);
-      bulkColorBtn.onclick = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        this._openCustomColorPopover(bulkColorBtn, bulkSwatch, () => bulkColor, ({ hexAlpha }) => {
-          bulkColor = hexAlpha;
-          for (const it of items) {
-            target[it.id + '_col'] = hexAlpha;
-            target[it.id + '_txt'] = hexAlpha;
-          }
-          this.scheduleAll();
-          for (const sw of wrap.querySelectorAll('[data-to-swatch]')) {
-            sw.style.background = QuantaibayEngine.parseColor(hexAlpha).css;
-          }
-        }, 'All True Open');
-      };
-
-      const bulkStyle = document.createElement('select');
-      bulkStyle.title = 'Đổi kiểu đường cho tất cả True Open';
-      for (const [val, txt] of [['', 'Kiểu chung…'], ['Solid', '━━ Solid'], ['Dashed', '┅┅ Dashed'], ['Dotted', '┈┈ Dotted']]) {
-        bulkStyle.add(new Option(txt, val));
-      }
-      bulkStyle.onchange = () => {
-        if (!bulkStyle.value) return;
-        for (const it of items) target[it.id + '_st'] = bulkStyle.value;
-        this.scheduleAll();
-        rerenderSection();
-      };
-
-      const bulkVert = document.createElement('select');
-      bulkVert.title = 'Đổi vị trí nhãn cho tất cả True Open';
-      for (const [val, txt] of [['', 'Vị trí chữ…'], ['Above', 'Above'], ['On line', 'On line'], ['Below', 'Below']]) {
-        bulkVert.add(new Option(txt, val));
-      }
-      bulkVert.onchange = () => {
-        if (!bulkVert.value) return;
-        for (const it of items) target[it.id + '_vert'] = bulkVert.value;
-        this.scheduleAll();
-        rerenderSection();
-      };
-
-      actions.append(btnAllOn, btnAllOff, bulkColorBtn, bulkStyle, bulkVert);
-      bulk.append(title, actions);
-      wrap.appendChild(bulk);
-    }
-
-    const mkSelect = (key, opts, title) => {
-      const sel = document.createElement('select');
-      sel.dataset.inputKey = key;
-      if (title) sel.title = title;
-      for (const entry of opts) {
-        const [v, t] = Array.isArray(entry) ? entry : [entry, entry];
-        sel.add(new Option(String(t), String(v)));
-      }
-      sel.value = String(target[key] ?? QuantaibayEngine.DEFAULTS[key]);
-      sel.onchange = () => {
-        target[key] = key.endsWith('_wid') ? Number(sel.value) : sel.value;
-        this.scheduleAll();
-      };
-      return sel;
-    };
-
-    for (const it of items) {
-      const id = it.id;
-      const card = document.createElement('div');
-      card.className = 'qt-to-card' + (target[id] === false ? ' is-off' : '');
-      card.dataset.toCard = id;
-
-      // ---- Row 1: Enable + Title | Line Color + Line Style + Width + Keep ----
-      const lineRow = document.createElement('div');
-      lineRow.className = 'qt-to-line-row';
-
-      const titleLbl = document.createElement('label');
-      titleLbl.className = 'qt-to-title';
-      const chkEn = document.createElement('input');
-      chkEn.type = 'checkbox';
-      chkEn.dataset.inputKey = id;
-      chkEn.checked = target[id] !== false;
-      chkEn.onchange = () => {
-        target[id] = chkEn.checked;
-        card.classList.toggle('is-off', !chkEn.checked);
-        this.scheduleAll();
-      };
-      const codeEl = document.createElement('span');
-      codeEl.className = 'qt-to-code';
-      codeEl.textContent = it.code;
-      const subEl = document.createElement('span');
-      subEl.className = 'qt-to-sub';
-      subEl.textContent = it.short;
-      titleLbl.append(chkEn, codeEl, subEl);
-
-      const lineCtrls = document.createElement('div');
-      lineCtrls.className = 'qt-to-ctrls';
-
-      let txtSwatchRef = null;
-      const lineColorBtn = document.createElement('button');
-      lineColorBtn.type = 'button';
-      lineColorBtn.className = 'chart-color tv-indi-color';
-      lineColorBtn.dataset.inputKey = id + '_col';
-      lineColorBtn.title = `${it.code} — Màu đường kẻ`;
-      lineColorBtn.setAttribute('aria-label', `${it.code} Line Color`);
-      const lineSwatch = document.createElement('span');
-      lineSwatch.dataset.toSwatch = id + '_col';
-      lineSwatch.style.background = QuantaibayEngine.parseColor(target[id + '_col'] ?? QuantaibayEngine.DEFAULTS[id + '_col']).css;
-      lineColorBtn.appendChild(lineSwatch);
-      lineColorBtn.onclick = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        this._openCustomColorPopover(
-          lineColorBtn,
-          lineSwatch,
-          () => target[id + '_col'] ?? QuantaibayEngine.DEFAULTS[id + '_col'],
-          ({ hexAlpha, css }) => {
-            const prevLine = target[id + '_col'] ?? QuantaibayEngine.DEFAULTS[id + '_col'];
-            const prevTxt = target[id + '_txt'] ?? QuantaibayEngine.DEFAULTS[id + '_txt'];
-            target[id + '_col'] = hexAlpha;
-            if (String(prevTxt).toLowerCase() === String(prevLine).toLowerCase()) {
-              target[id + '_txt'] = hexAlpha;
-              if (txtSwatchRef) txtSwatchRef.style.background = css;
-            }
-            this.scheduleAll();
-          },
-          `${it.code} Line`
-        );
-      };
-
-      const styleSel = mkSelect(id + '_st', [['Solid', '━━ Solid'], ['Dashed', '┅┅ Dashed'], ['Dotted', '┈┈ Dotted']], `${it.code} — Kiểu đường (Solid / Dashed / Dotted)`);
-      const widSel = mkSelect(id + '_wid', [[1, '1px'], [2, '2px'], [3, '3px'], [4, '4px'], [5, '5px']], `${it.code} — Độ dày đường`);
-
-      const keepWrap = document.createElement('label');
-      keepWrap.className = 'qt-to-keep-wrap';
-      keepWrap.title = `${it.code} — Số chu kỳ giữ lại (1 = chỉ hiện chu kỳ đang chạy)`;
-      keepWrap.textContent = 'Giữ';
-      const keepInp = document.createElement('input');
-      keepInp.type = 'number';
-      keepInp.min = '1';
-      keepInp.max = '100';
-      keepInp.step = '1';
-      keepInp.dataset.inputKey = id + '_keep';
-      keepInp.value = String(target[id + '_keep'] ?? QuantaibayEngine.DEFAULTS[id + '_keep']);
-      keepInp.oninput = () => {
-        const v = Number(keepInp.value);
-        target[id + '_keep'] = v;
-        if (Number.isFinite(v) && v >= 1) this.scheduleAll();
-      };
-      keepWrap.appendChild(keepInp);
-
-      lineCtrls.append(lineColorBtn, styleSel, widSel, keepWrap);
-      lineRow.append(titleLbl, lineCtrls);
-
-      // ---- Row 2: Show Label | Text Color + Horizontal + Vertical + Font Size ----
-      const lblRow = document.createElement('div');
-      lblRow.className = 'qt-to-lbl-row' + (target[id + '_lbl'] === false ? ' is-off' : '');
-
-      const lblToggle = document.createElement('label');
-      lblToggle.className = 'qt-to-title';
-      const chkLbl = document.createElement('input');
-      chkLbl.type = 'checkbox';
-      chkLbl.dataset.inputKey = id + '_lbl';
-      chkLbl.checked = target[id + '_lbl'] !== false;
-      chkLbl.onchange = () => {
-        target[id + '_lbl'] = chkLbl.checked;
-        lblRow.classList.toggle('is-off', !chkLbl.checked);
-        this.scheduleAll();
-      };
-      const lblSpan = document.createElement('span');
-      lblSpan.textContent = `Hiện chữ "${it.code}"`;
-      lblToggle.append(chkLbl, lblSpan);
-
-      const lblCtrls = document.createElement('div');
-      lblCtrls.className = 'qt-to-ctrls';
-
-      const txtColorBtn = document.createElement('button');
-      txtColorBtn.type = 'button';
-      txtColorBtn.className = 'chart-color tv-indi-color';
-      txtColorBtn.dataset.inputKey = id + '_txt';
-      txtColorBtn.title = `${it.code} — Màu chữ riêng`;
-      txtColorBtn.setAttribute('aria-label', `${it.code} Text Color`);
-      const txtSwatch = document.createElement('span');
-      txtSwatch.dataset.toSwatch = id + '_txt';
-      txtSwatch.style.background = QuantaibayEngine.parseColor(target[id + '_txt'] ?? QuantaibayEngine.DEFAULTS[id + '_txt']).css;
-      txtColorBtn.appendChild(txtSwatch);
-      txtSwatchRef = txtSwatch;
-      txtColorBtn.onclick = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        this._openColorPopover(txtColorBtn, txtSwatch, id + '_txt', `${it.code} Text`);
-      };
-
-      const posSel = mkSelect(id + '_pos', [['Left', 'Trái (Left)'], ['Mid', 'Giữa (Mid)'], ['Right', 'Phải (Right)']], `${it.code} — Vị trí ngang của chữ`);
-      const vertSel = mkSelect(id + '_vert', [['Above', 'Trên (Above)'], ['On line', 'Đè dây (On line)'], ['Below', 'Dưới (Below)']], `${it.code} — Vị trí dọc của chữ`);
-      const szSel = mkSelect(id + '_sz', ['Tiny', 'Small', 'Normal', 'Large'], `${it.code} — Cỡ chữ`);
-
-      lblCtrls.append(txtColorBtn, posSel, vertSel, szSel);
-      lblRow.append(lblToggle, lblCtrls);
-
-      card.append(lineRow, lblRow);
-      wrap.appendChild(card);
-    }
-
-    container.appendChild(wrap);
   }
 
   _createControl(descriptor, compact) {

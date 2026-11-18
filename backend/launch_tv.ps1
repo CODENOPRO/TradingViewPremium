@@ -1,20 +1,46 @@
+param(
+    [switch]$ForceRestart
+)
+
 $ErrorActionPreference = "Stop"
 $CdpPort = if ($env:TERMINAL_CDP_PORT) { [int]$env:TERMINAL_CDP_PORT } else { 9222 }
 $AppUserModelId = "TradingView.Desktop_n534cwy3pjxzj!TradingView.Desktop"
 $TradingViewArguments = "--remote-debugging-port=$CdpPort --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding"
 
-try {
-    $response = Invoke-RestMethod -Uri "http://localhost:$CdpPort/json" -TimeoutSec 1 -ErrorAction Stop
-    Write-Host "[OK] TradingView Desktop is already running with remote debugging on port $CdpPort."
-    exit 0
-} catch {
-    Write-Host "[INFO] Port $CdpPort is not open. Checking running processes..."
-}
+if ($ForceRestart) {
+    $running = @(Get-Process -Name "TradingView" -ErrorAction SilentlyContinue)
+    if ($running.Count -gt 0) {
+        Write-Host "[INFO] Closing running TradingView Desktop processes..."
+        foreach ($p in $running) {
+            try { [void]$p.CloseMainWindow() } catch {}
+        }
+        $deadline = (Get-Date).AddMilliseconds(1800)
+        while ((Get-Date) -lt $deadline) {
+            if (-not (Get-Process -Name "TradingView" -ErrorAction SilentlyContinue)) { break }
+            Start-Sleep -Milliseconds 150
+        }
+        Stop-Process -Name "TradingView" -Force -ErrorAction SilentlyContinue
+        $killDeadline = (Get-Date).AddSeconds(5)
+        while ((Get-Date) -lt $killDeadline) {
+            if (-not (Get-Process -Name "TradingView" -ErrorAction SilentlyContinue)) { break }
+            Start-Sleep -Milliseconds 150
+        }
+        Start-Sleep -Milliseconds 400
+    }
+} else {
+    try {
+        $null = Invoke-RestMethod -Uri "http://localhost:$CdpPort/json" -TimeoutSec 1 -ErrorAction Stop
+        Write-Host "[OK] TradingView Desktop is already running with remote debugging on port $CdpPort."
+        exit 0
+    } catch {
+        Write-Host "[INFO] Port $CdpPort is not open. Checking running processes..."
+    }
 
-$tvProc = Get-Process -Name "TradingView" -ErrorAction SilentlyContinue
-if ($tvProc) {
-    Write-Host "[ACTION NEEDED] TradingView is running without port $CdpPort. Close it normally, then run this launcher again."
-    exit 1
+    $tvProc = Get-Process -Name "TradingView" -ErrorAction SilentlyContinue
+    if ($tvProc) {
+        Write-Host "[ACTION NEEDED] TradingView is running without port $CdpPort. Close it normally, then run this launcher again."
+        exit 1
+    }
 }
 
 $signature = @"
@@ -42,6 +68,19 @@ try {
         Add-Type -TypeDefinition $signature -ErrorAction Stop
     }
     [Launcher]::Launch($AppUserModelId, $TradingViewArguments)
+    if ($ForceRestart) {
+        $waitEnd = (Get-Date).AddSeconds(20)
+        while ((Get-Date) -lt $waitEnd) {
+            try {
+                $targets = Invoke-RestMethod -Uri "http://localhost:$CdpPort/json/list" -TimeoutSec 1 -ErrorAction Stop
+                if ($targets) {
+                    Write-Host "[OK] Relaunched TradingView Desktop and CDP port $CdpPort is ready."
+                    exit 0
+                }
+            } catch {}
+            Start-Sleep -Milliseconds 400
+        }
+    }
     Write-Host "[OK] Launched TradingView Desktop with port $CdpPort."
     exit 0
 } catch {

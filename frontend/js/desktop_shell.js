@@ -9,10 +9,11 @@ class DesktopShell {
   static icon(name) {
     const paths={watch:'M4 3h16v18l-8-4-8 4z',alerts:'M12 8v5l3 2M5 4L2 7m17-3 3 3M4 13a8 8 0 1 0 16 0 8 8 0 1 0-16 0',objects:'M2 8l10-6 10 6-10 6zM2 13l10 6 10-6M2 18l10 6 10-6',editor:'M8 5L2 12l6 7m8-14 6 7-6 7',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0',lock:'M5 10h14v11H5zM8 10V6a4 4 0 0 1 8 0v4',close:'M5 5l14 14M19 5L5 19',settings:'M4 4h16v16H4zM8 8h8v8H8z',arrow:'M4 12h16m-6-6 6 6-6 6',line:'M4 20L20 4M2 18l4 4M18 2l4 4',hline:'M2 12h20M5 9v6',fib:'M3 4h18M3 10h13M3 16h18M3 22h9',box:'M4 4h16v16H4zM2 2h4v4H2zM18 18h4v4h-4z',position:'M4 4h12v7H4zM8 11h12v9H8zM2 4h20',text:'M4 5V3h16v2M12 3v18M8 21h8',brush:'M5 18c-3 0-3 4-3 4s5 0 5-3l13-13-3-3z',keep:'M3 14l11-11 7 7-11 11H3zM15 14v8m-4-4h8'};
     paths.chart='M3 4v16h18M7 15l4-5 4 2 5-6';
+    paths.paper='M4 9h16l-4-4M20 15H4l4 4';
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name]||paths.objects}"/></svg>`;
   }
-  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onSymbol,onIndicatorToggle,drawing}) {
-    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onSymbol,onIndicatorToggle,drawing});
+  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onAlertDialog,onPaperToggle,onSymbol,onIndicatorToggle,drawing}) {
+    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onAlertDialog,onPaperToggle,onSymbol,onIndicatorToggle,drawing});
     this.alertFilter='all';
     this._alertCond='cross';
     this._alertDraftSym='';
@@ -22,17 +23,19 @@ class DesktopShell {
     this.root.innerHTML='<div class="desktop-panel-header"><div class="desktop-panel-tabs" role="tablist"></div><button class="desktop-panel-close" aria-label="Close side panel">×</button></div><div class="desktop-panel-content"></div>';
     this.content=this.root.querySelector('.desktop-panel-content');this.tabs=this.root.querySelector('.desktop-panel-tabs');
     this.root.querySelector('.desktop-panel-close').onclick=()=>this.open(null);
-    this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout').focus();}};
+    this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout')?.focus();}};
     this.rail=document.createElement('nav');this.rail.id='right-sidebar';this.rail.setAttribute('aria-label','Chart panels');
-    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo']]){
+    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['paper','Paper Trading']]){
       const b=this.button(label,key,()=>{
-        if(key==='chart'){
+        if(key==='paper'){
+          this.onPaperToggle?.();
+        }else if(key==='chart'){
           this.companions?.closeDocked?.();
           this.open(null);
         }else{
           this.open(this.mode===key?null:key);
         }
-        $('layout-popover').classList.remove('show');
+        $('layout-popover')?.classList.remove('show');
       });
       b.dataset.panel=key;b.dataset.dockLabel=ui(label);this.rail.appendChild(b);
     }
@@ -73,9 +76,28 @@ class DesktopShell {
       if(document.fullscreenElement)return;
       close();for(const {node,anchor}of items)anchor.after(node);more.hidden=true;
       if(left.hidden||!header.clientWidth)return;
-      if(left.scrollWidth<=left.clientWidth+1)return;
-      more.hidden=false;
-      for(const {node}of items){menu.appendChild(node);if(left.scrollWidth<=left.clientWidth+1)break;}
+      const stacked=typeof matchMedia==='function'&&matchMedia('(max-width: 719px)').matches;
+      const scale=Math.max(.5,parseFloat(typeof getComputedStyle==='function'?getComputedStyle(document.documentElement).getPropertyValue('--toolbar-scale'):'')||1);
+      if(stacked||!header.getBoundingClientRect||!right?.getBoundingClientRect){
+        left.style.maxWidth='';left.style.marginLeft='';
+      }else{
+        const hRect=header.getBoundingClientRect(),rRect=right.getBoundingClientRect();
+        const freeVisual=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left-12);
+        left.style.maxWidth=Math.max(120,Math.floor(freeVisual/scale))+'px';
+        left.style.marginLeft='0px';
+      }
+      if(left.scrollWidth>left.clientWidth+1){
+        more.hidden=false;
+        for(const {node}of items){menu.appendChild(node);if(left.scrollWidth<=left.clientWidth+1)break;}
+      }
+      if(!stacked&&header.getBoundingClientRect&&right?.getBoundingClientRect){
+        const hRect=header.getBoundingClientRect(),rRect=right.getBoundingClientRect();
+        const freeVisual=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left-12);
+        const visualW=left.offsetWidth*scale;
+        const idealCenter=(hRect.width-visualW)/2;
+        const margin=idealCenter+visualW<=freeVisual?idealCenter:(freeVisual-visualW)/2;
+        left.style.marginLeft=Math.max(0,Math.round(margin))+'px';
+      }
     };
     this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);this.fitToolbar();
   }
@@ -106,13 +128,20 @@ class DesktopShell {
   }
   syncRailActive(){
     const compOpen=!!this.companions?.open;
+    const paperOpen=typeof document!=='undefined'&&!!document.getElementById('paper-panel')?.classList.contains('open');
     const mode=this.mode;
     this.rail?.querySelectorAll('[data-panel]').forEach(b=>{
-      const isChart=b.dataset.panel==='chart';
-      const active=isChart?(!mode&&!compOpen):(b.dataset.panel===mode);
+      const p=b.dataset.panel;
+      if(p==='paper'){
+        b.classList.toggle('active',paperOpen);
+        b.setAttribute('aria-expanded',String(paperOpen));
+        return;
+      }
+      const isChart=p==='chart';
+      const active=isChart?(!mode&&!compOpen&&!paperOpen):(p===mode);
       b.classList.toggle('active',active);
       if(isChart)b.setAttribute('aria-current',String(active));
-      else if(b.dataset.panel!=='editor')b.setAttribute('aria-expanded',String(b.dataset.panel===mode));
+      else if(p!=='editor')b.setAttribute('aria-expanded',String(p===mode));
     });
   }
   open(mode,persist=true){
@@ -298,7 +327,7 @@ class DesktopShell {
     modalBtn.title='Mở hộp thoại chi tiết (Alt + A)';
     modalBtn.setAttribute('aria-label','Open full alert dialog');
     modalBtn.textContent='Alt+A ↗';
-    modalBtn.onclick=()=>document.getElementById('btn-alert')?.click();
+    modalBtn.onclick=()=>this.onAlertDialog?this.onAlertDialog():document.getElementById('btn-alert')?.click();
 
     compTop.append(symChip,liveBtn,modalBtn);
 
@@ -343,7 +372,7 @@ class DesktopShell {
           this.refresh();
         }
       }else{
-        document.getElementById('btn-alert')?.click();
+        this.onAlertDialog?this.onAlertDialog():document.getElementById('btn-alert')?.click();
       }
     };
     addBtn.onclick=submitQuick;

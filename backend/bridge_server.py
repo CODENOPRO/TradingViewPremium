@@ -42,6 +42,8 @@ pending_native = []
 pending_startup = False
 startup_preloaded = False
 source_updates = {}
+main_loop = None
+restart_tv_task = None
 source_config = Path(os.getenv('TERMINAL_DATA_DIR', str(ROOT))) / 'source_requests.json'
 try:
     last_requests = json.loads(source_config.read_text(encoding='utf-8'))
@@ -78,19 +80,27 @@ ENSURE_PANES_JS = r'''(async () => {
    const supported=['NQ1!','ES1!','YM1!'];
    const primary=String(info.name||info.ticker).split(':').pop();
    if(!supported.includes(primary))throw Error('Open an NQ/ES/YM chart as the single source');
-   const created=[];
+   const created=[],woken=[];
    for(const symbol of supported){
-     const exists=model.dataSources().some(s=>{
-       if(s===main)return String(info.name||info.ticker).split(':').pop()===symbol;
-       return s.metaInfo?.()?.id==='Overlay@tv-basicstudies'&&String(s.symbol?.()).split(':').pop()===symbol;
-     });
-     if(exists)continue;
+     if(primary===symbol)continue;
+     const existing=model.dataSources().find(s=>s!==main&&s.metaInfo?.()?.id==='Overlay@tv-basicstudies'&&String(s.symbol?.()).split(':').pop()===symbol);
+     if(existing){
+       const visProp=existing.properties?.()?.childs?.()?.visible;
+       if(visProp?.value?.()===false||existing.isVisible?.()===false){
+         visProp?.setValue?.(true);
+         existing.setVisible?.(true);
+         woken.push(symbol);
+       }
+       existing.properties?.()?.childs?.()?.style?.setValue?.(1);
+       continue;
+     }
      const study=await widget.addOverlayStudy((symbol==='YM1!'?'CBOT_MINI:':'CME_MINI:')+symbol,false,true);
      if(!study)throw Error('TradingView did not allow a native pane for '+symbol);
+     study.properties?.()?.childs?.()?.visible?.setValue?.(true);
      study.properties?.()?.childs?.()?.style?.setValue?.(1);
      created.push({symbol,id:study.id()});
    }
-   return {created,resolution:String(main.interval())};
+   return {created,woken,resolution:String(main.interval())};
  }finally{window.__terminalPaneSetup=false;}
 })()'''
 
@@ -340,7 +350,7 @@ SNAPSHOT_JS = r'''(() => {
           if (value && value.length >= 5) output.push({time:value[0],open:value[1],high:value[2],low:value[3],close:value[4],volume:value[5] || 0});
         };
         if (__FULL__) bars.each((index,value) => { append(value); });
-        else append(bars.valueAt(bars.lastIndex()));
+        else { const li = bars.lastIndex(); if (li > 0) append(bars.valueAt(li - 1)); if (li >= 0) append(bars.valueAt(li)); }
         const minGap = minGaps[String(resolution)] || 0;
         if (overlay && minGap && bars.size() >= 2) {
           const prev = typeof bars.valueAt === 'function' ? bars.valueAt(bars.lastIndex() - 1) : output.at(-2);
@@ -604,7 +614,7 @@ async def automatic_sources():
                         missing = {'NQ1!', 'ES1!', 'YM1!'} - native_symbols
                         can_setup = bool(native_symbols & {'NQ1!', 'ES1!', 'YM1!'}) and 'CL1!' not in native_symbols
                         if subscriptions and missing and can_setup and time.monotonic() >= retry_setup:
-                            retry_setup = time.monotonic() + 30
+                            retry_setup = time.monotonic() + 20
                             try:
                                 await asyncio.to_thread(evaluate_target, target, ENSURE_PANES_JS)
                                 refresh.set()
@@ -647,6 +657,76 @@ async def automatic_sources():
 def snapshot_market_data():
     with store.lock:
         return {tf: {symbol: list(bars) for symbol, bars in symbols.items()} for tf, symbols in store.data.items()}
+
+
+async def restart_tradingview_flow():
+    global startup_preloaded
+    if os.getenv('TERMINAL_OFFLINE') == '1':
+        return
+    try:
+        if native_warmup:
+            native_warmup.queue.clear()
+        source_updates.clear()
+        with state_lock:
+            history_progress.clear()
+        set_status('connecting', 'Đang tắt và mở lại TradingView Desktop…',
+                   symbols=[], sources=[], source_target=None, last_update=None,
+                   source_setup_error=None, native_loading=None)
+        reconnect_source.set()
+        if os.name == 'nt':
+            proc = await asyncio.to_thread(
+                subprocess.run,
+                ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(ROOT / 'launch_tv.ps1'), '-ForceRestart'],
+                creationflags=subprocess.CREATE_NO_WINDOW,
+                capture_output=True,
+                text=True,
+                timeout=45,
+                check=False
+            )
+            if proc.returncode != 0:
+                logging.warning('launch_tv.ps1 -ForceRestart exited %s: %s', proc.returncode, (proc.stdout or proc.stderr or '').strip())
+        set_status('connecting', 'Đang chờ biểu đồ TradingView sẵn sàng…', symbols=[], sources=[])
+        ready_target = None
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            try:
+                targets = await asyncio.to_thread(lambda: json.load(urlopen(f'http://localhost:{CDP_PORT}/json/list', timeout=2)))
+                candidate, pairs = await asyncio.to_thread(select_single_source, targets)
+                if candidate and pairs:
+                    ready_target = candidate
+                    break
+            except Exception:
+                pass
+            await asyncio.sleep(0.8)
+        if ready_target:
+            try:
+                await asyncio.to_thread(evaluate_target, ready_target, ENSURE_PANES_JS)
+            except Exception as exc:
+                logging.warning('ENSURE_PANES_JS after restart: %s', exc)
+        startup_preloaded = False
+        reconnect_source.set()
+        refresh.set()
+        enqueue_startup()
+    except Exception as exc:
+        logging.exception('Restart TradingView failed')
+        set_status('disconnected', f'Không thể khởi động lại TradingView: {exc}', symbols=[])
+
+
+def trigger_restart_tradingview():
+    global restart_tv_task
+    if os.getenv('TERMINAL_OFFLINE') == '1':
+        return False
+    loop = main_loop
+    if loop is None or loop.is_closed():
+        return False
+
+    def _spawn():
+        global restart_tv_task
+        if restart_tv_task is None or restart_tv_task.done():
+            restart_tv_task = asyncio.create_task(restart_tradingview_flow())
+
+    loop.call_soon_threadsafe(_spawn)
+    return True
 
 
 def snapshot_metadata():
@@ -732,6 +812,12 @@ async def frontend_ws_handler(socket):
                                 queue.put_nowait(json.dumps(status))
                         else:
                             reconnect_source.set()
+                    elif request.get('action') == 'restart_tv':
+                        if os.getenv('TERMINAL_OFFLINE') == '1':
+                            with state_lock:
+                                queue.put_nowait(json.dumps(status))
+                        else:
+                            trigger_restart_tradingview()
                     elif request.get('action') == 'refresh_htf':
                         refresh.set()
                     elif request.get('action') == 'ping':
@@ -758,6 +844,29 @@ class HTTPHandler(SimpleHTTPRequestHandler):
     def _valid_host(self):
         host = (self.headers.get('Host') or '').split(':', 1)[0].lower()
         return host in ('127.0.0.1', 'localhost', '[::1]', '')
+
+    def _valid_origin(self):
+        origin = (self.headers.get('Origin') or '').strip()
+        if not origin:
+            return True
+        parsed = urlsplit(origin)
+        return parsed.scheme in ('http', 'https') and (parsed.hostname or '').lower() in ('127.0.0.1', 'localhost', '::1')
+
+    def do_POST(self):
+        if not self._valid_host() or not self._valid_origin():
+            self.send_error(403, 'Forbidden host/origin')
+            return
+        path = urlsplit(self.path)
+        if path.path == '/api/restart-tv':
+            started = trigger_restart_tradingview()
+            body = json.dumps({'ok': True, 'restarting': started}).encode()
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        else:
+            self.send_error(404, 'Not found')
 
     def do_GET(self):
         if not self._valid_host():
@@ -830,6 +939,8 @@ async def save_loop():
 
 
 async def main():
+    global main_loop
+    main_loop = asyncio.get_running_loop()
     store.load()
     for symbol in SYMBOLS:
         if store.data['1h'].get(symbol):

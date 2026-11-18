@@ -30,6 +30,7 @@ Trading|Giao dịch
 Alerts|Cảnh báo
 Events|Sự kiện
 Toolbars|Thanh công cụ
+Toolbar scale|Kích thước thanh công cụ
 Reduce motion|Giảm chuyển động
 On|Bật
 Off|Tắt
@@ -39,6 +40,15 @@ Top right|Góc trên phải
 Bottom left|Góc dưới trái
 Bottom right|Góc dưới phải
 Left drawing tools|Công cụ vẽ bên trái
+Top left toolbar|Thanh công cụ trên trái
+Top right toolbar|Thanh công cụ trên phải
+Drawing toolbar|Thanh công cụ vẽ
+Bottom left toolbar|Thanh công cụ dưới trái
+Bottom right toolbar|Thanh công cụ dưới phải
+Toolbar background (fixed)|Nền thanh công cụ (cố định)
+Calendar transparency|Độ trong suốt lịch
+Show song-change notification (2 seconds)|Thông báo đổi bài nhạc (2 giây)
+Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.|Chỉnh kích thước thanh công cụ trực tiếp bên dưới (lưu tự động). Nhấn Ctrl + , để mở nhanh Cài đặt.
 Toolbar background transparency|Độ trong suốt nền thanh công cụ
 Ctrl + , opens Settings when the toolbars are hidden. Changes here save immediately.|Dùng Ctrl + , để mở Cài đặt khi thanh công cụ bị ẩn.
 Candles|Nến

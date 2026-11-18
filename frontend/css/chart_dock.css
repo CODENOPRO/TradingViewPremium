@@ -166,7 +166,7 @@
 #layout-popover { top: 61px; right: 14px; }
 #desktop-panel { border-radius: 16px; border: 1px solid var(--dock-line); margin-left: 6px; }
 .companion-panel { right: 55px !important; height: calc(100dvh - var(--frame-top) - 112px); border-radius: 16px; }
-#paper-panel { bottom: calc(var(--dock-bottom) + 54px); left: 8px; right: 55px; }
+#paper-panel { inset: 10px 10px 10px auto; width: var(--paper-width, 390px); height: auto; max-height: none; }
 
 
 

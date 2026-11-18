@@ -1,5 +1,6 @@
 /* Settings, motion and input behavior shared by the terminal chrome. */
 TerminalFeatures.contrast=color=>{const hex=String(color).replace('#','');if(!/^[\da-f]{6}$/i.test(hex))return '#fff';const rgb=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722>.179?'#111':'#fff';};
+TerminalFeatures.clampToolbarScale=value=>Math.min(125,Math.max(60,Math.round((Number.isFinite(+value)&&+value>0?+value:85)/5)*5));
 TerminalFeatures.prototype.installPolish=function(){
   const settings=this.chartSettings,modal=settings.modal,dialog=settings.dialog;
   const old=modal.querySelector('.toolbar-settings'),controls=document.createElement('div'),parking=document.createElement('div');
@@ -9,6 +10,23 @@ TerminalFeatures.prototype.installPolish=function(){
   controls.querySelectorAll('.setting-row>span:first-child').forEach((el,i)=>el.textContent=labels[i]);
   controls.querySelector('.editor-help').textContent='Toolbars are pinned to the screen. Ctrl + , opens Settings. Chart and panel preferences save automatically.';
   const add=(text,el)=>{const label=document.createElement('label');label.className='setting-row';const name=document.createElement('span');name.textContent=text;label.append(name,el);controls.appendChild(label);};
+  const scaleKey='terminal_toolbar_scale_v1';
+  const scaleWrap=document.createElement('span');scaleWrap.className='toolbar-transparency';
+  const scaleInput=document.createElement('input');scaleInput.type='range';scaleInput.id='set-toolbar-scale';scaleInput.min=60;scaleInput.max=125;scaleInput.step=5;scaleInput.setAttribute('aria-label','Toolbar scale');
+  const scaleOutput=document.createElement('output');scaleOutput.id='toolbar-scale-value';scaleOutput.setAttribute('for','set-toolbar-scale');
+  scaleWrap.append(scaleInput,scaleOutput);
+  const applyScale=(raw,persist=true)=>{
+    const pct=TerminalFeatures.clampToolbarScale(raw);
+    scaleInput.value=String(pct);
+    scaleOutput.value=scaleOutput.textContent=pct+'%';
+    scaleInput.setAttribute('aria-valuetext',pct+'%');
+    document.documentElement.style.setProperty('--toolbar-scale',(pct/100).toFixed(2));
+    if(persist)Workspace.write(scaleKey,pct);
+    this.desktop?.fitToolbar?.();
+    this.charts?.forEach(c=>c.positionSymbolBadge?.());
+  };
+  scaleInput.oninput=()=>applyScale(scaleInput.value,true);
+  scaleWrap.ondblclick=()=>applyScale(85,true);
   const motionKey='terminal_motion_preference_v1';
   const motion=document.createElement('select');
   motion.id='set-reduce-motion';
@@ -25,6 +43,10 @@ TerminalFeatures.prototype.installPolish=function(){
   motion.addEventListener('change',()=>{Workspace.write(motionKey,motion.value);applyMotion();});
   add('Reduce motion',motion);
   controls.prepend(motion.parentElement);
+  add('Toolbar scale',scaleWrap);
+  controls.prepend(scaleWrap.parentElement);
+  settings.onToolbarReset=()=>applyScale(85,true);
+  applyScale(Workspace.read(scaleKey,85),false);
   applyMotion();
   const opacity=document.createElement('input');opacity.type='range';opacity.id='set-calendar-opacity';opacity.min=0;opacity.max=90;opacity.step=5;opacity.value=Workspace.read('terminal_calendar_transparency_v1',0);opacity.setAttribute('aria-label','Calendar transparency');opacity.oninput=()=>{document.documentElement.style.setProperty('--calendar-opacity',String(1-opacity.value/100));Workspace.write('terminal_calendar_transparency_v1',+opacity.value);};add('Calendar transparency',opacity);opacity.oninput();
   const songToast=document.createElement('input');songToast.type='checkbox';songToast.id='set-music-toast';songToast.checked=Workspace.read('terminal_music_toast_v1',true);songToast.onchange=()=>Workspace.write('terminal_music_toast_v1',songToast.checked);add('Show song-change notification (2 seconds)',songToast);

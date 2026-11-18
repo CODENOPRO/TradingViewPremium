@@ -481,93 +481,99 @@ test('Anti-collision separates co-located TDO + TMCO labels, slides crossing SSM
   assert.ok(Math.hypot(drawnTexts[0].x - drawnTexts[1].x, drawnTexts[0].y - drawnTexts[1].y) > 25, 'Crossing SSMT labels must separate cleanly');
 });
 
-test('Per-True-Open independent settings control color, solid/dashed/dotted, width, label pos/vert/color, keep, and individual 90m sessions', () => {
-  assert.equal(QuantaibayEngine.TRUE_OPEN_ITEMS.length, 10);
+test('Unified True Open settings + modular QT split + simplified QT Settings UI + Realtime SSMT with stale/lagging peer', () => {
+  // 1. Verify modular split exports exist and stay lightweight
+  const QTCore = require('../frontend/js/qt_core.js');
+  const QTCyclesTrueOpen = require('../frontend/js/qt_cycles_trueopen.js');
+  const QTSsmt = require('../frontend/js/qt_ssmt.js');
+  const QTPsp = require('../frontend/js/qt_psp.js');
+  assert.ok(QTCore && QTCyclesTrueOpen && QTSsmt && QTPsp);
+  assert.equal(QuantaibayEngine.TRUE_OPEN_ITEMS, undefined, 'Per-item True Open expansion must be removed');
+  assert.ok(QuantaibayEngine.INPUT_SCHEMA.some(f => f.key === 'tr90' && f.group === 'True Open'));
+  assert.ok(QuantaibayEngine.INPUT_SCHEMA.some(f => f.key === 'trCol' && f.group === 'True Open Style'));
+
+  // 2. Verify QTMode dialog has no "Style & Colors" / "Visibility" tabs and no "Tất cả" chip
+  const QTModeSrc = fs.readFileSync(path.resolve(__dirname, '../frontend/js/qt_mode.js'), 'utf8');
+  assert.equal(QTModeSrc.includes('Style & Colors'), false, 'Style & Colors tab must be removed');
+  assert.equal(QTModeSrc.includes('data-qt-tab="visibility"'), false, 'Visibility tab must be removed');
+  assert.equal(QTModeSrc.includes("'Tất cả'"), false, 'Tất cả chip must be removed');
+
+  // 3. Verify unified True Open controls all enabled tiers cleanly
   const mhPath = path.resolve(__dirname, '../backend/market_history.json');
   const htfPath = path.resolve(__dirname, '../backend/market_history_htf.json');
-  if (!fs.existsSync(mhPath)) return;
-
-  const mh = JSON.parse(fs.readFileSync(mhPath, 'utf8'));
-  const htf = JSON.parse(fs.readFileSync(htfPath, 'utf8'));
-  const markets = { 'NQ1!': { '1m': mh['NQ1!'] || [] } };
-  for (const [tf, bySym] of Object.entries(htf)) {
-    if (bySym?.['NQ1!']) markets['NQ1!'][tf] = bySym['NQ1!'];
+  if (fs.existsSync(mhPath)) {
+    const mh = JSON.parse(fs.readFileSync(mhPath, 'utf8'));
+    const htf = JSON.parse(fs.readFileSync(htfPath, 'utf8'));
+    const markets = { 'NQ1!': { '1m': mh['NQ1!'] || [] } };
+    for (const [tf, bySym] of Object.entries(htf)) {
+      if (bySym?.['NQ1!']) markets['NQ1!'][tf] = bySym['NQ1!'];
+    }
+    const out = QuantaibayEngine.calculate(markets['NQ1!']['1m'], {
+      symbol: 'NQ1!',
+      timeframe: '1m',
+      timeframeSeconds: 60,
+      markets,
+      settings: {
+        showSsmt: false,
+        showCycLines: false,
+        showQLabels: false,
+        showCycTbl: false,
+        tr90: false,
+        trTMCO: true,
+        trTDO: true,
+        trCol: '#dc2626ff',
+        trStyleIn: 'Solid',
+        trWid: 2,
+        trLblVert: 'On line',
+        trLblPos: 'Right',
+        trMaxKeep: 1
+      }
+    });
+    const trLines = out.drawings.filter(d => d._qtTrueOpen);
+    assert.equal(trLines.some(d => d._qtTier === 1), false, 'tr90=false disables all 90m session opens');
+    const tdoLines = trLines.filter(d => d._qtTier === 2);
+    assert.equal(tdoLines.length, 1);
+    assert.equal(tdoLines[0].borderColor.toLowerCase(), '#dc2626');
+    assert.equal(tdoLines[0].lineStyle, 'solid');
+    assert.equal(tdoLines[0].width, 2);
+    assert.equal(tdoLines[0].text, 'TDO');
+    assert.equal(tdoLines[0].textStyle.inlinePos, 'right');
   }
 
-  const out = QuantaibayEngine.calculate(markets['NQ1!']['1m'], {
+  // 4. Verify Realtime SSMT updates live when YM1! is offline/stale by hours OR 1 bar late in Q2
+  const q1 = QuantaibayEngine.timestamp('America/New_York', 2026, 11, 18, 9, 0, 0);
+  const q2 = QuantaibayEngine.timestamp('America/New_York', 2026, 11, 18, 9, 23, 0);
+  const staleT = q1 - 6 * 3600; // YM1! froze 6 hours earlier (like hidden Overlay study)
+  const nqLive = [
+    { time: q1 + 60, open: 100, high: 110, low: 99, close: 105 },
+    { time: q2, open: 106, high: 114, low: 104, close: 113 } // NQ sweeps Q1 high (114 > 110)
+  ];
+  const esLive = [
+    { time: q1 + 60, open: 100, high: 110, low: 99, close: 105 },
+    { time: q2, open: 105, high: 108, low: 103, close: 106 } // ES fails to sweep Q1 high (108 <= 110)
+  ];
+  const ymStale = [
+    { time: staleT, open: 100, high: 105, low: 99, close: 102 }
+  ];
+  const outLive1 = QuantaibayEngine.calculate(nqLive, {
     symbol: 'NQ1!',
     timeframe: '1m',
     timeframeSeconds: 60,
-    markets,
-    settings: {
-      showSsmt: false,
-      showCycLines: false,
-      showQLabels: false,
-      showCycTbl: false,
-      // Disable Asia & London 90m opens, keep NY AM with custom purple Dotted 2px & Keep=1
-      trTAO: false,
-      trTLO: false,
-      trTNYPM: false,
-      trTNYAM: true,
-      trTNYAM_col: '#7c3aedff',
-      trTNYAM_st: 'Dotted',
-      trTNYAM_wid: 2,
-      trTNYAM_keep: 1,
-      // TDO: Solid Crimson 3px, On line + Right, custom dark text color, Keep=1
-      trTDO_col: '#dc2626ff',
-      trTDO_txt: '#111827ff',
-      trTDO_st: 'Solid',
-      trTDO_wid: 3,
-      trTDO_vert: 'On line',
-      trTDO_pos: 'Right',
-      trTDO_keep: 1,
-      // TWO: Dashed Emerald 2px, Below + Mid, Large font
-      trTWO_col: '#059669ff',
-      trTWO_st: 'Dashed',
-      trTWO_wid: 2,
-      trTWO_vert: 'Below',
-      trTWO_pos: 'Mid',
-      trTWO_sz: 'Large',
-      // TMCO: Dotted Slate, no label
-      trTMCO_col: '#64748bff',
-      trTMCO_st: 'Dotted',
-      trTMCO_lbl: false
-    }
+    markets: { 'NQ1!': { '1m': nqLive }, 'ES1!': { '1m': esLive }, 'YM1!': { '1m': ymStale } },
+    settings: { showCycLines: false, showQLabels: false, showCycTbl: false, trTMCO: false }
   });
+  const ssmts1 = outLive1.drawings.filter(d => d._qtSsmt && d.lineStyle === 'solid');
+  assert.equal(ssmts1.length, 1, 'Live SSMT must still form in realtime when YM1! feed is stale');
+  assert.equal(ssmts1[0].p2.price, 114);
 
-  const trLines = out.drawings.filter(d => d._qtTrueOpen);
-  const trTexts = out.drawings.filter(d => d._qtTrueOpenSpan);
-
-  // Verify TAO/TLO/TNY PM are completely off while TNY AM is present with Keep=1, #7c3aed, dotted, width=2
-  assert.equal(trTexts.some(d => ['TAO', 'TLO', 'TNY PM'].includes(d.text)), false);
-  const tnyLbls = trTexts.filter(d => d.text === 'TNY AM');
-  assert.equal(tnyLbls.length, 1);
-  const tnyLine = trLines.find(d => d._qtTier === 1);
-  assert.equal(tnyLine.borderColor.toLowerCase(), '#7c3aed');
-  assert.equal(tnyLine.lineStyle, 'dotted');
-  assert.equal(tnyLine.width, 2);
-
-  // Verify TDO is On line + Right, Solid, width=3, #dc2626 line + #111827 inline text, Keep=1
-  const tdoLines = trLines.filter(d => d._qtTier === 2);
-  assert.equal(tdoLines.length, 1);
-  assert.equal(tdoLines[0].borderColor.toLowerCase(), '#dc2626');
-  assert.equal(tdoLines[0].lineStyle, 'solid');
-  assert.equal(tdoLines[0].width, 3);
-  assert.equal(tdoLines[0].text, 'TDO');
-  assert.equal(tdoLines[0].textStyle.inlinePos, 'right');
-  assert.match(tdoLines[0].textStyle.color, /17,24,39/);
-
-  // Verify TWO is Below + Mid + Large (16px) + #059669
-  const twoLbl = trTexts.find(d => d.text === 'TWO');
-  assert.ok(twoLbl);
-  assert.equal(twoLbl.textStyle.placement, 'below');
-  assert.equal(twoLbl.textStyle.horizontal, 'center');
-  assert.equal(twoLbl.textStyle.size, 16);
-
-  // Verify TMCO lines exist in dotted #64748b with zero TMCO labels
-  const tmcoLines = trLines.filter(d => d._qtTier === 0);
-  assert.ok(tmcoLines.length > 0);
-  assert.equal(tmcoLines[0].lineStyle, 'dotted');
-  assert.equal(tmcoLines[0].borderColor.toLowerCase(), '#64748b');
-  assert.equal(trTexts.some(d => d.text === 'TMCO'), false);
+  // Next live tick pushes NQ higher to 118 -> SSMT endpoint updates dynamically in realtime!
+  nqLive[1] = { time: q2, open: 106, high: 118, low: 104, close: 117 };
+  const outLive2 = QuantaibayEngine.calculate(nqLive, {
+    symbol: 'NQ1!',
+    timeframe: '1m',
+    timeframeSeconds: 60,
+    markets: { 'NQ1!': { '1m': nqLive }, 'ES1!': { '1m': esLive }, 'YM1!': { '1m': ymStale } },
+    settings: { showCycLines: false, showQLabels: false, showCycTbl: false, trTMCO: false }
+  });
+  assert.equal(outLive2.drawings.find(d => d._qtSsmt && d.lineStyle === 'solid').p2.price, 118);
 });

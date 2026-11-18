@@ -7,6 +7,9 @@
    Không đụng HTML/JS. Nằm cuối <head> nên luôn thắng cascade.
    ============================================================ */
 :root{
+  --toolbar-scale: 0.85;
+  --frame-top: calc(22px + 46px * var(--toolbar-scale, 1));
+  --right-rail-inset: calc(20px + 52px * var(--toolbar-scale, 1));
   --wow-glass: color-mix(in srgb, var(--bg) 88%, transparent);
   --wow-border: var(--line);
   --wow-tint-1: var(--glass2);
@@ -409,9 +412,9 @@ body:not(.reduce-motion) .chart-context-menu[role=menu]{animation:wow-menu-in .2
 }
 /* Keep right dock visible whenever a side panel is open so active tab stays anchored cleanly */
 @media (hover: hover) and (pointer: fine){
-  body:has(#desktop-panel:not([hidden]), .companion-panel.open) .edge-panel-dock > #right-sidebar{
+  body:has(#desktop-panel:not([hidden]), .companion-panel.open, #paper-panel.open) .edge-panel-dock > #right-sidebar{
     translate:0 0 !important;
-    scale:1 !important;
+    scale:var(--toolbar-scale, 1) !important;
     opacity:1 !important;
     pointer-events:auto !important;
   }
@@ -444,7 +447,7 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
 /* ---------- 10. Side Panel (#desktop-panel) & Price Alerts Hub Redesign ---------- */
 #desktop-panel{
   position:fixed !important;
-  inset:calc(var(--frame-top) + 6px) 72px auto auto !important;
+  inset:calc(var(--frame-top) + 6px) var(--right-rail-inset, 72px) auto auto !important;
   width:336px !important;
   min-width:336px !important;
   max-width:calc(100vw - 84px) !important;
@@ -479,7 +482,7 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
 }
 .companion-panel:not(.music-mini){
   position:fixed !important;
-  inset:calc(var(--frame-top) + 6px) 72px auto auto !important;
+  inset:calc(var(--frame-top) + 6px) var(--right-rail-inset, 72px) auto auto !important;
   height:auto !important;
   max-height:calc(100dvh - var(--frame-top) - var(--dock-bottom) - 10px) !important;
   border-radius:20px !important;
@@ -903,4 +906,104 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
   background:var(--bg);
   font-size:10px;
   font-weight:600;
+}
+
+/* ---------- 11. Toolbar Scale (--toolbar-scale) ---------- */
+#topbar .topbar-left{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left top;
+}
+#topbar .topbar-right{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:right top;
+}
+@media (min-width: 720px){
+  #topbar .topbar-left{
+    position:static !important;
+    left:auto !important;
+    transform:none !important;
+    flex:0 0 auto !important;
+  }
+  #topbar .topbar-right{
+    position:absolute !important;
+    right:0 !important;
+    top:0 !important;
+    margin:0 !important;
+  }
+}
+#left-sidebar{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left bottom;
+  max-width:calc((100vw - 20px) / var(--toolbar-scale, 1)) !important;
+}
+#right-sidebar{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:right top;
+}
+@media (hover: hover) and (pointer: fine){
+  .edge-drawing-dock{
+    --dock-scale:var(--toolbar-scale, 1) calc(var(--toolbar-scale, 1) * .94);
+  }
+  .edge-panel-dock{
+    --dock-scale:calc(var(--toolbar-scale, 1) * .94) var(--toolbar-scale, 1);
+  }
+  .edge-drawing-dock #left-sidebar,
+  .edge-panel-dock #right-sidebar{
+    transform-origin:var(--dock-origin);
+    scale:var(--dock-scale);
+  }
+  :is(.edge-drawing-dock, .edge-panel-dock):is([data-dock-hover], :has(:focus-visible, > .dock-pin[aria-pressed="true"])) > :is(#left-sidebar, #right-sidebar),
+  body:has(#favorite-tool-menu:not([hidden]), .magnet-menu:not([hidden])) .edge-drawing-dock #left-sidebar{
+    scale:var(--toolbar-scale, 1) !important;
+  }
+}
+#replay-toolbar.show{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left bottom;
+  max-width:calc((100vw - 16px) / var(--toolbar-scale, 1));
+}
+#fullscreen-timeframe .timeframe-group{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:center top;
+}
+body.terminal-fullscreen > #drawing-favorites{
+  scale:var(--toolbar-scale, 1);
+  transform-origin:left top;
+}
+
+/* ---------- 12. Paper Trading Right Window (pushes entire web to the left) ---------- */
+body.paper-panel-open{
+  --paper-push:calc(var(--paper-width, 390px) + 18px);
+}
+#paper-panel{
+  position:fixed !important;
+  inset:10px 10px 10px auto !important;
+  width:var(--paper-width, 390px) !important;
+  max-width:calc(100vw - 76px) !important;
+  height:auto !important;
+  max-height:none !important;
+}
+body.paper-panel-open:not(.pine-editor-open) #app-body{
+  inset:0 var(--paper-push) 0 0 !important;
+  bottom:0 !important;
+}
+body.paper-panel-open #topbar{
+  right:calc(var(--paper-push) + 8px) !important;
+}
+body.paper-panel-open .edge-drawing-dock{
+  bottom:0 !important;
+  left:calc((100vw - var(--paper-push)) / 2) !important;
+}
+body.paper-panel-open #left-sidebar{
+  max-width:calc((100vw - var(--paper-push) - 24px) / var(--toolbar-scale, 1)) !important;
+}
+body.paper-panel-open .edge-panel-dock{
+  right:calc(var(--paper-push) - 6px) !important;
+}
+body.paper-panel-open :is(#desktop-panel, .companion-panel:not(.music-mini)){
+  right:calc(var(--paper-push) + 66px) !important;
+}
+body.paper-panel-open #replay-toolbar{
+  right:calc(var(--paper-push) + 8px) !important;
+  bottom:46px !important;
 }

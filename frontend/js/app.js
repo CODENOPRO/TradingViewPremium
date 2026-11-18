@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveAlerts(alerts.map(a=>a.id===id?{...a,price}:a));
   }
   charts.forEach(c=>c.alertOverlay=new AlertChartControls(c,{getAlerts:()=>alerts,canDrag:()=>drawing.activeTool==='crosshair',update:updateAlert,remove:removeAlert,edit:(id,chart)=>openAlert(chart,undefined,id)}));
-  bindDialogToggle($('btn-alert'), $('alert-modal'), () => openAlert(active));
+  if ($('btn-alert')) bindDialogToggle($('btn-alert'), $('alert-modal'), () => openAlert(active));
   charts.forEach(chart=>chart.onPricePlus=price=>{activate(chart);openAlert(chart,price);});
   $('btn-save-alert').addEventListener('click',()=>{
     const price=Number($('alert-price-input').value);if(!alertEdit||!Number.isFinite(price)||!$('alert-price-input').value)return toast('Nhập giá hợp lệ','alert');
@@ -428,13 +428,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Local accounts retain the existing storage key and legacy positions.
   const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }), state => Workspace.write('terminal_paper_v1', state));
-  paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast});
+  paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast,onToggle:()=>{desktop?.syncRailActive?.();desktop?.fitToolbar?.();}});
   function renderPaper(){paperPanel.render();}
   $('create-account').addEventListener('click',()=>paperPanel.action(()=>{paperPanel.paper.create($('account-name').value,Number($('account-balance').value),Number($('account-margin')?.value||0));closeModal($('account-modal'));}));
   $('btn-trade-buy').addEventListener('click',()=>paperPanel.quickMarket('buy'));
   $('btn-trade-sell').addEventListener('click',()=>paperPanel.quickMarket('sell'));
 
-  function toggleIndicator(chart){void toggleQtMode(chart);}
+  function toggleIndicator(chart){qtMode.toggleChart(chart);}
   charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
 
   // Settings and scale controls.
@@ -503,7 +503,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     onAlertClearTriggered:()=>{
       saveAlerts(alerts.filter(a=>!a.triggered));
-    }
+    },
+    onAlertDialog:()=>openAlert(active),
+    onPaperToggle:()=>paperPanel.open(!$('paper-panel').classList.contains('open'))
   });
   const themeButton = $('dock-theme');
   const themeKey = 'terminal_dock_theme_v1';
@@ -560,8 +562,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawDock() {
       frame=0;
       if(!dockMotion.matches||document.hidden||document.body.classList.contains('reduce-motion'))return;
+      const bounds=dock.getBoundingClientRect();
+      const rawExtent=vertical?dock.offsetHeight:dock.offsetWidth;
+      const dockScale=rawExtent>0?((vertical?bounds.height:bounds.width)/rawExtent):1;
       if(!geometry){
-        const bounds=dock.getBoundingClientRect();
         const tools = [...dock.querySelectorAll(selector)].filter(tool => tool[mainAxis[0]]).map(tool => ({
           tool,
           size: tool[mainAxis[0]],
@@ -569,11 +573,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
         geometry = {
           tools,
-          start: vertical ? bounds.top : bounds.left,
-          extent: (vertical ? bounds.height : bounds.width) + 2
+          extent: rawExtent + 2
         };
       }
-      const pointer=pointerPosition-geometry.start;
+      const pointer=(pointerPosition-(vertical?bounds.top:bounds.left))/(dockScale||1);
       let expansion = 0;
       const tools = geometry.tools.map(tool => {
         const proximity = Math.max(0, 1 - Math.abs(pointer - tool.center) / 95);
@@ -642,6 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandActions = [
     [ui('Đổi mã'), () => $('btn-symbol-search').click()],
     [ui('Cài đặt · Chart Settings'), () => chartSettings.open()],
+    [ui('Toolbar scale'), () => { chartSettings.tab = 'Toolbars'; chartSettings.open(); }],
     ['Đổi giao diện sáng tối', toggleDockTheme],
     ...[['Theo dõi','watch'],['Cảnh báo','alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
     [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
@@ -650,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ['QT Mode · Bật / Tắt', () => $('btn-indicator').click()],
     ['QT Mode · Cài đặt (Quantaibay)', () => qtMode.openSettings(active)],
     ['Layout', () => $('btn-layout').click()],
-    ['Alerts', () => $('btn-alert').click()],
+    ['Alerts', () => openAlert(active)],
     ['Replay', () => $('btn-replay').click()],
     ['Paper Trading', () => paperPanel.open(!$('paper-panel').classList.contains('open'))],
     ...[...document.querySelectorAll('.symbol-item')].map(item =>
@@ -878,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scheduleReconnect();
     };
   }
-  features = new TerminalFeatures({charts,sync,drawing,activate,getActive:()=>active,getReplay:()=>replay,hydrate,saveWorkspace,updateHeader,chartSettings,changeSymbol,subscribe:()=>{
+  features = new TerminalFeatures({charts,desktop,sync,drawing,activate,getActive:()=>active,getReplay:()=>replay,hydrate,saveWorkspace,updateHeader,chartSettings,changeSymbol,subscribe:()=>{
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'subscribe',charts:features.visibleCharts().map(c=>({symbol:c.symbol,timeframe:c.currentTimeframe}))}));
   }});
   if (desktop && features?.companions) {
@@ -907,14 +911,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function confirmReloadChartData() {
     return new Promise(resolve => {
       if (typeof HTMLDialogElement !== 'function' || !document.createElement('dialog').showModal) {
-        resolve(typeof confirm === 'function' ? confirm('Tải lại toàn bộ dữ liệu biểu đồ từ đầu?') : true);
+        resolve(typeof confirm === 'function' ? confirm('Tắt và bật lại TradingView Desktop để tải lại dữ liệu từ đầu?') : true);
         return;
       }
       const dialog = document.createElement('dialog');
       dialog.className = 'paper-order-confirmation';
       dialog.setAttribute('aria-label', 'Xác nhận tải lại dữ liệu');
       const message = document.createElement('p');
-      message.textContent = 'Tải lại toàn bộ dữ liệu biểu đồ từ đầu?';
+      message.textContent = 'Tắt và bật lại TradingView Desktop để tải lại dữ liệu từ đầu?';
       const form = document.createElement('form');
       form.method = 'dialog';
       for (const [text, value, cls] of [['Hủy', 'cancel', 'btn-secondary'], ['Tải lại', 'confirm', 'btn-primary']]) {
@@ -937,10 +941,16 @@ document.addEventListener('DOMContentLoaded', () => {
     retry = 1000;
     preloadRequested = false;
     pendingNative.clear();
-    bridge = { state: 'connecting', symbols: [] };
+    bridge = { state: 'connecting', symbols: [], message: 'Đang tắt và mở lại TradingView Desktop…' };
     statusText();
-    // A new connection requests the cached snapshot before live updates resume.
-    void connect(true);
+    try {
+      await fetch('/api/restart-tv', { method: 'POST', cache: 'no-store', signal: AbortSignal.timeout(8000) });
+    } catch {
+      if (socket?.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ action: 'restart_tv' }));
+      }
+    }
+    void connect(false);
   });
   const timezoneButton = $('live-tz');
   const timezoneMenu = $('clock-timezone-menu');
@@ -967,10 +977,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function placeTimezoneMenu() {
       const anchor = $('dock-market-status').getBoundingClientRect();
-      const bar = $('topbar').getBoundingClientRect();
       const width = Math.min(300, window.innerWidth - 24);
       const right = Math.min(window.innerWidth - width - 12, Math.max(12, window.innerWidth - anchor.right));
-      timezoneMenu.style.setProperty('--tz-top', Math.ceil(Math.max(anchor.bottom, bar.bottom)) + 12 + 'px');
+      timezoneMenu.style.setProperty('--tz-top', Math.ceil(anchor.bottom) + 10 + 'px');
       timezoneMenu.style.setProperty('--tz-right', right + 'px');
     }
     timezoneMenu.addEventListener('beforetoggle', event => {

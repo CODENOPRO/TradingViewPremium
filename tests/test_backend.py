@@ -136,6 +136,7 @@ class CDPTests(unittest.IsolatedAsyncioTestCase):
                     {"symbol": "NQ1!", "timeframe": "12h"},
                     {"symbol": "UNKNOWN", "timeframe": "1m"},
                 ]}),
+                json.dumps({"action": "restart_tv"}),
                 json.dumps({"action": "ping"}),
             ])
             await frontend_ws_handler(socket)

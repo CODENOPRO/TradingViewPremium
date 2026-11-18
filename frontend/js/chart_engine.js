@@ -372,7 +372,28 @@ class ChartEngine {
       return this.regularBarsByTf.get(tf).slice();
     }
     if (tf === '1m') return this.rawBars.map(b => ({ ...b }));
-    return (this.htfData[tf] || []).map(b => ({ ...b }));
+    const native = (this.htfData[tf] || []).map(b => ({ ...b }));
+    if (!this.rawBars?.length || ['1M', '3M'].includes(tf) || typeof MarketData?.aggregate !== 'function') {
+      return native;
+    }
+    if (!native.length) return MarketData.aggregate(this.rawBars, tf, this.metadata);
+    const lastOpen = native[native.length - 1].time;
+    const coversLastBucket = this.rawBars[0].time <= lastOpen;
+    let idx = this.rawBars.length;
+    while (idx > 0 && this.rawBars[idx - 1].time >= lastOpen) idx--;
+    if (idx >= this.rawBars.length) return native;
+    const tail = coversLastBucket
+      ? this.rawBars.slice(idx)
+      : this.rawBars.slice(idx).filter(b => MarketData.bucket(b.time, tf, this.metadata) > lastOpen);
+    if (!tail.length) return native;
+    const tailAgg = MarketData.aggregate(tail, tf, this.metadata);
+    if (!tailAgg.length) return native;
+    const merged = coversLastBucket && tailAgg[0].time === lastOpen ? native.slice(0, -1) : native;
+    for (const b of tailAgg) {
+      if (!merged.length || b.time > merged[merged.length - 1].time) merged.push(b);
+      else if (b.time === merged[merged.length - 1].time) merged[merged.length - 1] = b;
+    }
+    return merged;
   }
 
   renderCurrentTimeframe(reset = true) {
