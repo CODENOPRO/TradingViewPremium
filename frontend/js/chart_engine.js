@@ -306,10 +306,31 @@ class ChartEngine {
     // events, so an external canvas cannot stay aligned from those alone.
     // This primitive follows native draw frames; it has no idle RAF loop and
     // never recalculates indicators or changes saved price/time anchors.
-    const view={zOrder:()=> 'top',renderer:()=>({draw:()=>{
-      this.renderDrawings();
-    }})};
-    this.overlayScaleSync={paneViews:()=>[view]};
+    const bgView = {
+      zOrder: () => 'bottom',
+      renderer: () => ({
+        draw: target => {
+          if (typeof target?.useMediaCoordinateSpace !== 'function') return;
+          target.useMediaCoordinateSpace(({ context }) => {
+            this._hasBgPrimitive = true;
+            this.renderDrawingsBg(context);
+          });
+        }
+      })
+    };
+    const fgView = {
+      zOrder: () => 'top',
+      renderer: () => ({
+        draw: () => {
+          this.renderDrawings({ fromPrimitive: true });
+        }
+      })
+    };
+    this.overlayScaleSync = {
+      attached: param => { this._requestPrimitiveUpdate = param?.requestUpdate || null; },
+      detached: () => { this._requestPrimitiveUpdate = null; this._hasBgPrimitive = false; },
+      paneViews: () => [fgView, bgView]
+    };
     this.series.attachPrimitive(this.overlayScaleSync);
   }
 
@@ -945,7 +966,26 @@ class ChartEngine {
   snapToOHLC(time,price){return this.snapToBar(time,price).price;}
 
   // DRAWINGS RENDERING
-  renderDrawings({includePaper=true}={}) {
+  renderDrawingsBg(ctx) {
+    if (!ctx) return;
+    const rect = this.container.getBoundingClientRect();
+    const rightAxisW = this.chart?.priceScale?.('right')?.width?.() || 65;
+    const drawW = Math.max(0, rect.width - rightAxisW);
+    const drawH = Math.max(0, rect.height - (this.paneHeight || 0) - 26);
+    this._drawMetrics = { axisW: rightAxisW, width: drawW, plotBottom: drawH };
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, drawW, drawH); ctx.clip();
+    const drawings = [...(this.indicatorDrawings || []), ...(this.drawingsHidden ? [] : this.drawings || [])];
+    for (const original of drawings) {
+      const value = this.drawingPreview && original.id && this.drawingPreview.id === original.id ? this.drawingPreview : original;
+      DrawingModel.draw(ctx, this, value, 'bg');
+    }
+    ctx.restore();
+    this._drawMetrics = null;
+  }
+
+  renderDrawings({includePaper=true,fromPrimitive=false}={}) {
+    if (!fromPrimitive && this._requestPrimitiveUpdate) this._requestPrimitiveUpdate();
     this.positionSymbolBadge();
     this.positionCountdown();
     if (!this.overlayCtx) return;
@@ -1009,9 +1049,10 @@ class ChartEngine {
     this._qtTrBoxes = [];
     this._qtQBoxes = [];
     const drawings = [...(this.indicatorDrawings || []), ...(this.drawingsHidden ? [] : this.drawings || [])];
+    const pass = this._hasBgPrimitive ? 'fg' : 'all';
     for (const original of drawings) {
       const value = this.drawingPreview && original.id && this.drawingPreview.id === original.id ? this.drawingPreview : original;
-      DrawingModel.draw(ctx, this, value);
+      DrawingModel.draw(ctx, this, value, pass);
     }
     this._drawMetrics = null;
     window.drawingMgr?.editor.renderHandles(this, ctx);

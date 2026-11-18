@@ -300,9 +300,11 @@ const DrawingModel = (() => {
     }
     return !(g.right<rLeft || g.left>rRight || g.bottom<rTop || g.top>rBottom);
   }
-  function draw(ctx, chart, raw) {
+  function draw(ctx, chart, raw, pass = 'all') {
     const d=fastNormalize(raw);if(!visible(d,chart.currentTimeframe))return;
     const g=geometry(chart,d,true);if(!g)return;
+    const drawBg = pass === 'all' || pass === 'bg';
+    const drawFg = pass === 'all' || pass === 'fg';
     const m=chart._drawMetrics;
     const axisW=m?m.axisW:(chart.chart?.priceScale?.('right')?.width?.()||65);
     const width=m?m.width:(chart.container.clientWidth-axisW);
@@ -321,19 +323,35 @@ const DrawingModel = (() => {
     if(d.extend === 'left' || d.extend === 'both') left=0;
     if(d.extend === 'right' || d.extend === 'both') right=width;
     ctx.save();
+    const isRealCanvas = typeof HTMLCanvasElement !== 'undefined' && ctx.canvas instanceof HTMLCanvasElement;
+    const snap = v => (isRealCanvas ? Math.round(v) + 0.5 : v);
     const crispW = w => (Number(w) <= 1 ? 0.85 : Number(w));
+    const haloCol = chart.config?.bg || chart.appearance?.bg || '#131722';
+    const qtText = (t, x, y) => {
+      if ((d._qtQLabel || d._qtTrueOpen || d._qtSsmt) && !d.labelBg && ctx.strokeText) {
+        ctx.save(); ctx.lineJoin = 'round'; ctx.lineWidth = 3; ctx.strokeStyle = haloCol; ctx.strokeText(t, x, y); ctx.restore();
+      }
+      ctx.fillText(t, x, y);
+    };
     ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=crispW(d.width);ctx.setLineDash(dash(d.lineStyle));
-    const line=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
+    const line=(x1,y1,x2,y2)=>{
+      let ax=x1,ay=y1,bx=x2,by=y2;
+      if(isRealCanvas&&ctx.lineWidth<=1){
+        if(Math.abs(ay-by)<0.01){const sy=snap(ay);ay=sy;by=sy;}
+        if(Math.abs(ax-bx)<0.01){const sx=snap(ax);ax=sx;bx=sx;}
+      }
+      ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();
+    };
     if(d.type==='brush'){
       const points=smoothBrushPoints((d.points||[]).map(p=>point(chart,p)), d.smooth??5);
       if(points.length){
         ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash([]);ctx.beginPath();
         points.forEach((p,i)=>{if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});
-        if(d.fillEnabled&&points.length>2){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity??20);ctx.fill();}
-        ctx.stroke();
+        if(drawBg&&d.fillEnabled&&points.length>2){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity??20);ctx.fill();}
+        if(drawFg)ctx.stroke();
       }
     } else if(d.type==='vline') {
-      if(g.a.x >= -2 && g.a.x <= width + 2) {
+      if(drawFg&&g.a.x >= -2 && g.a.x <= width + 2) {
         line(g.a.x,0,g.a.x,plotBottom);
         if(d.text){
           const style=d.textStyle||{},sz=style.size||14;
@@ -362,6 +380,7 @@ const DrawingModel = (() => {
       }
       ctx.restore();return;
     } else if(d.type === 'line') {
+      if(!drawFg){ctx.restore();return;}
       if(d.axis==='vertical') {
         line(g.a.x,0,g.a.x,plotBottom);ctx.restore();return;
       }
@@ -518,23 +537,27 @@ const DrawingModel = (() => {
       if(items.length){ctx.setLineDash([]);ctx.font=`${d.textStyle.size}px ${DEFAULT_FONT}`;ctx.fillStyle=d.textStyle.color;ctx.textAlign='center';ctx.fillText(items.join(' · '),(g.a.x+g.b.x)/2,(g.a.y+g.b.y)/2-9);}
       if(d.stats.middle){ctx.beginPath();ctx.arc((g.a.x+g.b.x)/2,(g.a.y+g.b.y)/2,3,0,Math.PI*2);ctx.stroke();}
 
-    } else if(d.type === 'hline') line(0,g.a.y,width,g.a.y);
+    } else if(d.type === 'hline') { if(drawFg)line(0,g.a.y,width,g.a.y); }
     else if(d.type === 'box') {
-      if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}
-      if(d.strokeOpacity>0&&d.width>0&&d.borderColor!=='transparent')ctx.strokeRect(left,top,right-left,bottom-top);
-      if(d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=crispW(d.middleLine.width);ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
+      if(drawBg&&d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}
+      if(drawFg&&d.strokeOpacity>0&&d.width>0&&d.borderColor!=='transparent'){
+        if(isRealCanvas&&ctx.lineWidth<=1){const sx=snap(left),sy=snap(top),sr=snap(right),sb=snap(bottom);ctx.strokeRect(sx,sy,sr-sx,sb-sy);}
+        else ctx.strokeRect(left,top,right-left,bottom-top);
+      }
+      if(drawFg&&d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=crispW(d.middleLine.width);ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
     } else if(d.type === 'fib') {
       const levels=(d.fibLevels||cloneFibLevels()).filter(l=>l&&l.visible!==false&&Number.isFinite(Number(l.coeff))).map(l=>({coeff:Number(l.coeff),color:l.color||d.borderColor||'#787b86'})).sort((a,b)=>a.coeff-b.coeff);
       const basePrice=d.reverse?d.p1.price:d.p2.price,endPrice=d.reverse?d.p2.price:d.p1.price;
       const baseY=d.reverse?g.a.y:g.b.y,endY=d.reverse?g.b.y:g.a.y;
       const pts=levels.map(l=>({ ...l, y:baseY+(endY-baseY)*l.coeff, price:basePrice+(endPrice-basePrice)*l.coeff }));
-      if(d.fillEnabled&&pts.length>1){
+      if(drawBg&&d.fillEnabled&&pts.length>1){
         for(let i=1;i<pts.length;i++){
           const prev=pts[i-1],cur=pts[i];
           ctx.fillStyle=rgba(cur.color,d.fillOpacity??20);
           ctx.fillRect(left,Math.min(prev.y,cur.y),right-left,Math.abs(cur.y-prev.y));
         }
       }
+      if(!drawFg){ctx.restore();return;}
       if(d.fibTrendline?.visible!==false){
         const tl=d.fibTrendline||{};
         ctx.save();
@@ -587,8 +610,10 @@ const DrawingModel = (() => {
       const lastClose=chart.bars?.at(-1)?.close;
       const openPnl=Number.isFinite(lastClose)&&risk>0?((isLong?lastClose-d.p1.price:d.p1.price-lastClose)/risk)*riskAmt:0;
       const rewardTop=Math.min(entry,target),rewardBottom=Math.max(entry,target),riskTop=Math.min(entry,stop),riskBottom=Math.max(entry,stop);
-      ctx.fillStyle=rgba(d.profitColor,d.profitOpacity);ctx.fillRect(boxLeft,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
-      ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(boxLeft,riskTop,span,Math.max(1,riskBottom-riskTop));
+      if(drawBg){
+        ctx.fillStyle=rgba(d.profitColor,d.profitOpacity);ctx.fillRect(boxLeft,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
+        ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(boxLeft,riskTop,span,Math.max(1,riskBottom-riskTop));
+      }
       const bars=chart.bars||[];
       let exitBar=null,exitPrice=null;
       for(let i=0;i<bars.length;i++){
@@ -609,26 +634,31 @@ const DrawingModel = (() => {
         if(Number.isFinite(exitPt.x)&&Number.isFinite(exitPt.y)){
           const inProfit=isLong?exitPrice>=d.p1.price:exitPrice<=d.p1.price;
           const exTop=Math.min(entry,exitPt.y),exH=Math.max(1,Math.abs(exitPt.y-entry));
-          ctx.fillStyle=rgba(inProfit?d.profitColor:d.stopColor,Math.min(45,(inProfit?d.profitOpacity:d.stopOpacity)*0.95));
-          ctx.fillRect(boxLeft,exTop,Math.max(1,exitPt.x-boxLeft),exH);
-          ctx.save();
-          ctx.strokeStyle='rgba(120, 123, 134, 0.78)';
-          ctx.lineWidth=1.5;
-          ctx.setLineDash([5,4]);
-          line(boxLeft,entry,exitPt.x,exitPt.y);
-          ctx.setLineDash([]);
-          const dx=exitPt.x-boxLeft,dy=exitPt.y-entry,len=Math.hypot(dx,dy);
-          if(len>10){
-            const ux=dx/len,uy=dy/len,sz=7;
-            ctx.beginPath();
-            ctx.moveTo(exitPt.x-(ux*sz-uy*4.5),exitPt.y-(uy*sz+ux*4.5));
-            ctx.lineTo(exitPt.x,exitPt.y);
-            ctx.lineTo(exitPt.x-(ux*sz+uy*4.5),exitPt.y-(uy*sz-ux*4.5));
-            ctx.stroke();
+          if(drawBg){
+            ctx.fillStyle=rgba(inProfit?d.profitColor:d.stopColor,Math.min(45,(inProfit?d.profitOpacity:d.stopOpacity)*0.95));
+            ctx.fillRect(boxLeft,exTop,Math.max(1,exitPt.x-boxLeft),exH);
           }
-          ctx.restore();
+          if(drawFg){
+            ctx.save();
+            ctx.strokeStyle='rgba(120, 123, 134, 0.78)';
+            ctx.lineWidth=1.5;
+            ctx.setLineDash([5,4]);
+            line(boxLeft,entry,exitPt.x,exitPt.y);
+            ctx.setLineDash([]);
+            const dx=exitPt.x-boxLeft,dy=exitPt.y-entry,len=Math.hypot(dx,dy);
+            if(len>10){
+              const ux=dx/len,uy=dy/len,sz=7;
+              ctx.beginPath();
+              ctx.moveTo(exitPt.x-(ux*sz-uy*4.5),exitPt.y-(uy*sz+ux*4.5));
+              ctx.lineTo(exitPt.x,exitPt.y);
+              ctx.lineTo(exitPt.x-(ux*sz+uy*4.5),exitPt.y-(uy*sz-ux*4.5));
+              ctx.stroke();
+            }
+            ctx.restore();
+          }
         }
       }
+      if(!drawFg){ctx.restore();return;}
       ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=crispW(d.width);line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
       const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
       if(d.alwaysShowStats===true||isSelected||d.isTemp){
@@ -668,8 +698,11 @@ const DrawingModel = (() => {
       const baseHex = isUp ? '#2962ff' : '#f23645';
       const fillCss = isUp ? 'rgba(41, 98, 255, 0.20)' : 'rgba(242, 54, 69, 0.20)';
       const boxW = right - left, boxH = bottom - top;
-      ctx.fillStyle = fillCss;
-      ctx.fillRect(left, top, boxW, boxH);
+      if(drawBg){
+        ctx.fillStyle = fillCss;
+        ctx.fillRect(left, top, boxW, boxH);
+      }
+      if(!drawFg){ctx.restore();return;}
 
       ctx.strokeStyle = baseHex;
       ctx.fillStyle = baseHex;
@@ -747,7 +780,7 @@ const DrawingModel = (() => {
       ctx.fillText(line1, tipX + tipW / 2, tipY + padY + lineH * 0.42);
       ctx.fillText(line2, tipX + tipW / 2, tipY + padY + lineH * 1.42);
     }
-    if((d.text || d.type === 'text') && d.type !== 'vline' && !d._editingInline) {
+    if(drawFg && (d.text || d.type === 'text') && d.type !== 'vline' && !d._editingInline) {
       const style=d.textStyle;
       let effSize=style.size||(d.type==='text'?14:12);
       if(d._qtTrueOpenSpan){
@@ -827,7 +860,7 @@ const DrawingModel = (() => {
           ctx.fillStyle=d.labelBg;ctx.fillRect(bx,by,boxW,boxH);
         }
         ctx.textAlign=align;ctx.textBaseline=base;ctx.fillStyle=style.color;
-        lines.forEach((text,index)=>ctx.fillText(text,x,startY+index*lh));
+        lines.forEach((text,index)=>qtText(text,x,startY+index*lh));
       }else if(d.type==='text'){
         const pad=effSize/6;
         const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));

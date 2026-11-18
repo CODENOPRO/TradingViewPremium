@@ -252,12 +252,12 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 }
 body:not(.reduce-motion) .chart-context-menu[role=menu] { animation: chart-menu-in .15s ease-out; }
 @keyframes chart-menu-in { from { opacity: 0; } to { opacity: 1; } }
-.tv-template-menu{position:fixed;z-index:285;min-width:196px;max-height:min(340px,calc(100vh - 16px));overflow-y:auto;background:#1e222d!important;border:1px solid #2e323d!important;border-radius:8px;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:#d1d4dc;box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.tv-template-menu{position:fixed;z-index:285;min-width:196px;max-width:min(320px,calc(100vw - 16px));max-height:min(340px,calc(100vh - 16px));overflow-x:hidden;overflow-y:auto;background:#1e222d!important;border:1px solid #2e323d!important;border-radius:8px;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:#d1d4dc;box-shadow:0 10px 28px rgba(0,0,0,.55)}
 .tv-template-menu button:hover,.tv-template-menu button:focus-visible{background:#2a2e39!important;color:#ffffff!important}
-.tv-tpl-row{display:flex;align-items:center}
-.chart-context-menu .tv-tpl-row .tv-tpl-apply{flex:1;min-width:0;justify-content:space-between;padding-left:14px}
-.tv-tpl-delete{flex:none;width:28px;height:30px;margin-right:6px;padding:0;background:transparent;border:0;border-radius:4px;color:#8c919c;font-size:15px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
-.tv-tpl-delete:hover{background:#3a3d46;color:#ff8f96}
+.chart-context-menu .tv-tpl-row{display:flex;align-items:center;gap:4px;width:100%;min-width:0}
+.chart-context-menu .tv-tpl-row .tv-tpl-apply{flex:1 1 auto;width:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;justify-content:flex-start;padding:6px 8px 6px 14px}
+.chart-context-menu .tv-tpl-row .tv-tpl-delete{flex:0 0 28px;width:28px;min-width:28px;max-width:28px;height:28px;min-height:28px;margin-right:6px;padding:0;background:transparent;border:0;border-radius:4px;color:#8c919c;font-size:15px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.chart-context-menu .tv-tpl-row .tv-tpl-delete:hover{background:#3a3d46;color:#ff8f96}
 .tv-tpl-empty{padding:8px 14px;font-size:12px;color:#7f848f}
 .tv-template-save-modal{z-index:320;background:rgba(0,0,0,.5)}
 .tv-save-dialog{width:340px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#e0e3e9;border:1px solid rgba(255,255,255,.13)!important;border-radius:12px;box-shadow:0 18px 46px rgba(0,0,0,.68)}

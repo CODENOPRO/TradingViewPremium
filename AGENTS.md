@@ -9443,3 +9443,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — HiDPI Overlay Canvas Rounding & Font Consistency**:
   - Updated `ChartEngine.resizeOverlay()` in `frontend/js/chart_engine.js` to round `overlayCanvas` bitmap dimensions (`Math.round(rect.width * dpr)`, `Math.round(rect.height * dpr)`) and scale cleanly, and replaced remaining `'Arial'` canvas fonts in `frontend/js/chart_engine.js`, `frontend/js/drawing_model.js`, and `frontend/index.html` with `DEFAULT_FONT` (`Trebuchet MS`, `Roboto`, `Ubuntu`, sans-serif).
   - Verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Template Menu Layout & 4-Point Drawing/QT Rendering Parity**:
+  - Fixed `.tv-template-menu` / `.tv-tpl-row` / `.tv-tpl-delete` in `frontend/css/fixed_shell.css` and `frontend/index.html` so `.tv-tpl-delete` (`×`) stays `28px` wide instead of inheriting `.chart-context-menu button { width: 100% }` and overlapping template names or causing horizontal scrollbars.
+  - Upgraded drawing & QT rendering in `frontend/js/drawing_model.js` and `frontend/js/chart_engine.js`:
+    1. Split rendering into `bg` (`zOrder: 'bottom'` Lightweight Charts primitive under candles for Box/Fib/Position/Measure/Brush fills) and `fg` (`zOrder: 'top'` for borders, lines, labels, handles).
+    2. Added `0.5px` pixel snapping (`Math.round(v) + 0.5`) on real browser `HTMLCanvasElement` for crisp 1px horizontal/vertical lines without altering Node test coordinates.
+    3. Triggered `_requestPrimitiveUpdate()` on direct `renderDrawings()` calls so bottom & top layers stay synchronized on every native frame.
+    4. Added chart-background text halo (`qtText`) behind QT labels (`Q1–Q4`, `True Open`, `SSMT`) so they read cleanly over wicks and lines.
+  - Verified `node --test tests/*.test.cjs` (169/169 passed).
