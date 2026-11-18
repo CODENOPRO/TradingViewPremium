@@ -33,7 +33,7 @@ class QTMode {
 
     this.enabled = saved.enabled !== false;
     this.settings = { ...QuantaibayEngine.DEFAULTS, ...rawSettings };
-    this.chartHidden = new Set(Array.isArray(saved.chartHidden) ? saved.chartHidden : []);
+    this.chartHidden = new Set();
 
     this._raf = 0;
     this._tickTimer = 0;
@@ -250,6 +250,7 @@ class QTMode {
 
   setEnabled(next) {
     this.enabled = !!next;
+    if (this.enabled) this.chartHidden.clear();
     const legacyModal = document.getElementById('indicator-modal');
     if (legacyModal) {
       legacyModal.classList.remove('show');
@@ -295,7 +296,7 @@ class QTMode {
         stop: () => {},
         restart: () => self.schedule(chart),
         toggle: () => self.toggleChart(chart),
-        remove: () => self.toggleChart(chart),
+        remove: () => {},
         select: () => {}
       };
 

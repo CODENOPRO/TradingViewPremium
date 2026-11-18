@@ -9431,3 +9431,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — Remove Context-Menu "Remove indicators" Button**:
   - Removed the `Remove X indicator(s)` item from `ChartContextMenu.open()` in `frontend/js/chart_context_menu.js` and `frontend/index.html` so accidentally clicking it cannot remove QT Mode's active indicator.
   - Updated `tests/context_menu.test.cjs` and verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Restore QT Mode & Prevent Accidental Removal**:
+  - Updated `frontend/js/qt_mode.js` so `chartHidden` is not restored stale across reloads, `setEnabled(true)` clears `chartHidden`, and `chart.runner.remove` is a no-op so QT Mode cannot be permanently hidden by `runner.remove`.
+  - Verified `node --test tests/*.test.cjs` (169/169 passed).
