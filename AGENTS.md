@@ -1111,3 +1111,8 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Gỡ `hideVideoButton` khỏi header `#music-panel` (chỉ giữ `Popup` và `×`) và gỡ `sourceLink` (`Open original link`) ở đáy bảng.
   2. Ở chế độ bảng neo `#music-panel:not(.music-mini)` với `youtube`/`tiktok`, luôn thu gọn trực quan `.music-player-host` (`width: 1px; height: 1px; clip-path: inset(50%); opacity: 0; pointer-events: none` — không dùng `display: none` để trình duyệt không ngắt tiếng phát nền); khi chuyển sang `Popup` (`#music-panel.music-mini`), khung video hiển thị đầy đủ bình thường.
 - Kiểm chứng: `python -m unittest discover -s tests -p "test_*.py"` đạt **40/40 passed**; `node --test tests/*.test.cjs` đạt **162/162 passed**; toàn bộ `frontend/js/*.js`, 37 khối `<script>` inline của `frontend/index.html` và 4 khối `<script>` của `topbar_standalone_preview.html` pass `node --check`.
+
+### 2026-11-18 — Đồng bộ đầy đủ 100% mã nguồn dự án & các khối inline còn thiếu lên GitHub (`origin/main`)
+- Yêu cầu: push lại toàn bộ project đầy đủ lên GitHub (`https://github.com/CODENOPRO/TradingViewPremium.git`).
+- File thêm / đồng bộ: `frontend/css/ui_polish_v2.css`, `frontend/css/dock_market_status.css`, `frontend/js/topbar_tf_fx.js` (bổ sung nốt 3 file rời tương ứng với `style#11`, `style#13` và `script#36` trong `frontend/index.html` để 100% khối inline trong `index.html` đều có bản file rời khớp 1:1 trên repo).
+- Kiểm chứng: `node --check frontend/js/topbar_tf_fx.js` pass; kiểm tra đối chiếu 14/14 khối `<style>` và toàn bộ khối `<script>` khớp 1:1; `git status` sạch (vẫn loại trừ `.backups/`, cache và file lịch sử local theo `.gitignore`), `HEAD` khớp hoàn toàn với `origin/main`.
