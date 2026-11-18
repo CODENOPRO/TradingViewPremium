@@ -210,7 +210,7 @@ const QTCyclesTrueOpen = (() => {
     }
 
     for (let r = 6; r >= 0; r--) {
-      if (!tierOn[r] || TR_SPANS[r] < chartSec * 2) continue;
+      if (!tierOn[r] || (ROW_SEC[r] < chartSec && !(r === 6 && chartSec === 7 * DAY_SEC)) || TR_SPANS[r] < chartSec * 2) continue;
       let srcBars = getSeriesForRow(markets, ownShort, ROW_KEYS[r], sessionMode, cutoffTime);
       if (r === 5 && srcBars.length) {
         const h4 = getSeriesForRow(markets, ownShort, '4h', sessionMode, cutoffTime);

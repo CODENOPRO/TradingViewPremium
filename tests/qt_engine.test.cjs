@@ -606,4 +606,9 @@ test('HTF chart hides LTF SSMTs (e.g. 15m hides 1m and 5m SSMTs while keeping 15
   assert.ok(ssmts15m.length > 0, 'Expected 15m+ SSMTs on 15m chart');
   assert.equal(ssmts15m.some(d => d._qtTier < 2), false, '15m chart must hide 1m (_qtTier=0) and 5m (_qtTier=1) SSMTs');
   assert.ok(ssmts15m.some(d => d._qtTier >= 2), '15m chart must keep 15m+ SSMTs');
+
+  const tr15m = out15m.drawings.filter(d => d._qtTrueOpen);
+  assert.ok(tr15m.length > 0, 'Expected 15m+ True Opens on 15m chart');
+  assert.equal(tr15m.some(d => d._qtTier < 2), false, '15m chart must hide TMCO (_qtTier=0) and 90m (_qtTier=1) True Opens');
+  assert.ok(tr15m.some(d => d._qtTier >= 2), '15m chart must keep TDO+ True Opens');
 });
