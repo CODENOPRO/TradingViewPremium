@@ -8310,6 +8310,8 @@ class ChartEngine {
 
     this.rawBars = [];
     this.bars = [];
+    this._futureStart = 0;
+    this.futureSeries?.setData([]);
     this.dataRevision = 0;
     this.dataUpdateKind = 'replace';
     this.htfData = { 'W': [], 'D': [], '4h': [], '1h': [], '15m': [], '5m': [], '1m': [] };
@@ -8407,6 +8409,10 @@ class ChartEngine {
       priceLineStyle: LightweightCharts.LineStyle.Dashed,
       priceLineWidth: 1
     });
+
+    this.futureSeries = typeof this.chart.addLineSeries === 'function'
+      ? this.chart.addLineSeries({ visible: false, priceScaleId: '', lastValueVisible: false, priceLineVisible: false, crosshairMarkerVisible: false })
+      : null;
 
     this.symbolBadge=document.createElement('img');this.symbolBadge.className='chart-symbol-badge';
     this.symbolBadge.draggable=false;this.updateSymbolBadge();this.container.appendChild(this.symbolBadge);
@@ -8687,9 +8693,26 @@ class ChartEngine {
     this.dataRevision++;this.onDataChange?.();
   }
 
+  updateFutureWhitespace(bars) {
+    if (!this.futureSeries) return;
+    const last = bars?.at(-1);
+    if (!last || !Number.isFinite(last.time)) {
+      this._futureStart = 0;
+      this.futureSeries.setData([]);
+      return;
+    }
+    const step = this.tfSeconds || 60;
+    this._futureStart = last.time + step;
+    const count = 300;
+    const pts = new Array(count);
+    for (let i = 1; i <= count; i++) pts[i - 1] = { time: last.time + i * step };
+    this.futureSeries.setData(pts);
+  }
+
   renderCandleData(){
     const bars=this.replayPreview?this.getBarsForTimeframe(this.currentTimeframe):this.bars;
     this.series.setData(this.appearance?ChartAppearance.candleData(this,bars):bars);
+    this.updateFutureWhitespace(bars);
   }
 
   setTimeframe(tf) {
@@ -8740,8 +8763,13 @@ class ChartEngine {
       this.bars = next;
     }
     const tail = next[next.length - 1];
-    if (tail && (!last || tail.time >= last.time) && !historical) this.series.update(this.appearance?ChartAppearance.candleData(this,next.slice(-2)).at(-1):tail);
-    else this.series.setData(this.appearance?ChartAppearance.candleData(this,next):next);
+    if (tail && (!last || tail.time >= last.time) && !historical) {
+      this.series.update(this.appearance?ChartAppearance.candleData(this,next.slice(-2)).at(-1):tail);
+      if (tail.time >= (this._futureStart || 0)) this.updateFutureWhitespace(next);
+    } else {
+      this.series.setData(this.appearance?ChartAppearance.candleData(this,next):next);
+      this.updateFutureWhitespace(next);
+    }
     this.updateLegend(tail);
     this.renderDrawings();
     this.dataUpdateKind=historical?'replace':'tail';
@@ -8752,6 +8780,8 @@ class ChartEngine {
     this.updateSymbolBadge();
     this.rawBars = [];
     this.bars = [];
+    this._futureStart = 0;
+    this.futureSeries?.setData([]);
     this.htfData = {};
     this.htfBaselines = {};
     this.replayMode = false;
