@@ -203,7 +203,7 @@ class DrawingEditor {
     pop.style.left=left+'px';pop.style.top=top+'px';
   }
   get drawing(){return this.selection?.chart.drawings.find(d=>d.id===this.selection.id);}
-  select(chart,drawing){this.closeTbPopover();this.selection={chart,id:drawing.id};this.toolbar.hidden=false;this.toolbar.querySelector('.drawing-more').hidden=true;this.updateToolbar();chart.renderDrawings();}
+  select(chart,drawing){this.closeTbPopover();this.multiSelection=null;this.selection={chart,id:drawing.id};this.toolbar.hidden=false;this.toolbar.querySelector('.drawing-more').hidden=true;this.updateToolbar();chart.renderDrawings();}
   updateToolbar(){
     if(!this.drawing)return this.clear();
     const d=DrawingModel.normalize(this.drawing);
@@ -241,14 +241,24 @@ class DrawingEditor {
     this.toolbar.style.left=`${Math.max(minLeft,Math.min(window.innerWidth-width-12,left))}px`;
     this.toolbar.style.top=`${Math.max(46,Math.min(window.innerHeight-height-12,top))}px`;
   }
-  clear(){this.closeTbPopover();const chart=this.selection?.chart;this.selection=null;this.toolbar.hidden=true;if(chart){chart.drawingPreview=null;chart.renderDrawings();}}
+  clear(){this.closeTbPopover();const chart=this.selection?.chart||this.multiSelection?.chart||this.marquee?.chart;this.selection=null;this.multiSelection=null;this.marquee=null;this.toolbar.hidden=true;if(chart){chart.drawingPreview=null;chart.renderDrawings();}}
   preview(draft){if(!this.selection)return;this.selection.chart.drawingPreview=draft;this.selection.chart.renderDrawings();}
   commit(value){
     if(!this.selection)return;
     const c=this.selection.chart,index=c.drawings.findIndex(d=>d.id===this.selection.id);if(index<0)return;
     c.drawings[index]=DrawingModel.normalize(structuredClone(value));c.drawingPreview=null;this.manager.saveDrawings(c);this.updateToolbar();c.renderDrawings();
   }
-  remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.(typeof ui==='function'?ui('Unlock drawing before deleting.'):'Unlock drawing before deleting.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
+  remove(){
+    if(this.multiSelection?.ids?.size){
+      if(this.manager.drawingsLocked)return window.showToast?.(typeof ui==='function'?ui('Unlock drawing before deleting.'):'Unlock drawing before deleting.','alert');
+      const c=this.multiSelection.chart,ids=this.multiSelection.ids;
+      const before=c.drawings.length;
+      c.drawings=c.drawings.filter(d=>!ids.has(d.id)||d.locked);
+      if(c.drawings.length===before)return window.showToast?.(typeof ui==='function'?ui('Unlock drawing before deleting.'):'Unlock drawing before deleting.','alert');
+      this.manager.saveDrawings(c);this.clear();return;
+    }
+    if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.(typeof ui==='function'?ui('Unlock drawing before deleting.'):'Unlock drawing before deleting.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();
+  }
   open(tab='style'){if(this.drawing)this.settings.open(this.selection.chart,this.drawing,tab);}
   find(chart,x,y){if(chart.drawingsHidden||y>chart.plotBottom)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
   cursor(chart,hit){
@@ -266,6 +276,14 @@ class DrawingEditor {
     chart.container.addEventListener('pointerdown',event=>{
       if(event.button!==0||this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select,.indicator-tables,.tv-trade-pill,.chart-nav-controls'))return;
       const rect=chart.container.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
+      if(event.ctrlKey||event.metaKey){
+        event.preventDefault();event.stopImmediatePropagation();chart.container.dispatchEvent(new CustomEvent('chart-activate'));
+        this.selection=null;this.multiSelection=null;this.toolbar.hidden=true;
+        this.marquee={chart,startX:x,startY:y,x,y,pointer:event.pointerId};
+        chart.chart.applyOptions({handleScroll:{pressedMouseMove:false}});chart.container.setPointerCapture(event.pointerId);
+        chart.renderDrawings();
+        return;
+      }
       const hit=this.find(chart,x,y);
       if(!hit){this.clear();return;}
       event.preventDefault();event.stopImmediatePropagation();chart.container.dispatchEvent(new CustomEvent('chart-activate'));
@@ -276,6 +294,19 @@ class DrawingEditor {
       chart.chart.applyOptions({handleScroll:{pressedMouseMove:false}});chart.container.setPointerCapture(event.pointerId);
     },true);
     chart.container.addEventListener('pointermove',event=>{
+      if(this.marquee?.chart===chart){
+        const rect=chart.container.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
+        this.marquee.x=x;this.marquee.y=y;
+        const box={left:Math.min(this.marquee.startX,x),right:Math.max(this.marquee.startX,x),top:Math.min(this.marquee.startY,y),bottom:Math.max(this.marquee.startY,y)};
+        const ids=new Set();
+        if(!chart.drawingsHidden){
+          for(const d of chart.drawings)if(!d.isTemp&&DrawingModel.inRect?.(chart,d,box))ids.add(d.id);
+        }
+        this.multiSelection=ids.size?{chart,ids}:null;
+        chart.renderDrawings();
+        event.preventDefault();event.stopImmediatePropagation();
+        return;
+      }
       if(!this.drag||this.drag.chart!==chart){
         if(this.manager.activeTool==='crosshair'&&!event.target.closest('button,input,select,.indicator-tables')){
           const rect=chart.container.getBoundingClientRect();const cursor=this.cursor(chart,this.find(chart,event.clientX-rect.left,event.clientY-rect.top));chart.container.style.cursor=cursor;if(cursor)chart.container.style.setProperty('--drawing-cursor',cursor);else chart.container.style.removeProperty('--drawing-cursor');
@@ -285,13 +316,29 @@ class DrawingEditor {
       if(!this.applyDrag(event))return;
       event.preventDefault();event.stopImmediatePropagation();
     },true);
+    const finishMarquee=()=>{
+      if(!this.marquee||this.marquee.chart!==chart)return false;
+      const {pointer}=this.marquee;this.marquee=null;
+      if(chart.container.hasPointerCapture(pointer))chart.container.releasePointerCapture(pointer);
+      chart.chart.applyOptions({handleScroll:{pressedMouseMove:true}});
+      const ids=this.multiSelection?.ids;
+      if(ids?.size===1){
+        const single=chart.drawings.find(d=>ids.has(d.id));
+        if(single){this.select(chart,single);return true;}
+      }else if(ids?.size>1){
+        const first=chart.drawings.find(d=>ids.has(d.id));
+        if(first){this.selection={chart,id:first.id};this.toolbar.hidden=false;this.toolbar.querySelector('.drawing-more').hidden=true;this.updateToolbar();chart.renderDrawings();return true;}
+      }
+      this.clear();return true;
+    };
     chart.container.addEventListener('pointerup',event=>{
+      if(finishMarquee()){event.preventDefault();event.stopImmediatePropagation();return;}
       if(!this.drag||this.drag.chart!==chart)return;event.preventDefault();event.stopImmediatePropagation();
       if(this.drag.changed&&Number.isFinite(event.clientX))this.applyDrag(event);
       const draft=this.drag.changed?this.drag.draft:null;this.cancelDrag();if(draft)this.commit(draft);
     },true);
-    chart.container.addEventListener('pointercancel',()=>this.cancelDrag(),true);
-    chart.container.addEventListener('lostpointercapture',()=>this.cancelDrag(),true);
+    chart.container.addEventListener('pointercancel',()=>{if(!finishMarquee())this.cancelDrag();},true);
+    chart.container.addEventListener('lostpointercapture',()=>{if(!finishMarquee())this.cancelDrag();},true);
     chart.container.addEventListener('pointerleave',()=>{if(!this.drag){chart.container.style.cursor='';chart.container.style.removeProperty('--drawing-cursor');}});
     chart.container.addEventListener('dblclick',event=>{
       if(this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select'))return;
@@ -337,6 +384,23 @@ class DrawingEditor {
   }
   cancelDrag(){if(!this.drag)return;const {chart,pointer}=this.drag;this.drag=null;if(chart.container.hasPointerCapture(pointer))chart.container.releasePointerCapture(pointer);chart.chart.applyOptions({handleScroll:{pressedMouseMove:true}});chart.drawingPreview=null;chart.renderDrawings();}
   renderHandles(chart,ctx){
+    if(this.marquee?.chart===chart){
+      const x=Math.min(this.marquee.startX,this.marquee.x),y=Math.min(this.marquee.startY,this.marquee.y);
+      const w=Math.abs(this.marquee.x-this.marquee.startX),h=Math.abs(this.marquee.y-this.marquee.startY);
+      ctx.save();ctx.fillStyle='rgba(41, 98, 255, 0.12)';ctx.strokeStyle='#2962ff';ctx.lineWidth=1;ctx.setLineDash([4,3]);
+      ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);ctx.restore();
+    }
+    if(this.multiSelection?.chart===chart&&this.multiSelection.ids.size>1){
+      for(const d of chart.drawings){
+        if(!this.multiSelection.ids.has(d.id)||chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe))continue;
+        const g=DrawingModel.geometry(chart,d);if(!g)continue;
+        const pts=d.type==='brush'&&d.points?.length?(d.points.length>1?[DrawingModel.point(chart,d.points[0]),DrawingModel.point(chart,d.points.at(-1))]:[DrawingModel.point(chart,d.points[0])]):d.p2?[g.a,g.b]:[g.a];
+        ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
+        pts.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();
+      }
+      if(this.selection?.chart===chart)this.placeToolbar();
+      return;
+    }
     if(this.selection?.chart!==chart)return;
     const d=chart.drawingPreview||this.drawing;
     if(!d){this.clear();return;}

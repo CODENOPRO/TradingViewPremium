@@ -442,3 +442,24 @@ test('vline, TradingView brush smoothing, and TradingView text defaults/settings
   assert.ok(ops.includes('fillRect'));
   assert.ok(ops.includes('strokeRect'));
 });
+
+test('DrawingModel.inRect and DrawingEditor multiSelection delete multiple drawings cleanly', () => {
+  const chart = {
+    currentTimeframe: '1m',
+    tfSeconds: 60,
+    bars: [{ time: 60 }, { time: 120 }, { time: 180 }],
+    container: { clientWidth: 600, clientHeight: 400 },
+    plotHeight: 374,
+    drawings: [
+      { id: 'd1', type: 'line', p1: { time: 60, price: 100 }, p2: { time: 120, price: 120 } },
+      { id: 'd2', type: 'box', p1: { time: 120, price: 140 }, p2: { time: 180, price: 160 } },
+      { id: 'd3', type: 'hline', p1: { time: 60, price: 50 } }
+    ],
+    chart: { priceScale: () => ({ width: () => 60 }), timeScale: () => ({ logicalToCoordinate: i => 60 + i * 60, coordinateToLogical: x => (x - 60) / 60 }) },
+    series: { priceToCoordinate: p => 300 - p, coordinateToPrice: y => 300 - y },
+    renderDrawings() {}
+  };
+  const rect = { left: 50, right: 200, top: 130, bottom: 210 };
+  const hits = chart.drawings.filter(d => DrawingModel.inRect(chart, d, rect)).map(d => d.id);
+  assert.deepEqual(hits, ['d1', 'd2']);
+});

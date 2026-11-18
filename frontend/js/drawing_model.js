@@ -244,6 +244,23 @@ const DrawingModel = (() => {
     if(['box','position','measure','fib'].includes(value.type)) return x>=g.left-6 && x<=g.right+6 && y>=g.top-6 && y<=g.bottom+6 ? 'body' : null;
     return distance(x,y,g.a,g.b)<7 ? 'body' : null;
   }
+  function inRect(chart,value,rect) {
+    if (!visible(value,chart.currentTimeframe)) return false;
+    const g=geometry(chart,value);if(!g)return false;
+    const rLeft=Math.min(rect.left,rect.right),rRight=Math.max(rect.left,rect.right);
+    const rTop=Math.min(rect.top,rect.bottom),rBottom=Math.max(rect.top,rect.bottom);
+    if(value.type==='hline') return g.a.y>=rTop && g.a.y<=rBottom;
+    if(value.type==='vline') return g.a.x>=rLeft && g.a.x<=rRight;
+    if(value.type==='text'){
+      const st=value.textStyle||{},sz=st.size||14,pad=sz/6,lh=sz*1.25;
+      const lines=String(value.text||'Text').split('\n');
+      const maxLen=lines.reduce((m,l)=>Math.max(m,l.length),0);
+      const w=(st.wordWrap?Math.min(st.wordWrapWidth||200,maxLen*sz*0.6):maxLen*sz*0.6)+pad*2;
+      const h=lines.length*lh+pad*2;
+      return !(g.a.x+w<rLeft || g.a.x-pad>rRight || g.a.y+h<rTop || g.a.y-pad>rBottom);
+    }
+    return !(g.right<rLeft || g.left>rRight || g.bottom<rTop || g.top>rBottom);
+  }
   function draw(ctx, chart, raw) {
     const d=fastNormalize(raw);if(!visible(d,chart.currentTimeframe))return;
     const g=geometry(chart,d,true);if(!g)return;
@@ -709,6 +726,6 @@ const DrawingModel = (() => {
     }
     ctx.restore();
   }
-  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,draw,boxEdges,resizeBox,positionHandles};
+  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,inRect,draw,boxEdges,resizeBox,positionHandles};
 })();
 if(typeof module !== 'undefined')module.exports=DrawingModel;
