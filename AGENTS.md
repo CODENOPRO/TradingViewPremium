@@ -1141,3 +1141,8 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
 - Nguyên nhân gốc & thay đổi: `defaults('position')` trước đó đặt `alwaysShowStats: true` khiến khi bỏ chọn (`!isSelected`) vẫn hiện 3 bảng chữ lớn (`Target...`, `Open P&L...`, `Stop...`). Đã đổi mặc định `alwaysShowStats: false` (kèm migrate `_statsV2: true` cho các hình `position` đã lưu trước đó trong `localStorage`) để khi bấm ra ngoài chỉ giữ vùng màu TP/SL sạch giống TradingView; chữ chỉ hiện khi đang chọn hình hoặc khi người dùng chủ động bật `Always show stats` trong Settings.
 - Kiểm chứng: `node --test tests/drawings.test.cjs` đạt **9/9 passed**.
+
+### 2026-11-18 — Tách Long Position và Short Position thành 2 công cụ riêng trên thanh công cụ vẽ
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/js/desktop_shell.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_settings.js`, `frontend/js/terminal_features.js`, `frontend/js/ui_language.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
+- Thay đổi: tách nút gộp `position` (menu chuột phải) thành 2 nút riêng biệt trên `#left-sidebar`: **Vị thế Long** (`data-tool="position"`, icon mũi tên hướng lên) và **Vị thế Short** (`data-tool="short_position"`, icon mũi tên hướng xuống); đồng bộ tên trong danh sách công cụ yêu thích (`Favourite tools`), cây đối tượng (`Object tree`) và tiêu đề hộp thoại `DrawingSettings`.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **164/164 passed**.

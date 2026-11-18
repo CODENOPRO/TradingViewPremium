@@ -470,7 +470,7 @@ class TerminalFeatures{
       menu.style.top=Math.max(8,Math.min(innerHeight-height-8,above?y-height-10:y))+'px';
       manageButton()?.setAttribute('aria-expanded','true');
     };
-    const names={crosshair:'Con trỏ',line:'Đường xu hướng',hline:'Đường ngang',box:'Hộp Order Block / Range',text:'Ghi chú',fib:'Fibonacci Retracement',position:'Vị thế Long / Short',measure:'Đo giá và số nến',brush:'Cọ vẽ'};
+    const names={crosshair:'Con trỏ',line:'Đường xu hướng',hline:'Đường ngang',box:'Hộp Order Block / Range',text:'Ghi chú',fib:'Fibonacci Retracement',position:'Vị thế Long',short_position:'Vị thế Short',measure:'Đo giá và số nến',brush:'Cọ vẽ'};
     this.openFavorites=rect=>{
       menu.replaceChildren();
       const header=document.createElement('header');

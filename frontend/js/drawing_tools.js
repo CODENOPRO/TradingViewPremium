@@ -49,6 +49,8 @@ class DrawingManager {
       this.drawingState.chart.renderDrawings();
     }
     if (tool !== 'crosshair') this.editor.clear();
+    if (tool === 'position') this.positionSide = 'long';
+    else if (tool === 'short_position') this.positionSide = 'short';
     this.activeTool = tool;
     for(const chart of window.charts||[]){chart.container.style.cursor='';chart.container.style.removeProperty('--drawing-cursor');for(const button of chart.alertOverlay?.buttons.values()||[])button.style.pointerEvents=tool==='crosshair'?'auto':'none';}
     this.drawingState = null;
@@ -208,7 +210,7 @@ class DrawingManager {
         return;
       }
 
-      if(this.activeTool==='position'){
+      if(this.activeTool==='position'||this.activeTool==='short_position'){
         const idx=DrawingModel.logicalIndex(chartEngine,time)??0;
         const rightTime=DrawingModel.timeAt(chartEngine,idx+12)||time+(chartEngine.tfSeconds||60)*12;
         const vis=chartEngine.chart?.timeScale?.().getVisibleLogicalRange?.();
@@ -218,7 +220,7 @@ class DrawingManager {
         const span=Number.isFinite(hi)&&Number.isFinite(lo)&&hi>lo?(hi-lo)*0.12:Math.max(Math.abs(price)*0.002,(chartEngine.metadata?.tickSize||0.25)*20);
         const tick=chartEngine.metadata?.tickSize;
         const snapTick=v=>Number.isFinite(tick)&&tick>0?Math.round(v/tick)*tick:v;
-        const isShort=this.positionSide==='short';
+        const isShort=this.activeTool==='short_position'||this.positionSide==='short';
         const p1={time,price};
         const p2={time:rightTime,price:snapTick(isShort?price-span*2:price+span*2)};
         const p3={time:rightTime,price:snapTick(isShort?price+span:price-span)};

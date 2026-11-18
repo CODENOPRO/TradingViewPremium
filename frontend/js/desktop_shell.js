@@ -105,25 +105,21 @@ class DesktopShell {
   installTools(){
     const rail=document.getElementById('left-sidebar');
     for(const node of rail.querySelectorAll('.tool-separator'))node.remove();
-    for(const key of ['crosshair','line','box','text','fib','position','measure','brush','magnet','lock','eye','trash']){
-      const b=rail.querySelector(`[data-tool="${key}"]`);if(!b)continue;
-      const importedIcon={crosshair:'crosshair',line:'trend',box:'rectangle',text:'text',fib:'fib',position:'forecast',measure:'ruler',brush:'brush',magnet:'magnet',lock:'lock',eye:'eye',trash:'trash'}[key];
+    for(const key of ['crosshair','line','box','text','fib','position','short_position','measure','brush','magnet','lock','eye','trash']){
+      let b=rail.querySelector(`[data-tool="${key}"]`);
+      if(!b&&key==='short_position'){
+        b=this.button('Vị thế Short','forecast_short',()=>this.drawing.setTool('short_position'));
+        b.className='tool-btn';
+        b.dataset.tool='short_position';
+      }
+      if(!b)continue;
+      const importedIcon={crosshair:'crosshair',line:'trend',box:'rectangle',text:'text',fib:'fib',position:'forecast',short_position:'forecast_short',measure:'ruler',brush:'brush',magnet:'magnet',lock:'lock',eye:'eye',trash:'trash'}[key];
       if(importedIcon)b.innerHTML=TerminalIcons.svg(importedIcon);
       rail.appendChild(b);
       if(key==='line'){
         const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';h.innerHTML=TerminalIcons.svg('horizontal');rail.appendChild(h);
       }
       if(key==='measure'||key==='box'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
-      if(key==='position'){
-        const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
-        const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');
-        const closeMenu=()=>{menu.hidden=true;b.setAttribute('aria-expanded','false');};
-        const showMenu=()=>{menu.hidden=!menu.hidden;b.setAttribute('aria-expanded',String(!menu.hidden));if(!menu.hidden){const rect=group.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(innerWidth-menu.offsetWidth-8,rect.left))+'px';menu.style.top=Math.max(8,rect.top-menu.offsetHeight-8)+'px';}};
-        b.setAttribute('aria-haspopup','menu');b.setAttribute('aria-expanded','false');
-        b.oncontextmenu=e=>{e.preventDefault();showMenu();};
-        for(const [side,label] of [['long','Long Position'],['short','Short Position']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.setAttribute('role','menuitem');option.onclick=()=>{this.drawing.positionSide=side;this.drawing.setTool('position');b.dataset.positionSide=side;closeMenu();};menu.appendChild(option);}
-        document.body.appendChild(menu);document.addEventListener('click',e=>{if(!group.contains(e.target)&&!menu.contains(e.target))closeMenu();});menu.onkeydown=e=>{if(e.key==='Escape'){closeMenu();b.focus();}};
-      }
       if(key==='magnet'){
         const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
         const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');
@@ -244,7 +240,7 @@ class DesktopShell {
     for(const entry of entries){const row=document.createElement('div');row.className='object-row';const title=document.createElement('button');title.textContent=entry.name||entry.record.name;title.onclick=()=>{c.runner.select(entry.record.id);c.onIndicatorSettings?.();};const eye=this.button(entry.record.view?.hidden?'Show indicator':'Hide indicator','eye',()=>{c.runner.toggle(entry.record.id);this.signature='';this.refresh();});const remove=this.button('Remove indicator','close',()=>{c.runner.remove(entry.record.id);this.signature='';this.refresh();});row.classList.toggle('object-hidden',!!entry.record.view?.hidden);row.append(title,eye,remove);this.content.appendChild(row);}
     for(const value of c.drawings.filter(d=>!d.isTemp).slice().reverse()){
       const row=document.createElement('div');row.className='object-row';row.classList.toggle('object-hidden',!!value.hidden);
-      const select=document.createElement('button');select.textContent=value.title||DrawingModel.names[value.type]||value.type;select.title=value.text||select.textContent;select.onclick=()=>{this.drawing.setTool('crosshair');this.drawing.editor.select(c,value);this.drawing.editor.open();};
+      const select=document.createElement('button');select.textContent=value.title||(value.type==='position'?(value.side==='short'?'Short Position':'Long Position'):DrawingModel.names[value.type])||value.type;select.title=value.text||select.textContent;select.onclick=()=>{this.drawing.setTool('crosshair');this.drawing.editor.select(c,value);this.drawing.editor.open();};
       const eye=this.button(value.hidden?'Show drawing':'Hide drawing','eye',()=>{value.hidden=!value.hidden;if(value.hidden)this.drawing.editor.clear();this.drawing.saveDrawings(c);c.renderDrawings();this.signature='';this.refresh();});
       const lock=this.button(value.locked?'Unlock drawing':'Lock drawing','lock',()=>{value.locked=!value.locked;this.drawing.saveDrawings(c);c.renderDrawings();this.signature='';this.refresh();});lock.classList.toggle('active',!!value.locked);row.append(select,eye,lock);this.content.appendChild(row);
     }

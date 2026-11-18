@@ -189,6 +189,22 @@ test('Shift constrains Trend Line while drawing (including keydown/keyup) and wh
   fireChart('pointerup', { clientX: 150, clientY: 90, shiftKey: true });
   assert.equal(ch.drawings[0].p2.time, 240);
   assert.equal(ch.drawings[0].p2.price, 100);
+
+  // Separate Long ('position') and Short ('short_position') tools place 1-click positions with opposite TP/SL sides
+  ch.drawings = [];
+  mgr.setTool('position');
+  fireChart('click', { clientX: 50, clientY: 100, shiftKey: false });
+  assert.equal(ch.drawings.length, 1);
+  assert.equal(ch.drawings[0].side, 'long');
+  assert.ok(ch.drawings[0].p2.price > ch.drawings[0].p1.price);
+  assert.ok(ch.drawings[0].p3.price < ch.drawings[0].p1.price);
+
+  mgr.setTool('short_position');
+  fireChart('click', { clientX: 100, clientY: 100, shiftKey: false });
+  assert.equal(ch.drawings.length, 2);
+  assert.equal(ch.drawings[1].side, 'short');
+  assert.ok(ch.drawings[1].p2.price < ch.drawings[1].p1.price);
+  assert.ok(ch.drawings[1].p3.price > ch.drawings[1].p1.price);
 });
 
 test('ChartContextMenu.pasteDrawing translates coordinates to target point while preserving box dimensions', () => {

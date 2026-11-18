@@ -203,7 +203,7 @@ class DrawingSettings {
     if (input.hidden) return;
     if (apply) {
       this.draft.title = input.value.trim();
-      titleEl.textContent = this.draft.title || DrawingModel.names[this.draft.type] || this.draft.type;
+      titleEl.textContent = this.draft.title || (this.draft.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[this.draft.type]) || this.draft.type;
       this.preview();
     }
     input.hidden = true;
@@ -360,7 +360,7 @@ class DrawingSettings {
     this.root.querySelector('#drawing-title-input').hidden = true;
     this.root.querySelector('#drawing-settings-title').hidden = false;
     this.root.querySelector('#drawing-rename').hidden = false;
-    this.root.querySelector('#drawing-settings-title').textContent = this.draft.title || DrawingModel.names[drawing.type] || drawing.type;
+    this.root.querySelector('#drawing-settings-title').textContent = this.draft.title || (drawing.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[drawing.type]) || drawing.type;
 
     const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', fib: 'Trend line', position: 'Entry line', brush: 'Stroke' };
     this.root.querySelector('#drawing-stroke-label').textContent = strokeLabels[drawing.type] || 'Border / Line';
