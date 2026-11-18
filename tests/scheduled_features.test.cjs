@@ -37,3 +37,64 @@ test('music links retain private SoundCloud tokens and fall back to a valid play
  assert.equal(TerminalMusicLinks.parse('https://soundcloud.com/artist/private?secret_token=s-test&si=tracking').url,'https://soundcloud.com/artist/private?secret_token=s-test');
  assert.equal(TerminalMusicLinks.parse('https://www.youtube.com/watch?v=bad&list=PLabcdefghijk').url,'https://www.youtube.com/playlist?list=PLabcdefghijk');
 });
+test('popup player scales aspect ratios, moves across full viewport and seeks +/-10s',()=>{
+ const {TerminalCompanions}=require('../frontend/js/terminal_companions.js');
+ assert.equal(typeof TerminalCompanions,'function');
+ const styles=new Map();
+ const panel={
+  offsetWidth:320,offsetHeight:180,dataset:{},
+  classList:{contains:c=>c==='music-mini',add(){},remove(){},toggle(){}},
+  style:{setProperty:(k,v)=>styles.set(k,v),removeProperty:k=>styles.delete(k)},
+  getBoundingClientRect:()=>({left:100,top:100,width:320,height:180})
+ };
+ const seeked=[];
+ const mock={
+  panels:{music:panel},link:{provider:'youtube'},popupRatio:'free',popupRatioButton:{textContent:''},
+  popupRatioProvider:'youtube',duration:120,elapsed:20,videoPopupSize:{w:420,h:280},
+  youtube:{getCurrentTime:()=>20,getDuration:()=>120,seekTo:(t,a)=>seeked.push([t,a])},
+  seek:{style:{setProperty(){}},matches:()=>false,value:20,disabled:false,max:120},clock:{textContent:''},
+  isVideoProvider:TerminalCompanions.prototype.isVideoProvider,
+  getPopupRatioEntry:TerminalCompanions.prototype.getPopupRatioEntry,
+  applyPopupLayout:TerminalCompanions.prototype.applyPopupLayout,
+  placeVideoPopup:TerminalCompanions.prototype.placeVideoPopup,
+  cyclePopupRatio:TerminalCompanions.prototype.cyclePopupRatio,
+  updateMusic:TerminalCompanions.prototype.updateMusic,
+  seekToSeconds:TerminalCompanions.prototype.seekToSeconds,
+  command:TerminalCompanions.prototype.command,
+  formatTime:TerminalCompanions.prototype.formatTime
+ };
+ global.innerWidth=1400;global.innerHeight=900;global.ui=s=>s;
+ mock.applyPopupLayout();
+ assert.equal(styles.get('--music-mini-aspect'),'auto');
+ assert.equal(styles.get('--music-mini-w'),'420px');
+ assert.equal(styles.get('--music-mini-h'),'280px');
+ mock.placeVideoPopup({x:10,y:6});
+ assert.equal(styles.get('--music-top'),'6px');
+ assert.equal(styles.get('--music-left'),'10px');
+ mock.cyclePopupRatio();
+ assert.equal(mock.popupRatio,'16/9');
+ assert.equal(styles.get('--music-mini-aspect'),'16/9');
+ mock.command('forward');
+ mock.command('rewind');
+ assert.deepEqual(seeked,[[30,true],[10,true]]);
+});
+test('hiding music panel keeps music playing in the background without pausing',()=>{
+ const {TerminalCompanions}=require('../frontend/js/terminal_companions.js');
+ const classes=new Set(['open','music-mini']);
+ let paused=0,stopped=0;
+ const edgeAttrs={};
+ global.document={getElementById:()=>({setAttribute:(k,v)=>edgeAttrs[k]=v})};
+ const mock={
+  open:'music',
+  panels:{music:{classList:{toggle:(c,on)=>on?classes.add(c):classes.delete(c),remove:(...cs)=>cs.forEach(c=>classes.delete(c)),contains:c=>classes.has(c)},inert:false}},
+  updateMusicPopupButton(){},
+  stopTabAudio(){stopped++;},
+  command(cmd){if(cmd==='pause')paused++;}
+ };
+ TerminalCompanions.prototype.toggle.call(mock,'music',false);
+ assert.equal(classes.has('open'),false);
+ assert.equal(mock.panels.music.inert,true);
+ assert.equal(edgeAttrs['aria-expanded'],'false');
+ assert.equal(paused,0);
+ assert.equal(stopped,0);
+});

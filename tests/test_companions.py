@@ -119,11 +119,13 @@ class SourceLoopTests(unittest.IsolatedAsyncioTestCase):
         active=[];real_sleep=asyncio.sleep;iterations=0
         async def poll(url,expected=None):
             active.append((url,expected));await asyncio.Event().wait()
-        async def pause(seconds):
+        async def pause(awaitable, timeout=None):
             nonlocal iterations
+            if hasattr(awaitable,'close'):awaitable.close()
             iterations+=1
             await real_sleep(0)
             if iterations==2:raise asyncio.CancelledError()
+            raise asyncio.TimeoutError()
         ensure=AsyncMock(return_value={'created':[]})
         with patch.object(bridge,'subscriptions',subscriptions),patch.object(bridge,'last_requests',set()), \
              patch.object(bridge,'urlopen',side_effect=lambda *a,**kw:io.BytesIO(json.dumps(targets).encode())), \
@@ -131,7 +133,7 @@ class SourceLoopTests(unittest.IsolatedAsyncioTestCase):
              patch.object(bridge,'poll_source',side_effect=poll), \
              patch.object(bridge,'evaluate_target',return_value={'created':[]}) as configure, \
              patch.object(bridge.asyncio,'to_thread',new=AsyncMock(side_effect=lambda fn,*args:fn(*args))), \
-             patch.object(bridge.asyncio,'sleep',side_effect=pause):
+             patch.object(bridge.asyncio,'wait_for',side_effect=pause):
             with self.assertRaises(asyncio.CancelledError):await bridge.automatic_sources()
             self.assertEqual(configure.call_count,1 if setup else 0)
             if setup:self.assertIn('addOverlayStudy',configure.call_args.args[1])

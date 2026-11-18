@@ -213,6 +213,7 @@ class ChartContextMenu {
         this.close();
       } catch (error) {
         this.status.textContent = error.message;
+        this.toast?.(error.message, 'alert');
       }
     };
     this.root.appendChild(button);
@@ -396,19 +397,45 @@ class ChartContextMenu {
         }, 'Ctrl + V', !this.clipboard, 'paste');
         this.divider();
 
-        const lastClose = chart.bars?.at(-1)?.close ?? this.paperPanel?.paper?.quotes?.get(chart.symbol)?.price;
+        const lastClose = this.paperPanel?.paper?.quotes?.get(chart.symbol)?.price ?? chart.bars?.at(-1)?.close;
         const { sellType, buyType } = ChartContextMenu.orderKinds(point.price, lastClose);
-        const qty = Math.max(1, parseInt(document.getElementById('order-qty')?.value || '1', 10) || 1);
-        const placeOrder = (side, type) => {
+        const placeOrder = (side, type, orderQty = 1) => {
           if (!this.paperPanel) throw new Error('Paper Trading chưa sẵn sàng.');
-          this.paperPanel.guard(chart.symbol);
-          this.paperPanel.placeFromChart(chart, { symbol: chart.symbol, side, type, qty, price: point.price });
-          this.paperPanel.render();
+          const run = () => {
+            this.paperPanel.guard(chart.symbol);
+            this.paperPanel.placeFromChart(chart, { symbol: chart.symbol, side, type, qty: orderQty, price: type === 'market' ? null : point.price });
+            this.paperPanel.render();
+          };
+          if (typeof this.paperPanel.action === 'function') {
+            if (!this.paperPanel.action(run)) { this.close(); return; }
+          } else run();
+        };
+        const addQtySubmenu = (menuLabel, side, type, iconName) => {
+          const typeLabel = type === 'market' ? 'Market' : type === 'limit' ? 'Limit' : 'Stop';
+          const sideLabel = side === 'buy' ? 'Buy' : 'Sell';
+          this.submenu(menuLabel, (sub, closeAll) => {
+            for (const q of [1, 2, 3, 4, 5, 10, 15]) {
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.setAttribute('role', 'menuitem');
+              const txt = document.createElement('span');
+              txt.className = 'tv-ctx-label';
+              txt.textContent = type === 'market' ? `${typeLabel} ${sideLabel} ${q}` : `${typeLabel} ${sideLabel} ${q} @ ${value}`;
+              btn.appendChild(txt);
+              btn.onclick = () => {
+                closeAll();
+                placeOrder(side, type, q);
+              };
+              sub.appendChild(btn);
+            }
+          }, iconName);
         };
 
         this.item(`Add alert on ${chart.symbol} at ${value}…`, () => this.openAlert(chart, point.price), 'Alt + A', false, 'alert');
-        this.item(`Sell ${qty} ${chart.symbol} @ ${value} ${sellType}`, () => placeOrder('sell', sellType), 'Alt + Shift + S', false, 'sell');
-        this.item(`Buy ${qty} ${chart.symbol} @ ${value} ${buyType}`, () => placeOrder('buy', buyType), '', false, 'buy');
+        addQtySubmenu('Market Buy', 'buy', 'market', 'buy');
+        addQtySubmenu('Market Sell', 'sell', 'market', 'sell');
+        addQtySubmenu(`${buyType === 'limit' ? 'Limit' : 'Stop'} Buy @ ${value}`, 'buy', buyType, 'buy');
+        addQtySubmenu(`${sellType === 'limit' ? 'Limit' : 'Stop'} Sell @ ${value}`, 'sell', sellType, 'sell');
         this.item(`Add order on ${chart.symbol} at ${value}…`, () => {
           chart.container.dispatchEvent(new CustomEvent('chart-activate'));
           document.getElementById('paper-panel')?.dispatchEvent(new CustomEvent('paper-new-ticket', { detail: { price: point.price } }));

@@ -312,14 +312,14 @@
 }
 .dock-market-status { min-height: 36px; padding: 0 8px; }
 #reload-chart-data { cursor: pointer; }
-#reload-chart-data > span { display: inline-flex !important; }
-#topbar #reload-chart-data:has(#connection-status[data-state="loading"]) {
+#dock-market-status > span { display: inline-flex !important; }
+#topbar #dock-market-status:has(#connection-status[data-state="loading"]) {
   width: 36px;
   min-width: 36px;
   padding: 0;
   justify-content: center;
 }
-#topbar #reload-chart-data:has(#connection-status[data-state="loading"]) > .dock-clock,
+#topbar #dock-market-status:has(#connection-status[data-state="loading"]) > .dock-clock,
 #topbar #connection-status[data-state="loading"] #connection-status-text {
   display: none !important;
 }
@@ -735,18 +735,18 @@ body:not(.reduce-motion) #connection-status[data-state="loading"] .dock-load-rin
 /* Dock magnify follows only the in-app "Reduce motion" switch, not the OS flag. */
 
 /* Use the theme's foreground for the actions next to the timeframes. */
-#topbar .topbar-left :is(#btn-indicator, #btn-indicator-settings, #btn-alert, #btn-replay):not(:disabled) {
+#topbar .topbar-left :is(#btn-indicator, #btn-indicator-settings, #btn-alert, #btn-replay, #btn-layout):not(:disabled) {
   color: var(--text);
 }
-#topbar .topbar-left :is(#btn-indicator, #btn-indicator-settings, #btn-alert, #btn-replay) svg {
+#topbar .topbar-left :is(#btn-indicator, #btn-indicator-settings, #btn-alert, #btn-replay, #btn-layout) svg {
   stroke-width: 1.85;
 }
-#topbar .topbar-left :is(#btn-indicator, #btn-alert, #btn-replay) {
+#topbar .topbar-left :is(#btn-indicator, #btn-alert, #btn-replay, #btn-layout) {
   width: 36px;
   padding-inline: 0;
   justify-content: center;
 }
-#topbar .topbar-left :is(#btn-indicator, #btn-alert, #btn-replay) > span {
+#topbar .topbar-left :is(#btn-indicator, #btn-alert, #btn-replay, #btn-layout) > span {
   display: none !important;
 }
 

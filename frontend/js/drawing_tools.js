@@ -32,7 +32,7 @@ class DrawingManager {
         return;
       }
       if (window.currentActiveChart) {
-        window.currentActiveChart.drawings = [];
+        window.currentActiveChart.drawings = (window.currentActiveChart.drawings || []).filter(d => d.locked);
         window.currentActiveChart.renderDrawings();
         this.saveDrawings(window.currentActiveChart);
       }
@@ -64,7 +64,7 @@ class DrawingManager {
     document.querySelectorAll('.tool-btn[data-tool="magnet"], .ft-btn[data-tool="magnet"]').forEach(btn=>{
       btn.classList.toggle('active',this.magnetEnabled);btn.setAttribute('aria-pressed',String(this.magnetEnabled));
       const label = `Magnet: ${this.magnetEnabled?'On':'Off'} · ${this.magnetMode==='weak'?'Weak':'Strong'} (Ctrl: temporary toggle)`;
-      if (btn.closest('#left-sidebar')) btn.setAttribute('aria-label', label);
+      if (btn.closest?.('#left-sidebar')) btn.setAttribute('aria-label', label);
       else btn.title = label;
     });
   }

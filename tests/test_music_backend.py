@@ -34,3 +34,8 @@ class MusicBackendTests(unittest.TestCase):
    dest='https://on.soundcloud.com/'+str(count[0]) if count[0]<5 else 'https://soundcloud.com/artist/track'
    raise HTTPError(req.full_url,302,'redirect',{'Location':dest},None)
   self.assertEqual(music.resolve_music_share('https://on.soundcloud.com/start',opener),'https://soundcloud.com/artist/track');self.assertEqual(count[0],5)
+ def test_tiktok_fresh_embed_accepts_blockquote_oembed_without_502(self):
+  payload={'title':'TikTok Clip','author_name':'Creator','thumbnail_url':'https://p16.tiktokcdn.com/thumb.jpg','html':'<blockquote class="tiktok-embed"></blockquote>'}
+  with patch.object(music,'urlopen',return_value=io.BytesIO(json.dumps(payload).encode())):
+   res=music.music_metadata('https://www.tiktok.com/@creator/video/7123456789012345678',fresh_embed=True)
+   self.assertEqual(res['title'],'TikTok Clip');self.assertIsNone(res['embed_url'])

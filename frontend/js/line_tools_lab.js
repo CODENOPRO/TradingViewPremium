@@ -39,15 +39,17 @@
     const converted=LineToolsBridge.convert(base);tools.importLineTools(JSON.stringify(converted.tools));const issues=LineToolsBridge.audit(converted.tools,JSON.parse(tools.exportLineTools()));report(issues.length?issues.join('\n'):'Đã thêm 3 hình thử trên nến thật; tọa độ/options khớp adapter. Kéo điểm, double-click xem JSON, hoặc kiểm tra export/import.');
   };
   $('lab-symbol').onchange=()=>{save();symbol=$('lab-symbol').value;bars=snapshots.get(symbol)||[];series.setData(bars);chart.timeScale().fitContent();restore();};
-  let socket;
+  let socket,reconnectTimer=null;
+  const scheduleReconnect=()=>{clearTimeout(reconnectTimer);reconnectTimer=setTimeout(connect,3000);};
   async function connect(){
-    try {const health=await(await fetch('/health')).json();socket=new WebSocket(`ws://${location.hostname}:${health.ws_port}`);
+    clearTimeout(reconnectTimer);
+    try {const health=await(await fetch('/health')).json();const wsHost=location.hostname==='localhost'?'127.0.0.1':location.hostname;socket=new WebSocket(`ws://${wsHost}:${health.ws_port}`);
       socket.onmessage=({data})=>{const m=JSON.parse(data);if(m.timeframe!=='1m'||!['history','tick'].includes(m.type))return;
-        const values=m.type==='history'?m.bars:[...(snapshots.get(m.symbol)||[]),m.bar],clean=MarketData.clean(values);snapshots.set(m.symbol,clean);
+        const incoming=m.type==='history'?m.bars:[m.bar],merged=[...(snapshots.get(m.symbol)||[]),...(incoming||[])],clean=MarketData.clean(merged);snapshots.set(m.symbol,clean);
         if(m.symbol===symbol){const initial=!bars.length;bars=clean;series.setData(bars);if(initial)chart.timeScale().fitContent();$('lab-status').textContent=`${symbol} · ${bars.length} nến 1m từ bridge`;}
       };
-      socket.onclose=()=>{$('lab-status').textContent='Mất kết nối · dữ liệu đã nhận';setTimeout(connect,3000);};
-    }catch(error){$('lab-status').textContent=error.message;setTimeout(connect,3000);}
+      socket.onclose=()=>{$('lab-status').textContent='Mất kết nối · dữ liệu đã nhận';scheduleReconnect();};
+    }catch(error){$('lab-status').textContent=error.message;scheduleReconnect();}
   }
   connect();window.addEventListener('pagehide',()=>{if(socket){socket.onclose=null;socket.close();}tools.destroy();chart.remove();},{once:true});
 })().catch(error=>{document.getElementById('lab-report').textContent='Lỗi plugin: '+error.message;console.error(error);});

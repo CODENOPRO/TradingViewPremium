@@ -2,6 +2,7 @@
 
 import argparse
 from functools import partial
+from http.client import HTTPException
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
@@ -12,13 +13,21 @@ from backend.companion_services import MusicProviderError, music_metadata, resol
 
 
 class PreviewHandler(SimpleHTTPRequestHandler):
+    def _valid_host(self):
+        host = (self.headers.get('Host') or '').split(':', 1)[0].lower()
+        return host in ('127.0.0.1', 'localhost', '[::1]')
+
     def do_GET(self):
+        if not self._valid_host():
+            self.send_error(403, 'Forbidden host')
+            return
         request = urlsplit(self.path)
         if request.path not in ('/api/music/resolve', '/api/music/metadata'):
             return super().do_GET()
 
         params = parse_qs(request.query)
         url = params.get('url', [''])[0]
+        retry_after = None
         try:
             if len(url) > 2048:
                 raise ValueError('Link too long')
@@ -27,9 +36,10 @@ class PreviewHandler(SimpleHTTPRequestHandler):
             status = 200
         except MusicProviderError as error:
             status, data = error.status, {'error': str(error)}
+            retry_after = error.retry_after
         except ValueError as error:
             status, data = 400, {'error': str(error)}
-        except OSError:
+        except (OSError, HTTPException):
             status, data = 502, {'error': 'Provider unavailable. Try the full link.'}
 
         body = json.dumps(data).encode('utf-8')
@@ -37,6 +47,8 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         self.send_header('Content-Type', 'application/json; charset=utf-8')
         self.send_header('Content-Length', str(len(body)))
         self.send_header('Cache-Control', 'no-store')
+        if retry_after:
+            self.send_header('Retry-After', str(retry_after))
         self.end_headers()
         self.wfile.write(body)
 

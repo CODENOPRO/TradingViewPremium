@@ -14,4 +14,4 @@ diff_mask.png
 scratch_*.py
 
 backend/source_requests.json
-backend/calendar_cache.json
+backend/calendar_cache.json*

@@ -160,9 +160,11 @@ const ColorPicker = (() => {
 
   function keepInView(pop) {
     if (!pop.isConnected) return;
+    const vw = globalThis.window?.innerWidth ?? globalThis.innerWidth ?? 1280;
+    const vh = globalThis.window?.innerHeight ?? globalThis.innerHeight ?? 800;
     const bounds = pop.getBoundingClientRect();
-    pop.style.left = Math.max(8, Math.min(bounds.left, innerWidth - bounds.width - 8)) + 'px';
-    pop.style.top = Math.max(8, Math.min(bounds.top, innerHeight - bounds.height - 8)) + 'px';
+    pop.style.left = Math.max(8, Math.min(bounds.left, vw - bounds.width - 8)) + 'px';
+    pop.style.top = Math.max(8, Math.min(bounds.top, vh - bounds.height - 8)) + 'px';
   }
 
   function bindAreaDrag(el, onRatio) {
@@ -178,8 +180,8 @@ const ColorPicker = (() => {
       event.preventDefault();
       event.stopPropagation();
       el.focus({ preventScroll: true });
-      pointer = event.pointerId;
-      el.setPointerCapture(pointer);
+      pointer = event.pointerId ?? 1;
+      el.setPointerCapture?.(pointer);
       update(event);
     });
     el.addEventListener('pointermove', event => { if (event.pointerId === pointer) update(event); });
@@ -242,6 +244,7 @@ const ColorPicker = (() => {
     addBtn.type = 'button';
     addBtn.className = 'tv-cp-add-btn';
     addBtn.textContent = label('Custom color');
+    addBtn.setAttribute('aria-expanded', 'false');
 
     let subPanel = null;
     let previewBox = null;
@@ -261,7 +264,10 @@ const ColorPicker = (() => {
     };
 
     const syncSubUI = (syncInputText = true) => {
-      if (previewBox) previewBox.style.setProperty('--cp-preview', toCss(state.hex, state.opacity));
+      if (previewBox) {
+        previewBox.style.setProperty?.('--cp-preview', toCss(state.hex, state.opacity));
+        previewBox.style.background = toCss(state.hex, state.opacity);
+      }
       if (hexInput && syncInputText) hexInput.value = state.hex;
       if (hexInput && syncInputText) hexInput.removeAttribute('aria-invalid');
       if (opacityRange) {
@@ -276,7 +282,7 @@ const ColorPicker = (() => {
       }
       if (hueBox) {
         hueBox.value = String(Math.round(state.h));
-        hueBox.style.setProperty('--cp-hue', hsvToHex(state.h, 1, 1));
+        hueBox.style.setProperty?.('--cp-hue', hsvToHex(state.h, 1, 1));
       }
     };
 
@@ -343,6 +349,7 @@ const ColorPicker = (() => {
       grid.hidden = false;
       customSection.hidden = !customGrid.childElementCount;
       addBtn.textContent = label('Custom color');
+      addBtn.setAttribute('aria-expanded', 'false');
       keepInView(pop);
       if (restoreFocus) addBtn.focus({ preventScroll: true });
       return true;
@@ -392,11 +399,17 @@ const ColorPicker = (() => {
       body.append(svBox, hueBox);
 
       panel.append(body, head);
-      grid.before(panel);
+      if (typeof grid.before === 'function') grid.before(panel);
+      else if (Array.isArray(pop.children)) {
+        panel.parentNode = pop;
+        const idx = pop.children.indexOf(grid);
+        pop.children.splice(idx >= 0 ? idx : 0, 0, panel);
+      } else pop.appendChild(panel);
       subPanel = panel;
       grid.hidden = true;
       customSection.hidden = true;
       addBtn.textContent = label('Preset colors');
+      addBtn.setAttribute('aria-expanded', 'true');
       syncSubUI(true);
       keepInView(pop);
 
@@ -505,7 +518,6 @@ const ColorPicker = (() => {
       row.append(lbl, range, val);
       pop.appendChild(row);
     }
-    openSub();
 
     return {
       setHex: hex => applyHex(hex, { syncHsv: true, syncInput: true }),

@@ -1,4 +1,5 @@
 'use strict';
+const trCompanion = value => typeof ui === 'function' ? ui(value) : value;
 const TerminalMusicLinks={
   parse(text){
     let u;try{u=new URL(text.trim());}catch{throw Error('Paste a full music or playlist link.');}
@@ -29,6 +30,25 @@ const TerminalMusicLinks={
     throw Error('Use a YouTube, Spotify, SoundCloud or TikTok video link.');
   }
 };
+const MUSIC_ICONS={
+  prev:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="6" width="2.2" height="12" rx="1" fill="currentColor"/><path d="M18.5 6.8a1 1 0 0 0-1.56-.83l-7.8 5.2a1 1 0 0 0 0 1.66l7.8 5.2a1 1 0 0 0 1.56-.83V6.8z" fill="currentColor"/></svg>',
+  rewind:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.5 7.2a1 1 0 0 0-1.6-.8l-6.4 4.8a1 1 0 0 0 0 1.6l6.4 4.8a1 1 0 0 0 1.6-.8V7.2zM20.5 7.2a1 1 0 0 0-1.6-.8l-6.4 4.8a1 1 0 0 0 0 1.6l6.4 4.8a1 1 0 0 0 1.6-.8V7.2z" fill="currentColor"/></svg>',
+  play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 5.6a1.1 1.1 0 0 1 1.68-.93l9.4 6a1.1 1.1 0 0 1 0 1.86l-9.4 6A1.1 1.1 0 0 1 8.2 17.6V5.6z" fill="currentColor"/></svg>',
+  pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5.5" width="3.8" height="13" rx="1.4" fill="currentColor"/><rect x="13.7" y="5.5" width="3.8" height="13" rx="1.4" fill="currentColor"/></svg>',
+  forward:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.2a1 1 0 0 1 1.6-.8l6.4 4.8a1 1 0 0 1 0 1.6l-6.4 4.8a1 1 0 0 1-1.6-.8V7.2zM12.5 7.2a1 1 0 0 1 1.6-.8l6.4 4.8a1 1 0 0 1 0 1.6l-6.4 4.8a1 1 0 0 1-1.6-.8V7.2z" fill="currentColor"/></svg>',
+  next:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="16.8" y="6" width="2.2" height="12" rx="1" fill="currentColor"/><path d="M5.5 6.8a1 1 0 0 1 1.56-.83l7.8 5.2a1 1 0 0 1 0 1.66l-7.8 5.2A1 1 0 0 1 5.5 17.2V6.8z" fill="currentColor"/></svg>',
+  volume:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>',
+  muted:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M22 9l-6 6M16 9l6 6"/></svg>',
+  expand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+};
+const POPUP_RATIOS=[
+  {key:'free',label:'Free',ratio:null},
+  {key:'16/9',label:'16:9',ratio:16/9},
+  {key:'9/16',label:'9:16',ratio:9/16},
+  {key:'4/3',label:'4:3',ratio:4/3},
+  {key:'1/1',label:'1:1',ratio:1}
+];
 class TerminalCompanions{
   constructor(ctx){
     Object.assign(this,ctx);this.calendarData=null;this.playing=false;this.epoch=0;this.currentTrack='';this.impacts=new Set(Workspace.read('terminal_calendar_impacts_v1',['High','Medium','Low']));this.currency=Workspace.read('terminal_calendar_currency_v1','USD');
@@ -42,58 +62,61 @@ class TerminalCompanions{
     document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(this.protocolLightbox&&!this.protocolLightbox.hidden){this.protocolLightbox.hidden=true;return;}if(this.open&&!e.target.closest('.modal'))this.toggle(this.open,false);}});
   }
   syncDockWidth(){
-    const axis=this.getActive?.()?.chart?.priceScale('right').width()||65;
-    const width=Math.max(18,axis*.3);
+    const width=40;
     if(width===this.edgeWidth)return;
     this.edgeWidth=width;
     this.dock.style.setProperty('--edge-width',width+'px');
-    const inset=Math.max(30,width+8)+'px';
+    const inset='72px';
     for(const panel of Object.values(this.panels)){
       panel.style.setProperty('--companion-inset',inset);
-      panel.style.right=inset;
+      if(!panel.classList.contains('music-mini'))panel.style.right=inset;
     }
+  }
+  closeDocked(){
+    if(this.open)this.toggle(this.open,false);
   }
   toggle(key,force){
     const show=force??this.open!==key;
+    if(show&&this.desktop?.mode){
+      this.desktop.open(null);
+    }
     if(show&&this.open&&this.open!==key){
-      if(this.open==='music'&&this.link)this.setMusicMini(true,false);
-      else this.toggle(this.open,false);
+      this.toggle(this.open,false);
     }
     if(key==='music'){
-      this.panels.music.classList.remove('music-mini');
+      this.panels.music.classList.remove('music-mini','music-popup-interacting');
+      if(this.panels.music.style)this.panels.music.style.right='72px';
       this.updateMusicPopupButton();
-      if(!show){
-        this.tabAudioRequest++;
-        this.stopTabAudio();
-        this.command('pause');
-        if(this.iframe&&['youtube','soundcloud','spotify'].includes(this.link?.provider)&&!this.youtube&&!this.widget&&!this.spotify){
-          this.iframe.remove();
-          this.iframe=null;
-          this.epoch++;
-          clearTimeout(this.playerReadyTimer);
-          this.setPlaying(false);
-          this.setCommands(false);
-          this.musicNotice.textContent='Bấm Load để mở lại trình phát.';
-        }
-      }
     }
-    this.panels[key].classList.toggle('open',show);this.panels[key].inert=!show;document.getElementById('edge-'+key).setAttribute('aria-expanded',String(show));
+    this.panels[key].classList.toggle('open',show);this.panels[key].inert=!show;document.getElementById('edge-'+key)?.setAttribute('aria-expanded',String(show));
     if(show)this.open=key;
     else if(this.open===key)this.open=null;
+    this.desktop?.syncRailActive?.();
     if(key==='calendar'&&show)this.renderCalendar();
   }
   setMusicMini(mini,focus=true){
     if(!this.link)return;
+    const panel=this.panels.music;
     if(!mini){
+      panel.classList.remove('music-popup-interacting');
       this.toggle('music',true);
     }else{
-      this.panels.music.classList.add('music-mini','open');
+      panel.classList.add('music-mini','open');
+      panel.inert=false;
+      if(!this.popupRatio||this.popupRatioProvider!==this.link.provider){
+        this.popupRatio='free';
+        this.popupRatioProvider=this.link.provider;
+      }
       this.setVideoHidden(false);
-      this.placeVideoPopup();
-      if(this.open==='music')this.open=null;
+      this.applyPopupLayout();
+      if(this.open==='music'){
+        this.open=null;
+        document.getElementById('edge-music')?.setAttribute('aria-expanded','false');
+      }
+      this.desktop?.syncRailActive?.();
       this.updateMusicPopupButton();
     }
-    if(focus)(mini&&this.isVideoProvider()&&this.iframe?this.popupGrip:this.popupButton).focus();
+    if(focus)(mini&&this.isVideoProvider()&&this.iframe?this.popupExpandButton:this.popupButton)?.focus();
   }
   isVideoProvider(){return ['youtube','tiktok'].includes(this.link?.provider);}
   setVideoHidden(hidden){
@@ -106,53 +129,223 @@ class TerminalCompanions{
     this.hideVideoButton.textContent=ui(hidden?'Show video':'Hide video');
     this.hideVideoButton.setAttribute('aria-pressed',String(enabled&&hidden));
   }
+  getPopupRatioEntry(){
+    return POPUP_RATIOS.find(r=>r.key===this.popupRatio)||POPUP_RATIOS[0];
+  }
+  applyPopupLayout(){
+    const panel=this.panels.music;
+    if(!panel.classList.contains('music-mini'))return;
+    const isTikTok=this.link?.provider==='tiktok';
+    const maxW=Math.max(220,innerWidth-12);
+    const maxH=Math.max(150,innerHeight-12);
+    const defaultW=this.isVideoProvider()?(isTikTok?260:340):340;
+    const defaultH=isTikTok?380:192;
+    const width=Math.round(Math.max(180,Math.min(maxW,this.videoPopupSize?.w||defaultW)));
+    if(this.isVideoProvider()){
+      const entry=this.getPopupRatioEntry();
+      if(entry.key==='free'||!entry.ratio){
+        const height=Math.round(Math.max(120,Math.min(maxH,this.videoPopupSize?.h||defaultH)));
+        panel.style.setProperty('--music-mini-w',width+'px');
+        panel.style.setProperty('--music-mini-h',height+'px');
+        panel.style.setProperty('--music-mini-aspect','auto');
+      }else{
+        const clampedW=Math.max(180,Math.min(width,Math.round(maxH*entry.ratio)));
+        panel.style.setProperty('--music-mini-w',clampedW+'px');
+        panel.style.setProperty('--music-mini-aspect',entry.key);
+        panel.style.setProperty('--music-mini-h','auto');
+      }
+      if(this.popupRatioButton)this.popupRatioButton.textContent=entry.label;
+    }else{
+      panel.style.setProperty('--music-mini-w',width+'px');
+      panel.style.setProperty('--music-mini-h',this.videoPopupSize?.h?Math.round(Math.max(120,Math.min(maxH,this.videoPopupSize.h)))+'px':'auto');
+      panel.style.setProperty('--music-mini-aspect','auto');
+    }
+    this.placeVideoPopup();
+  }
   placeVideoPopup(position=this.videoPopupPosition){
     const panel=this.panels.music;
-    if(!panel.classList.contains('music-mini')||!this.isVideoProvider()||!position)return;
-    const x=Math.max(4,Math.min(position.x,innerWidth-panel.offsetWidth-4));
-    const y=Math.max(30,Math.min(position.y,innerHeight-panel.offsetHeight-4));
+    if(!panel.classList.contains('music-mini'))return;
+    if(!position){
+      const rect=panel.getBoundingClientRect();
+      if(!rect.width||!rect.height)return;
+      position={x:Math.max(4,innerWidth-rect.width-20),y:Math.max(4,innerHeight-rect.height-20)};
+    }
+    const maxX=Math.max(4,innerWidth-panel.offsetWidth-4);
+    const maxY=Math.max(4,innerHeight-panel.offsetHeight-4);
+    const x=Math.round(Math.max(4,Math.min(position.x,maxX)));
+    const y=Math.round(Math.max(4,Math.min(position.y,maxY)));
     this.videoPopupPosition={x,y};
     panel.dataset.floatingPosition='';
     panel.style.setProperty('--music-left',x+'px');
     panel.style.setProperty('--music-top',y+'px');
   }
   resizeVideoPopup(){
-    this.panels.music.classList.toggle('music-mini-large');
-    this.placeVideoPopup();
+    const sizes=this.link?.provider==='tiktok'?[240,320,420]:[320,480,680];
+    const cur=this.panels.music.offsetWidth||sizes[0];
+    const next=sizes.find(s=>s>cur+18)||sizes[0];
+    const curH=this.panels.music.offsetHeight||200;
+    const scale=next/cur;
+    this.videoPopupSize={w:next,h:Math.round(curH*scale)};
+    this.applyPopupLayout();
+  }
+  cyclePopupRatio(){
+    if(!this.isVideoProvider())return;
+    const idx=POPUP_RATIOS.findIndex(r=>r.key===this.popupRatio);
+    const next=POPUP_RATIOS[(idx+1)%POPUP_RATIOS.length];
+    this.popupRatio=next.key;
+    if(next.ratio){
+      const w=this.panels.music.offsetWidth||this.videoPopupSize?.w||340;
+      this.videoPopupSize={w,h:Math.round(w/next.ratio)};
+    }
+    this.applyPopupLayout();
   }
   installVideoPopup(panel){
     const rail=document.createElement('div');rail.className='video-popup-tools';
-    const button=(symbol,label,action)=>{
+    const button=(symbol,label,action,cls)=>{
       const element=document.createElement('button');
-      element.type='button';element.textContent=symbol;element.title=ui(label);
+      element.type='button';element.innerHTML=symbol;element.title=ui(label);
       element.setAttribute('aria-label',element.title);
+      if(cls)element.className=cls;
       if(action)element.onclick=action;
       rail.appendChild(element);return element;
     };
-    const grip=this.popupGrip=button('⠿','Drag popup',null);
-    button('⤢','Resize popup',()=>this.resizeVideoPopup());
-    button('↗','Expand',()=>this.setMusicMini(false));
-    button('×','Close popup',()=>this.toggle('music',false));
+    this.popupExpandButton=button(MUSIC_ICONS.expand,'Expand',()=>this.setMusicMini(false));
+    button(MUSIC_ICONS.close,'Close popup',()=>this.toggle('music',false));
     panel.appendChild(rail);
-    let drag;
-    grip.addEventListener('pointerdown',event=>{
-      if(event.button!==0)return;
+
+    const startDrag=(event,handle)=>{
+      if(event.button!==0||!panel.classList.contains('music-mini'))return;
+      if(event.target.closest('button,input,a,.music-popup-resizer'))return;
+      event.preventDefault();
       const rect=panel.getBoundingClientRect();
-      drag={pointer:event.pointerId,dx:event.clientX-rect.left,dy:event.clientY-rect.top};
-      grip.setPointerCapture(event.pointerId);
+      const drag={pointer:event.pointerId,dx:event.clientX-rect.left,dy:event.clientY-rect.top};
+      panel.classList.add('music-popup-interacting');
+      handle.setPointerCapture(event.pointerId);
+      const onMove=ev=>{
+        if(ev.pointerId!==drag.pointer)return;
+        this.placeVideoPopup({x:ev.clientX-drag.dx,y:ev.clientY-drag.dy});
+      };
+      const onDone=()=>{
+        panel.classList.remove('music-popup-interacting');
+        handle.removeEventListener('pointermove',onMove);
+        handle.removeEventListener('pointerup',onDone);
+        handle.removeEventListener('pointercancel',onDone);
+        handle.removeEventListener('lostpointercapture',onDone);
+      };
+      handle.addEventListener('pointermove',onMove);
+      handle.addEventListener('pointerup',onDone);
+      handle.addEventListener('pointercancel',onDone);
+      handle.addEventListener('lostpointercapture',onDone);
+    };
+    rail.addEventListener('pointerdown',e=>startDrag(e,rail));
+    panel.querySelector('header').addEventListener('pointerdown',e=>startDrag(e,panel.querySelector('header')));
+    const hud=panel.querySelector('.music-hud');
+    if(hud)hud.addEventListener('pointerdown',e=>{if(panel.classList.contains('music-mini'))startDrag(e,hud);});
+    const shield=document.createElement('div');
+    shield.className='music-video-shield';
+    shield.setAttribute('aria-hidden','true');
+    shield.addEventListener('pointerdown',event=>{
+      if(event.button!==0||!panel.classList.contains('music-mini'))return;
+      event.preventDefault();
+      const pid=event.pointerId,startX=event.clientX,startY=event.clientY,rect=panel.getBoundingClientRect();
+      let moved=false;
+      const dx=startX-rect.left,dy=startY-rect.top;
+      panel.classList.add('music-popup-interacting');
+      shield.setPointerCapture(pid);
+      const onMove=ev=>{
+        if(ev.pointerId!==pid)return;
+        if(!moved&&Math.hypot(ev.clientX-startX,ev.clientY-startY)>4)moved=true;
+        if(moved)this.placeVideoPopup({x:ev.clientX-dx,y:ev.clientY-dy});
+      };
+      const onDone=()=>{
+        panel.classList.remove('music-popup-interacting');
+        shield.removeEventListener('pointermove',onMove);
+        shield.removeEventListener('pointerup',onUp);
+        shield.removeEventListener('pointercancel',onDone);
+        shield.removeEventListener('lostpointercapture',onDone);
+      };
+      const onUp=ev=>{
+        onDone();
+        if(ev.pointerId===pid&&!moved)this.command('toggle');
+      };
+      shield.addEventListener('pointermove',onMove);
+      shield.addEventListener('pointerup',onUp);
+      shield.addEventListener('pointercancel',onDone);
+      shield.addEventListener('lostpointercapture',onDone);
     });
-    grip.addEventListener('pointermove',event=>{
-      if(!drag||event.pointerId!==drag.pointer)return;
-      this.placeVideoPopup({x:event.clientX-drag.dx,y:event.clientY-drag.dy});
+    panel.appendChild(shield);
+    panel.addEventListener('pointerleave',()=>{
+      if(panel.classList.contains('music-mini')&&document.activeElement&&panel.contains(document.activeElement)){
+        document.activeElement.blur();
+      }
     });
-    grip.addEventListener('lostpointercapture',()=>{drag=null;});
-    rail.addEventListener('dblclick',event=>{if(event.target===rail||event.target===grip)this.resizeVideoPopup();});
-    grip.addEventListener('keydown',event=>{
-      if(event.key==='Enter'||event.key===' '){event.preventDefault();this.resizeVideoPopup();return;}
-      const delta={ArrowLeft:[-16,0],ArrowRight:[16,0],ArrowUp:[0,-16],ArrowDown:[0,16]}[event.key];
-      if(delta){event.preventDefault();const rect=panel.getBoundingClientRect();this.placeVideoPopup({x:rect.left+delta[0],y:rect.top+delta[1]});}
+    rail.addEventListener('dblclick',event=>{if(!event.target.closest('button'))this.resizeVideoPopup();});
+
+    const addResizer=(dirs,cls,label)=>{
+      const handle=document.createElement('div');
+      handle.className='music-popup-resizer '+cls;
+      handle.title=label;
+      handle.setAttribute('aria-label',label);
+      handle.addEventListener('pointerdown',event=>{
+        if(event.button!==0||!panel.classList.contains('music-mini'))return;
+        event.preventDefault();event.stopPropagation();
+        const pid=event.pointerId;
+        const rect=panel.getBoundingClientRect();
+        this.placeVideoPopup({x:rect.left,y:rect.top});
+        panel.classList.add('music-popup-interacting');
+        handle.setPointerCapture(pid);
+        const startX=event.clientX,startY=event.clientY;
+        const startLeft=rect.left,startTop=rect.top,startRight=rect.right,startBottom=rect.bottom;
+        const startW=rect.width,startH=rect.height;
+        const minW=180,minH=120;
+        const hasW=dirs.includes('w'),hasE=dirs.includes('e'),hasN=dirs.includes('n'),hasS=dirs.includes('s');
+        const onMove=ev=>{
+          if(ev.pointerId!==pid)return;
+          const dw=ev.clientX-startX,dh=ev.clientY-startY;
+          let left=startLeft,top=startTop,width=startW,height=startH;
+          if(hasW){
+            left=Math.max(4,Math.min(startRight-minW,startLeft+dw));
+            width=startRight-left;
+          }else if(hasE){
+            width=Math.max(minW,Math.min(innerWidth-4-startLeft,startW+dw));
+          }
+          if(hasN){
+            top=Math.max(4,Math.min(startBottom-minH,startTop+dh));
+            height=startBottom-top;
+          }else if(hasS){
+            height=Math.max(minH,Math.min(innerHeight-4-startTop,startH+dh));
+          }
+          if(this.isVideoProvider())this.popupRatio='free';
+          this.videoPopupSize={w:width,h:height};
+          this.videoPopupPosition={x:left,y:top};
+          this.applyPopupLayout();
+        };
+        const onDone=()=>{
+          panel.classList.remove('music-popup-interacting');
+          handle.removeEventListener('pointermove',onMove);
+          handle.removeEventListener('pointerup',onDone);
+          handle.removeEventListener('pointercancel',onDone);
+          handle.removeEventListener('lostpointercapture',onDone);
+        };
+        handle.addEventListener('pointermove',onMove);
+        handle.addEventListener('pointerup',onDone);
+        handle.addEventListener('pointercancel',onDone);
+        handle.addEventListener('lostpointercapture',onDone);
+      });
+      panel.appendChild(handle);
+    };
+    addResizer('nw','resizer-nw','Kéo góc trên-trái để phóng to / thu nhỏ tự do');
+    addResizer('ne','resizer-ne','Kéo góc trên-phải để phóng to / thu nhỏ tự do');
+    addResizer('sw','resizer-sw','Kéo góc dưới-trái để phóng to / thu nhỏ tự do');
+    addResizer('se','resizer-se resizer-corner','Kéo góc dưới-phải để phóng to / thu nhỏ tự do');
+    addResizer('n','resizer-n','Kéo cạnh trên để chỉnh chiều cao');
+    addResizer('s','resizer-s resizer-bottom','Kéo cạnh dưới để chỉnh chiều cao');
+    addResizer('w','resizer-w','Kéo cạnh trái để chỉnh chiều rộng');
+    addResizer('e','resizer-e resizer-right','Kéo cạnh phải để chỉnh chiều rộng');
+
+    window.addEventListener('resize',()=>{
+      if(panel.classList.contains('music-mini'))this.applyPopupLayout();
     });
-    window.addEventListener('resize',()=>this.placeVideoPopup());
   }
   updateMusicPopupButton(){
     const mini=this.panels.music.classList.contains('music-mini');
@@ -190,8 +383,15 @@ class TerminalCompanions{
     const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     const tomorrow=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
     const rawEvents=replay?[]:data?.events||[];
+    const protocolEnabled=!replay&&typeof NewsProtocols!=='undefined'&&(this.currency==='All'||this.currency==='USD');
+    let startDay=today;
+    if(protocolEnabled){
+      const [nyY,nyM,nyD]=NewsProtocols.day(+now/1000).split('-').map(Number);
+      const nyDate=new Date(nyY,nyM-1,nyD);
+      if(nyDate<today)startDay=nyDate;
+    }
     const events=rawEvents.filter(event=>
-      this.impacts.has(event.impact)&&(this.currency==='All'||event.currency===this.currency)&&event.time*1000>=+today);
+      this.impacts.has(event.impact)&&(this.currency==='All'||event.currency===this.currency)&&event.time*1000>=+startDay);
     if(!replay&&data&&data!==this.calendarSyncedData&&typeof NewsProtocols!=='undefined'){
       this.calendarSyncedData=data;
       const archived=Array.isArray(this.protocolEvents)?this.protocolEvents:Array.isArray(this.news?.events)?this.news.events:[];
@@ -200,11 +400,10 @@ class TerminalCompanions{
       if(this.news)this.news.events=merged;
       if(merged.length)Workspace.write('terminal_protocol_events_v1',merged);
     }
-    const protocolEnabled=!replay&&typeof NewsProtocols!=='undefined'&&(this.currency==='All'||this.currency==='USD');
     const protocolEvents=protocolEnabled?NewsProtocols.merge(this.protocolEvents||this.news?.events||[],rawEvents,+now/1000):[];
     const next=events.find(event=>!event.tentative&&event.time*1000>+now);
     const nextToday=events.find(event=>event.time*1000>+now&&event.time*1000<+tomorrow);
-    const key=JSON.stringify([replay,this.currency,[...this.impacts],data?.checked_at,data?.error,+today,next?.time,nextToday?.time,protocolEnabled?[protocolEvents.length,protocolEvents[0]?.time,protocolEvents.at(-1)?.time]:0]);
+    const key=JSON.stringify([replay,this.currency,[...this.impacts],data?.checked_at,data?.error,+startDay,+today,next?.time,nextToday?.time,protocolEnabled?[protocolEvents.length,protocolEvents[0]?.time,protocolEvents.at(-1)?.time]:0]);
     this.calendarTimeFormat??=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
     if(key!==this.calendarRenderKey){
       this.calendarRenderKey=key;
@@ -226,7 +425,7 @@ class TerminalCompanions{
       }else if(!data){
         this.calendarList.textContent='Loading economic events…';
       }else{
-        this.buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents,protocolEnabled);
+        this.buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents,protocolEnabled,startDay);
       }
       this.calendarList.scrollTop=scroll;
     }
@@ -242,22 +441,31 @@ class TerminalCompanions{
     }
     if(!replay)this.loadCalendar();
   }
-  buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents=[],protocolEnabled=false){
+  buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents=[],protocolEnabled=false,startDay=today){
     const data=this.calendarData;
     const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const todayIso=iso(today),tomorrowIso=iso(tomorrow);
+    const todayIso=iso(today),tomorrowIso=iso(tomorrow),startIso=iso(startDay);
     const groups=new Map([[todayIso,{date:today,events:[],cards:[],checked:false}]]);
     for(const event of events){
-      const ed=new Date(event.time*1000),day=new Date(ed.getFullYear(),ed.getMonth(),ed.getDate()),k=iso(day);
+      const dayKey=protocolEnabled&&typeof NewsProtocols!=='undefined'&&event.currency==='USD'?NewsProtocols.day(event.time):null;
+      let day,k;
+      if(dayKey){
+        const [y,m,dd]=dayKey.split('-').map(Number);
+        day=new Date(y,m-1,dd);k=dayKey;
+      }else{
+        const ed=new Date(event.time*1000);
+        day=new Date(ed.getFullYear(),ed.getMonth(),ed.getDate());k=iso(day);
+      }
+      if(k<startIso)continue;
       if(!groups.has(k))groups.set(k,{date:day,events:[],cards:[],checked:false});
       groups.get(k).events.push(event);
     }
     if(protocolEnabled&&protocolEvents.length){
       const limit=+today+21*86400000;
       let maxMs=+today;
-      for(const event of protocolEvents)if(event.time*1000>=+today&&event.time*1000<=limit)maxMs=Math.max(maxMs,event.time*1000);
+      for(const event of protocolEvents)if(event.time*1000>=+startDay&&event.time*1000<=limit)maxMs=Math.max(maxMs,event.time*1000);
       const endMs=Math.min(limit,maxMs+5*86400000);
-      for(let d=new Date(today);+d<=endMs;d.setDate(d.getDate()+1)){
+      for(let d=new Date(startDay);+d<=endMs;d.setDate(d.getDate()+1)){
         const k=iso(d),cards=NewsProtocols.matchDay(protocolEvents,k);
         if(cards.length){
           if(!groups.has(k))groups.set(k,{date:new Date(d),events:[],cards,checked:true});
@@ -273,7 +481,7 @@ class TerminalCompanions{
     this.calendarNow.className='calendar-now';
     for(const [dayIso,entry] of [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0]))){
       const heading=document.createElement('h3');
-      heading.textContent=dayIso===todayIso?ui('Today'):dayIso===tomorrowIso?ui('Tomorrow'):dateFormat.format(entry.date);
+      heading.textContent=dayIso===todayIso?trCompanion('Today'):dayIso===tomorrowIso?trCompanion('Tomorrow'):dayIso<todayIso?dateFormat.format(entry.date)+' · NY Session':dateFormat.format(entry.date);
       this.calendarList.appendChild(heading);
       if(entry.cards.length){
         const box=document.createElement('div');
@@ -359,6 +567,12 @@ class TerminalCompanions{
       }
       list.appendChild(row);
     }
+    if(card.nextEvents?.length&&['cpi-day','ppi-day','fed-day'].includes(card.id)){
+      const warn=document.createElement('div');
+      warn.className='calendar-protocol-next';
+      warn.textContent='Lưu ý phiên kế tiếp: '+card.nextEvents.map(e=>e.title).join(', ');
+      list.appendChild(warn);
+    }
     info.append(head,list);
     const btn=document.createElement('button');
     btn.type='button';
@@ -416,7 +630,7 @@ class TerminalCompanions{
     return row;
   }
   buildMusic(){
-    const panel=this.panels.music;panel.insertAdjacentHTML('beforeend','<form class="music-link-form"><input type="url" required placeholder="Paste YouTube, Spotify, SoundCloud or TikTok link" aria-label="Music link"><button type="submit">Load</button><button type="button" data-audio-file>File</button><input type="file" accept="audio/*,.mp3,.m4a,.flac,.opus" hidden></form><div class="music-now"><div class="music-disc"><img alt="Track artwork" hidden></div><div><h3>Nothing is playing</h3><p>Paste a link to load the official player.</p><input type="range" class="music-seek" min="0" max="1" value="0" step="0.1" aria-label="Playback position" disabled><span class="music-clock">0:00 / —</span></div></div><div class="music-controls"><button data-command="previous" aria-label="Previous track">◀</button><button data-command="toggle" aria-label="Play">▶</button><button data-command="next" aria-label="Next track">▶</button></div><div class="music-player-host"></div><p class="music-notice" role="status">Paste a music link or choose an audio file.</p>');
+    const panel=this.panels.music;panel.insertAdjacentHTML('beforeend',`<form class="music-link-form"><input type="url" required placeholder="Paste YouTube, Spotify, SoundCloud or TikTok link" aria-label="Music link"><button type="submit">Load</button><button type="button" data-audio-file>File</button><input type="file" accept="audio/*,.mp3,.m4a,.flac,.opus" hidden></form><div class="music-now"><div class="music-disc"><img alt="Track artwork" hidden></div><div><h3>Nothing is playing</h3><p>Paste a link to load the official player.</p></div></div><div class="music-hud"><div class="music-progress-row"><div class="music-track" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-disabled="true"><div class="music-rail"><div class="music-buf"></div><div class="music-fill"></div><div class="music-dot"></div></div><div class="music-tip">0:00</div></div><span class="music-clock">0:00 / —</span></div><div class="music-controls"><button type="button" data-command="previous" aria-label="Previous track" title="Bài trước">${MUSIC_ICONS.prev}</button><button type="button" data-command="rewind" aria-label="Rewind 10 seconds" title="Lùi 10 giây">${MUSIC_ICONS.rewind}</button><button type="button" data-command="toggle" aria-label="Play" title="Phát / Tạm dừng">${MUSIC_ICONS.play}</button><button type="button" data-command="forward" aria-label="Forward 10 seconds" title="Tua nhanh 10 giây">${MUSIC_ICONS.forward}</button><button type="button" data-command="next" aria-label="Next track" title="Bài tiếp">${MUSIC_ICONS.next}</button></div></div><div class="music-player-host"></div><p class="music-notice" role="status">Paste a music link or choose an audio file.</p>`);
     TerminalLanguage.markup(panel);
     this.form=panel.querySelector('form');
     const linkInput=this.form.querySelector('input[type=url]');
@@ -435,12 +649,6 @@ class TerminalCompanions{
     this.hideVideoButton.textContent=ui('Hide video');
     this.hideVideoButton.onclick=()=>{
       const hide=!panel.classList.contains('music-video-hidden');
-      if(hide){
-        if(this.link?.provider==='youtube'){
-          if(typeof this.youtube?.pauseVideo!=='function')return;
-          this.command('pause');
-        }
-      }
       this.setVideoHidden(hide);
     };
     this.popupButton.before(this.hideVideoButton);
@@ -483,19 +691,48 @@ class TerminalCompanions{
     };
     this.musicMute=document.createElement('button');
     this.musicMute.type='button';
+    this.musicMute.className='music-mute-btn';
     this.musicMute.hidden=true;
-    this.musicMute.onclick=()=>this.sendTikTok(this.tiktokMuted?'unMute':'mute');
+    this.musicMute.innerHTML=MUSIC_ICONS.volume;
+    this.musicMute.onclick=()=>this.toggleMute();
     panel.querySelector('.music-controls').appendChild(this.musicMute);
-    this.seek=panel.querySelector('.music-seek');
-    this.seek.oninput=()=>{
-      const seconds=Number(this.seek.value);
-      if(this.audio)this.audio.currentTime=seconds;
-      else if(this.widget)this.widget.seekTo(seconds*1000);
-      else if(this.spotify)this.spotify.seek(seconds);
-      else if(this.youtube)this.youtube.seekTo?.(seconds,true);
-      else if(this.link?.provider==='tiktok')this.sendTikTok('seekTo',seconds);
-      this.elapsed=seconds;
+    this.track=panel.querySelector('.music-track');
+    this.trackFill=panel.querySelector('.music-fill');
+    this.trackBuf=panel.querySelector('.music-buf');
+    this.trackDot=panel.querySelector('.music-dot');
+    this.trackTip=panel.querySelector('.music-tip');
+    this.seek={disabled:true,max:1,value:0,dragging:false};
+    const trackTime=clientX=>{
+      const r=this.track.getBoundingClientRect(),dur=this.duration||0;
+      if(!r.width||dur<=0)return {x:0,s:0};
+      const x=Math.min(r.width,Math.max(0,clientX-r.left));
+      return {x,s:(x/r.width)*dur};
     };
+    this.track.addEventListener('pointerdown',event=>{
+      if(event.button!==0||this.seek.disabled||!(this.duration>0))return;
+      event.preventDefault();event.stopPropagation();
+      this.seek.dragging=true;
+      this.track.classList.add('drag');
+      this.track.setPointerCapture(event.pointerId);
+      const {x,s}=trackTime(event.clientX);
+      this.trackTip.style.left=x+'px';this.trackTip.textContent=this.formatTime(s);
+      this.seekToSeconds(s);
+    });
+    this.track.addEventListener('pointermove',event=>{
+      if(this.seek.disabled||!(this.duration>0))return;
+      const {x,s}=trackTime(event.clientX);
+      this.trackTip.style.left=x+'px';this.trackTip.textContent=this.formatTime(s);
+      if(this.seek.dragging)this.seekToSeconds(s);
+    });
+    const endTrack=()=>{this.seek.dragging=false;this.track.classList.remove('drag');};
+    this.track.addEventListener('pointerup',endTrack);
+    this.track.addEventListener('pointercancel',endTrack);
+    this.track.addEventListener('lostpointercapture',endTrack);
+    this.track.addEventListener('keydown',event=>{
+      if(this.seek.disabled||!(this.duration>0))return;
+      const step={ArrowLeft:-5,ArrowRight:5,ArrowDown:-5,ArrowUp:5,Home:-this.duration,End:this.duration}[event.key];
+      if(step!==undefined){event.preventDefault();this.seekToSeconds((this.elapsed||0)+step);}
+    });
     this.musicToggle=panel.querySelector('[data-command=toggle]');
     panel.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>this.command(b.dataset.command));this.setCommands(false);
     const toast=document.createElement('div');toast.id='music-track-toast';toast.innerHTML='<img alt=""><div><strong></strong><small></small></div>';toast.setAttribute('role','status');document.body.appendChild(toast);this.songToast=toast;
@@ -518,13 +755,14 @@ class TerminalCompanions{
         clearTimeout(this.playerReadyTimer);
         if(this.tiktokNative&&!this.tiktokStarted&&!panel.classList.contains('music-mini'))this.setVideoHidden(true);
         this.tiktokStarted=true;
+        panel.classList.add('music-shield-active');
+        if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
         this.setCommands(true);
         this.musicMute.hidden=false;
         this.musicMute.disabled=false;
         this.tabAudioButton.hidden=true;
         this.tiktokFileButton.hidden=true;
         this.musicNotice.textContent='';
-        if(!panel.classList.contains('open'))this.command('pause');
       }else if(type==='onCurrentTime'&&value){
         if(Number.isFinite(value.currentTime))this.elapsed=Math.max(0,value.currentTime);
         if(Number.isFinite(value.duration))this.duration=Math.max(0,value.duration);
@@ -558,6 +796,8 @@ class TerminalCompanions{
     this.youtube?.destroy?.();this.youtube=null;
     this.spotify?.destroy?.();this.iframe=null;this.widget=null;this.spotify=null;this.playerHost.replaceChildren();this.link=null;this.spotifyFrameOnly=false;this.setPlaying(false);this.currentTrack='';this.metadataURL=null;this.duration=0;this.elapsed=0;this.trackTitle.textContent='Loading…';this.art.hidden=true;
     this.popupButton.disabled=true;
+    this.panels.music.classList.remove('music-shield-active');
+    this.youtubeStarted=false;
     this.tiktokNative=false;
     this.tiktokRecovering=false;
     this.musicMute.hidden=true;
@@ -589,6 +829,10 @@ class TerminalCompanions{
       this.sourceLink.textContent=ui('Open TikTok source tab');
     }else this.sourceLink.textContent=ui('Open original link');
     this.panels.music.dataset.provider=link.provider;
+    if(this.panels.music.classList.contains('music-mini')){
+      if(this.popupRatioProvider!==link.provider){this.popupRatio='free';this.popupRatioProvider=link.provider;}
+      this.applyPopupLayout();
+    }
     this.popupButton.disabled=false;
     if(link.provider==='audio'){
       if(file)link.url=this.audioObjectUrl=URL.createObjectURL(file);
@@ -676,9 +920,27 @@ class TerminalCompanions{
 
   setTikTokMuted(muted){
     this.tiktokMuted=muted;
+    this.updateMuteButton(muted);
+  }
+  updateMuteButton(muted){
     const label=ui(muted?'Unmute':'Mute');
-    this.musicMute.textContent=label;
+    this.musicMute.innerHTML=muted?MUSIC_ICONS.muted:MUSIC_ICONS.volume;
     this.musicMute.setAttribute('aria-label',label);
+    this.musicMute.title=label;
+    this.musicMute.setAttribute('aria-pressed',String(!!muted));
+  }
+  toggleMute(){
+    if(this.link?.provider==='tiktok'){
+      this.sendTikTok(this.tiktokMuted?'unMute':'mute');
+    }else if(this.youtube){
+      const muted=!!this.youtube.isMuted?.();
+      if(muted)this.youtube.unMute?.();
+      else this.youtube.mute?.();
+      this.updateMuteButton(!muted);
+    }else if(this.audio){
+      this.audio.muted=!this.audio.muted;
+      this.updateMuteButton(this.audio.muted);
+    }
   }
 
   tiktokPlayPrompt(){
@@ -813,7 +1075,7 @@ class TerminalCompanions{
       this.musicNotice.textContent='Mở Trading Terminal qua localhost để phát YouTube trong ứng dụng.';
       return;
     }
-    const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1'});
+    const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1',controls:'0',rel:'0',modestbranding:'1',iv_load_policy:'3'});
     if(link.list){params.set('listType','playlist');params.set('list',link.list);}
     const frame=this.frame('https://www.youtube.com/embed/'+(link.id||'videoseries')+'?'+params,240);
     this.musicNotice.textContent='Bấm Play trong trình phát YouTube.';
@@ -821,12 +1083,16 @@ class TerminalCompanions{
     if(epoch!==this.epoch)return;
     this.youtube=new window.YT.Player(frame,{
       events:{
-        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.setVideoHidden(false);}},
-        onStateChange:({data,target})=>{
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(false);this.panels.music.classList.add('music-shield-active');}},
+        onStateChange:({data})=>{
           if(epoch!==this.epoch)return;
           this.setPlaying(data===1,data===1||data===3);
-          if(this.canPause&&(!this.panels.music.classList.contains('open')||this.panels.music.classList.contains('music-video-hidden')))target.pauseVideo();
-          if(data===1)this.musicNotice.textContent='';
+          if(data===1){
+            this.musicNotice.textContent='';
+            this.youtubeStarted=true;
+            this.panels.music.classList.add('music-shield-active');
+            if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
+          }
         },
         onError:({data})=>{
           if(epoch!==this.epoch)return;
@@ -844,6 +1110,9 @@ class TerminalCompanions{
     audio.preload='metadata';
     this.updateTrack(url,name||new URL(url).pathname.split('/').pop()||'Audio','',null,0,false);
     this.musicNotice.textContent='';
+    this.musicMute.hidden=false;
+    this.musicMute.disabled=false;
+    this.updateMuteButton(false);
     audio.addEventListener('loadedmetadata',()=>{
       if(epoch!==this.epoch)return;
       this.duration=audio.duration;
@@ -863,7 +1132,12 @@ class TerminalCompanions{
     if(name)audio.play().catch(()=>{if(epoch===this.epoch)this.musicNotice.textContent=ui('Press Play to start the local file.');});
   }
 
-  setCommands(play,skip=false){for(const b of this.panels.music.querySelectorAll('[data-command]'))b.disabled=!(b.dataset.command==='toggle'?play:skip);}
+  setCommands(play,skip=false){
+    for(const b of this.panels.music.querySelectorAll('[data-command]')){
+      const cmd=b.dataset.command;
+      b.disabled=!(cmd==='toggle'||cmd==='rewind'||cmd==='forward'?play:skip);
+    }
+  }
   useSpotifyFrame(link,epoch){
     if(epoch!==this.epoch||link?.provider!=='spotify'||this.spotifyFrameOnly)return;
     clearTimeout(this.playerReadyTimer);this.spotifyFrameOnly=true;this.spotify?.destroy?.();this.spotify=null;this.setPlaying(false);this.setCommands(false);
@@ -886,9 +1160,11 @@ class TerminalCompanions{
   setPlaying(playing,canPause=playing){
     this.playing=playing;
     this.canPause=canPause;
+    this.panels.music.classList.toggle('music-playing',playing);
     this.disc.classList.toggle('playing',playing);
-    this.musicToggle.textContent=canPause?'Ⅱ':'▶';
+    this.musicToggle.innerHTML=canPause?MUSIC_ICONS.pause:MUSIC_ICONS.play;
     this.musicToggle.setAttribute('aria-label',ui(canPause?'Pause':'Play'));
+    document.getElementById('edge-music')?.classList.toggle('music-live',playing);
   }
   formatTime(value){if(!Number.isFinite(value)||value<=0)return '—';return Math.floor(value/60)+':'+String(Math.floor(value%60)).padStart(2,'0');}
   updateMusic(){
@@ -903,12 +1179,44 @@ class TerminalCompanions{
     const seekable=Number.isFinite(this.duration)&&this.duration>0&&!!(this.audio||this.widget||this.spotify||this.youtube||this.link?.provider==='tiktok');
     this.seek.disabled=!seekable;
     this.seek.max=seekable?this.duration:1;
-    if(!this.seek.matches(':active'))this.seek.value=seekable?this.elapsed:0;
+    if(!(this.seek.dragging||this.seek.matches?.(':active')))this.seek.value=seekable?this.elapsed:0;
+    const pct=seekable?Math.min(100,Math.max(0,(Number(this.seek.value)/this.duration)*100)):0;
+    this.seek.style?.setProperty?.('--seek-pct',pct.toFixed(2)+'%');
+    if(this.track){
+      this.track.setAttribute('aria-disabled',String(!seekable));
+      this.track.setAttribute('aria-valuemax',String(Math.round(seekable?this.duration:1)));
+      this.track.setAttribute('aria-valuenow',String(Math.round(this.seek.value||0)));
+      const w=pct.toFixed(2)+'%';
+      this.trackFill.style.width=w;
+      this.trackDot.style.left=w;
+      let bufPct=pct;
+      if(seekable&&typeof this.youtube?.getVideoLoadedFraction==='function'){
+        bufPct=Math.max(pct,Math.min(100,(this.youtube.getVideoLoadedFraction()||0)*100));
+      }else if(seekable&&this.audio?.buffered?.length){
+        try{bufPct=Math.max(pct,Math.min(100,(this.audio.buffered.end(this.audio.buffered.length-1)/this.duration)*100));}catch{}
+      }
+      this.trackBuf.style.width=bufPct.toFixed(2)+'%';
+    }
+  }
+  seekToSeconds(seconds){
+    if(!Number.isFinite(seconds))return;
+    const clamped=this.duration>0?Math.max(0,Math.min(this.duration,seconds)):Math.max(0,seconds);
+    if(this.audio)this.audio.currentTime=clamped;
+    else if(this.widget)this.widget.seekTo(clamped*1000);
+    else if(this.spotify)this.spotify.seek(clamped);
+    else if(this.youtube)this.youtube.seekTo?.(clamped,true);
+    else if(this.link?.provider==='tiktok')this.sendTikTok('seekTo',clamped);
+    this.elapsed=clamped;
+    this.updateMusic();
   }
   command(action){
     if(!this.link)return;
+    if(action==='rewind'||action==='forward'){
+      const base=typeof this.youtube?.getCurrentTime==='function'?this.youtube.getCurrentTime():this.audio?this.audio.currentTime:this.elapsed||0;
+      this.seekToSeconds(base+(action==='forward'?10:-10));
+      return;
+    }
     const pause=action==='pause'||(action==='toggle'&&this.canPause);
-    if(action==='toggle'&&!pause&&this.link.provider==='youtube')this.setVideoHidden(false);
     if(this.audio){
       if(pause)this.audio.pause();
       else if(action==='toggle')this.audio.play().catch(()=>{this.musicNotice.textContent='Could not start playback.';});
@@ -941,4 +1249,4 @@ class TerminalCompanions{
     this.iframe?.contentWindow?.postMessage({'x-tiktok-player':true,type,value},'https://www.tiktok.com');
   }
 }
-if(typeof module!=='undefined')module.exports={TerminalMusicLinks};
+if(typeof module!=='undefined')module.exports={TerminalMusicLinks,TerminalCompanions};

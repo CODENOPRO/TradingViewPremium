@@ -387,7 +387,7 @@ class TerminalFeatures{
     }
     document.body.classList.toggle('icon-labels-only',Workspace.read('terminal_compact_labels_v1',false));pop.appendChild(settings);
     for(const button of document.querySelectorAll('.topbar-left button,.topbar-right button')){
-      if(button.closest('#timeframe-menu')||button.classList.contains('tf-btn')||button.id==='btn-layout'||button.id==='btn-sync'||button.id==='reload-chart-data')continue;
+      if(button.closest('#timeframe-menu')||button.classList.contains('tf-btn')||button.id==='btn-layout'||button.id==='btn-sync'||button.id==='reload-chart-data'||button.id==='live-tz'||button.closest('#clock-timezone-menu')||button.id==='btn-indicator')continue;
       const text=button.textContent.trim(),label=/[a-zA-ZÀ-ỹ]/.test(text)?text:button.getAttribute('aria-label')||button.title||text;if(!label)continue;
       if(!button.querySelector('svg'))button.prepend(this.icon(button.id||(button.classList.contains('toolbar-more')?'more':'')));
       for(const node of [...button.childNodes])if(node.nodeType===3){const span=document.createElement('span');span.textContent=node.textContent;node.replaceWith(span);}
@@ -416,7 +416,7 @@ class TerminalFeatures{
     for(const c of this.charts){c.appearance.countdown=true;c.updateCountdown();}
     window.addEventListener('resize',()=>this.clampFavorites());
   }
-  icon(name){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.classList.add('tt-icon');const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',name==='more'?'M4 12h.1M12 12h.1M20 12h.1':name==='btn-indicator-settings'?'M4 7h16M4 17h16M9 4v6M15 14v6':name?.includes('redo')?'M4 12h16m-6-6 6 6-6 6':'M20 12H4m6-6-6 6 6 6');path.setAttribute('fill','none');path.setAttribute('stroke','currentColor');path.setAttribute('stroke-width',name==='more'?'3':'1.6');path.setAttribute('stroke-linecap','round');svg.appendChild(path);return svg;}
+  icon(name){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.classList.add('tt-icon');const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',name==='more'?'M4 12h.1M12 12h.1M20 12h.1':name==='btn-indicator-settings'?'M4 8h6.8m4.4 0H20M4 16h2.8m4.4 0H20M10.8 8a2.2 2.2 0 1 0 4.4 0 2.2 2.2 0 1 0-4.4 0M6.8 16a2.2 2.2 0 1 0 4.4 0 2.2 2.2 0 1 0-4.4 0':name?.includes('redo')?'M4 12h16m-6-6 6 6-6 6':'M20 12H4m6-6-6 6 6 6');path.setAttribute('fill','none');path.setAttribute('stroke','currentColor');path.setAttribute('stroke-width',name==='more'?'3':'1.6');path.setAttribute('stroke-linecap','round');svg.appendChild(path);return svg;}
   visibleCharts(){return this.charts.slice(0,this.count);}
   layout(count,columns,persist=true,shape=null){
     if(!shape&&count>columns&&count%columns)shape={axis:'row',groups:Array.from({length:Math.ceil(count/columns)},(_,i)=>Math.min(columns,count-i*columns))};

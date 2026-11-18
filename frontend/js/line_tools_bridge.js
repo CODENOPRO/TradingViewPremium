@@ -25,8 +25,8 @@ const LineToolsBridge={
         options.levels=d.levels.map(coeff=>({coeff,color:d.color,opacity:0,distanceFromCoeffEnabled:false,distanceFromCoeff:0}));
       } else {
         if(!(d.riskReward>0)){warnings.push(`${d.id}: R:R không hợp lệ`);continue;}
-        const stop=d.p1.price-(d.p2.price-d.p1.price)/d.riskReward;
-        points.splice(1,0,{timestamp:d.p2.time,price:stop});
+        const stopPoint=d.p3&&Number.isFinite(d.p3.time)&&Number.isFinite(d.p3.price)?{timestamp:d.p3.time,price:d.p3.price}:{timestamp:d.p2.time,price:d.p1.price-(d.p2.price-d.p1.price)/d.riskReward};
+        points.splice(1,0,stopPoint);
         options.showAutoText=true;
         warnings.push(`${d.id}: Position labels/style cần đối chiếu; không liên kết lệnh paper`);
       }

@@ -64,3 +64,11 @@ class DerivedSixHourTests(unittest.TestCase):
   # Last H1 starts at12:00 and ends at12:15 on the corrected trading date.
   result,_=aggregate_six_hour(source,{'timezone':'America/Chicago','session':'1700-1600','sessionCorrections':'1700-1215:20261126'})
   self.assertEqual(len(result),4);self.assertEqual(result[-1]['close'],120)
+ def test_cme_multi_segment_holiday_and_weekday_suffix_sessions(self):
+  # Thanksgiving Thu early halt + Black Friday early close expressed via CME F-offset syntax
+  thu=self.bars('2026-11-25T17:00',19)
+  fri=self.bars('2026-11-26T17:00',20)
+  meta={'timezone':'America/Chicago','session':'1700-1600:23456','sessionCorrections':'1700F2-1200F1,1700-1215:20261127'}
+  result,skipped=aggregate_six_hour(thu+fri,meta)
+  self.assertEqual(skipped,0)
+  self.assertEqual(len(result),8)

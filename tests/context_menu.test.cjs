@@ -43,8 +43,10 @@ test('context menu renders TV desktop menu layout, copy/paste, cursor lock, coun
   assert.ok(labels.includes('Reset chart view'));
   assert.ok(labels.includes('Copy price 28,040.00'));
   assert.ok(labels.includes('Paste'));
-  assert.ok(labels.includes('Sell 1 NQ1! @ 28,040.00 limit'));
-  assert.ok(labels.includes('Buy 1 NQ1! @ 28,040.00 stop'));
+  assert.ok(labels.includes('Market Buy'));
+  assert.ok(labels.includes('Market Sell'));
+  assert.ok(labels.includes('Stop Buy @ 28,040.00'));
+  assert.ok(labels.includes('Limit Sell @ 28,040.00'));
   assert.ok(labels.includes('Add order on NQ1! at 28,040.00…'));
   assert.ok(labels.includes('Lock vertical cursor line by time'));
   assert.ok(labels.includes('Table view'));
@@ -95,4 +97,44 @@ test('TemplateMenu manages named chart and drawing templates cleanly',()=>{
   assert.equal(cleared.fillColor,DrawingModel.defaults('box').fillColor);assert.equal(cleared.text,'Keep note');
   TemplateMenu.deleteDrawingTemplate(Workspace,'box','Green Zone');
   assert.equal(TemplateMenu.listDrawingTemplates(Workspace,'box').length,0);
+});
+test('context menu TopstepX quantity submenus place orders and route errors through paperPanel.action',async()=>{
+  const makeNode=(tag)=>{const n={tagName:tag.toUpperCase(),children:[],style:{},dataset:{},attributes:{},hidden:false,disabled:false,textContent:'',className:'',listeners:{},
+    setAttribute(k,v){this.attributes[k]=String(v);},getAttribute(k){return this.attributes[k]??null;},
+    append(...items){for(const x of items)this.appendChild(x);},appendChild(x){this.children.push(x);return x;},replaceChildren(...items){this.children=[];this.append(...items);},
+    addEventListener(type,fn){(this.listeners[type]||=[]).push(fn);},dispatchEvent(e){for(const fn of this.listeners[e.type]||[])fn(e);},
+    remove(){},focus(){},contains(t){return t===this||this.children.some(c=>c.contains?.(t));},
+    getBoundingClientRect(){return {left:10,top:10,right:260,bottom:320,width:250,height:310};},
+    querySelectorAll(sel){const all=[];const walk=el=>{for(const c of el.children||[]){if(!sel||(sel.includes('menuitem')&&c.attributes?.role==='menuitem'))all.push(c);walk(c);}};walk(this);return all;},
+    querySelector(sel){return this.querySelectorAll(sel)[0]||null;},closest(){return null;}};return n;};
+  const fakeDoc={body:makeNode('body'),createElement:tag=>makeNode(tag),addEventListener(){},querySelector:()=>null,getElementById:()=>null,activeElement:null};
+  const ctx=vm.createContext({document:fakeDoc,window:{addEventListener:()=>{},innerWidth:1280,innerHeight:720},setTimeout,clearTimeout,CustomEvent:class{constructor(t,o){this.type=t;this.detail=o?.detail;}},DrawingModel,TemplateMenu,Workspace:{read:(_,d)=>d,write:()=>true},innerWidth:1280,innerHeight:720});
+  vm.runInContext(fs.readFileSync('frontend/js/chart_context_menu.js','utf8')+';this.Menu=ChartContextMenu;',ctx);
+  const targetChart={symbol:'NQ1!',plotHeight:300,tfSeconds:60,bars:[{time:60,close:27890}],drawings:[],runner:{entries:[]},metadata:{tickSize:.25},appearance:{precision:'Default'},container:{clientWidth:700,addEventListener:()=>{}},coordinateToTime:x=>60+x,coordinateToPrice:()=>28040};
+  const editor={find:()=>null,clear(){}};
+  const drawing={editor,drawingsLocked:false};
+  const placed=[],toasts=[];
+  const paperPanel={guard(){},render(){},placeFromChart(_c,o){placed.push(o);},
+    action(fn){try{fn();return true;}catch(e){toasts.push(e.message);return false;}}};
+  const menu=new ctx.Menu({charts:[targetChart],drawing,desktop:{open(){}},activate(){},openAlert(){},paperPanel,sync:null,toast:(m,t)=>toasts.push([m,t])});
+  menu.open(targetChart,100,48,100,48);
+  const limitSellTrigger=menu.root.querySelectorAll('button[role="menuitem"]').find(b=>b.children[1]?.textContent==='Limit Sell @ 28,040.00');
+  limitSellTrigger.dispatchEvent(new ctx.CustomEvent('tv-open-submenu'));
+  const subLabels=menu.activeSubmenu.el.querySelectorAll('button[role="menuitem"]').map(b=>b.children[0]?.textContent);
+  assert.deepEqual(subLabels,[1,2,3,4,5,10,15].map(q=>`Limit Sell ${q} @ 28,040.00`));
+  menu.activeSubmenu.el.querySelectorAll('button[role="menuitem"]')[2].onclick();
+  assert.equal(menu.root.hidden,true);
+  assert.equal(placed.length,1);
+  assert.equal(placed[0].qty,3);
+  assert.equal(placed[0].side,'sell');
+  assert.equal(placed[0].type,'limit');
+  assert.equal(placed[0].price,28040);
+
+  paperPanel.placeFromChart=()=>{throw new Error('Tạo/chọn tài khoản demo trước.');};
+  menu.open(targetChart,100,48,100,48);
+  const mktBuyTrigger=menu.root.querySelectorAll('button[role="menuitem"]').find(b=>b.children[1]?.textContent==='Market Buy');
+  mktBuyTrigger.dispatchEvent(new ctx.CustomEvent('tv-open-submenu'));
+  menu.activeSubmenu.el.querySelectorAll('button[role="menuitem"]')[4].onclick();
+  assert.equal(menu.root.hidden,true);
+  assert.ok(toasts.some(x=>String(x).includes('Tạo/chọn tài khoản demo trước')));
 });

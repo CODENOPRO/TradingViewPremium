@@ -40,15 +40,17 @@ test('native HTF history only changes on its own feed, never from partial minute
   assert.equal(engine.getBarsForTimeframe('5m')[0].volume,105);
 });
 
-test('paper margin rejects oversized trades and persists account equity after stop', () => {
+test('paper allows large qty without margin limits and persists account equity after stop', () => {
   let persisted;
   const paper = new PaperTrading(undefined, value => persisted = JSON.parse(JSON.stringify(value)));
-  paper.create('Test', 1000, 10);
+  paper.create('Test', 1000, 0);
   paper.tick('NQ1!', 100);
   const meta = { pointValue: 20 };
-  assert.throws(() => paper.place({ symbol: 'NQ1!', side: 'buy', type: 'market', qty: 6 }, meta), /margin/);
+  paper.place({ symbol: 'NQ1!', side: 'buy', type: 'market', qty: 6 }, meta);
+  assert.equal(paper.account.positions[0].qty, 6);
+  assert.equal(paper.usedMargin(), 0);
+  paper.place({ symbol: 'NQ1!', side: 'sell', type: 'market', qty: 6 }, meta);
   paper.place({ symbol: 'NQ1!', side: 'buy', type: 'market', qty: 1, sl: 99, tp: 102 }, meta);
-  assert.equal(paper.usedMargin(), 200);
   paper.tick('NQ1!', 99);
   assert.equal(paper.account.balance, 980);
   assert.equal(paper.account.positions.length, 0);

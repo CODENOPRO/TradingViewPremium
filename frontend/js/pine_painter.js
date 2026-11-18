@@ -3,9 +3,10 @@ const PinePainter={
   draw(ctx,chart,descriptor,width,height){
     const x=time=>chart.chart.timeScale().logicalToCoordinate(DrawingModel.logicalIndex(chart,time)),y=value=>chart.series.priceToCoordinate(value);
     const spacing=time=>{const index=DrawingModel.logicalIndex(chart,time);if(index===null)return 8;const scale=chart.chart.timeScale(),a=scale.logicalToCoordinate(index),b=scale.logicalToCoordinate(index+1);return a===null||b===null?8:Math.abs(b-a);};
-    ctx.save();ctx.beginPath();ctx.rect(0,24,Math.max(0,width-65),Math.max(0,height-24));ctx.clip();
+    const top=descriptor.topInset??(descriptor.series?.length||descriptor.min!==undefined?24:0);
+    ctx.save();ctx.beginPath();ctx.rect(0,top,Math.max(0,width-65),Math.max(0,height-top));ctx.clip();
     for(const paint of descriptor.paints||[]){
-      if(paint.type==='background')for(const point of paint.data){const at=x(point.time),step=spacing(point.time);if(at!==null&&at+step>=0&&at-step<=width-65){ctx.fillStyle=point.color;ctx.fillRect(at-step/2,24,step,height-24);}}
+      if(paint.type==='background')for(const point of paint.data){const at=x(point.time),step=spacing(point.time);if(at!==null&&at+step>=0&&at-step<=width-65){ctx.fillStyle=point.color;ctx.fillRect(at-step/2,top,step,height-top);}}
       else if(paint.type==='fill'){
         const bottom=new Map(paint.bottom.map(p=>[p.time,p.value]));
         for(let i=1;i<paint.top.length;i++){const a=paint.top[i-1],b=paint.top[i],lowA=bottom.get(a.time),lowB=bottom.get(b.time);if(![a.value,b.value,lowA,lowB].every(Number.isFinite))continue;

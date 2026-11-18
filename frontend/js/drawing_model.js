@@ -24,7 +24,7 @@ const DrawingModel = (() => {
   }
   function visible(value, timeframe) {
     if(value.hidden)return false;
-    const entry = timeframe === 'D' ? ['days',1] : timeframe === 'W' ? ['weeks',1] : timeframe.endsWith('h') ? ['hours',Number(timeframe.slice(0,-1))] : timeframe.endsWith('m') ? ['minutes',Number(timeframe.slice(0,-1))] : null;
+    const entry = timeframe === 'D' ? ['days',1] : timeframe === 'W' ? ['weeks',1] : timeframe.endsWith('M') ? ['months',Number(timeframe.slice(0,-1))] : timeframe.endsWith('h') ? ['hours',Number(timeframe.slice(0,-1))] : timeframe.endsWith('m') ? ['minutes',Number(timeframe.slice(0,-1))] : null;
     if (!entry) return true;
     const rule = value.visibility?.[entry[0]];
     return !rule || rule.enabled !== false && entry[1] >= rule.min && entry[1] <= rule.max;
@@ -123,7 +123,9 @@ const DrawingModel = (() => {
   function draw(ctx, chart, raw) {
     const d=normalize(raw);if(!visible(d,chart.currentTimeframe))return;
     const g=geometry(chart,d);if(!g)return;
-    const width=chart.container.clientWidth-65;
+    const axisW=chart.chart?.priceScale?.('right')?.width?.()||65;
+    const width=chart.container.clientWidth-axisW;
+    const plotBottom=(chart.plotHeight??chart.container.clientHeight)-26;
     let {left,right,top,bottom}=g;
     if(d.extend === 'left' || d.extend === 'both') left=0;
     if(d.extend === 'right' || d.extend === 'both') right=width;
@@ -135,7 +137,7 @@ const DrawingModel = (() => {
       points.forEach((p,i)=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)){if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);}});ctx.stroke();
     } else if(d.type === 'line') {
       if(d.axis==='vertical') {
-        line(g.a.x,0,g.a.x,(chart.plotHeight??chart.container.clientHeight)-26);ctx.restore();return;
+        line(g.a.x,0,g.a.x,plotBottom);ctx.restore();return;
       }
       let a={...(g.a.x <= g.b.x ? g.a : g.b)},b={...(g.a.x <= g.b.x ? g.b : g.a)};
       if (Math.abs(b.x-a.x) >= 1e-6) {
@@ -144,7 +146,128 @@ const DrawingModel = (() => {
         if(d.extend === 'right' || d.extend === 'both'){const x=Math.max(g.a.x,g.b.x);const y=g.a.x>=g.b.x?g.a.y:g.b.y;b={x:width,y:y+(width-x)*slope};}
       } else if (d.extend === 'both') {
         a={x:a.x,y:0};
-        b={x:a.x,y:(chart.plotHeight??chart.container.clientHeight)-26};
+        b={x:a.x,y:plotBottom};
+      }
+      if (d.text && d.textStyle?.inlineOnLine) {
+        const style=d.textStyle,family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
+        const dx=b.x-a.x,dy=b.y-a.y,segLen=Math.hypot(dx,dy),pos=style.inlinePos||'center';
+        const fontStr=sz=>`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;
+        let baseSz=style.size||11;
+        if(d._qtTrueOpen){
+          if(!d._qtTrActive&&segLen<34){line(a.x,a.y,b.x,b.y);ctx.restore();return;}
+          if(d._qtTier===0)baseSz=Math.min(baseSz,9.5);
+          else if(d._qtTier===1)baseSz=Math.min(baseSz,10);
+        }
+        ctx.font=fontStr(baseSz);
+        let tw=ctx.measureText(d.text).width,padX=4;
+        let tx=(a.x+b.x)/2,ty=(a.y+b.y)/2,angle=segLen>1e-6?Math.atan2(dy,dx):0;
+        if (Math.abs(dy) < 1e-3 && (pos === 'left' || pos === 'right' || d._qtTrueOpen)) {
+          if(pos==='left'){
+            const startX=a.x<6&&b.x>tw+18?6:a.x;
+            tx=startX+tw/2;
+          }else if(pos==='right'){
+            const endX=b.x>width-6&&a.x<width-tw-18?width-6:b.x;
+            tx=endX-tw/2;
+          }else{
+            const visA=Math.max(6,a.x),visB=Math.min(width-6,b.x);
+            tx=visB-visA>tw+12?(visA+visB)/2:(a.x+b.x)/2;
+          }
+          ty=a.y;angle=0;
+          const trBoxes=d._qtTrueOpen&&Array.isArray(chart._qtTrBoxes)?chart._qtTrBoxes:null;
+          if(trBoxes){
+            const halfH=baseSz*0.6+2;
+            const hits=cx=>trBoxes.find(bx=>!(cx+tw/2+3<bx.x1||cx-tw/2-3>bx.x2||ty+halfH<bx.y1||ty-halfH>bx.y2));
+            let hitBox=hits(tx),guard=0;
+            while(hitBox&&guard++<6){
+              const shifted=hitBox.x2+tw/2+8;
+              if(shifted+tw/2<=Math.min(width-4,b.x+(d._qtTrActive?36:2))){tx=shifted;hitBox=hits(tx);}
+              else break;
+            }
+            if(hitBox){
+              if(!d._qtTrActive&&(d._qtTier??0)<=1){line(a.x,a.y,b.x,b.y);ctx.restore();return;}
+              ty+=halfH*2+2;
+              line(a.x,a.y,b.x,b.y);
+              trBoxes.push({x1:tx-tw/2-2,y1:ty-halfH,x2:tx+tw/2+2,y2:ty+halfH});
+              ctx.save();ctx.translate(tx,ty);ctx.setLineDash([]);ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=style.color;ctx.fillText(d.text,0,0);ctx.restore();ctx.restore();return;
+            }
+            trBoxes.push({x1:tx-tw/2-2,y1:ty-halfH,x2:tx+tw/2+2,y2:ty+halfH});
+          }
+          const gL=tx-tw/2-padX,gR=tx+tw/2+padX;
+          if(gL>a.x+2)line(a.x,a.y,Math.min(b.x,gL),a.y);
+          if(b.x>gR+2)line(Math.max(a.x,gR),a.y,b.x,b.y);
+        } else {
+          if (segLen < 10) { line(a.x,a.y,b.x,b.y); ctx.restore(); return; }
+          let maxSz = baseSz;
+          const drawn = Array.isArray(chart._qtSsmtDrawn) ? chart._qtSsmtDrawn : null;
+          if (drawn && drawn.length) {
+            let minDist = Infinity;
+            for (let i = 0; i < drawn.length; i++) {
+              const dist = Math.hypot(tx - drawn[i].mx, ty - drawn[i].my);
+              if (dist < minDist) minDist = dist;
+            }
+            if (minDist < 44 && segLen < 95) maxSz = Math.min(maxSz, Math.max(7.5, minDist * 0.22));
+            else if (minDist < 28) maxSz = Math.min(maxSz, 9.5);
+          }
+          const fitSz = Math.min(maxSz, baseSz * (segLen * 0.52) / Math.max(1, tw));
+          if (fitSz >= 8) {
+            const sz = Math.round(fitSz * 2) / 2;
+            if (sz !== baseSz) { ctx.font = fontStr(sz); tw = ctx.measureText(d.text).width; }
+            const gapRatio = (tw / 2 + padX) / segLen;
+            let chosenT = 0.5;
+            if (drawn && drawn.length) {
+              const candidates = [0.5, 0.35, 0.65, 0.26, 0.74];
+              for (let c = 0; c < candidates.length; c++) {
+                const tCand = candidates[c];
+                if (tCand - gapRatio < 0.08 || tCand + gapRatio > 0.92) continue;
+                const cx = a.x + dx * tCand, cy = a.y + dy * tCand;
+                const clash = drawn.some(p => Math.hypot(cx - p.x, cy - p.y) < (tw + (p.w || tw)) * 0.38 && Math.abs((cx - p.x) * (-dy / segLen) + (cy - p.y) * (dx / segLen)) < sz + 3);
+                if (!clash) { chosenT = tCand; break; }
+              }
+            }
+            tx = a.x + dx * chosenT;
+            ty = a.y + dy * chosenT;
+            const t0 = chosenT - gapRatio, t1 = chosenT + gapRatio;
+            line(a.x, a.y, a.x + dx * t0, a.y + dy * t0);
+            line(a.x + dx * t1, a.y + dy * t1, b.x, b.y);
+          } else {
+            // Short SSMT: keep 100% of the SSMT line unbroken and place compact label cleanly outside the line
+            line(a.x, a.y, b.x, b.y);
+            const sz = segLen < 28 ? 7.5 : 8;
+            ctx.font = fontStr(sz);
+            tw = ctx.measureText(d.text).width;
+            const sign = d._qtDir === 1 ? -1 : 1;
+            const nx = dy / segLen, ny = -dx / segLen;
+            const basePerp = sz * 0.65 + 2.5;
+            const midX = (a.x + b.x) / 2, midY = (a.y + b.y) / 2;
+            const clampPt = (px, py) => {
+              if (width > tw + 12 && plotBottom > 30) {
+                px = Math.max(tw / 2 + 2, Math.min(width - tw / 2 - 2, px));
+                py = Math.max(sz * 0.8, Math.min(plotBottom - sz * 0.8, py));
+              }
+              return [px, py];
+            };
+            [tx, ty] = clampPt(midX + sign * nx * basePerp, midY + sign * ny * basePerp);
+            if (drawn && drawn.length) {
+              const steps = [basePerp, basePerp + sz + 2.5, -basePerp, -(basePerp + sz + 2.5)];
+              let clear = false;
+              for (let sIdx = 0; sIdx < steps.length; sIdx++) {
+                const [cx, cy] = clampPt(midX + sign * nx * steps[sIdx], midY + sign * ny * steps[sIdx]);
+                if (!drawn.some(p => Math.hypot(cx - p.x, cy - p.y) < 18)) {
+                  tx = cx; ty = cy; clear = true; break;
+                }
+              }
+              if (!clear && segLen < 22) { ctx.restore(); return; }
+            }
+          }
+          if (drawn) drawn.push({ x: tx, y: ty, w: tw, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 });
+        }
+        ctx.save();
+        ctx.translate(tx,ty);
+        if(angle)ctx.rotate(angle);
+        ctx.setLineDash([]);ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle=style.color;ctx.fillText(d.text,0,0);
+        ctx.restore();
+        ctx.restore();return;
       }
       line(a.x,a.y,b.x,b.y);
       const items=[],change=d.p2.price-d.p1.price;
@@ -180,15 +303,76 @@ const DrawingModel = (() => {
       ctx.fillText(`${change.toFixed(2)} (${d.p1.price ? (change/d.p1.price*100).toFixed(2) : '—'}%)`,left+5,top+16);
     }
     if(d.text || d.type === 'text') {
-      const style=d.textStyle,lh=style.size*1.28,lines=(d.text||(d.type==='text'?'Text':'')).split('\n');
+      const style=d.textStyle;
+      let effSize=style.size,lines=(d.text||(d.type==='text'?'Text':'')).split('\n');
+      if(d._qtTrueOpenSpan){
+        if(d._qtTier===0)effSize=Math.min(effSize,9.5);
+        else if(d._qtTier===1)effSize=Math.min(effSize,10);
+      }
+      let lh=effSize*1.25;
       const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
-      ctx.setLineDash([]);ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${style.size}px ${family}`;
+      const setFont=sz=>{ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;};
+      ctx.setLineDash([]);setFont(effSize);
       if(d.type==='text'&&style.pine){
         const place=style.placement||'center',padX=6,padY=3;
         const align=place==='label_left'?'left':place==='label_right'?'right':(style.horizontal||'center');
-        const x=place==='label_left'?g.a.x+6:place==='label_right'?g.a.x-6:g.a.x;
+        let x=place==='label_left'?g.a.x+6:place==='label_right'?g.a.x-6:g.a.x;
         const base=place==='above'?'bottom':place==='below'?'top':'middle';
-        const anchorY=place==='above'?g.a.y-6:place==='below'?g.a.y+6:g.a.y;
+        const vGap=d._qtTrueOpenSpan?3:6;
+        let anchorY=place==='above'?g.a.y-vGap:place==='below'?g.a.y+vGap:g.a.y;
+
+        if(d._qtTrueOpenSpan){
+          const spA=point(chart,{time:d._qtTrueOpenSpan.x1,price:d.p1.price});
+          const spB=point(chart,{time:d._qtTrueOpenSpan.x2,price:d.p1.price});
+          const segX1=Number.isFinite(spA.x)?spA.x:x,segX2=Number.isFinite(spB.x)?spB.x:x;
+          const segW=Math.max(0,segX2-segX1);
+          if(!d._qtTrActive&&segW<34){ctx.restore();return;}
+          const maxW=ctx.measureText ? lines.reduce((m,l)=>Math.max(m,ctx.measureText(l).width),0) : d.text.length*effSize*0.6;
+          if(align==='left'&&x<4&&segX2>maxW+10)x=4;
+          if(align==='right'&&x>width-4&&segX1<width-maxW-10)x=width-4;
+          const trBoxes=Array.isArray(chart._qtTrBoxes)?chart._qtTrBoxes:null;
+          if(trBoxes){
+            const boxBounds=(cx,ay)=>{
+              const bx1=align==='left'?cx:align==='right'?cx-maxW:cx-maxW/2;
+              const by1=base==='top'?ay:base==='bottom'?ay-lines.length*lh:ay-lines.length*lh*0.5;
+              return {x1:bx1-2,y1:by1-1,x2:bx1+maxW+2,y2:by1+lines.length*lh+1};
+            };
+            let bnd=boxBounds(x,anchorY);
+            const findHit=b=>trBoxes.find(o=>!(b.x2<o.x1||b.x1>o.x2||b.y2<o.y1||b.y1>o.y2));
+            let hitBox=findHit(bnd),guard=0;
+            while(hitBox&&guard++<6){
+              const nextLeft=hitBox.x2+12;
+              const nextX=align==='left'?nextLeft:align==='right'?nextLeft+maxW:nextLeft+maxW/2;
+              const maxRight=Math.min(width-4,segX2+(d._qtTrActive?44:6));
+              if(nextLeft+maxW<=maxRight){x=nextX;bnd=boxBounds(x,anchorY);hitBox=findHit(bnd);}
+              else break;
+            }
+            if(hitBox){
+              if(!d._qtTrActive&&(d._qtTier??0)<=1){ctx.restore();return;}
+              anchorY+=place==='below'?(lines.length*lh+3):-(lines.length*lh+3);
+              bnd=boxBounds(x,anchorY);
+            }
+            trBoxes.push(bnd);
+          }
+        } else if(d._qtQLabel){
+          let maxW=ctx.measureText ? lines.reduce((m,l)=>Math.max(m,ctx.measureText(l).width),0) : lines[0].length*effSize*0.65;
+          const halfH=lines.length*lh*0.5;
+          if(plotBottom>40&&anchorY+halfH>plotBottom-3)anchorY=plotBottom-halfH-3;
+          const qBoxes=Array.isArray(chart._qtQBoxes)?chart._qtQBoxes:null;
+          if(qBoxes){
+            const collides=w=>qBoxes.some(o=>Math.abs(x-o.x)<(w+o.w)*0.5+5&&Math.abs(anchorY-o.y)<lh*1.4);
+            if(collides(maxW)){
+              if(lines.length>1){
+                lines=[lines[0]];
+                effSize=Math.min(effSize,10);lh=effSize*1.2;setFont(effSize);
+                maxW=ctx.measureText ? ctx.measureText(lines[0]).width : lines[0].length*effSize*0.65;
+              }
+              if(collides(maxW)){ctx.restore();return;}
+            }
+            qBoxes.push({x,y:anchorY,w:maxW});
+          }
+        }
+
         const startY=base==='bottom'?anchorY-(lines.length-1)*lh:base==='middle'?anchorY-(lines.length-1)*lh*.5:anchorY;
         if(d.labelBg){
           const maxW=lines.reduce((m,l)=>Math.max(m,ctx.measureText(l).width),0),boxW=maxW+padX*2,boxH=lines.length*lh+padY*2;

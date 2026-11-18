@@ -200,7 +200,8 @@ test('ColorPicker.mount toggles + custom HSV panel, drags SV/Hue, and Add saves 
     const svBox = panel.querySelector('.tv-cp-sv');
     svBox.dispatchEvent('pointerdown', { button: 0, clientX: 280, clientY: 100 });
     const hueBox = panel.querySelector('.tv-cp-hue');
-    hueBox.dispatchEvent('pointerdown', { button: 0, clientX: 105, clientY: 192 });
+    hueBox.value = '180';
+    hueBox.oninput();
     assert.equal(updates.at(-1).hex, '#00ffff');
 
     // Type #f77c80 and click Add -> saves custom swatch and closes panel

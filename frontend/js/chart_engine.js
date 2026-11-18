@@ -934,7 +934,11 @@ class ChartEngine {
     if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotBottom){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-this.chart.priceScale('right').width(),y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
     }
     ctx.save();
-    ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - 65), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
+    const rightAxisW = this.chart?.priceScale?.('right')?.width?.() || 65;
+    ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - rightAxisW), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
+    this._qtSsmtDrawn = [];
+    this._qtTrBoxes = [];
+    this._qtQBoxes = [];
     const drawings = [...(this.indicatorDrawings || []), ...(this.drawingsHidden ? [] : this.drawings || [])];
     for (const original of drawings) {
       const value = this.drawingPreview && original.id && this.drawingPreview.id === original.id ? this.drawingPreview : original;

@@ -17,7 +17,7 @@ const ChartAppearance = {
       dayOfWeek:false,dateFormat:'dd MMM yy',hourFormat:'24-hours',keepLeft:false,
       backgroundMode:'Solid',bgBottom:colors.bg||'#c2baae',verticalGrid:true,horizontalGrid:true,verticalGridColor:colors.grid||'#a8a194',horizontalGridColor:colors.grid||'#a8a194',verticalGridStyle:1,horizontalGridStyle:1,
       separator:'#655f58',crosshair:'#434651',crosshairStyle:2,watermark:'Hidden',watermarkColor:'#696159',fontSize:10,scaleLines:'#a8a194',navigation:'Visible on mouse over',paneButtons:'Visible on mouse over',topMargin:10,bottomMargin:15,rightMargin:12,
-      oneClick:true,executionSound:false,executionVolume:60,executionTone:'3 Notes Reverb',rejectionOnly:false,reversePosition:false,projectOrder:false,positions:true,pnl:true,positionPnl:true,bracketPnl:false,pnlUnit:'Money',bracketValue:'Money',executionMarks:false,executionLabels:true,snapshotOrders:true,extendedLines:true,alignment:'Right',alertLines:true,alertColor:'#f23645',activeAlerts:true,hideToasts:true,sessionBreaks:false,sessionColor:'#2962ff',sessionStyle:2};
+      oneClick:true,executionSound:false,executionVolume:60,executionTone:'3 Notes Reverb',rejectionOnly:false,reversePosition:false,projectOrder:false,positions:true,pnl:true,positionPnl:true,bracketPnl:true,pnlUnit:'Money',bracketValue:'Money',executionMarks:true,executionLabels:true,snapshotOrders:true,extendedLines:true,alignment:'Right',alertLines:true,alertColor:'#f23645',activeAlerts:true,hideToasts:true,sessionBreaks:false,sessionColor:'#2962ff',sessionStyle:2};
   },
   candleData(engine,bars) {
     const s=engine.appearance;if(!s)return bars;
@@ -66,14 +66,15 @@ const ChartAppearance = {
     engine.updateScaleControls?.();
     if(!before||before.priceRatio!==s.priceRatio||before.priceUnitsPerBar!==s.priceUnitsPerBar)engine.applyPriceRatio?.();
     engine.runner?.renderLegends?.();
+    if(!before||before.bg!==s.bg||before.sessionMode!==s.sessionMode)engine.runner?.schedule?.();
     if(s.lastDayChange||s.prevDayLine!=='Hidden')engine.onPreviousDayDataRequired?.();
     engine.customSeries.forEach(series=>series.applyOptions({lastValueVisible:s.indicatorValues==='Value'}));
     engine.container.style.setProperty('--chart-text',s.textColor);engine.container.style.setProperty('--pane-background',s.bg);engine.container.style.setProperty('--pane-separator',s.separator);engine.container.style.background=s.bg;
     engine.container.dataset.navigation=s.navigation;engine.container.dataset.paneButtons=s.paneButtons;engine.container.dataset.indicatorTitles=String(s.indicatorTitles);
     engine.container.style.setProperty('--legend-background',s.legendBackground?`rgb(41 41 41 / ${s.legendOpacity}%)`:'transparent');
     if(engine.nativeCycle)engine.chart.applyOptions({layout:{panes:{separatorColor:s.separator}}});
-    if (engine === window.currentActiveChart) {
-      document.querySelector('#topbar .tv-trade-pill')?.toggleAttribute('hidden', !s.buySell);
+    if (typeof window !== 'undefined' && engine === window.currentActiveChart && typeof document !== 'undefined') {
+      document.querySelector?.('#topbar .tv-trade-pill')?.toggleAttribute('hidden', !s.buySell);
     }
     engine.updateLegend(engine.bars.at(-1));engine.updateCountdown?.();engine.renderDrawings();engine.renderIndicatorPane();
   },
@@ -104,6 +105,8 @@ const ChartAppearance = {
   }
 };
 
+const chartTimezones = [['America/New_York','New York'],['America/Chicago','Chicago'],['Etc/UTC','UTC'],['Asia/Ho_Chi_Minh','Ho Chi Minh'],['Europe/London','London'],['Asia/Tokyo','Tokyo']];
+
 class ChartSettings {
   constructor(getChart,onCommit,onSoundPreview=()=>{},onThemeSelect=()=>{},onSoundUnlock=()=>{}) {
     this.getChart=getChart;this.onCommit=onCommit;this.onSoundPreview=onSoundPreview;this.onThemeSelect=onThemeSelect;this.onSoundUnlock=onSoundUnlock;this.tab='Symbol';this.modal=document.getElementById('settings-modal');this.dialog=this.modal.querySelector('.chart-settings-dialog');
@@ -129,11 +132,16 @@ class ChartSettings {
       button.title = name;
       button.tabIndex = name === this.tab ? 0 : -1;
       button.setAttribute('aria-selected', String(name === this.tab));
-      button.innerHTML = icon + '<span class="chart-tab-label"><span></span></span>';
-      button.lastElementChild.firstElementChild.textContent = name;
+      button.innerHTML = icon;
+      const labelWrap = document.createElement('span');
+      labelWrap.className = 'chart-tab-label';
+      const labelInner = document.createElement('span');
+      labelInner.textContent = name;
+      labelWrap.appendChild(labelInner);
+      button.appendChild(labelWrap);
       this.nav.appendChild(button);
     }
-    TerminalLanguage.markup(this.nav);
+    if (typeof TerminalLanguage !== 'undefined') TerminalLanguage.markup(this.nav);
     this.nav.addEventListener('click', event => {
       const target = event.target.closest('[role="tab"]');
       if (target) this.select(target.dataset.tab);
@@ -154,7 +162,7 @@ class ChartSettings {
     const updateFade = () => this.updateTabFade();
     this.nav.addEventListener('scroll', updateFade, { passive: true });
     this.nav.addEventListener('transitionend', updateFade);
-    new ResizeObserver(updateFade).observe(this.nav);
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(updateFade).observe(this.nav);
     this.nav.addEventListener('wheel', event => {
       const maxScroll = this.nav.scrollWidth - this.nav.clientWidth;
       if (event.ctrlKey || event.deltaX || !event.deltaY || maxScroll <= 0) return;
@@ -168,7 +176,8 @@ class ChartSettings {
       this.nav.scrollLeft = nextLeft;
     }, { passive: false });
     this.modal.querySelector('#close-settings').onclick=()=>this.cancel();this.modal.querySelector('#cancel-settings').onclick=()=>this.cancel();this.modal.querySelector('#save-settings').onclick=()=>this.commit();
-    this.modal.querySelector('#reset-dock-settings').onclick=()=>{
+    const resetBtn = this.modal.querySelector('#reset-dock-settings');
+    if (resetBtn) resetBtn.onclick=()=>{
       this.draft=ChartAppearance.desktopProfile(null,{},this.chart.symbol);
       this.select(this.tab);
       this.preview();
@@ -385,7 +394,7 @@ class ChartSettings {
       r('Electronic trading hours background','ethBackground','color',{disabled:this.chart.tfSeconds>=86400||!this.chart.metadata?.sessionRegular?.session?'Intraday regular session data is required':null});
       r('Adjust for contract changes','backAdjust','check',{disabled:'The data source is already back-adjusted; raw contracts are not available to switch back to'});
       r('Precision','precision','select',{options:['Default','0','1','2','3','4','5','6','7','8']});
-      r('Timezone','timezone','select',{options:[['America/New_York','New York'],['America/Chicago','Chicago'],['Etc/UTC','UTC'],['Asia/Ho_Chi_Minh','Ho Chi Minh'],['Europe/London','London'],['Asia/Tokyo','Tokyo']]});
+      r('Timezone','timezone','select',{options:chartTimezones});
     }else if(tab==='Status line'){
       g('Instrument');
       r('Logo','logo');
@@ -467,7 +476,6 @@ class ChartSettings {
       r('Execution marks','executionMarks');
       r('Execution labels','executionLabels');
       r('Extended price lines across the entire chart width','extendedLines');
-      r('Order and position alignment','alignment','select',{options:['Left','Right']});
       r('Orders, executions, and positions in chart snapshots','snapshotOrders');
     }else if(tab==='Alerts'){
       g('Chart line visibility');

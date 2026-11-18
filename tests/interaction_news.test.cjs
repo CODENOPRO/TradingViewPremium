@@ -84,6 +84,17 @@ test('matchDay supports possessive Fed Chair and Retail Sales Control Group whil
   assert.deepEqual(News.matchDay([barr],'2026-11-16'),[]);
 });
 
+test('matchDay matches ShowMyTrades Initial Jobless Claims (Medium), Retail Sales ex Autos, and 09:45/10:00 US PMI to 0830',()=>{
+  const claims=event('Initial Jobless Claims','2026-11-19T13:30:00Z',{impact:'Medium'});
+  const retail=event('Retail Sales ex Autos MoM','2026-11-17T13:30:00Z',{impact:'Medium'});
+  const spPmi=event('S&P Global Services PMI','2026-11-23T14:45:00Z',{impact:'High'});
+  const ismPmi=event('ISM Manufacturing PMI','2026-11-02T15:00:00Z',{impact:'High'});
+  assert.deepEqual(News.matchDay([claims],'2026-11-19').map(x=>x.id),['0830']);
+  assert.deepEqual(News.matchDay([retail],'2026-11-17').map(x=>x.id),['0830']);
+  assert.deepEqual(News.matchDay([spPmi],'2026-11-23').map(x=>x.id),['0830']);
+  assert.deepEqual(News.matchDay([ismPmi],'2026-11-02').map(x=>x.id),['0830']);
+});
+
 test('calendar attaches protocol images to matching day headings and omits them in Replay or EUR-only filter',()=>{
   const makeEl=tag=>{
     const el={tagName:tag.toUpperCase(),children:[],dataset:{},attributes:{},className:'',textContent:'',src:'',alt:'',title:'',hidden:false,

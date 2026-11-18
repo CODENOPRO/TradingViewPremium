@@ -60,6 +60,7 @@ class DrawingEditor {
         const c=this.selection.chart;draft.p1.time=DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,draft.p1.time)+2);
         if(draft.points){draft.points=draft.points.map(p=>({...p,time:DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,p.time)+2,true)}));draft.p1={...draft.points[0]};}
         if(draft.p2)draft.p2.time=DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,draft.p2.time)+2);
+        if(draft.p3)draft.p3.time=DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,draft.p3.time)+2);
         c.drawings.push(draft);this.manager.saveDrawings(c);this.select(c,draft);
       } else if(action==='front'||action==='back'){
         const c=this.selection.chart,d=this.drawing;c.drawings=c.drawings.filter(item=>item.id!==d.id);action==='front'?c.drawings.push(d):c.drawings.unshift(d);this.manager.saveDrawings(c);c.renderDrawings();

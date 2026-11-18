@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'request_native',charts:[requirement]}));
   };
   for(let i=4;i<=16;i++){const node=$('box-1').cloneNode(true);node.id=`box-${i}`;node.classList.remove('active');$('chart-grid').appendChild(node);}
-  let features,replay;
+  let features,replay,paperPanel;
   const charts = Array.from({length:16},(_,i)=>['NQ1!','ES1!','YM1!'][i%3]).map((symbol, i) => {
     const Engine=window.TERMINAL_ENGINE_V5?ChartEngineV5:ChartEngine;
     const c = new Engine($(`box-${i + 1}`), symbols.includes(saved.charts?.[i]?.symbol) ? saved.charts[i].symbol : symbol, colors);
@@ -124,12 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     replay?.updateTimeframe();
     document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === active.currentTimeframe));
-    const bar = cache.get(active.symbol)?.['1m']?.at(-1);
-    const text = bar ? bar.close.toLocaleString('en-US', { minimumFractionDigits: 2 }) : '—';
+    const bar = active.replayMode ? active.bars?.at(-1) : cache.get(active.symbol)?.['1m']?.at(-1);
+    const tradePrice = active.replayMode ? (paperPanel?.paper?.quotes?.get(active.symbol)?.price ?? bar?.close) : bar?.close;
+    const text = Number.isFinite(tradePrice) ? tradePrice.toLocaleString('en-US', { minimumFractionDigits: 2 }) : '—';
     $('price-buy').textContent = text; $('price-sell').textContent = text;
     $('trade-spread').textContent = 'LAST';
-    $('btn-trade-buy').classList.toggle('unavailable', !bar || (!active.replayMode&&!live(active.symbol)));
-    $('btn-trade-sell').classList.toggle('unavailable', !bar || (!active.replayMode&&!live(active.symbol)));
+    $('btn-trade-buy').classList.toggle('unavailable', !Number.isFinite(tradePrice) || (!active.replayMode&&!live(active.symbol)));
+    $('btn-trade-sell').classList.toggle('unavailable', !Number.isFinite(tradePrice) || (!active.replayMode&&!live(active.symbol)));
     document.title = `${active.symbol} · Trading Terminal`;
   }
   function activate(chart) {
@@ -138,16 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     charts.forEach(c => c.container.classList.toggle('active', c === chart));
     updateHeader(); saveWorkspace();if(desktop){desktop.hoverBar=null;desktop.signature='';desktop.refresh();}
   }
-  const indicatorSettings=new IndicatorSettings((chart,settings,view,id)=>{
-    const entry=chart.runner.entries.find(e=>e.record.id===id);
-    return !!entry&&chart.runner.update(id,{settings,view});
-  });
-  let indicatorLibrary;
-  const indicatorSettingsButton=document.createElement('button');indicatorSettingsButton.id='btn-indicator-settings';indicatorSettingsButton.className='btn-icon';indicatorSettingsButton.textContent='⚙';indicatorSettingsButton.title=ui('Indicator settings');indicatorSettingsButton.setAttribute('aria-label',ui('Active indicator settings'));
-  $('btn-indicator').after(indicatorSettingsButton);
-  bindDialogToggle(indicatorSettingsButton, indicatorSettings.modal, () => indicatorSettings.open(active), () => indicatorSettings.close());
   for (const chart of charts) {
-    chart.onIndicatorSettings=()=>{activate(chart);indicatorSettings.open(chart);};
     chart.container.tabIndex = 0;
     chart.container.addEventListener('focus', () => {
       if (chart !== active) activate(chart);
@@ -163,16 +155,18 @@ document.addEventListener('DOMContentLoaded', () => {
     chart.onPreviousDayDataRequired=()=>{
       if(!cache.get(chart.symbol)?.D?.length)requestNative({symbol:chart.symbol,timeframe:'D'});
     };
-    chart.runner = new IndicatorCollection(chart, options => ({
-      ...(options?.markets?{markets:replay?.running?replay.markets(cache):Object.fromEntries(cache)}:{}),
-      ...(options?.viewport?{viewport:chart.chart.timeScale().getVisibleRange()}:{}),
-    }), (message,instanceId) => {
-    chart.indicatorStatus = message; indicatorLibrary?.report(message,chart,instanceId);
-    });
-    chart.onDataChange = () => chart.runner.schedule();
-    chart.chart.timeScale().subscribeVisibleLogicalRangeChange(() => { saveWorkspace(); chart.runner.schedule({viewport:true}); });
-    chart.onIndicatorEdit=id=>{activate(chart);indicatorLibrary.open(chart,id);};
+    chart.chart.timeScale().subscribeVisibleLogicalRangeChange(() => { saveWorkspace(); });
   }
+  const qtMode = new QTMode({
+    charts,
+    getActive: () => active,
+    getMarkets: () => replay?.running ? replay.markets(cache) : cache,
+    isReplay: () => !!replay?.running,
+    requestNative,
+    toast
+  });
+  window.qtMode = qtMode;
+  qtMode.mountTopbar($('btn-indicator'));
   activate(active);
   const changeTimeframe=tf=>{
     if(tf==='12h')return toast('Nguồn TradingView hiện chặn custom interval 12h; các chart khác vẫn cập nhật.','alert');
@@ -250,9 +244,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $('timeframe-input-form').onsubmit = event => {
     event.preventDefault();
-    const match = /^(\d+)\s*([mhdw]?)$/i.exec(timeframeInput.value.trim());
-    const amount = Number(match?.[1]);
-    const unit = match?.[2] || '';
+    const rawTf = timeframeInput.value.trim();
+    const match = /^(?:(\d+)\s*([mhdw]?)|([dw]))$/i.exec(rawTf);
+    const amount = match?.[3] ? 1 : Number(match?.[1]);
+    const unit = match?.[3] || match?.[2] || '';
     const suffix = unit === 'M' ? 'M' : unit.toLowerCase();
     const tf = !match ? '' : /^[dw]$/.test(suffix)
       ? (amount === 1 ? suffix.toUpperCase() : amount + suffix.toUpperCase())
@@ -268,7 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const layoutPopover = $('layout-popover');
   const layoutButton = $('btn-layout');
   function positionLayoutPopover() {
-    const anchor = layoutButton.getBoundingClientRect();
+    const rawAnchor = layoutButton.getBoundingClientRect();
+    const anchor = rawAnchor.width ? rawAnchor : (document.querySelector('.toolbar-more')?.getBoundingClientRect() || rawAnchor);
     const width = layoutPopover.offsetWidth;
     const left = Math.max(8, Math.min(anchor.right - width, innerWidth - width - 8));
     layoutPopover.style.left = left + 'px';
@@ -358,9 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal($('symbol-modal')); updateHeader(); saveWorkspace();
   }));
 
-  indicatorLibrary=new IndicatorLibrary({getChart:()=>active,openSettings:(chart,id)=>{chart.runner.select(id);indicatorSettings.open(chart);},onChange:()=>{updateHeader();if(desktop){desktop.signature='';desktop.refresh();}}});
-  indicatorLibrary.migrate(charts);
-  bindDialogToggle($('btn-indicator'), indicatorLibrary.modal, () => indicatorLibrary.open());
+  // QT Mode replaces generic IndicatorLibrary (keep #indicator-modal hidden for PaperPanel observer)
 
   function replayNext(){replay?.step(1);}
 
@@ -371,9 +365,37 @@ document.addEventListener('DOMContentLoaded', () => {
   Workspace.write('terminal_alerts_v1',alerts);
   const previousPrices = new Map();let alertEdit=null;
   function openAlert(chart,price,id=null){
-    activate(chart);const existing=alerts.find(a=>a.id===id);alertEdit={id:existing?.id,symbol:existing?.symbol||chart.symbol,chart,tick:cache.get(existing?.symbol||chart.symbol)?.metadata?.tickSize||chart.metadata.tickSize||.01};
-    $('alert-sym-label').textContent=alertEdit.symbol;$('alert-price-input').value=existing?.price??(Number.isFinite(price)?price:(cache.get(chart.symbol)?.['1m']?.at(-1)?.close??''));
+    activate(chart);const existing=alerts.find(a=>a.id===id);
+    const sym=existing?.symbol||chart.symbol;
+    const lastPx=cache.get(sym)?.['1m']?.at(-1)?.close ?? chart.bars?.at(-1)?.close;
+    const tick=cache.get(sym)?.metadata?.tickSize||chart.metadata.tickSize||.01;
+    alertEdit={id:existing?.id,symbol:sym,chart,tick,lastPx};
+    $('alert-sym-label').textContent=Number.isFinite(lastPx) ? `${sym} · ${lastPx.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}` : sym;
+    $('alert-price-input').value=existing?.price??(Number.isFinite(price)?price:(lastPx??''));
     $('alert-price-input').step=alertEdit.tick;$('alert-condition').value=existing?.condition||'cross';
+    let quickWrap=$('alert-quick-steps');
+    if(!quickWrap){
+      quickWrap=document.createElement('div');
+      quickWrap.id='alert-quick-steps';
+      quickWrap.className='alert-quick-steps';
+      for(const delta of [-50,-20,-10,0,10,20,50]){
+        const chip=document.createElement('button');
+        chip.type='button';
+        chip.className='alert-step-chip'+(delta===0?' is-now':'');
+        chip.textContent=delta===0?ui('Giá hiện tại'):(delta>0?`+${delta}`:String(delta));
+        chip.onclick=()=>{
+          const base=delta===0?(alertEdit?.lastPx??Number($('alert-price-input').value)):(Number($('alert-price-input').value)||alertEdit?.lastPx||0);
+          if(!Number.isFinite(base))return;
+          $('alert-price-input').value=AlertPrice.round(delta===0?base:base+delta,alertEdit?.tick||.01);
+          $('alert-price-input').focus();
+        };
+        quickWrap.appendChild(chip);
+      }
+      $('alert-price-input').closest('.setting-row')?.after(quickWrap);
+      $('alert-price-input').addEventListener('keydown',ev=>{
+        if(ev.key==='Enter'){ev.preventDefault();$('btn-save-alert').click();}
+      });
+    }
     $('btn-save-alert').textContent=ui(existing?'Lưu cảnh báo':'Đặt Cảnh Báo');$('btn-delete-alert').hidden=!existing;$('alert-modal-title').textContent=ui(existing?'Chỉnh cảnh báo giá':'Tạo cảnh báo giá');$('alert-rearm-row').hidden=!existing?.triggered;$('alert-rearm').checked=false;showModal('alert-modal');$('alert-price-input').focus();
   }
   function saveAlerts(next){if(!Workspace.write('terminal_alerts_v1',next))return false;alerts=next;refreshAlertLines();return true;}
@@ -406,13 +428,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Local accounts retain the existing storage key and legacy positions.
   const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }), state => Workspace.write('terminal_paper_v1', state));
-  const paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast});
+  paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast});
   function renderPaper(){paperPanel.render();}
-  $('create-account').addEventListener('click',()=>paperPanel.action(()=>{paperPanel.paper.create($('account-name').value,Number($('account-balance').value),Number($('account-margin').value));closeModal($('account-modal'));}));
-  $('btn-trade-buy').addEventListener('click',()=>paperPanel.submit('buy'));
-  $('btn-trade-sell').addEventListener('click',()=>paperPanel.submit('sell'));
+  $('create-account').addEventListener('click',()=>paperPanel.action(()=>{paperPanel.paper.create($('account-name').value,Number($('account-balance').value),Number($('account-margin')?.value||0));closeModal($('account-modal'));}));
+  $('btn-trade-buy').addEventListener('click',()=>paperPanel.quickMarket('buy'));
+  $('btn-trade-sell').addEventListener('click',()=>paperPanel.quickMarket('sell'));
 
-  function toggleIndicator(chart){chart.runner.toggle();}
+  function toggleIndicator(chart){void toggleQtMode(chart);}
   charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
 
   // Settings and scale controls.
@@ -424,7 +446,9 @@ document.addEventListener('DOMContentLoaded', () => {
       profile.buySell = true;
     }
     if (profile.desktopVersion < 3 && profile.fontSize === 12) profile.fontSize = 10;
-    profile.desktopVersion = 3;
+    if (profile.desktopVersion < 4) profile.bracketPnl = true;
+    if (profile.desktopVersion < 5) { profile.executionMarks = true; profile.executionLabels = true; profile.alignment = 'Right'; }
+    profile.desktopVersion = 5;
     appearanceStore[chart.id] = profile;
     ChartAppearance.apply(chart, profile);
   }
@@ -437,7 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const targets = applyAll ? charts : [chart];
     const next = {...Workspace.read('terminal_chart_settings_v1', {})};
     for (const target of targets) {
-      next[target.id] = structuredClone({ ...appearance, desktopVersion: 3 });
+      next[target.id] = structuredClone({ ...appearance, desktopVersion: 5 });
     }
     if (!Workspace.write('terminal_chart_settings_v1', next)) return false;
     Object.assign(appearanceStore, next);
@@ -448,7 +472,39 @@ document.addEventListener('DOMContentLoaded', () => {
   },settings=>paperPanel.previewExecution(settings),theme=>setDockTheme(theme),settings=>paperPanel.unlockExecutionAudio(settings));
   bindDialogToggle($('btn-settings'), chartSettings.modal, () => chartSettings.open(), () => chartSettings.cancel());
   charts.forEach(c=>c.onChartSettings=()=>{activate(c);chartSettings.open();});
-  desktop=new DesktopShell({charts,getActive:()=>active,getMarkets:()=>cache,getAlerts:()=>alerts,drawing,onIndicatorToggle:toggleIndicator,onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),onAlertEdit:id=>{const a=alerts.find(a=>a.id===id);if(a)openAlert(charts.find(c=>c.symbol===a.symbol)||active,undefined,id);},onAlertRemove:index=>saveAlerts(alerts.filter((_,i)=>i!==index))});
+  desktop=new DesktopShell({
+    charts,
+    getActive:()=>active,
+    getMarkets:()=>cache,
+    getAlerts:()=>alerts,
+    drawing,
+    onIndicatorToggle:toggleIndicator,
+    onSymbol:symbol=>document.querySelector(`.symbol-item[data-sym="${symbol}"]`)?.click(),
+    onAlertEdit:id=>{const a=alerts.find(a=>a.id===id);if(a)openAlert(charts.find(c=>c.symbol===a.symbol)||active,undefined,id);},
+    onAlertRemove:idOrIdx=>{
+      const next=typeof idOrIdx==='string'?alerts.filter(a=>a.id!==idOrIdx):alerts.filter((_,i)=>i!==idOrIdx);
+      saveAlerts(next);
+    },
+    onAlertCreate:(symbol,rawPrice,condition='cross')=>{
+      const sym=symbols.includes(symbol)?symbol:active.symbol;
+      const num=Number(rawPrice);
+      if(!Number.isFinite(num)||num<=0){toast('Nhập giá hợp lệ','alert');return false;}
+      const tick=cache.get(sym)?.metadata?.tickSize||active.metadata.tickSize||.01;
+      const val=AlertPrice.round(num,tick);
+      if(saveAlerts([...alerts,{id:crypto.randomUUID(),symbol:sym,price:val,condition,triggered:false}])){
+        toast(`Đã đặt cảnh báo ${sym} @ ${val.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}`);
+        return true;
+      }
+      return false;
+    },
+    onAlertRearm:id=>{
+      saveAlerts(alerts.map(a=>a.id===id?{...a,triggered:false}:a));
+      toast('Đã bật lại cảnh báo giá');
+    },
+    onAlertClearTriggered:()=>{
+      saveAlerts(alerts.filter(a=>!a.triggered));
+    }
+  });
   const themeButton = $('dock-theme');
   const themeKey = 'terminal_dock_theme_v1';
   function setDockTheme(theme,persist=true) {
@@ -557,7 +613,6 @@ document.addEventListener('DOMContentLoaded', () => {
   installDockMotion(dock, '.tool-btn');
   const rightDock = $('right-sidebar');
   for (const button of rightDock.querySelectorAll('button[title]')) button.removeAttribute('title');
-  installDockMotion(rightDock, ':scope > button, .edge-handle', true);
 
   for (const [toolbar, label] of [[dock, 'Keep drawing tools open'], [rightDock, 'Keep chart panels open']]) {
     const storageKey = 'terminal_dock_pinned_' + toolbar.id;
@@ -588,11 +643,12 @@ document.addEventListener('DOMContentLoaded', () => {
     [ui('Đổi mã'), () => $('btn-symbol-search').click()],
     [ui('Cài đặt · Chart Settings'), () => chartSettings.open()],
     ['Đổi giao diện sáng tối', toggleDockTheme],
-    ...[['Theo dõi','watch'],['Cảnh báo','alerts'],['Script','editor']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
+    ...[['Theo dõi','watch'],['Cảnh báo','alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
     [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
     ['Lịch', () => $('edge-calendar')?.click()],
     ['Nhạc', () => $('edge-music')?.click()],
-    ['Indicators', () => $('btn-indicator').click()],
+    ['QT Mode · Bật / Tắt', () => $('btn-indicator').click()],
+    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode.openSettings(active)],
     ['Layout', () => $('btn-layout').click()],
     ['Alerts', () => $('btn-alert').click()],
     ['Replay', () => $('btn-replay').click()],
@@ -696,29 +752,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const label=$('connection-status-text');
     status.dataset.state=isLoading?'loading':isWaiting?'waiting':sourceError?'disconnected':stale&&inSession?'stale':bridge.state;
     const ringValue = ring.querySelector('.dock-load-value');
-    let fill=status.dataset.state==='connected'?100:isWaiting||status.dataset.state==='connecting'?24:0;
-    let message='Mất kết nối';
-    if(isLoading)message=(TerminalLanguage.language==='vi'?'Nạp ':'Loading ')+loading.timeframe;
-    else if(isWaiting)message='Chờ nguồn…';
-    else if(sourceError)message='Lỗi nguồn';
-    else if(bridge.state==='connecting')message='Đang kết nối…';
-    else if(bridge.state==='connected'){
-      if(!inSession)message='Nghỉ phiên';
-      else if(stale)message='Gián đoạn';
-      else message=active.currentTimeframe==='6h'?'6h · giá đã lưu':'TradingView';
-    }
-    message=ui(message);
+    const fill = status.dataset.state==='connected'?100:isWaiting||status.dataset.state==='connecting'||isLoading?24:0;
+    const message = bridge.state==='connected'&&!sourceError&&!isLoading&&!isWaiting?'Connected':'Connecting';
     if(label.textContent!==message)label.textContent=message;
     if(isLoading){
       const completed=loading.completed?.length||0;
       const total=completed+(loading.remaining?.length||0)+1;
-      fill=Math.max(4,completed/total*100);
-      status.setAttribute('aria-description',`${message} · ${completed}/${total}`);
+      const loadFill=Math.max(4,completed/total*100);
+      status.setAttribute('aria-description',`${loading.timeframe} · ${completed}/${total}`);
+      const dash=`${loadFill} 100`;
+      if(ringValue.getAttribute('stroke-dasharray')!==dash)ringValue.setAttribute('stroke-dasharray',dash);
     }else{
       status.setAttribute('aria-description',sourceError?.error||bridge.message||'');
+      const dash=`${fill} 100`;
+      if(ringValue.getAttribute('stroke-dasharray')!==dash)ringValue.setAttribute('stroke-dasharray',dash);
     }
-    const dash=`${fill} 100`;
-    if(ringValue.getAttribute('stroke-dasharray')!==dash)ringValue.setAttribute('stroke-dasharray',dash);
     charts.forEach(c=>{const source=(bridge.sources||[]).find(s=>s.symbol===c.symbol&&s.timeframe===c.currentTimeframe);c.marketLive=bridge.state==='connected'&&source&&!source.error&&now-source.updated<8;const closed=!TerminalTime.activeSession(now,c.metadata);c.sourceBadge.hidden=c.marketLive||(closed&&bridge.state==='connected'&&!source?.error)||c.replayMode;c.sourceBadge.textContent=source?.error?`${c.symbol} · lỗi nguồn`:`${c.symbol} · ${c.bars.length?'dữ liệu đã lưu':'chờ nguồn'}`;c.sourceBadge.title=source?.error||'';if(c.symbolBadge)c.symbolBadge.title=c.marketLive?`${c.symbol} · Live`:closed?'Nghỉ phiên':c.sourceBadge.textContent;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));if(!c.container.hidden)c.updateCountdown?.();});
     updateHeader();desktop?.refresh();
   }
@@ -729,6 +777,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if(!preloadRequested&&socket?.readyState===WebSocket.OPEN){
         socket.send(JSON.stringify({action:'startup_native'}));
         preloadRequested=true;
+      }
+      if(!replay?.running){
+        let quoteUpdated=false,needsTicketRefresh=false;
+        for(const s of symbols){
+          if(!live(s))continue;
+          const src=bridge.sources?.find(item=>item.symbol===s&&item.timeframe==='1m');
+          const px=Number.isFinite(src?.close)&&src.close>0?src.close:cache.get(s)?.['1m']?.at(-1)?.close;
+          if(!Number.isFinite(px)||px<=0)continue;
+          const prev=paper.quotes.get(s);
+          if(!prev||prev.price!==px){paper.tick(s,px);checkAlerts(s,px);quoteUpdated=true;}
+          else{if(Date.now()-prev.received>3500)needsTicketRefresh=true;paper.quotes.set(s,{price:px,received:Date.now()});}
+        }
+        if(quoteUpdated||needsTicketRefresh)renderPaper(quoteUpdated);
       }
       statusText();
       return;
@@ -746,7 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(replay)replay.marketVersion=(replay.marketVersion||0)+1;
     for (const c of charts.filter(c => c.symbol === symbol)) {
       if(data.metadata&&c.metadata!==data.metadata){c.metadata=data.metadata;c.regularBarsByTf=null;}
-      if(c.container.hidden){if(tf==='1m')c.rawBars=data[tf];else c.htfData[tf]=data[tf];continue;}
+      if(c.container.hidden){if(tf!=='1m')c.htfData[tf]=data[tf];continue;}
       if (tf === '1m' && type === 'tick') c.updateBar(message.bar);
       else if (tf === '1m') c.setData(data[tf]);
       else c.setHtfData(tf, data[tf]);
@@ -754,8 +815,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // All indicators can depend on other symbols, even when no chart displays those symbols.
     charts.filter(c => c.symbol !== symbol&&!c.container.hidden).forEach(c => c.runner.schedule());
-    if (tf === '1m' && type === 'tick' && live(symbol)) { paper.tick(symbol, message.bar.close); checkAlerts(symbol, message.bar.close); renderPaper(); }
-    if (tf === '1m' && type === 'history' && message.source === 'live' && live(symbol) && data[tf].length) { paper.quotes.set(symbol, { price: data[tf].at(-1).close, received: Date.now() }); renderPaper(); }
+    const inActiveReplay = !!(replay?.running && charts.some(c => c.replayMode && c.symbol === symbol));
+    if (tf === '1m' && type === 'tick' && live(symbol)) {
+      paper.tick(symbol, message.bar.close);
+      if (!inActiveReplay) checkAlerts(symbol, message.bar.close);
+      if (!replay?.running) renderPaper();
+    }
+    if (tf === '1m' && type === 'history' && message.source === 'live' && live(symbol) && data[tf].length) {
+      paper.quotes.set(symbol, { price: data[tf].at(-1).close, received: Date.now() });
+      if (!replay?.running) renderPaper();
+    }
     replay?.refresh();updateHeader();
   }
   async function connect(refreshSource = false) {
@@ -812,19 +881,117 @@ document.addEventListener('DOMContentLoaded', () => {
   features = new TerminalFeatures({charts,sync,drawing,activate,getActive:()=>active,getReplay:()=>replay,hydrate,saveWorkspace,updateHeader,chartSettings,changeSymbol,subscribe:()=>{
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'subscribe',charts:features.visibleCharts().map(c=>({symbol:c.symbol,timeframe:c.currentTimeframe}))}));
   }});
+  if (desktop && features?.companions) {
+    desktop.companions = features.companions;
+    features.companions.desktop = desktop;
+    desktop.syncRailActive();
+  }
+  document.addEventListener('pointerdown', event => {
+    const hasDesktopOpen = !!desktop?.mode;
+    const hasCompanionOpen = !!features?.companions?.open;
+    if (!hasDesktopOpen && !hasCompanionOpen) return;
+    const target = event.target;
+    if (!target || typeof target.closest !== 'function') return;
+    if (target.closest('#desktop-panel, .companion-panel, #right-sidebar, .edge-panel-dock, .modal, dialog, .protocol-lightbox, .chart-context-menu, .tv-toast')) {
+      return;
+    }
+    if (hasDesktopOpen) desktop.open(null);
+    if (hasCompanionOpen) features.companions.closeDocked();
+  });
   const replayPaper=new ReplayPaper({Paper:PaperTrading,read:()=>Workspace.read('terminal_paper_replay_v1',null),save:state=>Workspace.write('terminal_paper_replay_v1',state)});
   paperPanel.exportReplay=()=>{const blob=new Blob([JSON.stringify(replayPaper.saved,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='paper-replay-sessions.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   let paperReplayClock=null;
   replay = new TerminalReplay({charts,getCharts:()=>features.visibleCharts(),getActive:()=>active,toast,saveWorkspace,onChange:session=>{
     try{paperPanel.replayBlocked=false;if(session.running&&paperReplayClock!=null&&session.clock<paperReplayClock){for(const c of charts)c.paperOverlay?.cancel();paperPanel.reset();paperPanel.closeModal.classList.remove('show');}paperReplayClock=session.running?session.clock:null;if(session.running){replayPaper.seek(session.clock,session.targets.map(c=>({symbol:c.symbol,bars:c.rawBars})));paperPanel.setPaper(replayPaper.paper);}else{replayPaper.leave();paperPanel.setPaper(paper);}renderPaper();updateHeader();}catch(error){paperPanel.replayBlocked=true;session.pause();paperPanel.render();toast(error.message,'alert');}
   }});
-  $('reload-chart-data').addEventListener('click', () => {
+  function confirmReloadChartData() {
+    return new Promise(resolve => {
+      if (typeof HTMLDialogElement !== 'function' || !document.createElement('dialog').showModal) {
+        resolve(typeof confirm === 'function' ? confirm('Tải lại toàn bộ dữ liệu biểu đồ từ đầu?') : true);
+        return;
+      }
+      const dialog = document.createElement('dialog');
+      dialog.className = 'paper-order-confirmation';
+      dialog.setAttribute('aria-label', 'Xác nhận tải lại dữ liệu');
+      const message = document.createElement('p');
+      message.textContent = 'Tải lại toàn bộ dữ liệu biểu đồ từ đầu?';
+      const form = document.createElement('form');
+      form.method = 'dialog';
+      for (const [text, value, cls] of [['Hủy', 'cancel', 'btn-secondary'], ['Tải lại', 'confirm', 'btn-primary']]) {
+        const button = document.createElement('button');
+        button.type = 'submit'; button.value = value; button.textContent = text; button.className = cls;
+        form.append(button);
+      }
+      dialog.append(message, form);
+      document.body.append(dialog);
+      dialog.addEventListener('close', () => {
+        const ok = dialog.returnValue === 'confirm';
+        dialog.remove();
+        resolve(ok);
+      }, { once: true });
+      dialog.showModal();
+    });
+  }
+  $('reload-chart-data').addEventListener('click', async () => {
+    if (!(await confirmReloadChartData())) return;
     retry = 1000;
+    preloadRequested = false;
+    pendingNative.clear();
     bridge = { state: 'connecting', symbols: [] };
     statusText();
     // A new connection requests the cached snapshot before live updates resume.
     void connect(true);
   });
+  const timezoneButton = $('live-tz');
+  const timezoneMenu = $('clock-timezone-menu');
+  const timezoneOptions = $('clock-timezone-options');
+  const timezoneOffsets = new Map();
+  if (timezoneButton && timezoneMenu && timezoneOptions) {
+    for (const [zone, label] of chartTimezones) {
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.dataset.zone = zone;
+      const name = document.createElement('span');
+      name.textContent = ui(label);
+      const offset = document.createElement('span');
+      offset.className = 'clock-timezone-offset';
+      timezoneOffsets.set(zone, offset);
+      option.append(name, offset);
+      option.addEventListener('click', () => {
+        if (!chartSettings.onCommit(active, { ...active.appearance, timezone: zone })) return;
+        timezoneMenu.hidePopover();
+        timezoneButton.focus();
+        updateVisibleChrome();
+      });
+      timezoneOptions.appendChild(option);
+    }
+    function placeTimezoneMenu() {
+      const anchor = $('dock-market-status').getBoundingClientRect();
+      const bar = $('topbar').getBoundingClientRect();
+      const width = Math.min(300, window.innerWidth - 24);
+      const right = Math.min(window.innerWidth - width - 12, Math.max(12, window.innerWidth - anchor.right));
+      timezoneMenu.style.setProperty('--tz-top', Math.ceil(Math.max(anchor.bottom, bar.bottom)) + 12 + 'px');
+      timezoneMenu.style.setProperty('--tz-right', right + 'px');
+    }
+    timezoneMenu.addEventListener('beforetoggle', event => {
+      const opening = event.newState === 'open';
+      timezoneButton.setAttribute('aria-expanded', String(opening));
+      if (!opening) return;
+      placeTimezoneMenu();
+      const activeZone = active.appearance?.timezone || 'America/New_York';
+      const date = replay?.running ? new Date(replay.clock * 1000) : new Date();
+      for (const option of timezoneOptions.children) {
+        const zone = option.dataset.zone;
+        option.setAttribute('aria-pressed', String(zone === activeZone));
+        const parts = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeZoneName: 'longOffset' }).formatToParts(date);
+        const offset = parts.find(part => part.type === 'timeZoneName')?.value || 'GMT';
+        timezoneOffsets.get(zone).textContent = offset === 'GMT' ? 'UTC+00:00' : offset.replace('GMT', 'UTC');
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (timezoneMenu.matches(':popover-open')) placeTimezoneMenu();
+    });
+  }
   refreshAlertLines();connect();
   function updateVisibleChrome(){
     document.documentElement.toggleAttribute('data-page-hidden',document.hidden);
@@ -835,11 +1002,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayTime = new Intl.DateTimeFormat('en-GB', {
       timeZone: zone, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
     }).format(new Date(time));
-    clock.textContent=displayTime;
+    clock.innerHTML=displayTime.slice(0,5)+'<span class="dock-sec">'+displayTime.slice(5)+'</span>';
+    const [hh,mm,ss]=displayTime.split(':').map(Number),face=clock.closest('.dock-clock');
+    if(face){const acc=(k,t)=>{face._a??={};const p=face._a[k]??t,v=p+((t-p+540)%360-180);face._a[k]=v;return v+'deg';};
+      face.style.setProperty('--h',acc('h',hh%12*30+mm/2));face.style.setProperty('--m',acc('m',mm*6+ss/10));face.style.setProperty('--s',acc('s',ss*6));}
+    const tzLabel=$('live-tz');
+    if(tzLabel){try{tzLabel.textContent=new Intl.DateTimeFormat('en-US',{timeZone:zone,timeZoneName:'short'}).formatToParts(new Date(time)).find(p=>p.type==='timeZoneName')?.value||'';}catch{tzLabel.textContent='';}}
     clock.dateTime=displayTime;
     clock.title=zone;
     statusText();
   }
+  updateVisibleChrome();
   setInterval(updateVisibleChrome,1000);
   document.addEventListener('visibilitychange',updateVisibleChrome);
   window.addEventListener('beforeunload', () => {

@@ -25,7 +25,13 @@ class IndicatorRunner {
     this.usesClock=/\btimenow\b/.test(code);
     if (!code.trim()) { this.onStatus('Chưa có indicator'); return; }
     this.onStatus('Đang nạp script…');
-    const worker = new Worker('js/indicator_worker.js');
+    let worker;
+    try {
+      worker = new Worker('js/indicator_worker.js');
+    } catch (error) {
+      this.fail('Trình duyệt chặn Web Worker trên giao thức hiện tại (' + error.message + '). Hãy mở qua http://localhost:3000.');
+      return;
+    }
     this.worker = worker;
     const initBudget=this.runtime==='pine6'?20000:4000;
     this.timeout = setTimeout(() => this.fail(`Script khởi tạo quá ${initBudget/1000} giây; đã dừng, code vẫn được lưu.`), initBudget);

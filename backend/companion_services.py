@@ -2,6 +2,7 @@
 import json
 import math
 from html.parser import HTMLParser
+from http.client import HTTPException
 from pathlib import Path
 import threading
 import time
@@ -97,7 +98,10 @@ class EconomicCalendar:
     @staticmethod
     def _fetch():
         with urlopen(Request(CALENDAR_URL, headers={'Accept': 'application/json'}), timeout=12) as response:
-            payload = json.loads(response.read(2_000_000))
+            raw = response.read(2_000_001)
+        if len(raw) > 2_000_000:
+            raise ValueError('Calendar response exceeds limit')
+        payload = json.loads(raw)
         if not isinstance(payload, dict):
             raise ValueError('Invalid calendar response')
         return payload
@@ -111,11 +115,16 @@ class EconomicCalendar:
                 try:
                     payload = self.fetch()
                     events = normalize_events(payload.get('events'))
-                    generated = datetime.fromisoformat(payload['generated_at'].replace('Z', '+00:00'))
-                    if generated.tzinfo is None:
-                        raise ValueError('Calendar update time has no UTC offset')
+                    gen_raw = payload.get('generated_at')
+                    if isinstance(gen_raw, str) and gen_raw.strip():
+                        generated = datetime.fromisoformat(gen_raw.replace('Z', '+00:00'))
+                        if generated.tzinfo is None:
+                            raise ValueError('Calendar update time has no UTC offset')
+                        updated_ts = generated.timestamp()
+                    else:
+                        updated_ts = now
                     self.events = _merge_events(self.events, events, now)
-                    self.updated = generated.timestamp()
+                    self.updated = updated_ts
                     self.error = None
                     self._save_history()
                 except Exception as exc:
@@ -165,7 +174,7 @@ def resolve_music_share(url, opener=None):
             raise ValueError('Share link must stay on its official provider')
         if _share_key(parsed) not in _SHARE_HOSTS:
             return url
-        if attempt==5:
+        if attempt == 5:
             break
         try:
             with open_request(Request(url), timeout=3):
@@ -178,47 +187,47 @@ def resolve_music_share(url, opener=None):
                 url = urljoin(url, location)
             finally:
                 exc.close()
-        except (TimeoutError, URLError) as exc:
-            raise MusicProviderError('Nhà cung cấp không phản hồi link rút gọn. Thử link đầy đủ.',504) from exc
+        except (TimeoutError, URLError, HTTPException) as exc:
+            raise MusicProviderError('Nhà cung cấp không phản hồi link rút gọn. Thử link đầy đủ.', 504) from exc
     raise ValueError('Paste the full link from the provider')
 
 
-# Only known provider oEmbed endpoints; never fetch a user-supplied host.
-
 class MusicProviderError(Exception):
-    def __init__(self,message,status=502,retry_after=None):
+    def __init__(self, message, status=502, retry_after=None):
         super().__init__(message)
-        self.status=status
-        self.retry_after=retry_after
+        self.status = status
+        self.retry_after = retry_after
 
 
 def canonical_music_url(url):
-    parsed=urlsplit(url)
-    if len(url)>2048 or parsed.scheme!='https' or parsed.username or parsed.password or parsed.port not in (None,443):
+    parsed = urlsplit(url)
+    if len(url) > 2048 or parsed.scheme != 'https' or parsed.username or parsed.password or parsed.port not in (None, 443):
         raise ValueError('Use an official HTTPS provider link')
-    aliases={'m.youtube.com':'www.youtube.com','youtube.com':'www.youtube.com',
-             'm.soundcloud.com':'soundcloud.com','www.soundcloud.com':'soundcloud.com',
-             'm.tiktok.com':'www.tiktok.com','tiktok.com':'www.tiktok.com'}
-    host=aliases.get(parsed.hostname,parsed.hostname)
-    query=parse_qs(parsed.query)
-    path=parsed.path
-    if host=='open.spotify.com':
-        parts=path.strip('/').split('/')
-        if parts and parts[0].startswith('intl-'):parts.pop(0)
-        if parts and parts[0]=='embed':parts.pop(0)
-        path='/'+ '/'.join(parts)
-        query={}
-    elif host in ('www.youtube.com','youtu.be'):
-        query={k:v for k,v in query.items() if k in ('v','list')}
-    elif host=='soundcloud.com':
-        query={k:v for k,v in query.items() if k=='secret_token'}
+    aliases = {'m.youtube.com': 'www.youtube.com', 'youtube.com': 'www.youtube.com',
+               'm.soundcloud.com': 'soundcloud.com', 'www.soundcloud.com': 'soundcloud.com',
+               'm.tiktok.com': 'www.tiktok.com', 'tiktok.com': 'www.tiktok.com'}
+    host = aliases.get(parsed.hostname, parsed.hostname)
+    query = parse_qs(parsed.query)
+    path = parsed.path
+    if host == 'open.spotify.com':
+        parts = path.strip('/').split('/')
+        if parts and parts[0].startswith('intl-'):
+            parts.pop(0)
+        if parts and parts[0] == 'embed':
+            parts.pop(0)
+        path = '/' + '/'.join(parts)
+        query = {}
+    elif host in ('www.youtube.com', 'youtu.be'):
+        query = {k: v for k, v in query.items() if k in ('v', 'list')}
+    elif host == 'soundcloud.com':
+        query = {k: v for k, v in query.items() if k == 'secret_token'}
     else:
-        query={}
-    return urlunsplit(('https',host or '',path,urlencode(query,doseq=True),''))
+        query = {}
+    return urlunsplit(('https', host or '', path, urlencode(query, doseq=True), ''))
 
 
 def metadata_endpoint(url):
-    url=canonical_music_url(url)
+    url = canonical_music_url(url)
     parsed = urlsplit(url)
     if parsed.scheme != 'https' or parsed.username or parsed.password:
         raise ValueError('Use an official HTTPS provider link')
@@ -229,7 +238,12 @@ def metadata_endpoint(url):
                  'www.tiktok.com': 'https://www.tiktok.com/oembed', 'tiktok.com': 'https://www.tiktok.com/oembed'}
     if host not in endpoints or parsed.port not in (None, 443):
         raise ValueError('Unsupported music provider')
-    return endpoints[host] + '?' + urlencode({'url': url, 'format': 'json'})
+    target_url = url
+    if host in ('www.tiktok.com', 'tiktok.com') and parsed.path.startswith('/player/v1/'):
+        vid = parsed.path.rstrip('/').split('/')[-1]
+        if vid.isascii() and vid.isdecimal():
+            target_url = f'https://www.tiktok.com/@_/video/{vid}'
+    return endpoints[host] + '?' + urlencode({'url': target_url, 'format': 'json'})
 
 
 _metadata = {}
@@ -266,40 +280,42 @@ def music_metadata(url, *, fresh_embed=False):
     endpoint = metadata_endpoint(url)
     with _metadata_lock:
         cached = _metadata.get(endpoint)
-        if not fresh_embed and cached and time.time()-cached[0] < 3600:
+        if not fresh_embed and cached and time.time() - cached[0] < 3600:
             return cached[1]
-        failure=_metadata_errors.get(endpoint)
-        if failure and time.time()<failure[0]:
-            raise MusicProviderError(failure[1],failure[2],max(1,int(failure[0]-time.time())))
+        failure = _metadata_errors.get(endpoint)
+        if failure and time.time() < failure[0]:
+            raise MusicProviderError(failure[1], failure[2], max(1, int(failure[0] - time.time())))
     try:
         with urlopen(Request(endpoint, headers={'Accept': 'application/json'}), timeout=8) as response:
-            raw=response.read(300_001)
-        if len(raw)>300_000:
+            raw = response.read(300_001)
+        if len(raw) > 300_000:
             raise MusicProviderError('Metadata nhà cung cấp vượt giới hạn phản hồi.')
         try:
-            value=json.loads(raw)
-        except (ValueError,UnicodeError) as exc:
+            value = json.loads(raw)
+        except (ValueError, UnicodeError) as exc:
             raise MusicProviderError('Nhà cung cấp trả metadata không hợp lệ.') from exc
-        if not isinstance(value,dict) or (not fresh_embed and
-                (not isinstance(value.get('title'),str) or not value['title'].strip())):
+        if not isinstance(value, dict) or not isinstance(value.get('title'), str) or not value['title'].strip():
             raise MusicProviderError('Nhà cung cấp không trả thông tin bài nhạc hợp lệ.')
     except HTTPError as exc:
-        retry=exc.headers.get('Retry-After','') if exc.headers else ''
+        retry = exc.headers.get('Retry-After', '') if exc.headers else ''
         try:
-            wait=max(1,min(3600,int(retry)))
-        except (ValueError,TypeError):
-            try:wait=max(1,min(3600,int(parsedate_to_datetime(retry).timestamp()-time.time())))
-            except (ValueError,TypeError,OverflowError):wait=30
-        message=('Nhà cung cấp giới hạn lượt lấy metadata; thử lại sau.' if exc.code==429 else
-                 'Nhà cung cấp từ chối metadata (HTTP '+str(exc.code)+'). Kiểm tra link và quyền truy cập bài nhạc.')
-        code=429 if exc.code==429 else 502
+            wait = max(1, min(3600, int(retry)))
+        except (ValueError, TypeError):
+            try:
+                wait = max(1, min(3600, int(parsedate_to_datetime(retry).timestamp() - time.time())))
+            except (ValueError, TypeError, OverflowError):
+                wait = 30
+        message = ('Nhà cung cấp giới hạn lượt lấy metadata; thử lại sau.' if exc.code == 429 else
+                   'Nhà cung cấp từ chối metadata (HTTP ' + str(exc.code) + '). Kiểm tra link và quyền truy cập bài nhạc.')
+        code = 429 if exc.code == 429 else 502
         with _metadata_lock:
-            if len(_metadata_errors)>=128:_metadata_errors.clear()
-            _metadata_errors[endpoint]=(time.time()+wait,message,code)
+            if len(_metadata_errors) >= 128:
+                _metadata_errors.clear()
+            _metadata_errors[endpoint] = (time.time() + wait, message, code)
         exc.close()
-        raise MusicProviderError(message,code,wait) from exc
-    except (TimeoutError,URLError) as exc:
-        raise MusicProviderError('Kết nối metadata quá hạn hoặc nhà cung cấp không sẵn sàng.',504) from exc
+        raise MusicProviderError(message, code, wait) from exc
+    except (TimeoutError, URLError, HTTPException) as exc:
+        raise MusicProviderError('Kết nối metadata quá hạn hoặc nhà cung cấp không sẵn sàng.', 504) from exc
     result = {key: str(value.get(key) or '')[:2000] for key in ('title', 'author_name', 'thumbnail_url')}
     if not result['thumbnail_url'].startswith('https://'):
         result['thumbnail_url'] = ''
@@ -307,15 +323,13 @@ def music_metadata(url, *, fresh_embed=False):
         if len(_metadata) > 128:
             _metadata.clear()
         _metadata[endpoint] = (time.time(), result)
-        _metadata_errors.pop(endpoint,None)
+        _metadata_errors.pop(endpoint, None)
     if fresh_embed:
         html = value.get('html')
-        if not isinstance(html, str):
-            raise MusicProviderError('TikTok did not return an embedded player for this post.')
-        parser = _TikTokEmbedParser(post_id)
-        parser.feed(html)
-        if not parser.player_url:
-            raise MusicProviderError('TikTok did not return a valid player URL for this post.')
-        # Do not cache a provider URL that can expire or return provider-supplied HTML.
-        return {**result, 'embed_url': parser.player_url}
+        player_url = None
+        if isinstance(html, str):
+            parser = _TikTokEmbedParser(post_id)
+            parser.feed(html)
+            player_url = parser.player_url
+        return {**result, 'embed_url': player_url}
     return result

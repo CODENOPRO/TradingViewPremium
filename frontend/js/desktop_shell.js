@@ -11,8 +11,12 @@ class DesktopShell {
     paths.chart='M3 4v16h18M7 15l4-5 4 2 5-6';
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name]||paths.objects}"/></svg>`;
   }
-  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onSymbol,onIndicatorToggle,drawing}) {
-    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onSymbol,onIndicatorToggle,drawing});
+  constructor({charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onSymbol,onIndicatorToggle,drawing}) {
+    Object.assign(this,{charts,getActive,getMarkets,getAlerts,onAlertRemove,onAlertEdit,onAlertCreate,onAlertRearm,onAlertClearTriggered,onSymbol,onIndicatorToggle,drawing});
+    this.alertFilter='all';
+    this._alertCond='cross';
+    this._alertDraftSym='';
+    this._alertDraftPrice='';
     const $=id=>document.getElementById(id);
     this.root=document.createElement('aside');this.root.id='desktop-panel';this.root.hidden=true;this.root.setAttribute('aria-label','Chart side panel');
     this.root.innerHTML='<div class="desktop-panel-header"><div class="desktop-panel-tabs" role="tablist"></div><button class="desktop-panel-close" aria-label="Close side panel">×</button></div><div class="desktop-panel-content"></div>';
@@ -20,8 +24,17 @@ class DesktopShell {
     this.root.querySelector('.desktop-panel-close').onclick=()=>this.open(null);
     this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout').focus();}};
     this.rail=document.createElement('nav');this.rail.id='right-sidebar';this.rail.setAttribute('aria-label','Chart panels');
-    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['editor','Script']]){
-      const b=this.button(label,key,()=>{key==='editor'?$('btn-indicator').click():this.open(key==='chart'||this.mode===key?null:key);$('layout-popover').classList.remove('show');});b.dataset.panel=key;b.dataset.dockLabel=ui(label);this.rail.appendChild(b);
+    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo']]){
+      const b=this.button(label,key,()=>{
+        if(key==='chart'){
+          this.companions?.closeDocked?.();
+          this.open(null);
+        }else{
+          this.open(this.mode===key?null:key);
+        }
+        $('layout-popover').classList.remove('show');
+      });
+      b.dataset.panel=key;b.dataset.dockLabel=ui(label);this.rail.appendChild(b);
     }
     const edgeDock=document.createElement('div');
     edgeDock.className='edge-panel-dock';
@@ -49,7 +62,7 @@ class DesktopShell {
     const left=document.querySelector('.topbar-left'),right=document.querySelector('.topbar-right'),header=document.getElementById('topbar');
     const menu=document.createElement('div');menu.className='toolbar-overflow';menu.hidden=true;menu.setAttribute('role','menu');document.body.appendChild(menu);
     const more=document.createElement('button');more.type='button';more.className='btn-icon toolbar-more';more.textContent='⋯';more.hidden=true;more.setAttribute('aria-label','More toolbar actions');more.setAttribute('aria-expanded','false');left.appendChild(more);
-    const nodes=[document.getElementById('btn-alert'),document.getElementById('btn-replay')];
+    const nodes=[document.getElementById('btn-alert'),document.getElementById('btn-replay'),document.getElementById('btn-layout')].filter(Boolean);
     const items=nodes.map(node=>{const anchor=document.createComment('toolbar-position');node.before(anchor);if(node.tagName==='BUTTON')node.dataset.overflowLabel=node.getAttribute('aria-label')||node.textContent.trim()||node.title;return {node,anchor};});
     const close=(focus=false)=>{menu.hidden=true;more.setAttribute('aria-expanded','false');if(focus)more.focus();};
     more.onclick=()=>{if(!menu.hidden){close();return;}menu.hidden=false;more.setAttribute('aria-expanded','true');const rect=more.getBoundingClientRect();menu.style.left=Math.max(6,Math.min(innerWidth-menu.offsetWidth-6,rect.right-menu.offsetWidth))+'px';menu.style.top=(rect.bottom+4)+'px';menu.querySelector('button:not([disabled])')?.focus();};
@@ -91,20 +104,44 @@ class DesktopShell {
       }
     }
   }
+  syncRailActive(){
+    const compOpen=!!this.companions?.open;
+    const mode=this.mode;
+    this.rail?.querySelectorAll('[data-panel]').forEach(b=>{
+      const isChart=b.dataset.panel==='chart';
+      const active=isChart?(!mode&&!compOpen):(b.dataset.panel===mode);
+      b.classList.toggle('active',active);
+      if(isChart)b.setAttribute('aria-current',String(active));
+      else if(b.dataset.panel!=='editor')b.setAttribute('aria-expanded',String(b.dataset.panel===mode));
+    });
+  }
   open(mode,persist=true){
+    if(mode&&this.companions?.open)this.companions.toggle(this.companions.open,false);
     this.mode=mode;this.root.dataset.mode=mode||'';this.signature='';this.hoverBar=null;this.root.hidden=!mode;this.content.replaceChildren();this.tabs.replaceChildren();
-    this.rail.querySelectorAll('[data-panel]').forEach(b=>{b.classList.toggle('active',b.dataset.panel===mode||(!mode&&b.dataset.panel==='chart'));if(b.dataset.panel==='chart')b.setAttribute('aria-current',String(!mode));else if(b.dataset.panel!=='editor')b.setAttribute('aria-expanded',String(b.dataset.panel===mode));});
+    this.syncRailActive();
     if(persist)Workspace.write('terminal_desktop_panel_v1',{mode,objectTab:this.objectTab||'tree'});
     if(!mode)return;
     if(mode==='objects')for(const [key,label] of [['tree','Object tree'],['data','Data window']]){
       const b=document.createElement('button');b.type='button';b.textContent=ui(label);b.setAttribute('role','tab');b.dataset.objectTab=key;b.onclick=()=>{this.objectTab=key;Workspace.write('terminal_desktop_panel_v1',{mode:this.mode,objectTab:key});this.signature='';this.refresh();};this.tabs.appendChild(b);
+    }else if(mode==='alerts'){
+      const wrap=document.createElement('div');
+      wrap.className='alerts-panel-head';
+      wrap.innerHTML=`<span class="alerts-head-icon" aria-hidden="true">${DesktopShell.icon('alerts')}</span><h2>${ui('Cảnh báo giá')}</h2><span id="alerts-head-count" class="alerts-head-count" hidden>0</span>`;
+      this.tabs.appendChild(wrap);
     }else{
-      const h=document.createElement('h2');h.textContent=ui(mode==='watch'?'Danh sách theo dõi':'Cảnh báo');this.tabs.appendChild(h);
+      const h=document.createElement('h2');h.textContent=ui('Danh sách theo dõi');this.tabs.appendChild(h);
     }
     this.objectTab||='tree';this.refresh();
   }
   refresh(){
     for(const c of this.charts)this.updateRealtime(c);
+    const allAlerts=this.getAlerts?.()||[];
+    const activeAlertCount=allAlerts.filter(a=>!a.triggered).length;
+    const alertRailBtn=this.rail?.querySelector('[data-panel="alerts"]');
+    if(alertRailBtn){
+      if(activeAlertCount>0)alertRailBtn.dataset.badge=String(activeAlertCount);
+      else delete alertRailBtn.dataset.badge;
+    }
     if(!this.mode)return;
     const active=this.getActive(),activeKey=[active.id,active.symbol,active.currentTimeframe].join(':');
     if(this.activeKey!==activeKey){this.activeKey=activeKey;this.hoverBar=null;this.signature='';}
@@ -183,11 +220,284 @@ class DesktopShell {
     for(const entry of entries){const result=entry.runner.lastResult,plots=[...(result?.series||[]),...(result?.pane?.series||[])];if(!plots.length)continue;this.heading(entry.name||entry.record.name);for(const series of plots){const value=series.data.find(p=>p.time===bar.time)?.value;const row=document.createElement('p');row.className='data-window-row';row.textContent=`${series.title||series.type}: ${value??'—'}`;this.content.appendChild(row);}}
 
   }
+  _syncAlertLiveMetrics(){
+    const markets=this.getMarkets?.();
+    const active=this.getActive?.();
+    if(!markets||!active)return;
+    const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const curPx=markets.get(active.symbol)?.['1m']?.at(-1)?.close ?? active.bars?.at(-1)?.close;
+    const liveBtn=this.content.querySelector('#alerts-live-px');
+    if(liveBtn&&Number.isFinite(curPx)){
+      liveBtn.textContent=fmt(curPx);
+      liveBtn.dataset.price=String(curPx);
+    }
+    for(const distEl of this.content.querySelectorAll('[data-alert-dist]')){
+      const sym=distEl.dataset.sym;
+      const target=Number(distEl.dataset.target);
+      const mktPx=markets.get(sym)?.['1m']?.at(-1)?.close;
+      if(Number.isFinite(mktPx)&&Number.isFinite(target)){
+        const diff=target-mktPx;
+        distEl.textContent=`${diff>=0?'+':''}${diff.toFixed(2)} pts`;
+      }
+    }
+  }
   renderAlerts(){
-    const alerts=this.getAlerts(),signature=JSON.stringify(alerts);if(signature===this.signature)return;this.signature=signature;this.content.replaceChildren();
-    const create=document.createElement('button');create.className='desktop-add-alert';create.textContent=ui('+ Create alert');create.onclick=()=>document.getElementById('btn-alert').click();this.content.appendChild(create);
-    for(const [index,alert] of alerts.entries()){const row=document.createElement('div');row.className='alert-list-row';const label=document.createElement('span');label.textContent=`${alert.symbol} · ${alert.price}\n${alert.condition} · ${alert.triggered?'Triggered':'Active'}`;const remove=this.button('Remove alert','close',()=>{this.onAlertRemove(index);this.signature='';this.refresh();});label.tabIndex=0;label.setAttribute('role','button');label.title='Edit alert';label.onclick=()=>this.onAlertEdit?.(alert.id);label.onkeydown=e=>{if(e.key==='Enter')this.onAlertEdit?.(alert.id);};row.append(label,remove);this.content.appendChild(row);}
-    if(!alerts.length){const p=document.createElement('p');p.className='desktop-panel-note';p.textContent=ui('No price alerts yet.');this.content.appendChild(p);}
+    const alerts=this.getAlerts()||[];
+    const active=this.getActive();
+    const markets=this.getMarkets();
+    const sym=active?.symbol||'NQ1!';
+    const tick=markets.get(sym)?.metadata?.tickSize||active?.metadata?.tickSize||0.25;
+    const curPx=markets.get(sym)?.['1m']?.at(-1)?.close ?? active?.bars?.at(-1)?.close;
+    const fmt=n=>Number.isFinite(Number(n))?Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+
+    const activeCnt=alerts.filter(a=>!a.triggered).length;
+    const trigCnt=alerts.length-activeCnt;
+    const headBadge=this.tabs.querySelector('#alerts-head-count');
+    if(headBadge){
+      headBadge.hidden=alerts.length===0;
+      headBadge.textContent=activeCnt>0?`${activeCnt} đang canh`:`${trigCnt} đã khớp`;
+    }
+
+    const signature=JSON.stringify([sym,this.alertFilter,alerts]);
+    if(signature===this.signature){
+      this._syncAlertLiveMetrics();
+      return;
+    }
+    this.signature=signature;
+
+    if(this._alertDraftSym!==sym){
+      this._alertDraftSym=sym;
+      this._alertDraftPrice=Number.isFinite(curPx)?String(curPx):'';
+    }
+
+    this.content.replaceChildren();
+    const shell=document.createElement('div');
+    shell.className='alerts-hub';
+
+    // 1. Inline Quick-Alert Composer Card
+    const comp=document.createElement('div');
+    comp.className='alerts-composer';
+
+    const compTop=document.createElement('div');
+    compTop.className='alerts-comp-top';
+    const symChip=document.createElement('span');
+    symChip.className='alerts-sym-pill';
+    symChip.textContent=sym;
+
+    const liveBtn=document.createElement('button');
+    liveBtn.type='button';
+    liveBtn.id='alerts-live-px';
+    liveBtn.className='alerts-live-px';
+    liveBtn.title='Bấm để điền giá thị trường hiện tại';
+    liveBtn.dataset.price=Number.isFinite(curPx)?String(curPx):'';
+    liveBtn.textContent=Number.isFinite(curPx)?fmt(curPx):'—';
+
+    const modalBtn=document.createElement('button');
+    modalBtn.type='button';
+    modalBtn.className='alerts-expand-btn';
+    modalBtn.title='Mở hộp thoại chi tiết (Alt + A)';
+    modalBtn.setAttribute('aria-label','Open full alert dialog');
+    modalBtn.textContent='Alt+A ↗';
+    modalBtn.onclick=()=>document.getElementById('btn-alert')?.click();
+
+    compTop.append(symChip,liveBtn,modalBtn);
+
+    const condRow=document.createElement('div');
+    condRow.className='alerts-cond-seg';
+    const condDefs=[
+      ['cross','⇅ Cắt qua'],
+      ['greater','↗ Vượt ≥'],
+      ['less','↘ Thấp ≤']
+    ];
+    for(const [val,txt] of condDefs){
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='alerts-cond-btn'+(this._alertCond===val?' active':'');
+      b.textContent=txt;
+      b.onclick=()=>{
+        this._alertCond=val;
+        for(const c of condRow.children)c.classList.toggle('active',c===b);
+      };
+      condRow.appendChild(b);
+    }
+
+    const inputRow=document.createElement('div');
+    inputRow.className='alerts-input-row';
+    const priceIn=document.createElement('input');
+    priceIn.type='number';
+    priceIn.step=String(tick);
+    priceIn.className='alerts-price-in';
+    priceIn.placeholder='Nhập mức giá cảnh báo…';
+    priceIn.setAttribute('aria-label','Alert target price');
+    priceIn.value=this._alertDraftPrice||(Number.isFinite(curPx)?String(curPx):'');
+    priceIn.oninput=()=>{this._alertDraftPrice=priceIn.value;};
+
+    const addBtn=document.createElement('button');
+    addBtn.type='button';
+    addBtn.className='desktop-add-alert';
+    addBtn.textContent='+ Đặt báo';
+    const submitQuick=()=>{
+      if(this.onAlertCreate){
+        if(this.onAlertCreate(sym,Number(priceIn.value),this._alertCond)){
+          this.signature='';
+          this.refresh();
+        }
+      }else{
+        document.getElementById('btn-alert')?.click();
+      }
+    };
+    addBtn.onclick=submitQuick;
+    priceIn.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();submitQuick();}
+    });
+    liveBtn.onclick=()=>{
+      const px=Number(liveBtn.dataset.price);
+      if(Number.isFinite(px)){priceIn.value=String(px);this._alertDraftPrice=String(px);priceIn.focus();}
+    };
+    inputRow.append(priceIn,addBtn);
+
+    const stepRow=document.createElement('div');
+    stepRow.className='alerts-step-row';
+    for(const d of [-50,-20,-10,0,10,20,50]){
+      const chip=document.createElement('button');
+      chip.type='button';
+      chip.className='alerts-step-btn'+(d===0?' is-now':'');
+      chip.textContent=d===0?'Hiện tại':(d>0?`+${d}`:String(d));
+      chip.onclick=()=>{
+        const latest=Number(liveBtn.dataset.price)||curPx;
+        const base=d===0?latest:(Number(priceIn.value)||latest);
+        if(!Number.isFinite(base))return;
+        const nextVal=typeof AlertPrice!=='undefined'?AlertPrice.round(d===0?base:base+d,tick):Number((d===0?base:base+d).toFixed(2));
+        priceIn.value=String(nextVal);
+        this._alertDraftPrice=String(nextVal);
+        priceIn.focus();
+      };
+      stepRow.appendChild(chip);
+    }
+
+    comp.append(compTop,condRow,inputRow,stepRow);
+    shell.appendChild(comp);
+
+    // 2. Filter Bar (when alerts exist)
+    if(alerts.length>0){
+      const filterBar=document.createElement('div');
+      filterBar.className='alerts-filter-bar';
+      const tabsWrap=document.createElement('div');
+      tabsWrap.className='alerts-filter-tabs';
+      for(const [fKey,fLbl] of [['all',`Tất cả (${alerts.length})`],['active',`Đang canh (${activeCnt})`],['triggered',`Đã khớp (${trigCnt})`]]){
+        const fb=document.createElement('button');
+        fb.type='button';
+        fb.className='alerts-filter-btn'+(this.alertFilter===fKey?' active':'');
+        fb.textContent=fLbl;
+        fb.onclick=()=>{this.alertFilter=fKey;this.signature='';this.refresh();};
+        tabsWrap.appendChild(fb);
+      }
+      filterBar.appendChild(tabsWrap);
+      if(trigCnt>0&&this.onAlertClearTriggered){
+        const clr=document.createElement('button');
+        clr.type='button';
+        clr.className='alerts-clear-trig';
+        clr.title='Xóa toàn bộ cảnh báo đã khớp';
+        clr.textContent='Dọn đã khớp';
+        clr.onclick=()=>{this.onAlertClearTriggered();this.signature='';this.refresh();};
+        filterBar.appendChild(clr);
+      }
+      shell.appendChild(filterBar);
+    }
+
+    // 3. Alert Cards or Compact Empty State
+    const visibleAlerts=alerts
+      .map((alert,index)=>({alert,index}))
+      .filter(({alert})=>this.alertFilter==='active'?!alert.triggered:this.alertFilter==='triggered'?!!alert.triggered:true)
+      .reverse();
+
+    if(visibleAlerts.length>0){
+      const list=document.createElement('div');
+      list.className='alerts-card-list';
+      const condText=c=>c==='greater'?'↗ Vượt lên ≥':c==='less'?'↘ Giảm xuống ≤':'⇅ Cắt qua';
+
+      for(const {alert,index} of visibleAlerts){
+        const card=document.createElement('div');
+        card.className=`alert-list-row alert-card is-${alert.condition||'cross'}${alert.triggered?' is-triggered':''}`;
+
+        const main=document.createElement('div');
+        main.className='alert-card-main';
+        main.tabIndex=0;
+        main.setAttribute('role','button');
+        main.title='Bấm để chỉnh sửa cảnh báo';
+        main.onclick=()=>this.onAlertEdit?.(alert.id);
+        main.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();this.onAlertEdit?.(alert.id);}};
+
+        const topLine=document.createElement('div');
+        topLine.className='alert-card-top';
+        const sBadge=document.createElement('span');
+        sBadge.className='alert-card-sym';
+        sBadge.textContent=alert.symbol;
+        const pVal=document.createElement('strong');
+        pVal.className='alert-card-price';
+        pVal.textContent=fmt(alert.price);
+        topLine.append(sBadge,pVal);
+
+        const botLine=document.createElement('div');
+        botLine.className='alert-card-meta';
+        const cTag=document.createElement('span');
+        cTag.className='alert-card-cond';
+        cTag.textContent=condText(alert.condition);
+
+        const distTag=document.createElement('span');
+        distTag.className='alert-card-dist';
+        distTag.dataset.alertDist='1';
+        distTag.dataset.sym=alert.symbol;
+        distTag.dataset.target=String(alert.price);
+        const symPx=markets.get(alert.symbol)?.['1m']?.at(-1)?.close;
+        if(Number.isFinite(symPx)){
+          const diff=alert.price-symPx;
+          distTag.textContent=`${diff>=0?'+':''}${diff.toFixed(2)} pts`;
+        }
+
+        const stTag=document.createElement('span');
+        stTag.className='alert-card-status'+(alert.triggered?' triggered':' active');
+        stTag.textContent=alert.triggered?'✓ Đã khớp':'● Đang canh';
+
+        botLine.append(cTag,distTag,stTag);
+        main.append(topLine,botLine);
+
+        const actions=document.createElement('div');
+        actions.className='alert-card-actions';
+        if(alert.triggered&&this.onAlertRearm){
+          const rearm=document.createElement('button');
+          rearm.type='button';
+          rearm.className='alert-act-btn rearm';
+          rearm.title='Bật canh lại cảnh báo này';
+          rearm.setAttribute('aria-label','Rearm alert');
+          rearm.textContent='↻';
+          rearm.onclick=e=>{e.stopPropagation();this.onAlertRearm(alert.id);this.signature='';this.refresh();};
+          actions.appendChild(rearm);
+        }
+        const remove=this.button('Xóa cảnh báo','close',()=>{
+          this.onAlertRemove(alert.id??index);
+          this.signature='';
+          this.refresh();
+        });
+        remove.classList.add('alert-act-btn','remove');
+        actions.appendChild(remove);
+
+        card.append(main,actions);
+        list.appendChild(card);
+      }
+      shell.appendChild(list);
+    } else {
+      const empty=document.createElement('div');
+      empty.className='alerts-empty-card';
+      empty.innerHTML=`
+        <div class="alerts-empty-icon" aria-hidden="true">${DesktopShell.icon('alerts')}</div>
+        <strong class="alerts-empty-title">${alerts.length?'Không có cảnh báo ở mục này':'Chưa có cảnh báo giá'}</strong>
+        <p class="desktop-panel-note">Nhập nhanh mức giá ở trên, nhấn <kbd>Alt</kbd>+<kbd>A</kbd> hoặc chuột phải vào biểu đồ để đặt báo động.</p>
+      `;
+      shell.appendChild(empty);
+    }
+
+    this.content.appendChild(shell);
   }
 }
 if(typeof module!=='undefined')module.exports=DesktopShell;

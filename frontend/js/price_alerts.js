@@ -38,7 +38,21 @@ class AlertChartControls{
       button.title='Kéo để đổi giá · Bấm để chỉnh alert';button.setAttribute('aria-label',`${a.symbol} alert ${price}${a.triggered?' · Triggered':''}`);
       button.style.pointerEvents=this.canDrag?.()===false?'none':'auto';
       Object.assign(button.style,{left:'0px',top:(y-7)+'px',width:width+'px',height:'14px'});
-      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();ctx.strokeStyle=(a.condition==='greater'?chart.appearance?.alertUpColor:chart.appearance?.alertColor)||'#f23645';ctx.fillStyle=ctx.strokeStyle;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);ctx.font='11px Arial';ctx.fillText(`Alert ${price}${a.triggered?' · Triggered':''}`,Math.max(8,width-145),y-5);ctx.restore();
+      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
+      const clr=a.triggered?'#d97706':((a.condition==='greater'?chart.appearance?.alertUpColor:a.condition==='less'?chart.appearance?.alertColor:'#2563eb')||'#2563eb');
+      ctx.strokeStyle=clr;ctx.lineWidth=this.drag?.id===a.id?1.75:1.25;ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);
+      const symArrow=a.condition==='greater'?'↗':a.condition==='less'?'↘':'⇅';
+      const priceTxt=Number(price).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      const pillTxt=`${symArrow} ${priceTxt}${a.triggered?' · Khớp':''}`;
+      ctx.font='600 10.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+      const tw=ctx.measureText?ctx.measureText(pillTxt).width:pillTxt.length*6.2;
+      const pw=tw+14,ph=18,px=Math.max(8,width-pw-28),py=y-ph/2;
+      ctx.fillStyle=clr;
+      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(px,py,pw,ph,5);ctx.fill();}
+      else ctx.fillRect(px,py,pw,ph);
+      ctx.fillStyle='#ffffff';ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText(pillTxt,px+7,y+0.5);
+      ctx.restore();
     }
     for(const [id,button]of this.buttons)if(!seen.has(id)){button.remove();this.buttons.delete(id);this.removeButtons.get(id)?.remove();this.removeButtons.delete(id);}
   }

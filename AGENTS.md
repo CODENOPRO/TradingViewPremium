@@ -832,3 +832,226 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 
 ### 2026-11-17 — Khôi phục UI trước new.zip
 - Khôi phục ba file frontend từ bản sao trước khi chèn Trade Pill, kiểm tra hash khớp và gỡ stylesheet được thêm. Lưu phiên bản đã chèn tại .backups/trade-pill-installed-20261117/.
+
+### 2026-11-18 — Sửa Order Lines kiểu TopstepX và logic Paper Trading (Live vs Replay, margin)
+- Yêu cầu: chuyển giao diện/tương tác order lines từ `TopstepX Order Lines.html` vào dự án, đồng thời kiểm tra và sửa lỗi Paper Trading khi Live không báo không đủ margin, khác biệt hành vi giữa Replay và Live.
+- File đã sửa: `frontend/js/paper_trading.js`, `frontend/js/paper_panel.js`, `frontend/js/chart_context_menu.js`, `frontend/js/chart_settings.js`, `frontend/js/app.js`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `tests/paper_trading.test.cjs`, `tests/context_menu.test.cjs`.
+- Thay đổi hành vi:
+  - `PaperTrading`: thêm `requiredMargin()` và `checkMargin()` tính trừ vị thế đối ứng và hoàn thiện thông báo `'Không đủ free margin (cần ..., khả dụng ...).'`.
+  - `PaperPanel` & `ChartContextMenu` & `app.js`: kiểm tra tài khoản và margin trước khi đặt lệnh Market/Limit/Stop, trước `confirmOrder`, và khi sửa/kéo lệnh chờ; thêm `quickMarket()` cho nút Buy/Sell thanh trên; cập nhật quote live từ heartbeat `bridge_status` khi giá đi ngang quá 5 giây; hiển thị đúng giá Replay trên thanh trên khi chạy Replay; kiểm tra phạm vi Replay theo từng chart trong `guard()`/`ticket()`; hiển thị cảnh báo thiếu margin ngay trong `#paper-estimate` và chuyển lỗi từ context menu qua `paperPanel.action()` + `toast`.
+  - `PaperChartOrders`: vẽ vùng SL đỏ (`rgba(255,27,27,.22)`) / TP xanh (`rgba(0,200,150,.28)`), đường Entry & Pending Order nét liền, SL/TP nét đứt `[5, 4]`, tag giá trên trục phải, nhãn phân đoạn `[PnL | Qty | ×]` / `[~ -$... | Qty | ×]` / `[Limit/Stop Buy/Sell | Qty | ×]`, kéo chỉnh giá theo bước tick và xóa SL/TP/hủy lệnh chờ trực tiếp bằng `×`; đặt mặc định `bracketPnl: true` (migration `desktopVersion: 4`).
+- Kiểm chứng: `node --check` 5 file JS qua; `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa kiểm chứng trực quan bằng trình duyệt thật với TradingView Desktop đang chạy.
+
+### 2026-11-18 — Căn chỉnh box TopstepX lệch phải, sửa đóng 1-click và mũi tên Execution
+- Yêu cầu: bỏ auto alignment để 3 box (Entry, SL, TP) và lệnh chờ luôn lệch sang phải gần trục giá với tay kéo 6 chấm kiểu TopstepX; bỏ hộp thoại hỏi số hợp đồng khi đóng vị thế bằng `×` trên chart lúc bật One-click trading; bật mặc định và sửa lỗi mũi tên Execution (`↑` xanh / `↓` đỏ kèm nhãn `qty @ price`).
+- File đã sửa: `frontend/js/paper_panel.js`, `frontend/js/chart_settings.js`, `frontend/js/app.js`, `frontend/index.html`, `tests/paper_trading.test.cjs`.
+- Hành vi thay đổi:
+  - `PaperChartOrders`: bỏ căn trái, cố định các box lệch phải sát trục giá (`rightPad`) kèm tay nắm 6 chấm `⋮`, vẽ vùng SL/TP nối từ nến vào lệnh tới cạnh phải box; khi `oneClick !== false`, bấm `×` trên box vị thế đóng toàn bộ vị thế ngay lập tức không bật dialog.
+  - `ChartAppearance` & `app.js`: bật mặc định `executionMarks: true`, `executionLabels: true` (migration `desktopVersion: 5`) và bỏ mục `Order and position alignment` khỏi Chart Settings.
+  - `PaperChartOrders.drawExecutions`: sửa điều kiện `time > TerminalTime.end(...)` (trước đây dùng `>=` làm rớt toàn bộ lệnh khớp ở Replay); vẽ mũi tên TradingView `↑` `#2962ff` dưới đáy nến / `↓` `#f23645` trên đỉnh nến cùng nhãn `qty @ price` xếp tầng tránh đè nhau.
+- Kiểm chứng: `node --check` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` (33/33 passed). Chưa xác minh trực quan trên trình duyệt kết nối TradingView Desktop.
+
+### 2026-11-18 — Bỏ giới hạn và hiển thị Margin trong Paper Trading
+- Yêu cầu: bỏ hoàn toàn phần margin khỏi Paper Trading (Live và Replay).
+- File đã sửa: `frontend/js/paper_trading.js`, `frontend/js/paper_panel.js`, `frontend/js/replay_paper.js`, `frontend/js/app.js`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `tests/paper_trading.test.cjs`, `tests/frontend.test.cjs`.
+- Thay đổi: bỏ ô nhập Margin ở modal tạo tài khoản, bỏ kiểm tra/chặn free margin khi vào/đảo/sửa lệnh, bỏ hai ô `Margin`/`Khả dụng` trên thanh tóm tắt (giữ 4 ô `Balance`, `Equity`, `PnL mở`, `PnL đã chốt`), bỏ dòng `Margin ước tính` ở ticket đặt lệnh.
+- Kiểm chứng: `node --check` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa xác minh trực quan trong trình duyệt thật.
+
+### 2026-11-18 — Bỏ vùng tô xanh/đỏ SL-TP và chỉnh độ lệch chéo các box TopstepX
+- Yêu cầu: bỏ 2 vùng tô màu xanh/đỏ giữa Entry–TP/SL và chỉnh các box hơi lệch chéo nhau giống TopstepX thay vì thẳng hàng dọc.
+- File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `tests/paper_trading.test.cjs`.
+- Thay đổi: bỏ vẽ vùng `rgba(255,27,27,.22)` và `rgba(0,200,150,.28)`; giữ Entry gần trục giá nhất (`rightPad`), lệnh chờ lệch trái nhẹ (`orderPad`), SL/TP lệch trái thêm một nhịp (`bracketPad`).
+- Kiểm chứng: `node --check` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa xác minh trực quan trong trình duyệt thật.
+
+### 2026-11-18 — Menu chuột phải chọn nhanh khối lượng kiểu TopstepX
+- Yêu cầu: bổ sung menu chuột phải theo TopstepX (`Market Buy`, `Market Sell`, `Limit/Stop Buy @ price`, `Limit/Stop Sell @ price` kèm submenu chọn nhanh `1, 2, 3, 4, 5, 10, 15` hợp đồng).
+- File đã sửa: `frontend/js/chart_context_menu.js`, `frontend/index.html`, `tests/context_menu.test.cjs`.
+- Kiểm chứng: `node --check frontend/js/chart_context_menu.js` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Hover mũi tên Execution hiện mũi tên ngang `<` chỉ đúng mức giá khớp
+- Yêu cầu: khi rê chuột vào mũi tên Execution trên chart thì highlight mũi tên và hiện thêm mũi tên ngang `<` chỉ mức giá đã khớp ngay trên nến.
+- File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `tests/paper_trading.test.cjs`.
+- Kiểm chứng: `node --check frontend/js/paper_panel.js` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Thu gọn font chữ và viền box Order Lines giống TopstepX
+- Yêu cầu: thu nhỏ font chữ, đổi font hệ thống gọn nét thay Arial đậm và vẽ nút `×` mảnh như TopstepX.
+- File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`.
+- Thay đổi: dùng font `600 10px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, "Segoe UI", sans-serif` (nhãn execution `500 10px`), thu chiều cao box/tag trục giá xuống `16px`, viền mảnh `rgba(0,0,0,.55)`, nút `×` nền sáng vẽ bằng 2 nét chéo mảnh.
+- Kiểm chứng: `node --check frontend/js/paper_panel.js` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Khôi phục lại font chữ cũ cho Order Lines và nhãn Execution
+- Yêu cầu: hoàn tác font hệ thống (`Trebuchet MS`/`10px`) về lại font `Arial` cũ trên chart.
+- File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`.
+- Thay đổi: khôi phục `bold 11px Arial, Helvetica, sans-serif` cho `drawSegmented`, `drawAxisTag`, `measureSegs` và `500 11px Arial, Helvetica, sans-serif` cho nhãn `drawExecutions` (giữ nguyên viền mảnh và nút `×` mới).
+- Kiểm chứng: `node --check frontend/js/paper_panel.js` và `node --test tests/paper_trading.test.cjs tests/replay_paper.test.cjs tests/context_menu.test.cjs tests/frontend.test.cjs` đạt 33/33 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Gộp nút Layout vào thanh toolbar nổi chính (`.topbar-left`)
+- Yêu cầu: đưa nút Layout (`#btn-layout`) từ góc phải vào gộp chung trong thanh công cụ nổi giữa/trái cạnh Replay.
+- File đã sửa: `frontend/index.html`, `frontend/css/chart_dock.css`, `frontend/js/desktop_shell.js`, `frontend/js/app.js`.
+- Thay đổi: chuyển `<button id="btn-layout">` vào `.topbar-left` ngay sau `#btn-replay`, đồng bộ CSS nút icon `36px` với `#btn-indicator`/`#btn-alert`/`#btn-replay`, bổ sung `#btn-layout` vào overflow menu (`installToolbarOverflow`) và fallback neo popover vào `.toolbar-more` khi màn hình hẹp.
+- Kiểm chứng: `node --check frontend/js/desktop_shell.js`, `node --check frontend/js/app.js` và `node --test tests/desktop_shell.test.cjs tests/terminal_features.test.cjs tests/frontend.test.cjs tests/studio.test.cjs tests/v5_preview.test.cjs` đạt 27/27 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Nâng cấp Popup Music thành kiểu PiP điện thoại: kéo tự do toàn màn hình, resize freestyle 8 hướng và nút điều khiển SVG sạch
+- Yêu cầu: làm popup Music kéo thả được khắp web, hỗ trợ resize freestyle to nhỏ mọi hướng (không ép tỉ lệ cố định) và thiết kế lại các nút play/next/forward/rewind gọn như popup trên điện thoại.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`, `tests/scheduled_features.test.cjs`.
+- Thay đổi: sửa lỗi `event.pointer` → `event.pointerId` khiến handle resize không nhận thao tác kéo; chuyển chế độ mặc định của popup sang `Free` (tự do mọi kích thước `width × height`, kèm nút chuyển nhanh `Free / 16:9 / 9:16 / 4:3 / 1:1`); bổ sung đủ 8 handle kéo 4 góc + 4 cạnh (`nw/ne/sw/se/n/s/w/e`, `z-index: 8`) để kéo to nhỏ theo mọi hướng kể cả khi neo sát góc dưới-phải; cho phép kéo cả ở thanh trên lẫn thanh điều khiển dưới trên toàn viewport (`z-index: 220`); ẩn control gốc của YouTube (`controls=0`) và thay bằng thanh HUD SVG nổi kiểu PiP điện thoại (`previous`, `rewind -10s`, `toggle`, `forward +10s`, `next`, `mute`, thanh seek mảnh + đồng hồ).
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 24/24 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Đổi nhãn trạng thái sang Connecting / Connected và thêm hộp thoại xác nhận khi tải lại dữ liệu
+- Yêu cầu: bỏ chữ `TradingView` trên thanh trạng thái kết nối góc phải (chỉ hiện `Connecting` hoặc `Connected`), và khi bấm vào thì hiện hộp thoại xác nhận trước khi tải lại data từ đầu.
+- File đã sửa: `frontend/js/app.js`, `frontend/index.html`.
+- Thay đổi: cập nhật `statusText()` và `#connection-status-text` chỉ hiển thị `Connected` (khi `bridge.state === 'connected'` và không lỗi/chờ nạp) hoặc `Connecting`; thêm `confirmReloadChartData()` (`<dialog class="paper-order-confirmation">`) khi bấm `#reload-chart-data`, nếu xác nhận sẽ reset `preloadRequested`, xóa `pendingNative` và gọi `connect(true)` để nạp lại dữ liệu từ đầu.
+- Kiểm chứng: `node --check frontend/js/app.js` và `node --test tests/frontend.test.cjs tests/bridge_protocol.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 20/20 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Chặn hover/focus lọt vào iframe YouTube & TikTok trên Popup (`.music-video-shield`)
+- Yêu cầu: làm sạch khung video popup để tiêu đề, 3 nút giữa (`|< || >|`) và logo YouTube tự ẩn hẳn khi phát, không bị dính lại khi lướt chuột qua.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`.
+- Thay đổi: thêm lớp phủ trong suốt `.music-video-shield` (`z-index: 2`) phủ lên `iframe` ngay khi YouTube/TikTok bắt đầu phát (`music-shield-active`), tự động `blur()` iframe để YouTube ẩn overlay gốc sau 2–3s và không bao giờ bị kích hoạt hover lại; bấm thẳng vào mặt video để Play/Pause hoặc nắm kéo trực tiếp giữa mặt video để di chuyển popup, đồng thời nhả focus khi rời chuột (`pointerleave`).
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 24/24 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Giữ nhạc chạy nền khi bấm Hide video và khi đóng/ẩn tab Music
+- Yêu cầu: bấm `Hide video` chỉ ẩn hình video chứ nhạc vẫn phát bình thường; khi đóng/ẩn tab Music (`×`, `Esc`, hoặc chuyển sang Calendar) nhạc vẫn chạy nền không bị tắt.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`, `tests/scheduled_features.test.cjs`.
+- Thay đổi: gỡ bỏ các lệnh tự `pause()` / `stopTabAudio()` / xóa `iframe` trong `toggle('music', false)`, `hideVideoButton.onclick`, `command()` và `onStateChange` của YouTube/TikTok; đổi `#music-panel.music-video-hidden .music-player-host` sang cắt ẩn hình `clip-path: inset(50%); opacity: 0` (thay `display: none`) và giữ `#music-panel:not(.open)` ở `visibility: visible; pointer-events: none` ngoài khung nhìn để trình duyệt không dừng luồng phát nền; thêm trạng thái `.music-live` phát sáng xanh cho icon Music trên dock khi đang chạy nhạc nền.
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 25/25 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Bỏ nút 6 dấu chấm và tiêu đề trên Popup, bật khiên chặn hover YouTube ngay từ `onReady`
+- Yêu cầu: gỡ nút 6 dấu chấm (`⠿`) và tiêu đề `.popup-mini-title` trên popup video; không để di chuột kích hoạt overlay của YouTube.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`.
+- Thay đổi: bỏ `.popup-drag-grip` và `.popup-mini-title` khỏi `.video-popup-tools`, thu gọn `.video-popup-tools` thành 3 pill nhỏ góc trên-phải (`Free`, `↗`, `×`, nền trong suốt không che góc trên-trái); bật `music-shield-active` ngay khi `YT.Player` `onReady` để chuột không chạm vào `iframe` YouTube ngay từ lúc mở.
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 25/25 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Bỏ nút `Free` khỏi thanh công cụ góc trên Popup
+- Yêu cầu: bỏ nút chữ `Free` khỏi góc trên-phải popup video, chỉ giữ nút phóng to (`↗`) và đóng (`×`), vẫn resize freestyle mọi góc cạnh.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`.
+- Thay đổi: xóa `this.popupRatioButton` và CSS `.popup-ratio-btn`; lưu tham chiếu `this.popupExpandButton` cho focus.
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 25/25 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Che mờ giao diện gốc của YouTube khi chuyển đoạn, buffering và tạm dừng trên Popup
+- Yêu cầu: khi chuyển bài, tua/chuyển đoạn hoặc đang tải (buffering) và tạm dừng trên Popup YouTube thì không bị lộ tiêu đề, `Video khác`, Share, Watch Later và logo YouTube phía sau.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`.
+- Thay đổi: thêm `setYouTubeVeil(active, clearAfterMs)` và các class `.music-yt-veil` (nền kính mờ `blur(22px)` kèm spinner tối giản) / `.music-yt-paused` (kính mờ `blur(18px)` khi Pause) phủ qua `.music-video-shield` mỗi khi chuyển bài (`previous`/`next`), tua (`seekToSeconds`), buffering (`data === 3`), chưa ổn định (`-1` sau khi đã phát) và giữ thêm `2.8s` đầu sau `PLAYING` (`data === 1`) chờ overlay gốc của YouTube tự tắt hẳn rồi mới mở trong suốt toàn khung video.
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 25/25 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Hoàn tác lớp kính mờ che YouTube (`music-yt-veil` / `music-yt-paused`)
+- Yêu cầu: quay lại trạng thái trước khi thêm lớp kính mờ che màn hình YouTube lúc chuyển đoạn/pause.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`.
+- Thay đổi: xóa `setYouTubeVeil()`, `.music-yt-veil`, `.music-yt-paused` và `@keyframes yt-veil-spin`, giữ nguyên `.music-video-shield` trong suốt, freestyle resize và bỏ nút `Free`.
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 25/25 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Thay thanh timeline bằng thiết kế đường mảnh cho Music panel & Popup
+- Yêu cầu: áp dụng thiết kế thanh timeline dạng đường mảnh từ `Thanh timeline – thiết kế lại.html` cho cả Music panel và Popup mini.
+- File đã sửa: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`.
+- Thay đổi: thay `<input type="range" class="music-seek">` bằng custom slider `.music-track` (`.music-rail` cao `4px` nở `7px` khi hover/kéo ở Music panel và `3px` -> `6px` ở Popup, lớp `.music-buf` hiển thị đoạn đã buffer, `.music-fill` gradient `#ff5c8a -> #ffb36b`, chấm tròn `.music-dot` phát sáng khi chạm/kéo, tooltip thời gian `.music-tip`, hỗ trợ kéo pointer capture và phím mũi tên/Home/End).
+- Kiểm chứng: `node --check frontend/js/terminal_companions.js` và `node --test tests/scheduled_features.test.cjs tests/frontend.test.cjs tests/desktop_shell.test.cjs tests/terminal_features.test.cjs` đạt 25/25 passed. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Backup toàn dự án, sửa toàn bộ bug Backend/Frontend, chuyển sang chế độ QT duy nhất, chuẩn hóa 10 ảnh lịch tin QT & thiết kế lại Paper Trade
+- Yêu cầu: tạo bản backup tại vị trí hiện tại, rà soát và sửa toàn bộ bug từ Backend đến Frontend; bỏ phần Indicator Pine v6 chung để chuyển sang 1 chế độ `QT` duy nhất (sẵn sàng nhận logic QT chạy trực tiếp trên nến); đối chiếu toàn bộ 10 ảnh quy tắc tin tức QT với lịch kinh tế để ngày khớp vừa hiện tin vừa hiện đầy đủ ảnh quy tắc trong Calendar; thiết kế lại giao diện Paper Trade đồng bộ với hệ thống kính nổi của web.
+- Backup đã tạo: `c:\Users\Admin\Downloads\TradingViewPremium-main\TradingViewPremium-backup-20261118-0343.zip` (`149` file).
+- File đã sửa:
+  - Backend & Scripts: `backend/bridge_server.py`, `backend/market_store.py`, `backend/derived_history.py`, `backend/native_warmup.py`, `backend/companion_services.py`, `backend/market_history_htf.json`, `backend/launch_tv.ps1`, `preview_music.py`, `start_terminal.bat`.
+  - Frontend & CSS: `frontend/js/app.js`, `frontend/js/desktop_shell.js`, `frontend/js/indicator_collection.js`, `frontend/js/terminal_features.js`, `frontend/js/news_protocols.js`, `frontend/js/terminal_companions.js`, `frontend/js/paper_panel.js`, `frontend/js/paper_trading.js`, `frontend/js/replay_paper.js`, `frontend/js/color_picker.js`, `frontend/js/chart_settings.js`, `frontend/js/indicator_runner.js`, `frontend/js/indicator_library.js`, `frontend/js/line_tools_lab.js`, `frontend/js/line_tools_bridge.js`, `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/js/pine_painter.js`, `frontend/css/terminal_studio.css`, `frontend/css/terminal_companions.css`, `frontend/css/chart_dock.css`, `frontend/index.html`.
+  - Tests: `tests/test_companions.py`, `tests/test_native_warmup.py`, `tests/test_music_backend.py`, `tests/color_picker.test.cjs`, `tests/interaction_news.test.cjs`, `tests/paper_trading.test.cjs`.
+- Thay đổi chính:
+  1. **Backend & Data Integrity**: chặn `poll_source` đọc đè dữ liệu trong lúc `native_warmup` đang xoay timeframe, kiểm tra khớp resolution + khoảng cách nến tối thiểu trong `SNAPSHOT_JS`/`HISTORY_JS`, dọn sạch 2 nến ngày bị lọt nhầm vào khung tuần (`W`) trong `market_history_htf.json`; xử lý đầy đủ phiên CME đa phân đoạn có hậu tố `F1`/`F2` và `dayoff` trong `derived_history.py` kèm ghi đè `authoritative=True` cho `6h`; thêm `RLock` cho `/health` & `MarketStore`, retry `PermissionError` trên Windows khi ghi JSON nguyên tử, kiểm tra `Host` header chống DNS rebinding, sửa TikTok `blockquote` oEmbed khi `fresh_embed=True` không bị trả `502`, và sửa `launch_tv.ps1` / `start_terminal.bat`.
+  2. **Frontend Bug Fixes & Đồng bộ 100% `index.html`**: sửa lỗi mở sẵn popup con trong `ColorPicker.mount()`, sửa `?engine=v5` loader trong `index.html`, bọc `try/catch` khi khởi tạo `Worker`, chặn WS live tick kích hoạt nhầm cảnh báo giá khi đang chạy Replay, chặn đặt lệnh từ chart Live lọt vào tài khoản Replay khi phạm vi Replay là `Current chart`, kiểm tra `SL/TP` theo giá khớp thực tế đối với lệnh Limit/Stop khớp ngay, bảo toàn điểm neo Stop `p3` của công cụ Position, hỗ trợ `1M`/`3M` cho `DrawingModel.visible()`, bỏ cắt lề trên `24px` của `PinePainter` trên chart chính, và đồng bộ toàn bộ CSS/JS rời với `frontend/index.html`.
+  3. **Chế độ `QT` duy nhất**: ẩn mục `Script` Pine v6 khỏi thanh công cụ phải, biến nút `#btn-indicator` trên topbar thành công tắc bật/tắt 1 chạm **`QT`** kèm nút bánh răng `⚙` mở trực tiếp cài đặt QT (tự động dọn các indicator Pine v6 cũ bị lỗi và sẵn sàng gắn logic QT chạy trực tiếp trên nến ở bước tiếp theo).
+  4. **Đối chiếu & hiển thị 10 ảnh quy tắc tin tức QT trong Calendar**: khớp chuẩn dữ liệu thực tế từ ShowMyTrades cho cả 10 kịch bản (`0830` gồm cả `Initial Jobless Claims` mức `Medium`, các biến thể `Retail Sales`, và `S&P Global PMI 09:45 ET` / `ISM PMI 10:00 ET`; `nfp-week`; `cpi-before` / `cpi-day`; `ppi-day`; `fomc-before` / `fomc-day` / `fomc-after`; `fed-before` / `fed-day`), gom nhóm ngày USD theo ngày giao dịch New York để không bị lệch ngày ở múi giờ Việt Nam (`UTC+7`), và hiển thị thẻ `.calendar-protocol-card` kèm **ảnh sơ đồ quy tắc khổ rộng (`100%`)** ngay bên trên danh sách các dòng tin của ngày đó (bấm vào ảnh để phóng to Lightbox).
+  5. **Thiết kế lại Paper Trade**: chuyển `#paper-panel` từ tấm bảng đáy kiểu cũ sang ngăn kéo kính nổi đồng bộ với hệ thống dock của web (`border-radius: 20px`, biến màu theo theme sáng/tối), tích hợp chip KPI trực tiếp trên thanh tiêu đề, cụm nút chọn nhanh `Market | Limit | Stop`, bộ tăng giảm hợp đồng `− 1 +` kèm chip `1 / 2 / 5 / 10`, tự ẩn ô giá khi chọn `Market`, nút `Sell / Short` & `Buy / Long` sắc nét và bảng quản lý vị thế sử dụng badge `LONG`/`SHORT` hiện đại.
+- Kiểm chứng: `python -m unittest discover -s tests -p "test_*.py" -v` đạt **40/40 passed**; `node --test tests/*.test.cjs` đạt **146/146 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`. Chưa xác minh trực quan trên trình duyệt thật.
+
+### 2026-11-18 — Tích hợp gói QT Mode (`qt_engine.js` & `qt_mode.js`) tự chạy Quantaibay vào Web chính
+- Yêu cầu: theo đúng hướng dẫn tại `qt-mode/INTEGRATION.md`, tích hợp nguyên bản `qt_engine.js`, `qt_mode.js` và bộ test `qt_engine.test.cjs` vào dự án chính, bỏ hoàn toàn Indicator/Pine Editor cũ để chuyển sang `QTMode` tự chạy Quantaibay trên mọi biểu đồ.
+- File đã thêm / sửa:
+  - Copy nguyên bản (SHA256 khớp 100%): `frontend/js/qt_engine.js`, `frontend/js/qt_mode.js`.
+  - Test mới: `tests/qt_engine.test.cjs`.
+  - Đồng bộ khởi tạo & CSS: `frontend/js/app.js`, `frontend/js/indicator_collection.js`, `frontend/css/terminal_studio.css`, `frontend/index.html` (giữ nguyên `DesktopShell` đã bỏ tab `Script` và giữ `#indicator-modal` ẩn an toàn trong DOM cho `PaperPanel`).
+- Thay đổi:
+  - Nạp `<script src="js/qt_engine.js?v=qt-4"></script>` và `<script src="js/qt_mode.js?v=qt-4"></script>` ngay trước khối khởi tạo `DOMContentLoaded` trong `frontend/index.html`.
+  - Gỡ bỏ `IndicatorSettings` / `IndicatorCollection` / `IndicatorLibrary` khỏi luồng khởi tạo trong `frontend/js/app.js` & `frontend/index.html`, thay bằng `new QTMode({ charts, getActive, getMarkets, isReplay, requestNative, toast })` + `qtMode.mountTopbar($('btn-indicator'))` và cập nhật Command Palette (`Ctrl+K`) với `QT Mode · Bật / Tắt` & `QT Mode · Cài đặt (Quantaibay)`.
+- Kiểm chứng: `node --check frontend/js/qt_engine.js`, `node --check frontend/js/qt_mode.js`, `node --check frontend/js/app.js` pass; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`; toàn bộ bộ test `node --test tests/*.test.cjs` (bao gồm `tests/qt_engine.test.cjs`) đạt **150/150 passed** (`QuantaibayEngine cold M1`: ~`143ms` cho `6,991` nến × 3 mã + bảng AMDX 7 chu kỳ). Đã xác minh trực quan trên trình duyệt tại `http://localhost:3020` (0 lỗi Console).
+
+### 2026-11-18 — Nâng cấp QT Engine: Text SSMT nằm ngang ngay tâm đường SSMT dạng `Q1 Q2 + TF` & Hiển thị toàn bộ True Open xuyên khung thời gian
+- Yêu cầu: sửa `qt_engine` để (1) chữ của SSMT luôn bật sẵn, nằm ngang ngay chính giữa cùng với đường SSMT, (2) nội dung chữ SSMT hiển thị cặp quý + khung thời gian (ví dụ `Q1 Q2 5M`, `Q2 Q3 15M`, `Q3 Q4 1M`), và (3) toàn bộ các đường True Open (`TMCO`, `TAO/TLO/TNY AM/TNY PM`, `TDO`, `TWO`, `TMO`, `TQO`, `TYO`) luôn hiển thị trên biểu đồ thay vì bị khóa riêng `1M -> Micro`, `5M -> 90m`.
+- File đã sửa: `frontend/js/qt_engine.js`, `frontend/js/qt_mode.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `tests/qt_engine.test.cjs` (đồng bộ cả sang gói `qt-mode/qt_engine.js` & `qt-mode/qt_mode.js`).
+- Thay đổi:
+  - **SSMT inline horizontal centered text (`Q1 Q2 + TF`)**: bật mặc định `showSsmtTxt: true` (kèm migration `v2` trong `QTMode`), lưu cặp quý thực tế `q1` / `q2` của 2 phân đoạn tạo SSMT trong `computeRowSsmtAndCode` để hiển thị chuẩn `Q1 Q2 1M`, `Q1 Q2 5M`, `Q2 Q3 15M`..., và bổ sung chế độ `inlineOnLine` trong `DrawingModel.draw()` tự động tách khoảng hở đường SSMT bằng thuật toán Liang–Barsky quanh hộp chữ nằm ngang tại đúng tâm pixel `((a.x + b.x)/2, (a.y + b.y)/2)` kèm viền halo mảnh theo màu nền chart.
+  - **Multi-TF True Open luôn hiển thị**: thay vòng lặp đơn khung `chartRow` bằng bộ tính True Open đa khung cho cả 7 chu kỳ (`TMCO`, `TAO/TLO/TNY AM/TNY PM`, `TDO`, `TWO`, `TMO`, `TQO`, `TYO`) miễn có độ rộng `>= 2` nến trên khung hiện tại; giới hạn `trMaxKeep` độc lập theo từng bậc chu kỳ để `TMCO` không đẩy mất `TDO`/`TWO`/`TMO`/`TQO`/`TYO`; thêm `pinTrueOpenLabels()` giữ nhãn của các đường True Open khung lớn đang chạy qua màn hình luôn hiển thị rõ ở mép vùng nhìn khi cuộn.
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs tests/drawings.test.cjs tests/interaction_news.test.cjs` đạt **25/25 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`. Đã xác minh trực quan tại `http://localhost:3020`.
+
+### 2026-11-18 — Sửa lỗi đường SSMT trôi ngoài cây nến cuối khi đóng phiên / lệch khung & lỗi dồn chồng chữ SSMT ở cây nến đầu tiên (Bar 0)
+- Yêu cầu: sửa 2 lỗi trực quan trong ảnh chụp thực tế: (1) ở cuối ngày/khi nến trên khung đang xem (`5m`/đóng phiên) đã dừng nhưng vẫn hiện các đường SSMT bay lơ lửng ở vùng trống phía sau cây nến cuối; (2) ở mép trái biểu đồ (Bar 0) bị dồn chồng cả đống chữ SSMT từ các ngày trước đó, và chữ SSMT của nhiều TF đè lên nhau khi trùng đúng 2 râu nến.
+- File đã sửa: `frontend/js/qt_engine.js`, `frontend/index.html`, `tests/qt_engine.test.cjs` (đồng bộ sang `qt-mode/qt_engine.js`).
+- Thay đổi:
+  - Khóa cứng `cutoffTime = bars.at(-1).time + chartSec - 1` cho cả Live lẫn Replay để `getSeriesForRow` không bao giờ ghép nến `1m`/peer vượt quá cây nến cuối cùng thực sự có trên biểu đồ đang xem, đồng thời yêu cầu mọi mã active trong Triad đều đã có nến ở quý hiện tại (`prv !== null && cur !== null`) để tránh tạo SSMT ảo lúc vừa mở phiên 18:00 khi `YM1!` chưa kịp nhảy nến.
+  - Bỏ qua các SSMT lịch sử có điểm neo nằm ngoài phạm vi nến đã tải của biểu đồ (`p1End <= chartFirstT` hoặc `o.tx2 >= chartEndT`) và bắt buộc `x1 >= chartFirstT && x2 <= chartLastT && x2 > x1`, triệt tiêu hoàn toàn hiện tượng kẹp dồn 10 nhãn SSMT cũ lên cây nến đầu tiên (`Bar 0`).
+  - Khử trùng lặp theo đoạn thẳng `(x1, py1, x2, py2)` giữa các khung thời gian để khi 2 khung (ví dụ `1M` và `5M`) bắt trùng đúng 2 đỉnh/đáy thì nhãn khung lớn hơn hiển thị sạch sẽ thay vì in đè chữ lên nhau.
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs` đạt **6/6 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`. Đã xác minh trực quan trên `http://localhost:3020`.
+
+### 2026-11-18 — Tích hợp thuật toán Advanced PSP (`f_calc_psp_adaptive` & `barcolor` / Icons) từ `QT[✦]` vào QT Engine
+- Yêu cầu: thêm trọn bộ logic **Advanced PSP** từ script `QT[✦]` của Enigma vào `qt_engine.js` và `qt_mode.js`.
+- File đã sửa: `frontend/js/qt_engine.js`, `frontend/js/qt_mode.js`, `frontend/index.html`, `tests/qt_engine.test.cjs` (đồng bộ sang `qt-mode/qt_engine.js` & `qt-mode/qt_mode.js`).
+- Thay đổi:
+  - Port nguyên bản 1:1 `f_calc_psp_adaptive` sang `QuantaibayEngine.calculate`: đối chiếu hướng đóng/mở nến đồng bộ (`xt0 == time`, `yt0 == time`) giữa mã chính và 2 mã tương quan Triad/Dyad (`crack_1`, `crack_2`, bỏ qua nến Doji `m_dir == 0` / `c_dir == 0`, hỗ trợ `Show SMT 1 / 2` và `Inverse Peer 1 / 2`).
+  - Hỗ trợ đầy đủ các tham số gốc trong nhóm **Advanced PSP** của cả tab `Inputs` lẫn `Style & Colors`: `Enable Advanced PSP` (`true`), `Max PSP Markers` (`30`), `Show on Timeframes >=` (mặc định `15m` đúng chuẩn `psp_vis_limit = "15"`, có thể hạ xuống `1m`/`5m` tùy chọn), `Display Mode` (`Body Only`, `Icons Only`, `Both`), bộ icon (`●`, `✦`, `▲`/`▼`, `♦`, `♟`), cỡ chữ (`Tiny`..`Huge`/`Auto`) và 4 màu chuẩn độ trong suốt của Pine (`#3292e042`, `#d8393936`, `#2195f345`, `#dd455c47`).
+  - Nối `out.candleColors` vào `chart.indicatorCandleColors` + `chart.renderCandleData()` trong `QTMode.renderChart()` qua chữ ký băm FNV-1a (`O(n)`, chỉ cập nhật series khi màu nến PSP thực sự thay đổi, và tự xóa sạch khi tắt QT Mode).
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs tests/chart_settings.test.cjs` đạt **13/13 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`. Đã xác minh trực quan ở khung `15m` trên `http://localhost:3020`.
+
+### 2026-11-18 — Xoay nhãn chữ SSMT nằm chéo theo đúng góc nghiêng của đường SSMT
+- Yêu cầu: xoay chữ của SSMT (`Q1 Q2 1M`, `Q2 Q3 15M`...) nằm chéo trùng đúng góc nghiêng của chính đường SSMT ở giữa đoạn thẳng thay vì nằm ngang 0°.
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `tests/qt_engine.test.cjs`.
+- Thay đổi: trong nhánh `inlineOnLine` của `DrawingModel.draw()`, tính góc dốc thực tế trên màn hình `angle = Math.atan2(b.y - a.y, b.x - a.x)` (luôn đọc xuôi từ trái sang phải vì `a.x <= b.x`), cắt khoảng hở `tw + 2*padX` dọc theo chính phương của đoạn thẳng SSMT quanh tâm `(cx, cy)`, rồi `ctx.translate(cx, cy)` + `ctx.rotate(angle)` để vẽ chữ nằm chéo khít dọc theo đường SSMT mà không thò ngang sang thân nến kế bên.
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs tests/drawings.test.cjs` đạt **16/16 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`. Đã xác minh trực quan trên `http://localhost:3020`.
+
+### 2026-11-18 — Xóa bỏ hoàn toàn viền chữ `haloColor` của SSMT và hộp nền `labelBg` của True Open `On line`
+- Yêu cầu: xử lý hiện tượng chữ `Q1 Q2 1M` bị viền bóng mờ quanh ký tự và nhãn True Open (`TNY PM`, `TMCO`...) khi chọn `On line` bị đóng khung chữ nhật xám lệch màu nền biểu đồ.
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/qt_engine.js`, `frontend/js/qt_mode.js`, `frontend/index.html` (đồng bộ sang `qt-mode/qt_engine.js` & `qt-mode/qt_mode.js`).
+- Thay đổi: gỡ bỏ hoàn toàn `strokeText` (`haloColor`) khỏi nhãn SSMT và gỡ bỏ hoàn toàn hộp nền đặc `labelBg` khỏi nhãn True Open; khi True Open đặt ở chế độ `On line` (`Left` / `Mid` / `Right`), đường kẻ đứt tự động cắt khoảng trống quanh chữ (`inlinePos: 'left' | 'center' | 'right'`) để chữ hiển thị trong suốt 100%, sắc nét trên mọi màu nền hoặc theme sáng/tối.
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs tests/drawings.test.cjs` đạt **16/16 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`. Đã xác minh trực quan trên `http://localhost:3020`.
+
+### 2026-11-18 — Co giãn cỡ chữ SSMT linh hoạt theo chiều dài pixel & khoảng cách 2 SSMT để không bao giờ che mất đường SSMT ngắn
+- Yêu cầu: ở những chỗ 2 điểm neo SSMT quá gần nhau (đoạn SSMT ngắn) hoặc 2 đường SSMT nằm sát nhau, tự động thu nhỏ cỡ chữ linh hoạt và không cắt mất đường SSMT để luôn nhìn rõ cả dây SSMT lẫn chữ.
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/chart_engine.js`, `frontend/js/qt_engine.js`, `frontend/index.html`, `tests/qt_engine.test.cjs` (đồng bộ sang `qt-mode/qt_engine.js`).
+- Thay đổi:
+  - Tính cỡ chữ động trực tiếp theo độ dài pixel thực trên màn hình `segLen` và khoảng cách tới các nhãn SSMT lân cận (`chart._qtSsmtDrawn`) mỗi khung vẽ: với đường đủ dài, tự co chữ (`8px..11px`) để chữ không bao giờ chiếm quá `52%` chiều dài đường (luôn lộ ít nhất `48%` dây SSMT ở hai đầu).
+  - Với các đoạn SSMT ngắn (`fitSz < 8`, ví dụ 2–4 cây nến chỉ rộng `20px..60px`), giữ **nguyên vẹn 100% đường SSMT liền mạch không bị cắt hở**, thu chữ về mức gọn `7.5px..8px` và đẩy nhẹ theo phương vuông góc ra phía ngoài râu nến (trên đường với Bear SSMT, dưới đường với Bull SSMT, tự tránh nhau nếu có 2 SSMT ngắn kề sát).
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs tests/drawings.test.cjs` đạt **16/16 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`.
+
+### 2026-11-18 — Tự rà soát & tối ưu toàn diện hiển thị / UX của QT Engine & QT Mode (giữ nguyên 100% logic tính toán)
+- Yêu cầu: tự kiểm thử toàn bộ QT Engine, tự tìm các lỗi hiển thị/UI/UX còn tồn đọng và tối ưu giao diện cho dễ nhìn, thẩm mỹ, không rối mắt, **tuyệt đối không sửa logic tính toán** (`CẤM SỬA LOGIC`).
+- File đã sửa: `frontend/js/qt_engine.js`, `frontend/js/qt_mode.js`, `frontend/js/drawing_model.js`, `frontend/js/chart_engine.js`, `frontend/js/chart_settings.js`, `frontend/index.html`, `tests/qt_engine.test.cjs` (đồng bộ sang `qt-mode/qt_engine.js`, `qt-mode/qt_mode.js`, `qt-mode/qt_engine.test.cjs`).
+- Lỗi tự phát hiện & cải tiến đã xử lý (0 thay đổi công thức/logic chu kỳ, AMDX, SSMT, True Open hay PSP):
+  1. **Chống đè chữ True Open & lọc gọn nhãn lịch sử hẹp (`qt_engine.js`, `drawing_model.js`, `chart_engine.js`)**: sắp thứ tự ưu tiên vẽ True Open từ bậc lớn xuống nhỏ (`TYO -> TQO -> TMO -> TWO -> TDO -> 90m -> TMCO`), kiểm tra hộp bao 2D (`chart._qtTrBoxes`) để tự trượt nhãn bậc thấp sang ngang (`TDO` và `TMCO` hoặc `TWO` và `TDO` trùng giờ/giá nằm cạnh nhau gọn gàng, không bao giờ in đè chữ lên nhau); làm dịu nhẹ độ đậm của các đường micro/90m đã đóng lịch sử và tự ẩn chữ của các đoạn lịch sử quá hẹp (`< 34px`) khi zoom xa (trong khi các mức True Open đang active luôn hiện nhãn đầy đủ).
+  2. **Chống đè chữ SSMT cắt nhau / kề mép & chống đè Q-Labels khi zoom xa (`drawing_model.js`)**: khi 2 đường SSMT dài giao nhau ở trung điểm, nhãn thứ hai tự trượt dọc theo chính đường SSMT của nó (`t = 0.35 / 0.65`) thay vì đè lên trung điểm; các đoạn SSMT ngắn sát mép màn hình được kẹp biên trước khi kiểm tra va chạm (và tự lược bỏ nhãn trùng lặp siêu ngắn `< 22px` khi dồn cụm ở chế độ `showAll`); các nhãn `A / M / D / X` ở đáy biểu đồ (`chart._qtQBoxes`) tự rút gọn phụ đề hoặc lược bớt nhãn trung gian bị chèn ép khi zoom xa hàng trăm nến; sửa chiều rộng vùng cắt phải theo đúng `priceScale('right').width()` thực tế để đường kẻ không bao giờ tràn vào cột giá.
+  3. **Tự động tương phản trên nền tối (`isDarkCanvas` trong `qt_engine.js` & `chart_settings.js`)**: khi người dùng đổi màu nền biểu đồ sang tối (`#0b0d11`, `#131722`, `#1e222d`...), các màu mặc định tối (`#000000ff` của SSMT, chữ xám đậm, bảng Cycle sáng) tự động chuyển sang bảng màu tương phản sáng rõ trên nền tối mà vẫn giữ nguyên 100% bất kỳ màu nào người dùng đã tự chỉnh tay; `ChartAppearance.apply` tự gọi `engine.runner.schedule()` ngay khi đổi màu nền `bg`.
+  4. **Sửa lỗi rò rỉ trạng thái khi bấm `Escape` & nâng cấp UI Cycle Table + QT Settings (`qt_mode.js`)**: bắt phím `Escape` ở pha capture để đóng ColorPicker trước rồi gọi `cancelSettings()` hoàn trả sạch `_previewSettings` (tránh lỗi `closeModal` toàn cục làm kẹt bản nháp); gắn `position: fixed` + `ResizeObserver` cho bảng chọn màu để mở rộng HSV (`+`) không bị cắt khuất màn hình; thiết kế lại bảng `Cycle | Phase` dạng thẻ kính bo góc sắc nét và bổ sung thanh tìm kiếm ghim cố định kèm 7 chip lọc nhóm nhanh (`Tất cả`, `General`, `SSMT`, `Cycles & Q`, `True Open`, `PSP`, `Cycle Table`).
+- Kiểm chứng: toàn bộ `node --test tests/*.test.cjs` (bao gồm **9/9** bài test chuyên sâu trong `tests/qt_engine.test.cjs` và **9/9** bài trong `tests/drawings.test.cjs`) cùng **40/40** bài test Python `unittest` đều PASS 100%; 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`; đã kiểm thử trực quan trên trình duyệt tại `http://localhost:3020` qua các khung `15m`, `1m`, chế độ nền tối `#1e222d` và hộp thoại QT Settings + phím `Escape` (0 lỗi Console).
+
+### 2026-11-18 — Tách cài đặt riêng độc lập cho từng mức True Open (`TMCO`, `TAO`, `TLO`, `TNY AM`, `TNY PM`, `TDO`, `TWO`, `TMO`, `TQO`, `TYO`)
+- Yêu cầu: mỗi đường True Open cần có bộ setting riêng biệt đầy đủ (bật/tắt, màu đường, kiểu đường `Solid / Dashed / Dotted`, độ dày, số chu kỳ giữ lại, hiện/ẩn chữ, màu chữ riêng, vị trí ngang/dọc, cỡ chữ).
+- File đã sửa: `frontend/js/qt_engine.js`, `frontend/js/qt_mode.js`, `frontend/index.html`, `tests/qt_engine.test.cjs` (đồng bộ sang `qt-mode/qt_engine.js`, `qt-mode/qt_mode.js`, `qt-mode/qt_engine.test.cjs`).
+- Thay đổi:
+  - Mở rộng `TRUE_OPEN_ITEMS` thành **10 mức True Open độc lập** (tách riêng cả 4 phiên 90m `TAO`, `TLO`, `TNY AM`, `TNY PM` cùng với `TMCO`, `TDO`, `TWO`, `TMO`, `TQO`, `TYO`), mỗi mức có đầy đủ 10 thuộc tính riêng: `Enable`, `Line Color` (`_col`), `Line Style` (`Solid` / `Dashed` / `Dotted`, `_st`), `Line Width` (`1px..5px`, `_wid`), `Max Keep` (`1..100`, `_keep`), `Show Label` (`_lbl`), `Text Color` (`_txt`), `Label H-Pos` (`Left` / `Mid` / `Right`, `_pos`), `Label V-Pos` (`Above` / `On line` / `Below`, `_vert`), và `Label Size` (`Tiny`..`Large`, `_sz`).
+  - Tương thích ngược hoàn toàn (`v3` storage migration + fallback `rawIn.trCol / tr90 / trStyleIn...`), tự động đồng bộ màu chữ theo màu đường khi hai màu đang khớp nhau (vẫn cho phép tách màu chữ riêng khi bấm vào ô màu chữ).
+  - Thiết kế giao diện thẻ `.qt-to-card` gọn gàng 2 hàng cho từng mức True Open kèm thanh **Đồng bộ nhanh** (`Bật hết`, `Tắt hết`, đổi nhanh màu/kiểu/vị trí chung cho cả 10 đường) trong cả tab `Inputs -> True Open` lẫn `Style & Colors`.
+- Kiểm chứng: `node --test tests/qt_engine.test.cjs tests/drawings.test.cjs` đạt **19/19 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`.
+
+### 2026-11-18 — Thiết kế lại toàn bộ Cảnh báo giá (Alerts Hub + Modal + Nhãn trên chart) & Sửa lệch trục thanh tab cạnh phải (`#right-sidebar`)
+- Yêu cầu: thiết kế lại phần Alerts (cả ngăn bên phải lẫn hộp thoại đặt cảnh báo) cho hiện đại, cân đối, không bị trống trải, đồng thời sửa lỗi thanh tab 5 nút cạnh phải (`#right-sidebar`) bị lệch ngang nhấp nhô và phình đè sang panel.
+- File đã sửa: `frontend/js/desktop_shell.js`, `frontend/js/app.js`, `frontend/js/price_alerts.js`, `frontend/htmlcss.css`, `frontend/index.html`.
+- Thay đổi:
+  1. **Sửa thẳng trục tuyệt đối cho thanh tab cạnh phải (`#right-sidebar` & `#terminal-edge-dock`)**: gỡ hiệu ứng phóng lệch ngang `installDockMotion(rightDock, ...)` và xung đột `align-items: flex-end` / `padding-inline` của `.edge-handle`; khóa đồng bộ cả 5 nút (`Biểu đồ`, `Theo dõi`, `Cảnh báo`, `Lịch`, `Nhạc`) đúng kích thước `40×40px` căn tâm thẳng tắp trên một trục dọc `52px`, giữ thanh tab hiển thị ổn định ngay cạnh panel khi đang mở và ẩn tooltip thừa đè lên panel, kèm huy hiệu đếm số cảnh báo đang canh trên icon chuông/đồng hồ.
+  2. **Thiết kế lại Alerts Hub (`DesktopShell.renderAlerts` & `#desktop-panel`)**:
+     - Ngăn `#desktop-panel` tự ôm gọn chiều cao theo nội dung (`height: auto` + `max-height`) thay vì kéo dài thành mảng trắng trống rỗng.
+     - Tích hợp **trình đặt cảnh báo nhanh ngay trong tab** (`.alerts-composer`): hiển thị mã đang xem + giá live bấm-để-điền, 3 nút chọn điều kiện trực quan (`⇅ Cắt qua`, `↗ Vượt ≥`, `↘ Thấp ≤`), ô nhập giá + nút `+ Đặt báo`, và dải chip cộng/trừ nhanh (`-50`, `-20`, `-10`, `Hiện tại`, `+10`, `+20`, `+50`).
+     - Bổ sung thanh lọc (`Tất cả` / `Đang canh` / `Đã khớp` + nút `Dọn đã khớp`), thẻ cảnh báo có vạch màu phân loại theo hướng, khoảng cách điểm thời gian thực (`±pts`), nút bật canh lại (`↻`) và thẻ trạng thái trống gọn đẹp.
+  3. **Nâng cấp `#alert-modal` & nhãn Alert trên biểu đồ (`price_alerts.js`)**: thêm dải chip cộng/trừ nhanh ngay trong `#alert-modal`, hiển thị giá live cạnh tên mã, và vẽ nhãn cảnh báo trên biểu đồ dưới dạng pill bo góc sắc nét (`⇅ / ↗ / ↘ + giá`) thay cho chữ Arial trần.
+- Kiểm chứng: `node --test tests/desktop_shell.test.cjs tests/interaction_news.test.cjs tests/qt_engine.test.cjs tests/drawings.test.cjs` đạt **33/33 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`.
+
+### 2026-11-18 — Sửa lỗi chồng đè giữa các tab cạnh phải (`Watchlist / Alerts` ↔ `Calendar / Music`) & Tự động đóng tab khi click chuột ra ngoài
+- Yêu cầu: sửa lỗi khi mở `Music` / `Calendar` đè chồng lên `Watchlist` / `Alerts` đang mở ở dưới (và sáng cùng lúc nhiều icon trên thanh phải), đồng thời tự động tắt tab đang mở khi người dùng click chuột ra ngoài.
+- File đã sửa: `frontend/js/desktop_shell.js`, `frontend/js/terminal_companions.js`, `frontend/js/app.js`, `frontend/htmlcss.css`, `frontend/index.html`, `tests/desktop_shell.test.cjs`.
+- Thay đổi:
+  - Liên kết hai chiều `desktop.companions` ↔ `features.companions.desktop`: mở bất kỳ tab nào trong nhóm `Watchlist / Alerts / Objects` sẽ tự đóng ngay `Calendar / Music` (chế độ ngăn neo) và ngược lại; đồng bộ trạng thái nút `.active` trên `#right-sidebar` để tại mọi thời điểm chỉ sáng đúng 1 tab đang mở (hoặc sáng nút `Biểu đồ` khi tất cả ngăn đã đóng), đồng thời căn chuẩn vị trí `right: 72px` + chiều cao gọn theo nội dung cho `#music-panel` và `#calendar-panel` để không bao giờ chồm đè vào thanh tab phải.
+  - Thêm listener `pointerdown` toàn cục trong `app.js`: khi đang mở bất kỳ ngăn cạnh phải nào (`#desktop-panel` hoặc `.companion-panel` dạng neo — không ảnh hưởng trình phát thu nhỏ `.music-mini`), click ra vùng biểu đồ, topbar hoặc thanh công cụ trái sẽ tự động đóng ngăn ngay lập tức.
+- Kiểm chứng: `node --test tests/desktop_shell.test.cjs tests/interaction_news.test.cjs tests/qt_engine.test.cjs tests/drawings.test.cjs` đạt **34/34 passed**; toàn bộ 37 khối `<script>` inline trong `frontend/index.html` pass `node --check`.
