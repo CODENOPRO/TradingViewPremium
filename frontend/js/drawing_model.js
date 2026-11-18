@@ -321,7 +321,8 @@ const DrawingModel = (() => {
     if(d.extend === 'left' || d.extend === 'both') left=0;
     if(d.extend === 'right' || d.extend === 'both') right=width;
     ctx.save();
-    ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;ctx.setLineDash(dash(d.lineStyle));
+    const crispW = w => (Number(w) <= 1 ? 0.85 : Number(w));
+    ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=crispW(d.width);ctx.setLineDash(dash(d.lineStyle));
     const line=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
     if(d.type==='brush'){
       const points=smoothBrushPoints((d.points||[]).map(p=>point(chart,p)), d.smooth??5);
@@ -521,7 +522,7 @@ const DrawingModel = (() => {
     else if(d.type === 'box') {
       if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}
       if(d.strokeOpacity>0&&d.width>0&&d.borderColor!=='transparent')ctx.strokeRect(left,top,right-left,bottom-top);
-      if(d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=d.middleLine.width;ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
+      if(d.middleLine.enabled){ctx.strokeStyle=rgba(d.middleLine.color,d.middleLine.opacity);ctx.lineWidth=crispW(d.middleLine.width);ctx.setLineDash(dash(d.middleLine.style));line(left,(top+bottom)/2,right,(top+bottom)/2);}
     } else if(d.type === 'fib') {
       const levels=(d.fibLevels||cloneFibLevels()).filter(l=>l&&l.visible!==false&&Number.isFinite(Number(l.coeff))).map(l=>({coeff:Number(l.coeff),color:l.color||d.borderColor||'#787b86'})).sort((a,b)=>a.coeff-b.coeff);
       const basePrice=d.reverse?d.p1.price:d.p2.price,endPrice=d.reverse?d.p2.price:d.p1.price;
@@ -538,7 +539,7 @@ const DrawingModel = (() => {
         const tl=d.fibTrendline||{};
         ctx.save();
         ctx.strokeStyle=rgba(tl.color||'#787b86',tl.opacity??100);
-        ctx.lineWidth=tl.width||1;
+        ctx.lineWidth=crispW(tl.width||1);
         ctx.setLineDash(dash(tl.style||'dashed'));
         line(g.a.x,g.a.y,g.b.x,g.b.y);
         ctx.restore();
@@ -561,7 +562,7 @@ const DrawingModel = (() => {
         else{ctx.textAlign='right';labelX=left-8;}
       }
       const labelOffY=vAlign==='top'?-3:vAlign==='bottom'?3:0;
-      ctx.lineWidth=d.width||1;
+      ctx.lineWidth=crispW(d.width||1);
       ctx.setLineDash(dash(d.lineStyle||'solid'));
       for(const lv of pts){
         ctx.strokeStyle=rgba(lv.color,d.strokeOpacity??100);
@@ -628,7 +629,7 @@ const DrawingModel = (() => {
           ctx.restore();
         }
       }
-      ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
+      ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=crispW(d.width);line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
       const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
       if(d.alwaysShowStats===true||isSelected||d.isTemp){
         const posSize=d.textStyle?.size||11,posTextCol=d.textStyle?.color||'#ffffff';

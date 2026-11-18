@@ -9419,3 +9419,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — Drawing Tool Settings & Toolbar TV Parity**:
   - Synced `.drawing-toolbar`, `.drawing-grip`, `.drawing-more`, `.tv-tb-popover.tv-tb-list-pop`, `.tv-style-popover`, `.tv-template-menu`, and `#drawing-settings .drawing-dialog` in `frontend/css/fixed_shell.css` and `frontend/index.html` to TradingView Desktop `#1e222d` surface, `6px` radius, and `#2a2e39` drag-grip pill (removing glass/brownish tint on `.tv-template-menu`).
   - Verified `node --test tests/*.test.cjs` (169/169 passed) and Playwright Edge (`PAGEERRORS: 0`).
+- **2026-11-19 — Crisp 1px Drawing Stroke**:
+  - Updated `frontend/js/drawing_model.js` and `frontend/index.html` with `crispW(w)` (`0.85` canvas stroke width when `w <= 1`) for trend lines, horizontal/vertical lines, box/middle lines, fib trendline/levels, and position entry lines so `1px` strokes render thin and crisp without anti-aliased heaviness.
+  - Verified `node --test tests/*.test.cjs` (169/169 passed).
