@@ -124,3 +124,11 @@ test('Music docked panel removes Hide video button, Open original link, and clip
  assert.match(html,/#music-panel:not\(\.music-mini\):is\(\[data-provider="youtube"\],\[data-provider="tiktok"\]\)\s+\.music-player-host/);
  assert.match(css,/#music-panel\.music-mini:is\(\[data-provider="youtube"\],\[data-provider="tiktok"\]\):has\(\.music-player-host iframe\)\s+\.music-player-host/);
 });
+test('YouTube RD Mix playlists strip unembeddable list=RD... and fall back to playing the video',async()=>{
+ const fs=require('node:fs');
+ const js=fs.readFileSync('frontend/js/terminal_companions.js','utf8');
+ assert.match(js,/isMixList=!!\s*\(link\.list&&\/\^RD\/i\.test\(link\.list\)\)/);
+ const parsed=TerminalMusicLinks.parse('https://www.youtube.com/watch?v=FjJzIYTGttg&list=RDMMFjJzIYTGttg&index=1');
+ assert.equal(parsed.id,'FjJzIYTGttg');
+ assert.equal(parsed.list,'RDMMFjJzIYTGttg');
+});

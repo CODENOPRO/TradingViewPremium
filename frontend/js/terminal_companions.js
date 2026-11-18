@@ -1060,18 +1060,25 @@ class TerminalCompanions{
       return;
     }
     const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1',controls:'0',rel:'0',modestbranding:'1',iv_load_policy:'3'});
-    if(link.list){params.set('listType','playlist');params.set('list',link.list);}
-    const frame=this.frame('https://www.youtube.com/embed/'+(link.id||'videoseries')+'?'+params,240);
+    const isMixList=!!(link.list&&/^RD/i.test(link.list));
+    const mixVideoId=!link.id&&isMixList?link.list.match(/^RD(?:MM|EM|AMVM|CL|CM)?([\w-]{11})$/i)?.[1]||null:null;
+    const videoId=link.id||mixVideoId;
+    const embedList=link.list&&!isMixList?link.list:null;
+    if(embedList){
+      if(!videoId)params.set('listType','playlist');
+      params.set('list',embedList);
+    }
+    const frame=this.frame('https://www.youtube.com/embed/'+(videoId||'videoseries')+'?'+params,240);
     await this.script('https://www.youtube.com/iframe_api',()=>typeof window.YT?.Player==='function');
     if(epoch!==this.epoch)return;
     this.youtube=new window.YT.Player(frame,{
       events:{
-        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent='';}},
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!embedList);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';}},
         onStateChange:({data})=>{
           if(epoch!==this.epoch)return;
           this.setPlaying(data===1,data===1||data===3);
           if(data===1){
-            this.musicNotice.textContent='';
+            this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';
             this.youtubeStarted=true;
             this.panels.music.classList.add('music-shield-active');
             if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
@@ -1079,6 +1086,10 @@ class TerminalCompanions{
         },
         onError:({data})=>{
           if(epoch!==this.epoch)return;
+          if(embedList&&videoId){
+            this.loadYouTube({provider:'youtube',id:videoId,list:null,url:'https://www.youtube.com/watch?v='+videoId},epoch);
+            return;
+          }
           this.setPlaying(false);
           this.setCommands(false);
           this.musicNotice.textContent=data===153?'YouTube không nhận được trang nhúng. Hãy mở link gốc hoặc dùng bản localhost.':'Video này không phát được trong trình phát nhúng. Hãy mở link gốc.';
