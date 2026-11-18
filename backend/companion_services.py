@@ -362,9 +362,12 @@ def youtube_mix_videos(url):
             raw = response.read(2_500_000).decode('utf-8', errors='replace')
     except (HTTPError, TimeoutError, URLError, HTTPException) as exc:
         raise MusicProviderError('Không tải được danh sách YouTube Mix.', 502) from exc
-    ids = list(dict.fromkeys(re.findall(r'"playlistPanelVideoRenderer":\{[^}]*?"videoId":"([A-Za-z0-9_-]{11})"', raw)))
-    if not ids:
-        ids = list(dict.fromkeys(re.findall(r'"playlistPanelVideoRenderer":\{.*?"videoId":"([A-Za-z0-9_-]{11})"', raw)))
+    ids = list(dict.fromkeys(re.findall(r'"videoId":"([A-Za-z0-9_-]{11})"[^}]*"playlistId":"RD', raw)))
+    if len(ids) <= 1:
+        ids = list(dict.fromkeys(re.findall(r'"playlistPanelVideoRenderer":\{[^}]*?"videoId":"([A-Za-z0-9_-]{11})"', raw)))
+    if len(ids) <= 1:
+        ids = list(dict.fromkeys(re.findall(
+            r'"watchEndpoint":\{"videoId":"([A-Za-z0-9_-]{11})","playlistId":"' + re.escape(list_id) + r'"', raw)))
     result = {'videos': ids[:50]}
     if ids:
         with _metadata_lock:
