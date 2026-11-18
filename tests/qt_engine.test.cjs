@@ -577,3 +577,33 @@ test('Unified True Open settings + modular QT split + simplified QT Settings UI 
   });
   assert.equal(outLive2.drawings.find(d => d._qtSsmt && d.lineStyle === 'solid').p2.price, 118);
 });
+
+test('HTF chart hides LTF SSMTs (e.g. 15m hides 1m and 5m SSMTs while keeping 15m+ SSMTs)', () => {
+  const mhPath = path.resolve(__dirname, '../backend/market_history.json');
+  const htfPath = path.resolve(__dirname, '../backend/market_history_htf.json');
+  const metaPath = path.resolve(__dirname, '../backend/market_metadata.json');
+  if (!fs.existsSync(mhPath)) return;
+
+  const mh = JSON.parse(fs.readFileSync(mhPath, 'utf8'));
+  const htf = JSON.parse(fs.readFileSync(htfPath, 'utf8'));
+  const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  const markets = {};
+  for (const sym of ['NQ1!', 'ES1!', 'YM1!']) {
+    markets[sym] = { '1m': mh[sym] || [], metadata: meta[sym] || { timezone: 'America/Chicago', session: '1700-1600' } };
+    for (const [tf, bySym] of Object.entries(htf)) {
+      if (bySym && bySym[sym]) markets[sym][tf] = bySym[sym];
+    }
+  }
+
+  const out15m = QuantaibayEngine.calculate(markets['NQ1!']['15m'], {
+    symbol: 'NQ1!',
+    timeframe: '15m',
+    timeframeSeconds: 900,
+    markets,
+    settings: { showAll: true }
+  });
+  const ssmts15m = out15m.drawings.filter(d => d._qtSsmt);
+  assert.ok(ssmts15m.length > 0, 'Expected 15m+ SSMTs on 15m chart');
+  assert.equal(ssmts15m.some(d => d._qtTier < 2), false, '15m chart must hide 1m (_qtTier=0) and 5m (_qtTier=1) SSMTs');
+  assert.ok(ssmts15m.some(d => d._qtTier >= 2), '15m chart must keep 15m+ SSMTs');
+});

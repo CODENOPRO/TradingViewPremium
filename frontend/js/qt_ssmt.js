@@ -315,7 +315,7 @@ const QTSsmt = (() => {
     bars, chartSec, chartRow, triad, markets, sessionMode, cutoffTime, darkBg, s, evalCycle
   }) {
     const rowOn = [s.en0, s.en1, s.en2, s.en3, s.en4, s.en5, s.en6];
-    const rowDr = rowOn.map((on, i) => !!(s.showSsmt && on && (s.showAll || i === chartRow)));
+    const rowDr = rowOn.map((on, i) => !!(s.showSsmt && on && (i === chartRow || (s.showAll && ROW_SEC[i] >= chartSec))));
     const rowCodes = new Array(7).fill(null);
 
     const cBull = themeColor(s, 'cBull', darkBg, '#000000');
