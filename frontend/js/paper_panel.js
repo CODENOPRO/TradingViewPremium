@@ -133,29 +133,51 @@ class PaperPanel {
    this.placeFromChart(chart,{symbol:live.symbol,side,type:'market',qty:quantity*2});
   });
  }
- playExecution(settings){
+ executionKind(event){
+  if(!event||event.event==='filled')return 'entry';
+  if(event.reason==='stop-loss')return 'sl';
+  if(event.reason==='take-profit')return 'tp';
+  return Number(event.pnl)<0?'sl':'tp';
+ }
+ playExecution(settings,kind='entry'){
   if(!settings.executionSound||!settings.executionVolume)return;
-  const Audio=window.AudioContext||window.webkitAudioContext;
-  if(!Audio)return;
-  const audio=this.executionAudio||=new Audio();
-  if(audio.state!=='running'){audio.resume().then(()=>{if(audio.state==='running')this.playExecution(settings);}).catch(()=>{});return;}
-  const notes=settings.executionTone==='Single Chime'?[659]:[523,659,784];
-  const volume=settings.executionVolume/100*.12;
-  notes.forEach((frequency,index)=>{
-   const oscillator=audio.createOscillator(),gain=audio.createGain(),when=audio.currentTime+index*.085;
-   oscillator.frequency.value=frequency;
-   oscillator.connect(gain);gain.connect(audio.destination);
-   gain.gain.setValueAtTime(volume,when);
-   gain.gain.exponentialRampToValueAtTime(.001,when+.22);
-   oscillator.start(when);oscillator.stop(when+.22);
-  });
+  const tone=settings.executionTone;
+  if(tone==='3 Notes Reverb'||tone==='Single Chime'){
+   const AudioCtx=window.AudioContext||window.webkitAudioContext;
+   if(!AudioCtx)return;
+   const audio=this.executionAudio||=new AudioCtx();
+   if(audio.state!=='running'){audio.resume().then(()=>{if(audio.state==='running')this.playExecution(settings,kind);}).catch(()=>{});return;}
+   const notes=tone==='Single Chime'?[659]:[523,659,784];
+   const volume=settings.executionVolume/100*.12;
+   notes.forEach((frequency,index)=>{
+    const oscillator=audio.createOscillator(),gain=audio.createGain(),when=audio.currentTime+index*.085;
+    oscillator.frequency.value=frequency;
+    oscillator.connect(gain);gain.connect(audio.destination);
+    gain.gain.setValueAtTime(volume,when);
+    gain.gain.exponentialRampToValueAtTime(.001,when+.22);
+    oscillator.start(when);oscillator.stop(when+.22);
+   });
+   return;
+  }
+  if(typeof Audio!=='function')return;
+  const src=`assets/sounds/${kind==='sl'?'sl':kind==='tp'?'tp':'entry'}.mp3`;
+  const clip=new Audio(src);
+  clip.volume=Math.max(0,Math.min(1,(settings.executionVolume??60)/100));
+  clip.play().catch(()=>{});
  }
  unlockExecutionAudio(settings){
   if(!settings.executionSound)return;
-  const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
-  const audio=this.executionAudio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(AudioCtx){const audio=this.executionAudio||=new AudioCtx();if(audio.state==='suspended')audio.resume().catch(()=>{});}
+  if(typeof Audio==='function'&&!this.executionSfxCache){
+   this.executionSfxCache=['entry','tp','sl'].map(k=>{const a=new Audio(`assets/sounds/${k}.mp3`);a.preload='auto';return a;});
+  }
  }
- previewExecution(settings){this.playExecution({...settings,executionSound:true});}
+ previewExecution(settings){
+  const kinds=['entry','tp','sl'];
+  const i=this._previewKindIdx=(this._previewKindIdx??-1)+1;
+  this.playExecution({...settings,executionSound:true},kinds[i%kinds.length]);
+ }
  notifyExecutions(account){
   const prior=this.executionCursor;
   const history=account?.history||[];
@@ -167,7 +189,7 @@ class PaperPanel {
   const executions=latest.filter(item=>item.event==='filled'||item.event==='closed'&&item.reason!=='offset');
   if(executions.length){
    const event=executions.at(-1),chart=this.charts.find(item=>item.symbol===event.symbol)||this.getActive(),settings=chart.appearance||{};
-   this.playExecution(settings);
+   this.playExecution(settings,this.executionKind(event));
    if(!settings.rejectionOnly)this.toast?.(event.symbol+(event.event==='filled'?' · Paper order filled':' · Paper position closed'));
   }
   for(const event of latest.filter(item=>item.event==='rejected'))this.toast?.(event.reason,'alert');

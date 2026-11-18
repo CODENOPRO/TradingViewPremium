@@ -17,7 +17,7 @@ const ChartAppearance = {
       dayOfWeek:false,dateFormat:'dd MMM yy',hourFormat:'24-hours',keepLeft:false,
       backgroundMode:'Solid',bgBottom:colors.bg||'#c2baae',verticalGrid:true,horizontalGrid:true,verticalGridColor:colors.grid||'#a8a194',horizontalGridColor:colors.grid||'#a8a194',verticalGridStyle:1,horizontalGridStyle:1,
       separator:'#655f58',crosshair:'#434651',crosshairStyle:2,watermark:'Hidden',watermarkColor:'#696159',fontSize:10,scaleLines:'#a8a194',navigation:'Visible on mouse over',paneButtons:'Visible on mouse over',topMargin:10,bottomMargin:15,rightMargin:12,
-      oneClick:true,executionSound:false,executionVolume:60,executionTone:'3 Notes Reverb',rejectionOnly:false,reversePosition:false,projectOrder:false,positions:true,pnl:true,positionPnl:true,bracketPnl:true,pnlUnit:'Money',bracketValue:'Money',executionMarks:true,executionLabels:true,snapshotOrders:true,extendedLines:true,alignment:'Right',alertLines:true,alertColor:'#f23645',activeAlerts:true,hideToasts:true,sessionBreaks:false,sessionColor:'#2962ff',sessionStyle:2};
+      oneClick:true,executionSound:true,executionVolume:60,executionTone:'SFX (Gunshot / TP / SL)',rejectionOnly:false,reversePosition:false,projectOrder:false,positions:true,pnl:true,positionPnl:true,bracketPnl:true,pnlUnit:'Money',bracketValue:'Money',executionMarks:true,executionLabels:true,snapshotOrders:true,extendedLines:true,alignment:'Right',alertLines:true,alertColor:'#f23645',activeAlerts:true,hideToasts:true,sessionBreaks:false,sessionColor:'#2962ff',sessionStyle:2};
   },
   candleData(engine,bars) {
     const s=engine.appearance;if(!s)return bars;
@@ -461,7 +461,7 @@ class ChartSettings {
       const soundRow=r('Execution sound','executionSound');
       soundRow.querySelector('#chart-set-executionSound').addEventListener('change',()=>this.onSoundUnlock({...this.draft,executionSound:true}));
       r('Execution volume','executionVolume','range',{min:0,max:100,suffix:'%'});
-      const toneRow=r('Execution tone','executionTone','select',{options:['3 Notes Reverb','Single Chime']});
+      const toneRow=r('Execution tone','executionTone','select',{options:['SFX (Gunshot / TP / SL)','3 Notes Reverb','Single Chime']});
       const preview=document.createElement('button');preview.type='button';preview.className='btn-secondary chart-sound-preview';preview.textContent=ui('Test sound');preview.onclick=()=>this.onSoundPreview({...this.draft});
       toneRow.querySelector('.chart-setting-controls').appendChild(preview);
       r('Show only rejection notifications','rejectionOnly');
