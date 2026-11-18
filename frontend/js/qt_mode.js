@@ -28,6 +28,7 @@ class QTMode {
     this.chartHidden = new Set(Array.isArray(saved.chartHidden) ? saved.chartHidden : []);
 
     this._raf = 0;
+    this._tickTimer = 0;
     this._dirtyCharts = new Set();
     this._chartMeta = new WeakMap();
     this.palette = null;
@@ -481,6 +482,7 @@ class QTMode {
   }
 
   scheduleAll() {
+    this._settingsRev = (this._settingsRev || 0) + 1;
     for (const chart of this.charts) {
       if (!chart.container.hidden) this._dirtyCharts.add(chart);
     }
@@ -497,6 +499,14 @@ class QTMode {
     if (this._raf) return;
     const run = () => {
       this._raf = 0;
+      if (typeof requestAnimationFrame === 'function') {
+        const next = this._dirtyCharts.values().next().value;
+        if (!next) return;
+        this._dirtyCharts.delete(next);
+        this.renderChart(next);
+        if (this._dirtyCharts.size) this._flushSchedule();
+        return;
+      }
       const batch = [...this._dirtyCharts];
       this._dirtyCharts.clear();
       for (const chart of batch) this.renderChart(chart);
@@ -531,20 +541,37 @@ class QTMode {
 
     const rawMarkets = this.getMarkets();
     const marketsObj = rawMarkets instanceof Map ? Object.fromEntries(rawMarkets) : (rawMarkets || {});
+    const scopeKey = `${chart.symbol}|${chart.currentTimeframe}|${chart.bars.length}|${!!(chart.replayMode || this.isReplay())}|${this._settingsRev || 0}|${this._previewSettings ? 1 : 0}`;
+    const nowMs = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (!this._previewSettings && meta.lastScope === scopeKey && meta.lastCalcAt && (nowMs - meta.lastCalcAt) < 1000) {
+      if (!meta.deferredTimer && typeof setTimeout === 'function') {
+        meta.deferredTimer = setTimeout(() => {
+          meta.deferredTimer = 0;
+          this.schedule(chart);
+        }, Math.max(50, 1000 - (nowMs - meta.lastCalcAt)));
+      }
+      return;
+    }
+    if (meta.deferredTimer) { clearTimeout(meta.deferredTimer); meta.deferredTimer = 0; }
+    meta.lastScope = scopeKey;
+    meta.lastCalcAt = nowMs;
+
     const logicalRange = chart.chart.timeScale().getVisibleLogicalRange();
     const chartBg = chart.appearance?.bg || chart.appearance?.background || chart.config?.bg || '#c2baae';
     const sessionMode = chart.appearance?.sessionMode || 'ETH';
 
-    if ((s.showCycTbl || s.trTQO || (s.showSsmt && s.en5 && (s.showAll || chart.currentTimeframe === '6h'))) && !marketsObj[chart.symbol]?.['6h']?.length) {
-      this.requestNative({ symbol: chart.symbol, timeframe: '6h' });
-    }
-    if ((s.showCycTbl || s.trTYO || (s.showSsmt && s.en6 && (s.showAll || chart.currentTimeframe === 'D'))) && !marketsObj[chart.symbol]?.D?.length) {
-      this.requestNative({ symbol: chart.symbol, timeframe: 'D' });
-    }
-    if (s.usePsp && chart.tfSeconds >= QuantaibayEngine.tfToSeconds(s.pspVisLimit) && chart.currentTimeframe !== '1m') {
-      for (const peer of QuantaibayEngine.resolveTriad(chart.symbol, s).slice(1)) {
-        if (!marketsObj[peer]?.[chart.currentTimeframe]?.length) {
-          this.requestNative({ symbol: peer, timeframe: chart.currentTimeframe });
+    if (marketsObj[chart.symbol]?.['1m']?.length) {
+      if ((s.showCycTbl || s.trTQO || (s.showSsmt && s.en5 && (s.showAll || chart.currentTimeframe === '6h'))) && !marketsObj[chart.symbol]?.['6h']?.length) {
+        this.requestNative({ symbol: chart.symbol, timeframe: '6h' });
+      }
+      if ((s.showCycTbl || s.trTYO || (s.showSsmt && s.en6 && (s.showAll || chart.currentTimeframe === 'D'))) && !marketsObj[chart.symbol]?.D?.length) {
+        this.requestNative({ symbol: chart.symbol, timeframe: 'D' });
+      }
+      if (s.usePsp && chart.tfSeconds >= QuantaibayEngine.tfToSeconds(s.pspVisLimit) && chart.currentTimeframe !== '1m') {
+        for (const peer of QuantaibayEngine.resolveTriad(chart.symbol, s).slice(1)) {
+          if (!marketsObj[peer]?.[chart.currentTimeframe]?.length) {
+            this.requestNative({ symbol: peer, timeframe: chart.currentTimeframe });
+          }
         }
       }
     }
