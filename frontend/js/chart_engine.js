@@ -316,10 +316,12 @@ class ChartEngine {
   resizeOverlay() {
     const rect = this.container.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
-    this.overlayCanvas.width = rect.width * dpr;
-    this.overlayCanvas.height = rect.height * dpr;
+    const w = Math.max(1, Math.round(rect.width * dpr));
+    const h = Math.max(1, Math.round(rect.height * dpr));
+    this.overlayCanvas.width = w;
+    this.overlayCanvas.height = h;
     this.overlayCtx.setTransform(1, 0, 0, 1, 0, 0);
-    this.overlayCtx.scale(dpr, dpr);
+    this.overlayCtx.scale(rect.width > 0 ? w / rect.width : dpr, rect.height > 0 ? h / rect.height : dpr);
     this.renderDrawings();
   }
 
@@ -626,7 +628,7 @@ class ChartEngine {
     if(pane.series?.length||pane.paints?.length)PinePainter.draw(ctx,adapter,pane,width,height);
     for(const drawing of pane.drawings)DrawingModel.draw(ctx,adapter,drawing);
     ctx.restore();
-    ctx.fillStyle=this.config.textColor;ctx.font='10px Arial';ctx.textAlign='left';
+    ctx.fillStyle=this.config.textColor;ctx.font='10px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';ctx.textAlign='left';
     for(let i=0;i<=4;i++){const value=pane.min+range*i/4,at=y(value);if(at>=29&&at<height-3)ctx.fillText(value.toFixed(0),width-59,at+3);}
   }
 
@@ -994,7 +996,7 @@ class ChartEngine {
       }
     }
 
-    if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotBottom){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-this.chart.priceScale('right').width(),y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
+    if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotBottom){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-this.chart.priceScale('right').width(),y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
     }
     ctx.save();
     this.onBeforeRenderDrawings?.();

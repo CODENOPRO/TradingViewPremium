@@ -515,7 +515,7 @@ const DrawingModel = (() => {
       if(d.stats.percent)items.push(d.p1.price?(change/d.p1.price*100).toFixed(2)+'%':'—');
       if(d.stats.bars)items.push(Math.abs(Math.round(logicalIndex(chart,d.p2.time)-logicalIndex(chart,d.p1.time)))+' bars');
       if(d.stats.time)items.push(Math.abs(Math.round((d.p2.time-d.p1.time)/60))+' min');
-      if(items.length){ctx.setLineDash([]);ctx.font=`${d.textStyle.size}px Arial`;ctx.fillStyle=d.textStyle.color;ctx.textAlign='center';ctx.fillText(items.join(' · '),(g.a.x+g.b.x)/2,(g.a.y+g.b.y)/2-9);}
+      if(items.length){ctx.setLineDash([]);ctx.font=`${d.textStyle.size}px ${DEFAULT_FONT}`;ctx.fillStyle=d.textStyle.color;ctx.textAlign='center';ctx.fillText(items.join(' · '),(g.a.x+g.b.x)/2,(g.a.y+g.b.y)/2-9);}
       if(d.stats.middle){ctx.beginPath();ctx.arc((g.a.x+g.b.x)/2,(g.a.y+g.b.y)/2,3,0,Math.PI*2);ctx.stroke();}
 
     } else if(d.type === 'hline') line(0,g.a.y,width,g.a.y);
@@ -719,7 +719,7 @@ const DrawingModel = (() => {
       }
       const line2 = `${barsCount} ${barsCount === 1 ? 'bar' : 'bars'}, ${durText}`;
 
-      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+      ctx.font = `600 11px ${DEFAULT_FONT}`;
       const w1 = ctx.measureText ? ctx.measureText(line1).width : line1.length * 6.2;
       const w2 = ctx.measureText ? ctx.measureText(line2).width : line2.length * 6.2;
       const padX = 10, padY = 6, lineH = 15;
