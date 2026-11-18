@@ -168,9 +168,9 @@ test('HTF SSMT (15M) drawn on 1M chart with showAll snaps endpoints to exact 1M 
   assert.equal(ssmtLines[0].text, 'Q1 Q2 15M', 'SSMT text must show Q pair + TF (Q1 Q2 15M)');
   assert.equal(ssmtLines[0].textStyle?.inlineOnLine, true, 'SSMT text must be horizontally centered inline on the SSMT line');
 
-  // Verify TDO (Daily True Open at 00:00 NY) ALSO renders on 1m chart automatically!
+  // Verify 1m chart sticks to its own True Open tier (does not pile TDO onto 1m)
   const trLabels = out.drawings.filter(d => d.type === 'text' && d._qtTrueOpenSpan).map(d => d.text);
-  assert.ok(trLabels.includes('TDO'), '1m chart must render TDO (Daily True Open) alongside micro True Opens');
+  assert.ok(!trLabels.includes('TDO'), '1m chart must not pile TDO onto 1m');
 });
 
 test('Inline SSMT label draws horizontally at exact pixel midpoint and True Opens render across all enabled TFs on 1m & 5m', () => {
@@ -197,10 +197,16 @@ test('Inline SSMT label draws horizontally at exact pixel midpoint and True Open
       settings: { showAll: true }
     });
     const trTexts1m = new Set(out1m.drawings.filter(d => d._qtTrueOpenSpan).map(d => d.text));
-    for (const expected of ['TMCO', 'TDO', 'TWO', 'TMO', 'TQO', 'TYO']) {
-      assert.ok(trTexts1m.has(expected), `Expected ${expected} True Open on 1m chart, got: ${[...trTexts1m].join(', ')}`);
+    assert.ok(trTexts1m.has('TMCO'), `Expected TMCO True Open on 1m chart, got: ${[...trTexts1m].join(', ')}`);
+    for (const other of ['TDO', 'TWO', 'TMO', 'TQO', 'TYO', 'TAO', 'TLO', 'TNY AM', 'TNY PM']) {
+      assert.ok(!trTexts1m.has(other), `1m chart must only show TMCO, not ${other}`);
     }
-    assert.ok(['TAO', 'TLO', 'TNY AM', 'TNY PM'].some(k => trTexts1m.has(k)), 'Expected 90m session True Open on 1m chart');
+    const out5m = QuantaibayEngine.calculate(markets['NQ1!']['5m'], {
+      symbol: 'NQ1!', timeframe: '5m', timeframeSeconds: 300, markets
+    });
+    const trTexts5m = new Set(out5m.drawings.filter(d => d._qtTrueOpenSpan).map(d => d.text));
+    assert.ok(['TAO', 'TLO', 'TNY AM', 'TNY PM'].some(k => trTexts5m.has(k)), 'Expected 90m session True Open on 5m chart');
+    assert.ok(!trTexts5m.has('TMCO') && !trTexts5m.has('TDO'), '5m chart must only show 90m True Open');
     const ssmts = out1m.drawings.filter(d => d._qtSsmt);
     assert.ok(ssmts.length > 0);
     for (const ln of ssmts) {
@@ -530,14 +536,14 @@ test('Unified True Open settings + modular QT split + simplified QT Settings UI 
       }
     });
     const trLines = out.drawings.filter(d => d._qtTrueOpen);
-    assert.equal(trLines.some(d => d._qtTier === 1), false, 'tr90=false disables all 90m session opens');
-    const tdoLines = trLines.filter(d => d._qtTier === 2);
-    assert.equal(tdoLines.length, 1);
-    assert.equal(tdoLines[0].borderColor.toLowerCase(), '#dc2626');
-    assert.equal(tdoLines[0].lineStyle, 'solid');
-    assert.equal(tdoLines[0].width, 2);
-    assert.equal(tdoLines[0].text, 'TDO');
-    assert.equal(tdoLines[0].textStyle.inlinePos, 'right');
+    assert.equal(trLines.some(d => d._qtTier === 1 || d._qtTier === 2), false, '1m chart only renders TMCO');
+    const tmcoLines = trLines.filter(d => d._qtTier === 0);
+    assert.equal(tmcoLines.length, 1);
+    assert.equal(tmcoLines[0].borderColor.toLowerCase(), '#dc2626');
+    assert.equal(tmcoLines[0].lineStyle, 'solid');
+    assert.equal(tmcoLines[0].width, 2);
+    assert.equal(tmcoLines[0].text, 'TMCO');
+    assert.equal(tmcoLines[0].textStyle.inlinePos, 'right');
   }
 
   // 4. Verify Realtime SSMT updates live when YM1! is offline/stale by hours OR 1 bar late in Q2
@@ -608,9 +614,8 @@ test('HTF chart hides LTF SSMTs (e.g. 15m hides 1m and 5m SSMTs while keeping 15
   assert.ok(ssmts15m.some(d => d._qtTier >= 2), '15m chart must keep 15m+ SSMTs');
 
   const tr15m = out15m.drawings.filter(d => d._qtTrueOpen);
-  assert.ok(tr15m.length > 0, 'Expected 15m+ True Opens on 15m chart');
-  assert.equal(tr15m.some(d => d._qtTier < 2), false, '15m chart must hide TMCO (_qtTier=0) and 90m (_qtTier=1) True Opens');
-  assert.ok(tr15m.some(d => d._qtTier >= 2), '15m chart must keep TDO+ True Opens');
+  assert.ok(tr15m.length > 0, 'Expected TDO True Open on 15m chart');
+  assert.ok(tr15m.every(d => d._qtTier === 2), '15m chart must only render TDO (_qtTier=2)');
 
   // Verify live-tick checkpointing & viewport culling eliminate main-thread stutter (<20ms live tick, 0 strokes for offscreen vertical lines)
   const tWarm0 = performance.now();

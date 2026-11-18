@@ -9434,3 +9434,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — Restore QT Mode & Prevent Accidental Removal**:
   - Updated `frontend/js/qt_mode.js` so `chartHidden` is not restored stale across reloads, `setEnabled(true)` clears `chartHidden`, and `chart.runner.remove` is a no-op so QT Mode cannot be permanently hidden by `runner.remove`.
   - Verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — True Open Strict Timeframe Scoping**:
+  - Updated `frontend/js/qt_cycles_trueopen.js` so each chart timeframe renders only its own True Open tier (`1m`/`3m` -> `TMCO`, `5m` -> `90 Open` `TAO/TLO/TNY AM/TNY PM`, `15m`/`30m` -> `TDO`, `1h` -> `TWO`, `4h` -> `TMO`, `6h` -> `TQO`, `1D`/`1W` -> `TYO`) instead of piling all higher-TF True Opens onto LTF charts.
+  - Updated `tests/qt_engine.test.cjs` and verified `node --test tests/*.test.cjs` (169/169 passed).
