@@ -1122,3 +1122,7 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `backend/bridge_server.py`, `backend/launch_tv.ps1`, `start_terminal.bat`, `frontend/js/app.js`, `frontend/index.html`, `tests/test_backend.py`, `tests/toolbar_clusters.test.cjs`.
 - Thay đổi: thêm `root` + `build` (`sha1` của `bridge_server.py` & `frontend/index.html`) vào `/health` + `Cache-Control: no-store, must-revalidate`; `start_terminal.bat` chỉ tái sử dụng server khi khớp cả `root` lẫn `build`, tự tắt tiến trình `bridge_server.py` cũ lệch bản trước khi khởi chạy bản mới và vẫn cho mở web nếu CDP `9222` chưa lên; `launch_tv.ps1` tự dò `AppxPackage` hoặc `TradingView.exe` rời; bật mặc định `dock-pin` (`true`) cho máy mới, cảnh báo rõ khi mở qua `file://` và nâng `?v=qt-17`.
 - Kiểm chứng: `python -m unittest discover -s tests -p "test_*.py"` đạt **41/41 passed**; `node --test tests/*.test.cjs` đạt **162/162 passed**; đối chiếu 14/14 `<style>` và 37/37 `<script>` khớp 1:1.
+
+### 2026-11-18 — `start_terminal.bat` tự tắt toàn bộ TradingView cũ (thường & 9222) trước khi mở lại
+- File đã sửa: `start_terminal.bat`.
+- Thay đổi: gọi `backend\launch_tv.ps1 -ForceRestart` ngay khi chạy `start_terminal.bat` để đóng sạch mọi tiến trình `TradingView` đang chạy trước đó (kể cả bản mở thường lẫn bản CDP `9222`), mở lại TradingView Desktop với `--remote-debugging-port=9222`, kiểm tra/thay thế `bridge_server.py` nếu lệch bản và mở `http://localhost:3000`.
