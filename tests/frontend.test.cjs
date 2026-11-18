@@ -83,3 +83,21 @@ test('JS worker contract works independently; a host without importScripts fails
   await context.self.onmessage({ data: { type: 'run', id: 1, bars: [bar(60)], context: {} } });
   assert.equal(messages[0].result.tables[0].rows[0][0], 1);
 });
+
+test('all 36 modular inline script blocks in index.html match frontend/js/*.js 1:1 without duplicate redeclarations', () => {
+  const html = fs.readFileSync('frontend/index.html', 'utf8');
+  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1].trim().replace(/\r\n/g, '\n'));
+  assert.equal(scripts.length, 37);
+  const jsFiles = fs.readdirSync('frontend/js').filter(f => f.endsWith('.js') && f !== 'lightweight-charts.standalone.production.js');
+  const jsMap = new Map(jsFiles.map(f => [f, fs.readFileSync('frontend/js/' + f, 'utf8').trim().replace(/\r\n/g, '\n')]));
+  const matched = new Set();
+  for (let i = 1; i < scripts.length; i++) {
+    let found = null;
+    for (const [f, content] of jsMap) {
+      if (content === scripts[i]) { found = f; break; }
+    }
+    assert.ok(found, `Inline script #${i + 1} does not match any frontend/js/*.js file`);
+    assert.equal(matched.has(found), false, `Duplicate inline script block for ${found} at #${i + 1}`);
+    matched.add(found);
+  }
+});

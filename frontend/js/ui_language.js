@@ -328,8 +328,6 @@ Note|Ghi chú
 Long / Short position|Vị thế Long / Short
 Long Position|Vị thế Long
 Short Position|Vị thế Short
-Vị thế Long|Long Position
-Vị thế Short|Short Position
 Measure price and bars|Đo giá và số nến
 Brush|Cọ vẽ
 Music link|Link nhạc

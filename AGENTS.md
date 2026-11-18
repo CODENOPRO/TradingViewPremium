@@ -1146,3 +1146,8 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/terminal_icons.js`, `frontend/js/desktop_shell.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_settings.js`, `frontend/js/terminal_features.js`, `frontend/js/ui_language.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
 - Thay đổi: tách nút gộp `position` (menu chuột phải) thành 2 nút riêng biệt trên `#left-sidebar`: **Vị thế Long** (`data-tool="position"`, icon mũi tên hướng lên) và **Vị thế Short** (`data-tool="short_position"`, icon mũi tên hướng xuống); đồng bộ tên trong danh sách công cụ yêu thích (`Favourite tools`), cây đối tượng (`Object tree`) và tiêu đề hộp thoại `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **164/164 passed**.
+
+### 2026-11-18 — Sửa lỗi trùng khối inline script `#31` / `#32` trong `frontend/index.html` làm dừng `DOMContentLoaded` trước `connect()`
+- File đã sửa: `frontend/index.html`, `frontend/js/ui_language.js`, `tests/frontend.test.cjs`.
+- Nguyên nhân gốc & thay đổi: khi đồng bộ `terminal_features.js` vào `frontend/index.html`, khối `<script>` thứ 32 (`terminal_polish.js` bắt đầu bằng `/* Settings, motion and input behavior shared by the terminal chrome. */`) bị ghi đè nhầm bằng `terminal_features.js`, khiến `this.installPolish()` bị mất và báo lỗi `TypeError: this.installPolish is not a function` ngay trước khi gọi `connect()`. Đã khôi phục đúng `Script #31 = terminal_features.js`, `Script #32 = terminal_polish.js` và thêm bài test tự động trong `tests/frontend.test.cjs` khóa chặt đối chiếu 1:1 toàn bộ 36 khối inline `<script>` với `frontend/js/*.js` (cấm trùng lặp).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **165/165 passed**.
