@@ -631,7 +631,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pin.className = 'dock-pin';
     pin.setAttribute('aria-label', ui(label));
     pin.setAttribute('aria-controls', toolbar.id);
-    pin.setAttribute('aria-pressed', String(Workspace.read(storageKey, false) === true));
+    pin.setAttribute('aria-pressed', String(Workspace.read(storageKey, true) !== false));
     pin.addEventListener('click', () => {
       const pinned = pin.getAttribute('aria-pressed') === 'true';
       pin.setAttribute('aria-pressed', String(!pinned));
@@ -847,6 +847,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function scheduleReconnect() {
       reconnect = setTimeout(() => connect(refreshSource), retry);
       retry = Math.min(retry * 2, 15000);
+    }
+    if (location.protocol === 'file:') {
+      bridge = { state: 'backend_error', symbols: [], message: 'Hãy chạy start_terminal.bat để mở qua http://localhost:3000' };
+      statusText();
+      toast('Đang mở trực tiếp file index.html (file://). Hãy chạy start_terminal.bat để mở http://localhost:3000.', 'alert');
+      return;
     }
     let port;
     try {

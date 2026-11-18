@@ -3,6 +3,7 @@ import asyncio
 import copy
 import ctypes
 from functools import partial
+import hashlib
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 import logging
@@ -22,6 +23,20 @@ from native_warmup import NativeWarmup, NATIVE_INTERVALS, SourceChanged
 from derived_history import aggregate_six_hour
 
 ROOT = Path(__file__).resolve().parent
+APP_ROOT = str(ROOT.parent.resolve())
+
+
+def _compute_build_id():
+    h = hashlib.sha1()
+    for rel in (ROOT / 'bridge_server.py', ROOT.parent / 'frontend' / 'index.html'):
+        try:
+            h.update(rel.read_bytes())
+        except OSError:
+            pass
+    return h.hexdigest()[:12]
+
+
+BUILD_ID = _compute_build_id()
 DATA_DIR = Path(os.getenv('TERMINAL_DATA_DIR', str(ROOT)))
 HTTP_PORT = int(os.getenv('TERMINAL_HTTP_PORT', '3000'))
 WS_PORT = int(os.getenv('TERMINAL_WS_PORT', '8080'))
@@ -34,7 +49,8 @@ refresh = asyncio.Event()
 reconnect_source = asyncio.Event()
 status = {'type': 'bridge_status', 'state': 'connecting', 'last_update': None,
           'message': 'Đang kết nối TradingView', 'symbols': [],
-          'service': 'trading-terminal', 'protocol_version': 2, 'pid': os.getpid()}
+          'service': 'trading-terminal', 'protocol_version': 2,
+          'pid': os.getpid(), 'root': APP_ROOT, 'build': BUILD_ID}
 history_progress = {}
 subscriptions = {}
 native_warmup = None
@@ -897,8 +913,6 @@ class HTTPHandler(SimpleHTTPRequestHandler):
             self.send_response(code)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Content-Length', str(len(body)))
-            if path.path.startswith('/api/music/'):
-                self.send_header('Cache-Control', 'no-store')
             if retry_after:
                 self.send_header('Retry-After', str(retry_after))
             self.end_headers()
@@ -922,7 +936,7 @@ class HTTPHandler(SimpleHTTPRequestHandler):
             super().do_GET()
 
     def end_headers(self):
-        self.send_header('Cache-Control', 'no-cache')
+        self.send_header('Cache-Control', 'no-store, must-revalidate')
         super().end_headers()
 
     def log_message(self, *_args):

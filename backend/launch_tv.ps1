@@ -64,10 +64,26 @@ public class Launcher {
 "@
 
 try {
-    if (-not ("Launcher" -as [type])) {
-        Add-Type -TypeDefinition $signature -ErrorAction Stop
+    $launched = $false
+    try {
+        if (-not ("Launcher" -as [type])) {
+            Add-Type -TypeDefinition $signature -ErrorAction Stop
+        }
+        $aumid = $AppUserModelId
+        $pkg = Get-AppxPackage -Name "*TradingView*" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($pkg) { $aumid = "$($pkg.PackageFamilyName)!TradingView.Desktop" }
+        [Launcher]::Launch($aumid, $TradingViewArguments)
+        $launched = $true
+    } catch {
+        foreach ($exe in @("$env:LOCALAPPDATA\Programs\TradingView\TradingView.exe", "$env:LOCALAPPDATA\TradingView\TradingView.exe", "$env:ProgramFiles\TradingView\TradingView.exe")) {
+            if (Test-Path $exe) {
+                Start-Process -FilePath $exe -ArgumentList $TradingViewArguments | Out-Null
+                $launched = $true
+                break
+            }
+        }
+        if (-not $launched) { throw }
     }
-    [Launcher]::Launch($AppUserModelId, $TradingViewArguments)
     if ($ForceRestart) {
         $waitEnd = (Get-Date).AddSeconds(20)
         while ((Get-Date) -lt $waitEnd) {

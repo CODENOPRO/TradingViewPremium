@@ -56,4 +56,6 @@ test('QT browser scripts never throw ReferenceError when loaded out-of-order or 
  const html=fs.readFileSync('frontend/index.html','utf8');
  assert.match(html,/#chart-grid:not\(\.terminal-layout\)\s*>\s*\.chart-wrapper:nth-of-type\(n\+4\)/);
  assert.match(html,/node\.hidden=true;node\.style\.display='none'/);
+ assert.match(html,/Workspace\.read\(storageKey,\s*true\)\s*!==\s*false/);
+ assert.match(html,/location\.protocol\s*===\s*'file:'/);
 });

@@ -8,7 +8,10 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 from market_store import MarketStore, clean_bar, atomic_json, read_json
 from bridge_server import (
+    APP_ROOT,
+    BUILD_ID,
     CDPConnection,
+    _compute_build_id,
     clients,
     encode_initial_snapshot,
     frontend_ws_handler,
@@ -54,6 +57,11 @@ class StorageTests(unittest.TestCase):
             atomic_json(path, {"generation": 3})
             self.assertEqual(json.loads(Path(str(path) + ".bak").read_text()), {"generation": 1})
             self.assertFalse(list(Path(directory).glob("*.tmp")))
+
+    def test_status_exposes_root_and_build_fingerprint_for_stale_server_replacement(self):
+        self.assertEqual(status.get("root"), APP_ROOT)
+        self.assertEqual(status.get("build"), BUILD_ID)
+        self.assertEqual(len(_compute_build_id()), 12)
 
 
 class CDPTests(unittest.IsolatedAsyncioTestCase):
