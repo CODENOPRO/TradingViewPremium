@@ -10034,7 +10034,7 @@ const TemplateMenu = (() => {
 })();
 if (typeof module !== 'undefined') module.exports = TemplateMenu;
 </script>
-    <script>
+      <script>
 class DrawingSettings {
   static PALETTE = [
     '#ffffff', '#e0e3eb', '#b2b5be', '#9598a1', '#787b86', '#5d606b', '#434651', '#2a2e39', '#1e222d', '#000000',
@@ -10465,10 +10465,11 @@ class DrawingSettings {
 
   read() {
     this.root.querySelectorAll('[data-field]').forEach(input => {
+      if (input.closest('[data-types]')?.hidden) return;
       const isNum = input.type === 'number' || input.type === 'range' || input.dataset.field === 'textStyle.size';
       const value = input.type === 'checkbox' ? input.checked : isNum ? Number(input.value) : input.value;
-      if (isNum && (!input.value || !Number.isFinite(value))) throw new Error('Thông số vượt giới hạn.');
-      if ((input.type === 'number' || input.type === 'range') && (value < Number(input.min) || value > Number(input.max))) throw new Error('Thông số vượt giới hạn.');
+      if (isNum && (input.value === '' || !Number.isFinite(value))) throw new Error('Thông số vượt giới hạn.');
+      if ((input.type === 'number' || input.type === 'range') && ((input.min !== '' && value < Number(input.min)) || (input.max !== '' && value > Number(input.max)))) throw new Error('Thông số vượt giới hạn.');
       this.assign(input.dataset.field, value);
     });
     for (const [name, rule] of Object.entries(this.draft.visibility)) if (rule.min > rule.max) throw new Error(`${name}: minimum phải ≤ maximum.`);

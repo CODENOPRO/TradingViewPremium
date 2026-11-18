@@ -1151,3 +1151,8 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/index.html`, `frontend/js/ui_language.js`, `tests/frontend.test.cjs`.
 - Nguyên nhân gốc & thay đổi: khi đồng bộ `terminal_features.js` vào `frontend/index.html`, khối `<script>` thứ 32 (`terminal_polish.js` bắt đầu bằng `/* Settings, motion and input behavior shared by the terminal chrome. */`) bị ghi đè nhầm bằng `terminal_features.js`, khiến `this.installPolish()` bị mất và báo lỗi `TypeError: this.installPolish is not a function` ngay trước khi gọi `connect()`. Đã khôi phục đúng `Script #31 = terminal_features.js`, `Script #32 = terminal_polish.js` và thêm bài test tự động trong `tests/frontend.test.cjs` khóa chặt đối chiếu 1:1 toàn bộ 36 khối inline `<script>` với `frontend/js/*.js` (cấm trùng lặp).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **165/165 passed**.
+
+### 2026-11-18 — Sửa lỗi báo `"Thông số vượt giới hạn."` khi chỉnh cài đặt Long / Short Position
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
+- Nguyên nhân gốc & thay đổi: hai ô `<input type="number">` của Position (`accountSize` và `risk`) chỉ khai báo `min` mà không có `max`, khiến `input.max === ""` và biểu thức `Number(input.max)` trong `DrawingSettings.prototype.read()` trả về `0`; mọi giá trị dương (`25000 > 0`, `100 > 0`) đều ném lỗi `Error('Thông số vượt giới hạn.')`. Đã sửa chỉ kiểm tra `min`/`max` khi `input.min !== ''` / `input.max !== ''` và bỏ qua các dòng `[data-types]` đang ẩn (`hidden`).
+- Kiểm chứng: `node --test tests/drawings.test.cjs tests/frontend.test.cjs` đạt **16/16 passed**.

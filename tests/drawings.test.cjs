@@ -72,6 +72,22 @@ test('DrawingSettings adapts tabs, labels, coordinates and defaults to each draw
   assert.equal(pos.stopColor, '#f23645');
   assert.equal(pos.lineStyle, 'dashed');
   assert.equal(DrawingModel.normalize({ type: 'box', p1: { time: 60, price: 1 }, p2: { time: 120, price: 2 }, title: 'OB' }).title, 'OB');
+
+  // Verify read() accepts unbounded max="" number inputs (accountSize=25000, risk=100) without throwing "Thông số vượt giới hạn."
+  const inst = Object.create(proto);
+  inst.draft = structuredClone(pos);
+  inst.chart = { tfSeconds: 60, bars: [{ time: 60 }, { time: 120 }] };
+  const fields = [
+    { type: 'number', min: '1', max: '', value: '25000', dataset: { field: 'accountSize' }, closest: () => ({ hidden: false }) },
+    { type: 'number', min: '0.01', max: '', value: '100', dataset: { field: 'risk' }, closest: () => ({ hidden: false }) }
+  ];
+  inst.root = {
+    querySelectorAll: sel => sel === '[data-field]' ? fields : [],
+    querySelector: sel => sel === '#drawing-text' ? { value: '' } : sel === '#drawing-levels' ? { value: '0, 0.5, 1' } : null
+  };
+  proto.read.call(inst);
+  assert.equal(inst.draft.accountSize, 25000);
+  assert.equal(inst.draft.risk, 100);
 });
 
 test('constrainLinePoint snaps Trend Line to horizontal, vertical and 45-degree angles and vertical extend draws upright', () => {
