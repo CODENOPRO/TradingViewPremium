@@ -18,7 +18,7 @@ from urllib.parse import urlencode, parse_qs, urlsplit
 import websockets
 from websockets.sync.client import connect as sync_connect
 from market_store import MarketStore, RESOLUTIONS, SYMBOLS, atomic_json
-from companion_services import EconomicCalendar, music_metadata, resolve_music_share, youtube_mix_videos, MusicProviderError
+from companion_services import EconomicCalendar, music_metadata, resolve_music_share, MusicProviderError
 from native_warmup import NativeWarmup, NATIVE_INTERVALS, SourceChanged
 from derived_history import aggregate_six_hour
 
@@ -901,7 +901,7 @@ class HTTPHandler(SimpleHTTPRequestHandler):
             self.send_error(403, 'Forbidden host')
             return
         path = urlsplit(self.path)
-        if path.path in ('/api/calendar', '/api/music/metadata', '/api/music/resolve', '/api/music/mix'):
+        if path.path in ('/api/calendar', '/api/music/metadata', '/api/music/resolve'):
             retry_after = None
             try:
                 if path.path == '/api/calendar':
@@ -911,12 +911,8 @@ class HTTPHandler(SimpleHTTPRequestHandler):
                     url = params.get('url', [''])[0]
                     if len(url) > 2048:
                         raise ValueError('Link too long')
-                    if path.path.endswith('/resolve'):
-                        result = {'url': resolve_music_share(url)}
-                    elif path.path.endswith('/mix'):
-                        result = youtube_mix_videos(url)
-                    else:
-                        result = music_metadata(url, fresh_embed=params.get('embed') == ['1'])
+                    result = ({'url': resolve_music_share(url)} if path.path.endswith('/resolve')
+                              else music_metadata(url, fresh_embed=params.get('embed') == ['1']))
                 code = 200
             except MusicProviderError as exc:
                 result, code = {'error': str(exc)}, exc.status

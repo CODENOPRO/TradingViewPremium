@@ -788,8 +788,6 @@ class TerminalCompanions{
     this.popupButton.disabled=true;
     this.panels.music.classList.remove('music-shield-active');
     this.youtubeStarted=false;
-    this.mixPlaylist=null;
-    this.mixIndex=0;
     this.tiktokNative=false;
     this.tiktokRecovering=false;
     this.musicMute.hidden=true;
@@ -1071,35 +1069,19 @@ class TerminalCompanions{
       params.set('list',embedList);
     }
     const frame=this.frame('https://www.youtube.com/embed/'+(videoId||'videoseries')+'?'+params,240);
-    const mixPromise=isMixList?fetch('/api/music/mix?'+new URLSearchParams({url:link.url}),{signal:AbortSignal.any([this.loadAbort.signal,AbortSignal.timeout(10000)])}).then(r=>r.ok?r.json():null).catch(()=>null):null;
     await this.script('https://www.youtube.com/iframe_api',()=>typeof window.YT?.Player==='function');
     if(epoch!==this.epoch)return;
-    let ytReady=false;
-    if(mixPromise){
-      mixPromise.then(data=>{
-        if(epoch!==this.epoch||!Array.isArray(data?.videos)||data.videos.length<=1)return;
-        this.mixPlaylist=data.videos;
-        const idx=videoId?data.videos.indexOf(videoId):-1;
-        this.mixIndex=idx>=0?idx:0;
-        if(ytReady){
-          this.setCommands(true,true);
-          this.musicNotice.textContent=`YouTube Mix · ${this.mixIndex+1}/${this.mixPlaylist.length}`;
-        }
-      });
-    }
     this.youtube=new window.YT.Player(frame,{
       events:{
-        onReady:()=>{if(epoch===this.epoch){ytReady=true;const hasPlaylist=!!embedList||(this.mixPlaylist?.length>1);this.setCommands(true,hasPlaylist);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=this.mixPlaylist?.length>1?`YouTube Mix · ${this.mixIndex+1}/${this.mixPlaylist.length}`:isMixList&&videoId?'Đang tải danh sách YouTube Mix…':'';}},
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!embedList);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';}},
         onStateChange:({data})=>{
           if(epoch!==this.epoch)return;
           this.setPlaying(data===1,data===1||data===3);
           if(data===1){
-            this.musicNotice.textContent=this.mixPlaylist?.length>1?`YouTube Mix · ${this.mixIndex+1}/${this.mixPlaylist.length}`:'';
+            this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';
             this.youtubeStarted=true;
             this.panels.music.classList.add('music-shield-active');
             if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
-          }else if(data===0&&this.mixPlaylist?.length>1){
-            this.stepMix(1,epoch);
           }
         },
         onError:({data})=>{
@@ -1108,27 +1090,12 @@ class TerminalCompanions{
             this.loadYouTube({provider:'youtube',id:videoId,list:null,url:'https://www.youtube.com/watch?v='+videoId},epoch);
             return;
           }
-          if(this.mixPlaylist?.length>1){
-            this.stepMix(1,epoch);
-            return;
-          }
           this.setPlaying(false);
           this.setCommands(false);
           this.musicNotice.textContent=data===153?'YouTube không nhận được trang nhúng. Hãy mở link gốc hoặc dùng bản localhost.':'Video này không phát được trong trình phát nhúng. Hãy mở link gốc.';
         }
       }
     });
-  }
-
-  stepMix(delta,epoch=this.epoch){
-    if(epoch!==this.epoch||!this.youtube||!this.mixPlaylist?.length)return;
-    const len=this.mixPlaylist.length;
-    this.mixIndex=(this.mixIndex+delta+len)%len;
-    const nextId=this.mixPlaylist[this.mixIndex];
-    const nextUrl='https://www.youtube.com/watch?v='+nextId;
-    this.youtube.loadVideoById?.(nextId);
-    this.musicNotice.textContent=`YouTube Mix · ${this.mixIndex+1}/${len}`;
-    this.metadata(nextUrl,epoch);
   }
 
   loadAudio(url,name,epoch,fromVideo=false){
@@ -1249,8 +1216,8 @@ class TerminalCompanions{
       else if(action==='toggle')this.audio.play().catch(()=>{this.musicNotice.textContent='Could not start playback.';});
     }else if(this.youtube){
       if(pause)this.youtube.pauseVideo?.();
-      else if(action==='previous'){if(this.mixPlaylist?.length>1)this.stepMix(-1);else this.youtube.previousVideo?.();}
-      else if(action==='next'){if(this.mixPlaylist?.length>1)this.stepMix(1);else this.youtube.nextVideo?.();}
+      else if(action==='previous')this.youtube.previousVideo?.();
+      else if(action==='next')this.youtube.nextVideo?.();
       else this.youtube.playVideo?.();
     }else if(this.widget){
       if(action==='previous')this.widget.prev();

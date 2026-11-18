@@ -39,11 +39,3 @@ class MusicBackendTests(unittest.TestCase):
   with patch.object(music,'urlopen',return_value=io.BytesIO(json.dumps(payload).encode())):
    res=music.music_metadata('https://www.tiktok.com/@creator/video/7123456789012345678',fresh_embed=True)
    self.assertEqual(res['title'],'TikTok Clip');self.assertIsNone(res['embed_url'])
- def test_youtube_mix_videos_extracts_unique_ids_and_validates_rd_list(self):
-  music._mix_cache.clear()
-  with self.assertRaises(ValueError):
-   music.youtube_mix_videos('https://www.youtube.com/watch?v=FjJzIYTGttg&list=PL1234567890ab')
-  html=b'{"playlistPanelVideoRenderer":{"videoId":"FjJzIYTGttg"}},{"playlistPanelVideoRenderer":{"videoId":"AnMhdn0wJ4I"}},{"playlistPanelVideoRenderer":{"videoId":"FjJzIYTGttg"}}'
-  with patch.object(music,'urlopen',return_value=io.BytesIO(html)):
-   res=music.youtube_mix_videos('https://www.youtube.com/watch?v=FjJzIYTGttg&list=RDMMFjJzIYTGttg')
-   self.assertEqual(res,{'videos':['FjJzIYTGttg','AnMhdn0wJ4I']})
