@@ -1,6 +1,7 @@
 """Provider-owned calendar export and oEmbed metadata; no audio extraction."""
 import json
 import math
+import re
 from html.parser import HTMLParser
 from http.client import HTTPException
 from pathlib import Path
@@ -249,6 +250,7 @@ def metadata_endpoint(url):
 _metadata = {}
 _metadata_lock = threading.Lock()
 _metadata_errors = {}
+_mix_cache = {}
 
 
 class _TikTokEmbedParser(HTMLParser):
@@ -332,4 +334,41 @@ def music_metadata(url, *, fresh_embed=False):
             parser.feed(html)
             player_url = parser.player_url
         return {**result, 'embed_url': player_url}
+    return result
+
+
+def youtube_mix_videos(url):
+    canonical = canonical_music_url(url)
+    parsed = urlsplit(canonical)
+    if parsed.hostname != 'www.youtube.com':
+        raise ValueError('A YouTube Mix link is required')
+    query = parse_qs(parsed.query)
+    list_id = (query.get('list') or [''])[0]
+    if not list_id or not re.fullmatch(r'RD[\w-]{8,98}', list_id, re.I):
+        raise ValueError('A YouTube Mix (RD...) playlist is required')
+    with _metadata_lock:
+        cached = _mix_cache.get(canonical)
+        if cached and time.time() - cached[0] < 3600:
+            return cached[1]
+    req = Request(
+        canonical,
+        headers={
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept-Language': 'en-US,en;q=0.9',
+        },
+    )
+    try:
+        with urlopen(req, timeout=8) as response:
+            raw = response.read(2_500_000).decode('utf-8', errors='replace')
+    except (HTTPError, TimeoutError, URLError, HTTPException) as exc:
+        raise MusicProviderError('Không tải được danh sách YouTube Mix.', 502) from exc
+    ids = list(dict.fromkeys(re.findall(r'"playlistPanelVideoRenderer":\{[^}]*?"videoId":"([A-Za-z0-9_-]{11})"', raw)))
+    if not ids:
+        ids = list(dict.fromkeys(re.findall(r'"playlistPanelVideoRenderer":\{.*?"videoId":"([A-Za-z0-9_-]{11})"', raw)))
+    result = {'videos': ids[:50]}
+    if ids:
+        with _metadata_lock:
+            if len(_mix_cache) > 64:
+                _mix_cache.clear()
+            _mix_cache[canonical] = (time.time(), result)
     return result

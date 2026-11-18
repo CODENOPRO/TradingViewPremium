@@ -131,4 +131,6 @@ test('YouTube RD Mix playlists strip unembeddable list=RD... and fall back to pl
  const parsed=TerminalMusicLinks.parse('https://www.youtube.com/watch?v=FjJzIYTGttg&list=RDMMFjJzIYTGttg&index=1');
  assert.equal(parsed.id,'FjJzIYTGttg');
  assert.equal(parsed.list,'RDMMFjJzIYTGttg');
+ assert.match(js,/\/api\/music\/mix\?/);
+ assert.match(js,/stepMix\(/);
 });
