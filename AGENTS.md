@@ -1209,6 +1209,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1222,6 +1227,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1252,6 +1262,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1265,6 +1280,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1302,6 +1322,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1315,6 +1340,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1345,6 +1375,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1358,6 +1393,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1395,6 +1435,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1408,6 +1453,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1438,6 +1488,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1451,6 +1506,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1494,6 +1554,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1507,6 +1572,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1537,6 +1607,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
 - Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
@@ -1550,6 +1625,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ

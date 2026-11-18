@@ -66,7 +66,7 @@ class DrawingSettings {
         ${tvRow('<span>Stats display</span>', `<div class="drawing-line-stats">${check('Always show stats', 'alwaysShowStats')}${check('Compact stats', 'compact')}${check('Price labels', 'showPriceLabels')}</div>`, 'position')}
         ${tvRow('<label class="tv-check-label"><input data-field="fibTrendline.visible" type="checkbox"><span>Trend line</span></label>', pillHtml('fibTrendline'), 'fib')}
         <div data-types="fib" class="fib-levels-section"><div id="drawing-fib-levels" class="fib-levels-grid"></div></div>
-        ${tvRow('<label class="tv-check-label"><input id="drawing-fib-onecolor" type="checkbox"><span>Use one color</span></label>', '<input id="drawing-fib-allcolor" type="color" value="#787b86" aria-label="Use one color">', 'fib')}
+        ${tvRow('<label class="tv-check-label"><input id="drawing-fib-onecolor" type="checkbox"><span>Use one color</span></label>', '<button type="button" id="drawing-fib-allcolor" class="tv-pill-btn tv-pill-color" aria-haspopup="dialog" aria-label="Use one color"><span class="tv-swatch"><span class="tv-swatch-fill" style="background:#787b86"></span></span></button>', 'fib')}
         ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', '<input type="range" min="0" max="100" step="1" data-field="fillOpacity" aria-label="Background opacity">', 'fib')}
         ${tvRow('<span>Reverse</span>', '<input type="checkbox" data-field="reverse" aria-label="Reverse">', 'fib')}
         ${tvRow('<span>Prices</span>', '<input type="checkbox" data-field="showPrices" aria-label="Prices">', 'fib')}
@@ -450,7 +450,33 @@ class DrawingSettings {
       fibGrid.replaceChildren();
       const levels = this.draft.fibLevels || DrawingModel.defaults('fib').fibLevels;
       this.draft.fibLevels = levels;
-      levels.forEach((lv, idx) => {
+      const openColorPop = (btn, initialHex, onPick) => {
+        if (this.popover && this.popoverTarget === btn) { this.closePopover(); return; }
+        this.closePopover();
+        this.popoverTarget = btn;
+        btn.classList.add('active');
+        const pop = document.createElement('div');
+        pop.className = 'tv-style-popover';
+        pop.setAttribute('role', 'dialog');
+        if (typeof ColorPicker !== 'undefined') {
+          ColorPicker.mount(pop, {
+            value: DrawingModel.hex(initialHex || '#787b86').toLowerCase(),
+            opacity: 100,
+            showOpacity: false,
+            onColor: hex => {
+              btn.querySelector('.tv-swatch-fill').style.background = hex;
+              onPick(hex);
+              this.preview();
+            }
+          });
+        }
+        this.root.appendChild(pop);
+        this.popover = pop;
+        const r = btn.getBoundingClientRect(), pw = pop.offsetWidth || 236, ph = pop.offsetHeight || 240;
+        pop.style.left = Math.max(8, Math.min(window.innerWidth - pw - 8, r.left)) + 'px';
+        pop.style.top = (r.bottom + 6 + ph <= window.innerHeight - 8 ? r.bottom + 6 : Math.max(8, r.top - ph - 6)) + 'px';
+      };
+      levels.forEach(lv => {
         const cell = document.createElement('div');
         cell.className = 'fib-level-item';
         const cb = document.createElement('input');
@@ -459,23 +485,30 @@ class DrawingSettings {
         const num = document.createElement('input');
         num.type = 'number'; num.step = 'any'; num.value = String(lv.coeff ?? 0);
         num.oninput = () => { const v = Number(num.value); if (Number.isFinite(v)) { lv.coeff = v; this.preview(); } };
-        const col = document.createElement('input');
-        col.type = 'color'; col.value = DrawingModel.hex(lv.color || '#787b86');
-        col.oninput = () => { lv.color = col.value; this.preview(); };
-        cell.append(cb, num, col);
+        const colBtn = document.createElement('button');
+        colBtn.type = 'button'; colBtn.className = 'tv-pill-btn tv-pill-color';
+        colBtn.setAttribute('aria-haspopup', 'dialog');
+        colBtn.innerHTML = `<span class="tv-swatch"><span class="tv-swatch-fill" style="background:${DrawingModel.hex(lv.color || '#787b86')}"></span></span>`;
+        colBtn.onclick = e => { e.stopPropagation(); openColorPop(colBtn, lv.color, hex => { lv.color = hex; }); };
+        cell.append(cb, num, colBtn);
         fibGrid.appendChild(cell);
       });
       const oneCb = this.root.querySelector('#drawing-fib-onecolor');
-      const allCol = this.root.querySelector('#drawing-fib-allcolor');
-      if (oneCb && allCol) {
+      const allBtn = this.root.querySelector('#drawing-fib-allcolor');
+      if (oneCb && allBtn) {
+        let allHex = '#787b86';
+        allBtn.querySelector('.tv-swatch-fill').style.background = allHex;
         const applyAll = () => {
           if (!oneCb.checked) return;
-          for (const lv of levels) lv.color = allCol.value;
-          fibGrid.querySelectorAll('input[type="color"]').forEach(c => { c.value = allCol.value; });
+          for (const lv of levels) lv.color = allHex;
+          fibGrid.querySelectorAll('.tv-swatch-fill').forEach(s => { s.style.background = allHex; });
           this.preview();
         };
         oneCb.onchange = applyAll;
-        allCol.oninput = () => { oneCb.checked = true; applyAll(); };
+        allBtn.onclick = e => {
+          e.stopPropagation();
+          openColorPop(allBtn, allHex, hex => { allHex = hex; oneCb.checked = true; applyAll(); });
+        };
       }
     }
     this.root.querySelectorAll('[data-point]').forEach(input => {
