@@ -203,31 +203,6 @@ class QTMode {
         border-color: #2962ff;
         box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.22);
       }
-      .qt-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .qt-chip {
-        padding: 4px 10px;
-        border-radius: 999px;
-        border: 1px solid #303544;
-        background: #161a25;
-        color: #94a3b8;
-        font-size: 11.5px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all .14s ease;
-      }
-      .qt-chip:hover {
-        color: #e2e8f0;
-        border-color: #475569;
-      }
-      .qt-chip.active {
-        background: rgba(41, 98, 255, 0.22);
-        border-color: rgba(82, 140, 255, 0.65);
-        color: #93c5fd;
-      }
       .qt-group-heading {
         font-size: 11px;
         font-weight: 700;
@@ -876,9 +851,35 @@ class QTMode {
     ];
     let activeCat = categories.some(c => c[0] === this._activeInputCat) ? this._activeInputCat : 'general';
     this._activeInputCat = activeCat;
-    const chips = document.createElement('div');
-    chips.className = 'qt-chips';
+    const ICONS = {
+      general: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+      ssmt: '<path d="M3 17l5-6 4 3 5-8 4 5"/><path d="M3 21h18" opacity=".45"/>',
+      cycle: '<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/>',
+      trueopen: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+      psp: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5" opacity=".6"/>',
+      table: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 10v10M15 10v10"/>'
+    };
+    const tabs = document.createElement('div');
+    tabs.className = 'qt-tabs';
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', 'Nhóm cài đặt QT');
+    const thumb = document.createElement('span');
+    thumb.className = 'qt-tab-thumb';
+    thumb.setAttribute('aria-hidden', 'true');
+    tabs.appendChild(thumb);
     const list = document.createElement('div');
+
+    const placeThumb = (animate = true) => {
+      const el = tabs.querySelector('.qt-tab.active');
+      if (!el || !el.offsetWidth) return;
+      if (!animate) thumb.style.transition = 'none';
+      thumb.style.width = el.offsetWidth + 'px';
+      thumb.style.transform = `translateX(${el.offsetLeft}px)`;
+      if (!animate) { void thumb.offsetWidth; thumb.style.transition = ''; }
+      const l = el.offsetLeft, r = l + el.offsetWidth;
+      if (l < tabs.scrollLeft + 8) tabs.scrollTo({ left: Math.max(0, l - 12), behavior: animate ? 'smooth' : 'auto' });
+      else if (r > tabs.scrollLeft + tabs.clientWidth - 8) tabs.scrollTo({ left: r - tabs.clientWidth + 12, behavior: animate ? 'smooth' : 'auto' });
+    };
 
     const renderFiltered = () => {
       const q = search.value.trim().toLowerCase();
@@ -888,22 +889,56 @@ class QTMode {
         : QuantaibayEngine.INPUT_SCHEMA.filter(f => catEntry[2].has(f.group));
       list.replaceChildren();
       this._renderSchemaFields(list, baseFields, q);
+      tabs.classList.toggle('is-searching', !!q);
     };
 
-    for (const [id, title] of categories) {
-      const chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'qt-chip' + (id === activeCat ? ' active' : '');
-      chip.textContent = title;
-      chip.onclick = () => {
+    const tabEls = [];
+    for (const [id, title, groups] of categories) {
+      const count = QuantaibayEngine.INPUT_SCHEMA.filter(f => groups.has(f.group)).length;
+      const tab = document.createElement('button');
+      tab.type = 'button';
+      tab.className = 'qt-tab' + (id === activeCat ? ' active' : '');
+      tab.id = 'qt-tab-' + id;
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-selected', id === activeCat ? 'true' : 'false');
+      tab.tabIndex = id === activeCat ? 0 : -1;
+      tab.innerHTML = `<svg class="qt-tab-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id] || ''}</svg><span class="qt-tab-label"></span><em class="qt-tab-count"></em>`;
+      tab.querySelector('.qt-tab-label').textContent = title;
+      tab.querySelector('.qt-tab-count').textContent = count;
+      tab.onclick = () => {
         activeCat = id;
         this._activeInputCat = id;
-        for (const c of chips.children) c.classList.toggle('active', c === chip);
+        for (const t of tabEls) {
+          const on = t === tab;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.tabIndex = on ? 0 : -1;
+        }
+        placeThumb(true);
         renderFiltered();
       };
-      chips.appendChild(chip);
+      tab.onkeydown = e => {
+        const i = tabEls.indexOf(tab);
+        let n = -1;
+        if (e.key === 'ArrowRight') n = (i + 1) % tabEls.length;
+        else if (e.key === 'ArrowLeft') n = (i - 1 + tabEls.length) % tabEls.length;
+        else if (e.key === 'Home') n = 0;
+        else if (e.key === 'End') n = tabEls.length - 1;
+        if (n < 0) return;
+        e.preventDefault();
+        tabEls[n].focus();
+        tabEls[n].click();
+      };
+      tabEls.push(tab);
+      tabs.appendChild(tab);
     }
-    sticky.appendChild(chips);
+    tabs.addEventListener('pointermove', e => {
+      const r = tabs.getBoundingClientRect();
+      tabs.style.setProperty('--mx', (e.clientX - r.left + tabs.scrollLeft) + 'px');
+    }, { passive: true });
+    sticky.appendChild(tabs);
+    if (typeof ResizeObserver === 'function') new ResizeObserver(() => placeThumb(false)).observe(tabs);
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => placeThumb(false));
     body.append(sticky, list);
     renderFiltered();
     search.oninput = renderFiltered;

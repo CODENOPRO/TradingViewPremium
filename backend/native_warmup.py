@@ -77,7 +77,7 @@ class NativeWarmup:
                 if expected != desired:
                     await self.change(expected, desired)
                 expected = desired
-                deadline = self.clock() + (5 if is_quick else 120)
+                deadline = self.clock() + (5 if is_quick else 45)
                 last_count = None
                 growth = self.clock()
                 captured = False
@@ -100,7 +100,7 @@ class NativeWarmup:
                         last_count = counts
                         growth = self.clock()
                     if ready and is_quick:
-                        if {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready} or self.clock() - growth >= 1.5:
+                        if {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready} or self.clock() - growth >= 1.2:
                             reason = 'quick_sync'
                             complete = True
                             break
@@ -112,17 +112,17 @@ class NativeWarmup:
                     if ready and self.history:
                         progress = await self.history()
                         all_three = {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready}
-                        if progress and progress.get('complete') and (all_three or self.clock() - growth >= 4):
+                        if progress and progress.get('complete') and (all_three or self.clock() - growth >= 2):
                             reason = progress.get('reason') if all_three else 'partial_symbols'
                             complete = all_three and reason == 'source_limit'
                             break
-                        if self.clock() - growth >= 12 and not (progress or {}).get('loading'):
+                        if self.clock() - growth >= 3 and not (progress or {}).get('loading'):
                             reason = 'no_growth' if all_three else 'partial_symbols'
                             break
-                    elif ready and self.clock() - growth >= 12:
+                    elif ready and self.clock() - growth >= 3:
                         reason = 'partial_symbols'
                         break
-                    await self.sleep(0.5)
+                    await self.sleep(0.25)
                 if not captured:
                     failures.append({'timeframe': tf, 'error': 'Không nhận được nến native trong 120 giây'})
                 elif not complete:

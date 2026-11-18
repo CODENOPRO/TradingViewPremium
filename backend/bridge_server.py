@@ -60,6 +60,8 @@ startup_preloaded = False
 source_updates = {}
 main_loop = None
 restart_tv_task = None
+active_cdp = None
+active_cdp_url = None
 source_config = Path(os.getenv('TERMINAL_DATA_DIR', str(ROOT))) / 'source_requests.json'
 try:
     last_requests = json.loads(source_config.read_text(encoding='utf-8'))
@@ -153,10 +155,10 @@ TF_SECONDS = {'5m': 300, '15m': 900, '30m': 1800, '1h': 3600, '2h': 7200, '4h': 
 _last_htf_sync = {}
 
 
-def enqueue_native(timeframes, priority=False):
+def enqueue_native(timeframes, priority=False, quick=False):
     timeframes = ['1h' if tf == '6h' else tf for tf in timeframes]
     if native_warmup:
-        native_warmup.request(timeframes, priority)
+        native_warmup.request(timeframes, priority, quick=quick)
     else:
         pending_native.extend(tf for tf in timeframes if tf in NATIVE_INTERVALS and tf not in pending_native)
 
@@ -219,7 +221,13 @@ async def native_warmup_loop():
     global native_warmup, pending_startup
     target = None
 
-    async def evaluate(expression):
+    async def evaluate(expression, await_promise=False):
+        url = target.get('webSocketDebuggerUrl') if target else None
+        if active_cdp is not None and url and active_cdp_url == url:
+            try:
+                return await active_cdp.evaluate(expression, await_promise=await_promise, timeout=15)
+            except Exception:
+                pass
         return await asyncio.to_thread(evaluate_target, target, expression)
 
     async def read():
@@ -231,14 +239,14 @@ async def native_warmup_loop():
         const interval=()=>{const raw=String(w.model().mainSeries().interval());return raw==='1D'?'D':raw==='1W'?'W':raw==='M'?'1M':raw;};
         if(interval()!==__EXPECTED__)return 'changed';
         w.setResolution(__RESOLUTION__);
-        for(let n=0;n<40;n++){
+        for(let n=0;n<80;n++){
           const current=interval();
           if(current===__RESOLUTION__)return 'ready';
           if(current!==__EXPECTED__)return 'changed';
-          await new Promise(resolve=>setTimeout(resolve,100));
+          await new Promise(resolve=>setTimeout(resolve,40));
         }
         return 'timeout';})()'''
-        result = await evaluate(expression.replace('__EXPECTED__', json.dumps(expected)).replace('__RESOLUTION__', json.dumps(resolution)))
+        result = await evaluate(expression.replace('__EXPECTED__', json.dumps(expected)).replace('__RESOLUTION__', json.dumps(resolution)), await_promise=True)
         if result == 'changed':
             raise SourceChanged('Source interval changed by user')
         if result != 'ready':
@@ -287,15 +295,15 @@ async def native_warmup_loop():
                 target = next((t for t in with_targets if t.get('id') == status.get('source_target') and is_chart_target(t)), None)
                 if not target:
                     report({'state': 'waiting', 'message': 'Đang chờ tab TradingView nguồn sẵn sàng'})
-                    await asyncio.sleep(3)
+                    await asyncio.sleep(1.5)
                     continue
                 try:
-                    await asyncio.to_thread(evaluate_target, target, ENSURE_PANES_JS)
+                    await evaluate(ENSURE_PANES_JS, await_promise=True)
                 except RuntimeError as error:
                     logging.warning('Native preload will use available panes: %s', error)
                 await native_warmup.cycle()
                 try:
-                    await asyncio.to_thread(store.save, snapshot_market_data(), snapshot_metadata())
+                    await asyncio.to_thread(store.save, None, None, True)
                 except OSError:
                     logging.exception('Could not save native warmup snapshot')
                 refresh.set()
@@ -379,9 +387,9 @@ HISTORY_JS = r'''(() => {
  if(p.count!==bars.size()){p.count=bars.size();p.growth=now;}
  const overlaysBusy=(model.dataSources?.()||[]).some(d=>d!==s&&d.metaInfo?.()?.id==='Overlay@tv-basicstudies'&&d.isLoading?.());
  const loading=s.isLoading()||overlaysBusy, available=s.requestMoreDataAvailable();
- const stalled=!!p.request && now-p.growth>45000 && !loading;
+ const stalled=!!p.request && now-p.growth>8000 && !loading;
  const complete=!loading && (!available || stalled || !__ALLOW__);
- if(!complete && !s.isLoading() && available && now-p.request>3000){s.requestMoreData(5000);p.request=now;}
+ if(!complete && !s.isLoading() && available && now-p.request>800){s.requestMoreData(5000);p.request=now;}
  return {symbol,resolution,count:bars.size(),complete,loading,reason:!__ALLOW__?'memory':stalled?'stalled':!available?'source_limit':'loading'};
 })()'''
 
@@ -415,7 +423,7 @@ SNAPSHOT_JS = r'''(() => {
           if (value && value.length >= 5) output.push({time:value[0],open:value[1],high:value[2],low:value[3],close:value[4],volume:value[5] || 0});
         };
         if (__FULL__) bars.each((index,value) => { append(value); });
-        else { const li = bars.lastIndex(); if (li > 0) append(bars.valueAt(li - 1)); if (li >= 0) append(bars.valueAt(li)); }
+        else { const li = bars.lastIndex(); for (let i = Math.max(0, li - 4); i <= li; i++) append(bars.valueAt(i)); }
         const minGap = minGaps[String(resolution)] || 0;
         if (overlay && minGap && bars.size() >= 2) {
           const prev = typeof bars.valueAt === 'function' ? bars.valueAt(bars.lastIndex() - 1) : output.at(-2);
@@ -468,15 +476,18 @@ class CDPConnection:
                 if not future.done():
                     future.set_exception(ConnectionError('CDP disconnected'))
 
-    async def evaluate(self, expression):
+    async def evaluate(self, expression, await_promise=False, timeout=6):
         self.sequence += 1
         request_id = self.sequence
         future = asyncio.get_running_loop().create_future()
         self.pending[request_id] = future
+        params = {'expression': expression, 'returnByValue': True}
+        if await_promise:
+            params['awaitPromise'] = True
         try:
             await self.socket.send(json.dumps({'id': request_id, 'method': 'Runtime.evaluate',
-                                              'params': {'expression': expression, 'returnByValue': True}}))
-            result = await asyncio.wait_for(future, timeout=6)
+                                              'params': params}))
+            result = await asyncio.wait_for(future, timeout=timeout)
             if result.get('exceptionDetails'):
                 raise RuntimeError(str(result['exceptionDetails']))
             return result.get('result', {}).get('value')
@@ -519,6 +530,7 @@ def set_status(state, message, **fields):
 
 
 async def poll_source(source_url=None, expected=None):
+    global active_cdp, active_cdp_url
     delay = 1
     while True:
         reader = None
@@ -529,13 +541,15 @@ async def poll_source(source_url=None, expected=None):
             async with websockets.connect(target, max_size=20 * 1024 * 1024,
                                           open_timeout=5, close_timeout=2) as socket:
                 cdp = CDPConnection(socket)
+                active_cdp = cdp
+                active_cdp_url = target
                 reader = asyncio.create_task(cdp.read())
                 next_full = 0
                 delay = 1
                 empty_streak = 0
                 while True:
                     if native_warmup and native_warmup.running:
-                        await asyncio.sleep(0.5)
+                        await asyncio.sleep(0.25)
                         continue
                     full = refresh.is_set() or time.monotonic() >= next_full
                     refresh.clear()
@@ -588,7 +602,7 @@ async def poll_source(source_url=None, expected=None):
                     set_status('connected', 'TradingView · đang nhận dữ liệu', symbols=available,
                                last_update=time.time(), sources=list(source_updates.values()))
                     if full:
-                        next_full = time.monotonic() + 20
+                        next_full = time.monotonic() + 180
                     try:
                         await asyncio.wait_for(refresh.wait(), timeout=1)
                     except asyncio.TimeoutError:
@@ -604,6 +618,9 @@ async def poll_source(source_url=None, expected=None):
             if expected is None:
                 set_status('disconnected', str(exc) or 'TradingView không phản hồi', symbols=[])
         finally:
+            if active_cdp is not None and active_cdp_url == (source_url or active_cdp_url):
+                active_cdp = None
+                active_cdp_url = None
             if reader:
                 reader.cancel()
                 await asyncio.gather(reader, return_exceptions=True)
@@ -662,7 +679,14 @@ async def automatic_sources():
                     with urlopen(f'http://localhost:{CDP_PORT}/json/list', timeout=3) as response:
                         return json.load(response)
                 targets = await asyncio.to_thread(discover)
-                target, pairs = await asyncio.to_thread(select_single_source, targets, current_url)
+                active_target = next((t for t in targets if t.get('webSocketDebuggerUrl') == current_url and is_chart_target(t)), None) if current_url else None
+                live_pairs = {(item['symbol'], item['timeframe']) for item in source_updates.values() if not item.get('error') and time.time() - (item.get('updated') or 0) < 15}
+                if active_target and worker and not worker.done() and {'NQ1!', 'ES1!', 'YM1!'} <= {s for s, _ in live_pairs}:
+                    target, pairs = active_target, live_pairs
+                elif native_warmup and native_warmup.running and active_target:
+                    target, pairs = active_target, None
+                else:
+                    target, pairs = await asyncio.to_thread(select_single_source, targets, current_url)
                 if target:
                     url = target['webSocketDebuggerUrl']
                     if url != current_url or worker is None or worker.done():
@@ -681,7 +705,10 @@ async def automatic_sources():
                         if subscriptions and missing and can_setup and time.monotonic() >= retry_setup:
                             retry_setup = time.monotonic() + 20
                             try:
-                                await asyncio.to_thread(evaluate_target, target, ENSURE_PANES_JS)
+                                if active_cdp is not None and active_cdp_url == url:
+                                    await active_cdp.evaluate(ENSURE_PANES_JS, await_promise=True, timeout=15)
+                                else:
+                                    await asyncio.to_thread(evaluate_target, target, ENSURE_PANES_JS)
                                 refresh.set()
                             except Exception as error:
                                 logging.warning('Native peer panes: %s', error)
@@ -799,9 +826,14 @@ def snapshot_metadata():
         return {symbol: copy.deepcopy(meta) for symbol, meta in store.metadata.items()}
 
 
+SNAPSHOT_TF_ORDER = ('1m', '5m', '15m', '1h', '4h', '6h', 'D', 'W', '30m', '2h', '1M', '3M', '12h')
+
+
 def encode_initial_snapshot(status_snapshot, data_snapshot, metadata_snapshot):
     frames = [json.dumps(status_snapshot)]
-    for tf, symbols in data_snapshot.items():
+    ordered_tfs = [tf for tf in SNAPSHOT_TF_ORDER if tf in data_snapshot] + [tf for tf in data_snapshot if tf not in SNAPSHOT_TF_ORDER]
+    for tf in ordered_tfs:
+        symbols = data_snapshot.get(tf) or {}
         for symbol, bars in symbols.items():
             if bars:
                 frames.append(json.dumps({'type': 'history', 'symbol': symbol, 'timeframe': tf,
@@ -881,7 +913,12 @@ async def frontend_ws_handler(socket):
                             else:
                                 rejected.append(f'{sym}:{tf}')
                         if valid_tfs:
-                            enqueue_native(valid_tfs, priority=True)
+                            with store.lock:
+                                already_cached = all(
+                                    all(len(store.data.get('1h' if tf == '6h' else tf, {}).get(sym, [])) >= 20 for sym in ('NQ1!', 'ES1!', 'YM1!'))
+                                    for tf in valid_tfs
+                                )
+                            enqueue_native(valid_tfs, priority=True, quick=already_cached)
                         if rejected:
                             queue.put_nowait(json.dumps({'type': 'native_request_error', 'rejected': rejected,
                                                          'error': f'Khung/mã chưa hỗ trợ native: {", ".join(rejected)}'}))
@@ -1010,7 +1047,7 @@ async def save_loop():
     while True:
         await asyncio.sleep(20)
         try:
-            await asyncio.to_thread(store.save, snapshot_market_data(), snapshot_metadata())
+            await asyncio.to_thread(store.save, None, None, True)
         except OSError:
             logging.exception('Could not persist market data')
 

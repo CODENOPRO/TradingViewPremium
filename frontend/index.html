@@ -1085,6 +1085,38 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
 }
 @keyframes wow-icon { from { opacity: 0; transform: scale(.35) rotate(-50deg); } to { opacity: 1; transform: none; } }
 #music-panel.music-mini[data-provider="youtube"] .music-controls button.music-mute-btn[aria-pressed="true"] { opacity: .5; color: #fff; }
+.music-vol-wrap {
+  display: inline-flex; align-items: center; gap: 0; position: relative;
+}
+.music-vol-wrap[hidden] { display: none !important; }
+.music-vol-pop {
+  display: inline-flex; align-items: center;
+  width: 0; opacity: 0; overflow: hidden; padding: 0;
+  transition: width .22s cubic-bezier(.2,1,.4,1), opacity .18s ease, padding .22s ease;
+}
+.music-vol-wrap:not(.no-slider):is(:hover, :focus-within, :active) .music-vol-pop {
+  width: 72px; opacity: 1; padding: 0 6px 0 4px;
+}
+.music-vol-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 62px; height: 4px; margin: 0; padding: 0; border: 0; border-radius: 99px; cursor: pointer;
+  background: linear-gradient(90deg, #fff var(--vol, 80%), rgba(255,255,255,.28) var(--vol, 80%));
+  outline: none;
+}
+#music-panel:not(.music-mini) .music-vol-slider {
+  background: linear-gradient(90deg, var(--accent, #2962ff) var(--vol, 80%), rgba(128,128,128,.35) var(--vol, 80%));
+}
+.music-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 11px; height: 11px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.55); cursor: pointer;
+  transition: transform .12s ease;
+}
+.music-vol-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.music-vol-slider::-moz-range-thumb {
+  width: 11px; height: 11px; border: 0; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.55); cursor: pointer;
+}
 
 /* thời gian: chữ nổi, dưới phải */
 #music-panel.music-mini[data-provider="youtube"] .music-clock {
@@ -6354,6 +6386,69 @@ body.paper-panel-open #replay-toolbar{
   right:calc(var(--paper-push) + 8px) !important;
   bottom:46px !important;
 }
+
+/* ---------- QT settings dialog + sliding-thumb tabs ---------- */
+*:has(>.qt-settings-dialog){backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.qt-settings-dialog{background:var(--glass)!important;color:var(--text)!important;border:1px solid var(--line)!important;border-radius:24px!important;box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08)!important;backdrop-filter:blur(22px) saturate(1.4);transform-origin:50% 30%;animation:wow-pop .45s cubic-bezier(.2,1.25,.4,1) both}
+@keyframes wow-pop{from{opacity:0;transform:translateY(22px) scale(.94)}}
+.qt-settings-badge{background:color-mix(in srgb,var(--accent) 16%,transparent)!important;color:var(--accent)!important;border:0!important;border-radius:8px!important;letter-spacing:.07em}
+.qt-settings-dialog .modal-header,.qt-settings-dialog .modal-footer{border-color:var(--line)!important;background:transparent!important}
+.qt-search{height:44px!important;border-radius:14px!important;border:1px solid var(--line)!important;background:var(--glass2)!important;color:var(--text)!important;padding:0 16px 0 40px!important;outline:0;transition:border-color .2s,box-shadow .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b93a7' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:14px center}
+.qt-search:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.qt-group-heading{color:var(--accent)!important;letter-spacing:.09em}
+.qt-inline-row{border-color:var(--line)!important;animation:wow-in .35s both}
+@keyframes wow-in{from{opacity:0;transform:translateY(6px)}}
+.qt-settings-dialog :is(select,input[type=text],input[type=number]){border-radius:11px!important;border:1px solid var(--line)!important;background:var(--glass2)!important;color:var(--text)!important}
+.qt-settings-dialog .modal-footer button{border-radius:12px!important;font-weight:700;transition:transform .15s,filter .2s}
+.qt-settings-dialog .modal-footer button:active{transform:scale(.96)}
+.qt-settings-dialog .modal-footer .btn-primary{background:var(--accent)!important;color:var(--accent-ink)!important;border:0!important;box-shadow:0 3px 12px color-mix(in srgb,var(--accent) 35%,transparent)}
+.qt-settings-dialog .modal-footer .btn-primary:hover{filter:brightness(1.08)}
+.qt-filter-sticky{background:var(--glass)!important;backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);padding:14px 0 12px!important}
+.qt-settings-dialog :is(.qt-row,.qt-inline-item,.qt-settings-title-wrap,.modal-header h2,.modal-header h3){color:var(--text)!important}
+.qt-row:hover,.qt-inline-row:hover{background:var(--glass2)!important}
+.qt-settings-dialog input[type=checkbox]{accent-color:var(--accent)!important}
+.qt-settings-dialog :is(.modal-header button,.modal-footer .btn-secondary,.modal-footer button:not(.btn-primary)){color:var(--text)!important;background:var(--glass2)!important;border:1px solid var(--line)!important}
+.qt-settings-dialog .modal-header button{border-radius:50%!important}
+
+/* ===== QT tabs: sliding-thumb segmented control ===== */
+.qt-tabs{--mx:-200px;position:relative;display:flex;gap:2px;padding:5px;margin-top:2px;border-radius:20px;border:1px solid var(--line);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--text) 5%,transparent),transparent 60%),var(--glass2);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.18),inset 0 -1px 0 rgba(255,255,255,.04);
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x proximity;overscroll-behavior-x:contain;isolation:isolate}
+.qt-tabs::-webkit-scrollbar{display:none}
+.qt-tabs::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(90px 60px at var(--mx) 50%,color-mix(in srgb,var(--accent) 20%,transparent),transparent 70%);opacity:0;transition:opacity .25s}
+.qt-tabs:hover::before{opacity:1}
+.qt-tab-thumb{position:absolute;z-index:1;left:0;top:5px;bottom:5px;width:0;border-radius:15px;pointer-events:none;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 82%,#fff),var(--accent) 55%,color-mix(in srgb,var(--accent) 86%,#000));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 70%,#000),0 6px 18px color-mix(in srgb,var(--accent) 45%,transparent),0 0 28px color-mix(in srgb,var(--accent) 28%,transparent),inset 0 1px 0 rgba(255,255,255,.45);
+  transition:transform .5s cubic-bezier(.3,1.35,.4,1),width .5s cubic-bezier(.3,1.35,.4,1),opacity .25s}
+.qt-tab-thumb::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);background-size:250% 100%;background-position:130% 0;animation:qt-sheen 3.6s ease-in-out 1.2s infinite}
+@keyframes qt-sheen{0%,70%,100%{background-position:130% 0}85%{background-position:-30% 0}}
+.qt-tab{position:relative;z-index:2;flex:1 1 auto;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 10px;border:0!important;border-radius:15px!important;
+  background:transparent!important;color:var(--muted)!important;font:inherit;font-size:12px;font-weight:650;letter-spacing:.005em;white-space:nowrap;cursor:pointer;scroll-snap-align:center;
+  transition:color .25s,transform .2s cubic-bezier(.3,1.4,.5,1);-webkit-tap-highlight-color:transparent}
+.qt-tab:hover{color:var(--text)!important}
+.qt-tab:active{transform:scale(.95)}
+.qt-tab:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.qt-tab-ico{flex:none;transition:transform .45s cubic-bezier(.3,1.6,.4,1)}
+.qt-tab:hover .qt-tab-ico{transform:translateY(-1px) scale(1.12)}
+.qt-tab.active{color:var(--accent-ink)!important}
+.qt-tab.active .qt-tab-ico{transform:scale(1.12) rotate(-6deg)}
+.qt-tab-count{font-style:normal;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;padding:3px 6px;border-radius:99px;
+  background:color-mix(in srgb,var(--text) 9%,transparent);color:var(--muted);transition:background .25s,color .25s}
+.qt-tab:not(.active) .qt-tab-count{display:none}
+.qt-tab.active .qt-tab-count{background:color-mix(in srgb,var(--accent-ink) 22%,transparent);color:var(--accent-ink)}
+.qt-tabs.is-searching .qt-tab-thumb{opacity:.18}
+.qt-tabs.is-searching .qt-tab.active{color:var(--text)!important}
+@media (max-width:560px){
+  .qt-tab{padding:0 10px}
+  .qt-tab:not(.active) .qt-tab-label{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .qt-tab-thumb,.qt-tab,.qt-tab-ico{transition:none!important}
+  .qt-tab-thumb::after{animation:none}
+}
 </style>
   <style>
     #dock-market-status { position: relative; color: var(--text); }
@@ -7356,9 +7451,11 @@ const MarketData = (() => {
     return tf === 'W' ? wOpen : tf === 'D' ? open : open + Math.floor((time - open) / seconds) * seconds;
   }
   function clean(values) {
+    if (!Array.isArray(values) || !values.length) return [];
     const result = new Map();
-    for (const value of values || []) {
-      if (!value || !['time', 'open', 'high', 'low', 'close'].every(k => Number.isFinite(value[k]))) continue;
+    for (let i = 0; i < values.length; i++) {
+      const value = values[i];
+      if (!value || !Number.isFinite(value.time) || !Number.isFinite(value.open) || !Number.isFinite(value.high) || !Number.isFinite(value.low) || !Number.isFinite(value.close)) continue;
       const volume = value.volume ?? 0;
       if (!Number.isFinite(volume) || volume < 0 || !Number.isInteger(value.time) || value.time <= 0 || value.low > Math.min(value.open, value.close) || value.high < Math.max(value.open, value.close)) continue;
       result.set(value.time, { time: value.time, open: value.open, high: value.high, low: value.low, close: value.close, volume });
@@ -7824,10 +7921,89 @@ const DrawingModel = (() => {
         pxTag(d.p3.price,stop,hex(d.stopColor)||'#f23645');
       }
     } else if(d.type === 'measure') {
-      if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}ctx.strokeRect(left,top,right-left,bottom-top);
-      ctx.fillStyle=d.textStyle.color;ctx.font='11px Arial';
-      const change=d.p2.price-d.p1.price;
-      ctx.fillText(`${change.toFixed(2)} (${d.p1.price ? (change/d.p1.price*100).toFixed(2) : '—'}%)`,left+5,top+16);
+      const change = d.p2.price - d.p1.price;
+      const isUp = change >= 0;
+      const baseHex = isUp ? '#2962ff' : '#f23645';
+      const fillCss = isUp ? 'rgba(41, 98, 255, 0.20)' : 'rgba(242, 54, 69, 0.20)';
+      const boxW = right - left, boxH = bottom - top;
+      ctx.fillStyle = fillCss;
+      ctx.fillRect(left, top, boxW, boxH);
+
+      ctx.strokeStyle = baseHex;
+      ctx.fillStyle = baseHex;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      const arrowHead = (x, y, dx, dy) => {
+        const len = Math.hypot(dx, dy);
+        if (!len) return;
+        const ux = dx / len, uy = dy / len, sz = 6, hw = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - ux * sz - uy * hw, y - uy * sz + ux * hw);
+        ctx.lineTo(x - ux * sz + uy * hw, y - uy * sz - ux * hw);
+        ctx.closePath();
+        ctx.fill();
+      };
+      const midX = (g.a.x + g.b.x) / 2, midY = (g.a.y + g.b.y) / 2;
+      if (Math.abs(g.b.x - g.a.x) >= 6) {
+        line(g.a.x, midY, g.b.x, midY);
+        arrowHead(g.b.x, midY, g.b.x - g.a.x, 0);
+      }
+      if (Math.abs(g.b.y - g.a.y) >= 6) {
+        line(midX, g.a.y, midX, g.b.y);
+        arrowHead(midX, g.b.y, 0, g.b.y - g.a.y);
+      }
+
+      const tick = chart.metadata?.tickSize;
+      const dec = Number.isFinite(tick) && tick > 0 ? Math.max(0, Math.min(6, Math.ceil(-Math.log10(tick)))) : 2;
+      const pct = d.p1.price ? (change / d.p1.price) * 100 : 0;
+      const sign = change > 0 ? '+' : '';
+      const ticksStr = Number.isFinite(tick) && tick > 0 ? ` ${Math.round(Math.abs(change) / tick)}` : '';
+      const line1 = `${sign}${change.toFixed(dec)} (${sign}${pct.toFixed(2)}%)${ticksStr}`;
+
+      const i1 = DrawingModel.logicalIndex(chart, d.p1.time);
+      const i2 = DrawingModel.logicalIndex(chart, d.p2.time);
+      const barsCount = (i1 != null && i2 != null) ? Math.abs(Math.round(i2 - i1)) : 0;
+      const dt = Math.abs((d.p2.time || 0) - (d.p1.time || 0));
+      let durText = '0m';
+      if (dt < 60) durText = `${Math.round(dt)}s`;
+      else if (dt < 3600) durText = `${Math.round(dt / 60)}m`;
+      else if (dt < 86400) {
+        const h = Math.floor(dt / 3600), mins = Math.round((dt % 3600) / 60);
+        durText = mins ? `${h}h ${mins}m` : `${h}h`;
+      } else {
+        const days = Math.floor(dt / 86400), h = Math.floor((dt % 86400) / 3600);
+        durText = h ? `${days}d ${h}h` : `${days}d`;
+      }
+      const line2 = `${barsCount} ${barsCount === 1 ? 'bar' : 'bars'}, ${durText}`;
+
+      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+      const w1 = ctx.measureText ? ctx.measureText(line1).width : line1.length * 6.2;
+      const w2 = ctx.measureText ? ctx.measureText(line2).width : line2.length * 6.2;
+      const padX = 10, padY = 6, lineH = 15;
+      const tipW = Math.ceil(Math.max(w1, w2) + padX * 2);
+      const tipH = lineH * 2 + padY * 2 - 2;
+      const tipX = Math.max(4, Math.min((width || 800) - tipW - 4, (left + right) / 2 - tipW / 2));
+      let tipY = g.b.y <= g.a.y ? top - tipH - 8 : bottom + 8;
+      if (tipY < 4) tipY = Math.min(plotBottom - tipH - 4, bottom + 8);
+      if (tipY + tipH > plotBottom - 4) tipY = Math.max(4, top - tipH - 8);
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 2;
+      ctx.fillStyle = baseHex;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(tipX, tipY, tipW, tipH, 4);
+      else ctx.rect(tipX, tipY, tipW, tipH);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(line1, tipX + tipW / 2, tipY + padY + lineH * 0.42);
+      ctx.fillText(line2, tipX + tipW / 2, tipY + padY + lineH * 1.42);
     }
     if(d.text || d.type === 'text') {
       const style=d.textStyle;
@@ -8329,7 +8505,6 @@ class ChartEngine {
   // Histories are independent; live 1m replacements never add the same volume twice.
   setHtfData(tf, values) {
     this.htfData[tf] = MarketData.clean(values);
-    this.htfBaselines[tf] = new Map(this.rawBars.map(b => [b.time, b.volume]));
     // Rendering the active timeframe already emits a data invalidation.
     // For an inactive timeframe, still invalidate request.* consumers once.
     if (this.currentTimeframe === tf) this.renderCurrentTimeframe(false);
@@ -8391,7 +8566,7 @@ class ChartEngine {
     if(this.replayMode&&Number.isFinite(this.replayClock))this.replayIndex=TerminalTime.closedIndex(available,this.currentTimeframe,this.displaySessionMetadata(),this.replayClock);
     this.bars = this.replayMode ? available.slice(0, this.replayIndex) : available;
     this.renderCandleData();
-    if (reset && this.bars.length) this.resetView();
+    if ((reset || (previous && previousBars.length > 10 && previous.from >= previousBars.length - 5)) && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
     this.container.dataset.empty = this.bars.length ? '' : ui('Không có dữ liệu cho mã/khung này');
@@ -8415,8 +8590,9 @@ class ChartEngine {
   }
 
   setData(values) {
-    const wasEmpty = !this.rawBars.length;
-    this.rawBars = MarketData.clean(values);
+    const cleaned = MarketData.clean(values);
+    const wasEmpty = !this.rawBars.length || (this.rawBars.length <= 2 && cleaned.length > 2);
+    this.rawBars = cleaned;
     this.htfData['1m'] = this.rawBars;
     this.renderCurrentTimeframe(wasEmpty);
   }
@@ -10892,6 +11068,7 @@ class DrawingManager {
     this.drawingsHidden = false;
     this.drawingState = null;
     this.lastPointer = null;
+    this.measureSession = null;
 
     this.undoStacks = new Map();
     this.redoStacks = new Map();
@@ -10929,6 +11106,7 @@ class DrawingManager {
       return;
     }
 
+    if (this.measureSession) this.clearMeasure();
     if (this.drawingState?.chart) {
       this.drawingState.chart.drawings = this.drawingState.chart.drawings.filter(d => !d.isTemp);
       this.drawingState.chart.renderDrawings();
@@ -11064,9 +11242,10 @@ class DrawingManager {
     this.loadDrawings(chartEngine);
     this.bindMagnetCrosshair(chartEngine);
     this.bindBrush(chartEngine);
+    this.bindMeasure(chartEngine);
 
     container.addEventListener('click', (e) => {
-      if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.activeTool==='brush' || this.drawingsLocked) return;
+      if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.activeTool==='brush' || this.activeTool==='measure' || this.drawingsLocked) return;
       if (this.drawingState?.chart !== chartEngine) this.drawingState = null;
 
       const anchor = this.drawingState?.step === 2 ? this.drawingState.p1 : null;
@@ -11190,7 +11369,94 @@ class DrawingManager {
     document.addEventListener('keydown',event=>{if(event.key==='Escape')finish(event,true);});
   }
 
+  clearMeasure() {
+    const s = this.measureSession;
+    if (!s) return;
+    this.measureSession = null;
+    if (s.scroll != null) s.chart.chart.applyOptions({ handleScroll: { pressedMouseMove: s.scroll } });
+    if (s.pointerId != null && s.chart.container.hasPointerCapture?.(s.pointerId)) {
+      s.chart.container.releasePointerCapture(s.pointerId);
+    }
+    s.chart.drawings = (s.chart.drawings || []).filter(d => d.id !== 'temp_measure');
+    s.chart.renderDrawings();
+  }
+
+  bindMeasure(chart) {
+    const node = chart.container;
+    const inPlot = (clientX, clientY) => {
+      const r = node.getBoundingClientRect(), x = clientX - r.left, y = clientY - r.top;
+      return x >= 0 && x < node.clientWidth - (chart.chart.priceScale('right').width() || 65) && y >= 0 && y < chart.plotBottom;
+    };
+    const renderMeasure = (p1, p2) => {
+      chart.drawings = (chart.drawings || []).filter(d => d.id !== 'temp_measure');
+      chart.drawings.push({ ...DrawingModel.defaults('measure'), id: 'temp_measure', isTemp: true, type: 'measure', p1, p2 });
+      chart.renderDrawings();
+    };
+    node.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || this.drawingsLocked || e.target.closest('button, input, select, .indicator-tables, .drawing-toolbar')) return;
+      if (this.measureSession?.phase === 'locked') {
+        this.clearMeasure();
+        if (this.activeTool === 'measure' && !e.shiftKey) {
+          this.setTool('crosshair');
+          return;
+        }
+        if (!e.shiftKey && this.activeTool !== 'measure') return;
+      }
+      if (this.measureSession?.phase === 'aiming' && this.measureSession.chart === chart) {
+        const p2 = this.resolvePoint(chart, e.clientX, e.clientY, e);
+        if (p2) { this.measureSession.p2 = p2; renderMeasure(this.measureSession.p1, p2); }
+        this.measureSession.phase = 'locked';
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+      const isShiftMeasure = e.shiftKey && !this.drawingState && (this.activeTool === 'crosshair' || this.activeTool === 'measure');
+      if (!isShiftMeasure && this.activeTool !== 'measure') return;
+      if (!inPlot(e.clientX, e.clientY)) return;
+      const p1 = this.resolvePoint(chart, e.clientX, e.clientY, e);
+      if (!p1) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      node.dispatchEvent(new CustomEvent('chart-activate'));
+      const scroll = chart.chart.options().handleScroll.pressedMouseMove;
+      chart.chart.applyOptions({ handleScroll: { pressedMouseMove: false } });
+      node.setPointerCapture?.(e.pointerId);
+      this.measureSession = { chart, p1, p2: p1, startX: e.clientX, startY: e.clientY, pointerId: e.pointerId, scroll, phase: 'dragging', moved: false };
+      renderMeasure(p1, p1);
+    }, true);
+
+    node.addEventListener('pointermove', e => {
+      const s = this.measureSession;
+      if (!s || s.chart !== chart || (s.phase !== 'dragging' && s.phase !== 'aiming')) return;
+      if (s.phase === 'dragging' && Math.hypot(e.clientX - s.startX, e.clientY - s.startY) >= 4) s.moved = true;
+      const p2 = this.resolvePoint(chart, e.clientX, e.clientY, e);
+      if (!p2) return;
+      s.p2 = p2;
+      renderMeasure(s.p1, p2);
+    }, true);
+
+    const endDrag = e => {
+      const s = this.measureSession;
+      if (!s || s.chart !== chart || s.phase !== 'dragging') return;
+      if (s.scroll != null) chart.chart.applyOptions({ handleScroll: { pressedMouseMove: s.scroll } });
+      s.scroll = null;
+      if (s.pointerId != null && node.hasPointerCapture?.(s.pointerId)) node.releasePointerCapture(s.pointerId);
+      s.pointerId = null;
+      s.phase = s.moved ? 'locked' : 'aiming';
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    node.addEventListener('pointerup', endDrag, true);
+    node.addEventListener('pointercancel', () => this.clearMeasure(), true);
+  }
+
   initHotkeys() {
+    document.addEventListener('pointerdown', e => {
+      if (this.measureSession?.phase !== 'locked') return;
+      if (this.measureSession.chart.container.contains(e.target)) return;
+      this.clearMeasure();
+      if (this.activeTool === 'measure') this.setTool('crosshair');
+    }, true);
     window.addEventListener('keydown', (e) => {
       if (e.target.closest('input, textarea, select, [contenteditable]')) return;
       const chart = window.currentActiveChart;
@@ -11198,6 +11464,10 @@ class DrawingManager {
         e.preventDefault(); this.historyStep(chart, e.shiftKey); return;
       }
       if (e.key === 'Escape') {
+        if (this.measureSession) {
+          this.clearMeasure();
+          if (this.activeTool === 'measure') this.setTool('crosshair');
+        }
         if (this.drawingState) {
           if (window.currentActiveChart) {
             window.currentActiveChart.drawings = window.currentActiveChart.drawings.filter(d => !d.isTemp);
@@ -14581,6 +14851,1360 @@ if (typeof module !== 'undefined') module.exports = ChartContextMenu;
 </script>
     <script>
 'use strict';
+const trCompanion = value => typeof ui === 'function' ? ui(value) : value;
+const TerminalMusicLinks={
+  parse(text){
+    let u;try{u=new URL(text.trim());}catch{throw Error('Paste a full music or playlist link.');}
+    if(u.protocol!=='https:'||u.username||u.password||u.port)throw Error('Use an official HTTPS provider link.');
+    const host=u.hostname.replace(/^www\./,''),path=u.pathname.split('/').filter(Boolean);
+    if(/\.(mp3|m4a|aac|wav|ogg|opus|flac|weba)$/i.test(u.pathname))return {provider:'audio',url:u.href};
+    if(['youtube.com','m.youtube.com','music.youtube.com','youtu.be'].includes(host)){
+      const id=host==='youtu.be'?path[0]:['shorts','embed','live'].includes(path[0])?path[1]:u.searchParams.get('v'),list=u.searchParams.get('list');
+      if((!id||!/^[\w-]{11}$/.test(id))&&(!list||!/^[\w-]{10,100}$/.test(list)))throw Error('Use a YouTube video or playlist link.');
+      const validId=id&&/^[\w-]{11}$/.test(id)?id:null;
+      const validList=list&&/^[\w-]{10,100}$/.test(list)?list:null;
+      return {provider:'youtube',id:validId,list:validList,url:validId?'https://www.youtube.com/watch?v='+validId+(validList?'&list='+validList:''):'https://www.youtube.com/playlist?list='+validList};
+    }
+    if(['vm.tiktok.com','vt.tiktok.com','on.soundcloud.com','spotify.link'].includes(host)&&path.length)return {share:true,url:u.href};
+    if(host==='tiktok.com'&&path[0]==='t'&&path.length===2)return {share:true,url:'https://www.tiktok.com/t/'+path[1]+'/'};
+    if(host==='open.spotify.com'){
+      if(/^intl-/.test(path[0]))path.shift();if(path[0]==='embed')path.shift();const [type,id]=path;
+      if(!['track','playlist','album','episode','show'].includes(type)||!/^[a-zA-Z0-9]{22}$/.test(id||''))throw Error('Use a Spotify track, album or playlist link.');
+      return {provider:'spotify',id,type,url:`https://open.spotify.com/${type}/${id}`,uri:`spotify:${type}:${id}`};
+    }
+    if(['soundcloud.com','m.soundcloud.com'].includes(host)&&path.length>=2&&!['discover','search','you'].includes(path[0]))return {provider:'soundcloud',url:'https://soundcloud.com/'+path.join('/')+(u.searchParams.get('secret_token')?'?'+new URLSearchParams({secret_token:u.searchParams.get('secret_token')}):'')};
+    if(['tiktok.com','m.tiktok.com'].includes(host)&&path[0]==='music')throw Error('Paste a TikTok post link. Sound pages need a post that uses the sound.');
+    if(['tiktok.com','m.tiktok.com'].includes(host)){
+      const post=u.pathname.match(/^\/(@[^/]+\/(?:video|photo)\/(\d{10,25}))\/?$/);
+      if(post)return {provider:'tiktok',id:post[2],url:'https://www.tiktok.com/'+post[1]};
+    }
+    if(host==='tiktok.com'&&path[0]==='player'&&path[1]==='v1'&&/^\d{10,25}$/.test(path[2]||''))return {provider:'tiktok',id:path[2],url:'https://www.tiktok.com/player/v1/'+path[2]};
+    throw Error('Use a YouTube, Spotify, SoundCloud or TikTok video link.');
+  }
+};
+const MUSIC_ICONS={
+  prev:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="6" width="2.2" height="12" rx="1" fill="currentColor"/><path d="M18.5 6.8a1 1 0 0 0-1.56-.83l-7.8 5.2a1 1 0 0 0 0 1.66l7.8 5.2a1 1 0 0 0 1.56-.83V6.8z" fill="currentColor"/></svg>',
+  rewind:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.5 7.2a1 1 0 0 0-1.6-.8l-6.4 4.8a1 1 0 0 0 0 1.6l6.4 4.8a1 1 0 0 0 1.6-.8V7.2zM20.5 7.2a1 1 0 0 0-1.6-.8l-6.4 4.8a1 1 0 0 0 0 1.6l6.4 4.8a1 1 0 0 0 1.6-.8V7.2z" fill="currentColor"/></svg>',
+  play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 5.6a1.1 1.1 0 0 1 1.68-.93l9.4 6a1.1 1.1 0 0 1 0 1.86l-9.4 6A1.1 1.1 0 0 1 8.2 17.6V5.6z" fill="currentColor"/></svg>',
+  pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5.5" width="3.8" height="13" rx="1.4" fill="currentColor"/><rect x="13.7" y="5.5" width="3.8" height="13" rx="1.4" fill="currentColor"/></svg>',
+  forward:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.2a1 1 0 0 1 1.6-.8l6.4 4.8a1 1 0 0 1 0 1.6l-6.4 4.8a1 1 0 0 1-1.6-.8V7.2zM12.5 7.2a1 1 0 0 1 1.6-.8l6.4 4.8a1 1 0 0 1 0 1.6l-6.4 4.8a1 1 0 0 1-1.6-.8V7.2z" fill="currentColor"/></svg>',
+  next:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="16.8" y="6" width="2.2" height="12" rx="1" fill="currentColor"/><path d="M5.5 6.8a1 1 0 0 1 1.56-.83l7.8 5.2a1 1 0 0 1 0 1.66l-7.8 5.2A1 1 0 0 1 5.5 17.2V6.8z" fill="currentColor"/></svg>',
+  volume:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>',
+  muted:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M22 9l-6 6M16 9l6 6"/></svg>',
+  expand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+};
+const POPUP_RATIOS=[
+  {key:'free',label:'Free',ratio:null},
+  {key:'16/9',label:'16:9',ratio:16/9},
+  {key:'9/16',label:'9:16',ratio:9/16},
+  {key:'4/3',label:'4:3',ratio:4/3},
+  {key:'1/1',label:'1:1',ratio:1}
+];
+class TerminalCompanions{
+  constructor(ctx){
+    Object.assign(this,ctx);this.calendarData=null;this.playing=false;this.epoch=0;this.currentTrack='';this.impacts=new Set(Workspace.read('terminal_calendar_impacts_v1',['High','Medium','Low']));this.currency=Workspace.read('terminal_calendar_currency_v1','USD');
+    const savedProtocols=Workspace.read('terminal_protocol_events_v1',[]);this.protocolEvents=Array.isArray(savedProtocols)?savedProtocols:[];
+    this.dock=document.createElement('aside');this.dock.id='terminal-edge-dock';this.dock.setAttribute('aria-label','Calendar and music');(document.getElementById('right-sidebar')||document.body).appendChild(this.dock);
+    this.panels={};for(const [key,title,path] of [['calendar','Calendar','M7 3v4m10-4v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM8 14h2m4 0h2M8 17h2'],['music','Music','M10 5.5a7.5 7.5 0 1 0 0 15a7.5 7.5 0 1 0 0-15ZM10 11.25a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 1 0 0-3.5ZM6.1 11.3A4.25 4.25 0 0 1 10 8.75M20.5 3.5v7l-2 3.5']]){
+      const button=document.createElement('button');button.className='edge-handle';button.id='edge-'+key;button.type='button';button.setAttribute('aria-label',ui(title));button.dataset.dockLabel=ui(title);button.setAttribute('aria-expanded','false');button.innerHTML=`<span>${title}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;TerminalLanguage.markup(button);this.dock.appendChild(button);
+      const panel=document.createElement('section');panel.id=key+'-panel';panel.className='companion-panel';panel.inert=true;panel.setAttribute('aria-label',title);panel.innerHTML=`<header><h2>${title==='Calendar'?'Economic Calendar':title}</h2><button type="button" aria-label="Close ${title}">×</button></header>`;panel.querySelector('button').onclick=()=>this.toggle(key,false);TerminalLanguage.markup(panel);document.body.appendChild(panel);this.panels[key]=panel;button.onclick=()=>this.toggle(key);
+    }
+    this.buildCalendar();this.buildMusic();this.loadCalendar();this.tick=setInterval(()=>{this.syncDockWidth();if(this.open==='calendar')this.renderCalendar();this.loadCalendar();this.updateMusic();},1000);this.syncDockWidth();
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(this.protocolLightbox&&!this.protocolLightbox.hidden){this.protocolLightbox.hidden=true;return;}if(this.open&&!e.target.closest('.modal'))this.toggle(this.open,false);}});
+  }
+  syncDockWidth(){
+    const width=40;
+    if(width===this.edgeWidth)return;
+    this.edgeWidth=width;
+    this.dock.style.setProperty('--edge-width',width+'px');
+    const inset='72px';
+    for(const panel of Object.values(this.panels)){
+      panel.style.setProperty('--companion-inset',inset);
+      if(!panel.classList.contains('music-mini'))panel.style.right=inset;
+    }
+  }
+  closeDocked(){
+    if(this.open)this.toggle(this.open,false);
+  }
+  toggle(key,force){
+    const show=force??this.open!==key;
+    if(show&&this.desktop?.mode){
+      this.desktop.open(null);
+    }
+    if(show&&this.open&&this.open!==key){
+      this.toggle(this.open,false);
+    }
+    if(key==='music'){
+      this.panels.music.classList.remove('music-mini','music-popup-interacting');
+      if(this.panels.music.style)this.panels.music.style.right='72px';
+      this.setVideoHidden?.(true);
+      this.updateMusicPopupButton();
+    }
+    this.panels[key].classList.toggle('open',show);this.panels[key].inert=!show;document.getElementById('edge-'+key)?.setAttribute('aria-expanded',String(show));
+    if(show)this.open=key;
+    else if(this.open===key)this.open=null;
+    this.desktop?.syncRailActive?.();
+    if(key==='calendar'&&show)this.renderCalendar();
+  }
+  setMusicMini(mini,focus=true){
+    if(!this.link)return;
+    const panel=this.panels.music;
+    if(!mini){
+      panel.classList.remove('music-popup-interacting');
+      this.toggle('music',true);
+    }else{
+      panel.classList.add('music-mini','open');
+      panel.inert=false;
+      if(!this.popupRatio||this.popupRatioProvider!==this.link.provider){
+        this.popupRatio='free';
+        this.popupRatioProvider=this.link.provider;
+      }
+      this.setVideoHidden(false);
+      this.applyPopupLayout();
+      if(this.open==='music'){
+        this.open=null;
+        document.getElementById('edge-music')?.setAttribute('aria-expanded','false');
+      }
+      this.desktop?.syncRailActive?.();
+      this.updateMusicPopupButton();
+    }
+    if(focus)(mini&&this.isVideoProvider()&&this.iframe?this.popupExpandButton:this.popupButton)?.focus();
+  }
+  isVideoProvider(){return ['youtube','tiktok'].includes(this.link?.provider);}
+  setVideoHidden(hidden){
+    const panel=this.panels.music;
+    const enabled=this.isVideoProvider()&&!!this.iframe&&!panel.classList.contains('music-mini');
+    panel.classList.toggle('music-video-hidden',enabled&&hidden);
+    if(this.link?.provider==='tiktok'&&this.iframe)this.iframe.tabIndex=enabled&&hidden?-1:0;
+  }
+  getPopupRatioEntry(){
+    return POPUP_RATIOS.find(r=>r.key===this.popupRatio)||POPUP_RATIOS[0];
+  }
+  applyPopupLayout(){
+    const panel=this.panels.music;
+    if(!panel.classList.contains('music-mini'))return;
+    const isTikTok=this.link?.provider==='tiktok';
+    const maxW=Math.max(220,innerWidth-12);
+    const maxH=Math.max(150,innerHeight-12);
+    const defaultW=this.isVideoProvider()?(isTikTok?260:340):340;
+    const defaultH=isTikTok?380:192;
+    const width=Math.round(Math.max(180,Math.min(maxW,this.videoPopupSize?.w||defaultW)));
+    if(this.isVideoProvider()){
+      const entry=this.getPopupRatioEntry();
+      if(entry.key==='free'||!entry.ratio){
+        const height=Math.round(Math.max(120,Math.min(maxH,this.videoPopupSize?.h||defaultH)));
+        panel.style.setProperty('--music-mini-w',width+'px');
+        panel.style.setProperty('--music-mini-h',height+'px');
+        panel.style.setProperty('--music-mini-aspect','auto');
+      }else{
+        const clampedW=Math.max(180,Math.min(width,Math.round(maxH*entry.ratio)));
+        panel.style.setProperty('--music-mini-w',clampedW+'px');
+        panel.style.setProperty('--music-mini-aspect',entry.key);
+        panel.style.setProperty('--music-mini-h','auto');
+      }
+      if(this.popupRatioButton)this.popupRatioButton.textContent=entry.label;
+    }else{
+      panel.style.setProperty('--music-mini-w',width+'px');
+      panel.style.setProperty('--music-mini-h',this.videoPopupSize?.h?Math.round(Math.max(120,Math.min(maxH,this.videoPopupSize.h)))+'px':'auto');
+      panel.style.setProperty('--music-mini-aspect','auto');
+    }
+    this.placeVideoPopup();
+  }
+  placeVideoPopup(position=this.videoPopupPosition){
+    const panel=this.panels.music;
+    if(!panel.classList.contains('music-mini'))return;
+    if(!position){
+      const rect=panel.getBoundingClientRect();
+      if(!rect.width||!rect.height)return;
+      position={x:Math.max(4,innerWidth-rect.width-20),y:Math.max(4,innerHeight-rect.height-20)};
+    }
+    const maxX=Math.max(4,innerWidth-panel.offsetWidth-4);
+    const maxY=Math.max(4,innerHeight-panel.offsetHeight-4);
+    const x=Math.round(Math.max(4,Math.min(position.x,maxX)));
+    const y=Math.round(Math.max(4,Math.min(position.y,maxY)));
+    this.videoPopupPosition={x,y};
+    panel.dataset.floatingPosition='';
+    panel.style.setProperty('--music-left',x+'px');
+    panel.style.setProperty('--music-top',y+'px');
+  }
+  resizeVideoPopup(){
+    const sizes=this.link?.provider==='tiktok'?[240,320,420]:[320,480,680];
+    const cur=this.panels.music.offsetWidth||sizes[0];
+    const next=sizes.find(s=>s>cur+18)||sizes[0];
+    const curH=this.panels.music.offsetHeight||200;
+    const scale=next/cur;
+    this.videoPopupSize={w:next,h:Math.round(curH*scale)};
+    this.applyPopupLayout();
+  }
+  cyclePopupRatio(){
+    if(!this.isVideoProvider())return;
+    const idx=POPUP_RATIOS.findIndex(r=>r.key===this.popupRatio);
+    const next=POPUP_RATIOS[(idx+1)%POPUP_RATIOS.length];
+    this.popupRatio=next.key;
+    if(next.ratio){
+      const w=this.panels.music.offsetWidth||this.videoPopupSize?.w||340;
+      this.videoPopupSize={w,h:Math.round(w/next.ratio)};
+    }
+    this.applyPopupLayout();
+  }
+  installVideoPopup(panel){
+    const rail=document.createElement('div');rail.className='video-popup-tools';
+    const button=(symbol,label,action,cls)=>{
+      const element=document.createElement('button');
+      element.type='button';element.innerHTML=symbol;element.title=ui(label);
+      element.setAttribute('aria-label',element.title);
+      if(cls)element.className=cls;
+      if(action)element.onclick=action;
+      rail.appendChild(element);return element;
+    };
+    this.popupExpandButton=button(MUSIC_ICONS.expand,'Expand',()=>this.setMusicMini(false));
+    button(MUSIC_ICONS.close,'Close popup',()=>this.toggle('music',false));
+    panel.appendChild(rail);
+
+    const startDrag=(event,handle)=>{
+      if(event.button!==0||!panel.classList.contains('music-mini'))return;
+      if(event.target.closest('button,input,a,.music-popup-resizer'))return;
+      event.preventDefault();
+      const rect=panel.getBoundingClientRect();
+      const drag={pointer:event.pointerId,dx:event.clientX-rect.left,dy:event.clientY-rect.top};
+      panel.classList.add('music-popup-interacting');
+      handle.setPointerCapture(event.pointerId);
+      const onMove=ev=>{
+        if(ev.pointerId!==drag.pointer)return;
+        this.placeVideoPopup({x:ev.clientX-drag.dx,y:ev.clientY-drag.dy});
+      };
+      const onDone=()=>{
+        panel.classList.remove('music-popup-interacting');
+        handle.removeEventListener('pointermove',onMove);
+        handle.removeEventListener('pointerup',onDone);
+        handle.removeEventListener('pointercancel',onDone);
+        handle.removeEventListener('lostpointercapture',onDone);
+      };
+      handle.addEventListener('pointermove',onMove);
+      handle.addEventListener('pointerup',onDone);
+      handle.addEventListener('pointercancel',onDone);
+      handle.addEventListener('lostpointercapture',onDone);
+    };
+    rail.addEventListener('pointerdown',e=>startDrag(e,rail));
+    panel.querySelector('header').addEventListener('pointerdown',e=>startDrag(e,panel.querySelector('header')));
+    const hud=panel.querySelector('.music-hud');
+    if(hud)hud.addEventListener('pointerdown',e=>{if(panel.classList.contains('music-mini'))startDrag(e,hud);});
+    const shield=document.createElement('div');
+    shield.className='music-video-shield';
+    shield.setAttribute('aria-hidden','true');
+    shield.addEventListener('pointerdown',event=>{
+      if(event.button!==0||!panel.classList.contains('music-mini'))return;
+      event.preventDefault();
+      const pid=event.pointerId,startX=event.clientX,startY=event.clientY,rect=panel.getBoundingClientRect();
+      let moved=false;
+      const dx=startX-rect.left,dy=startY-rect.top;
+      panel.classList.add('music-popup-interacting');
+      shield.setPointerCapture(pid);
+      const onMove=ev=>{
+        if(ev.pointerId!==pid)return;
+        if(!moved&&Math.hypot(ev.clientX-startX,ev.clientY-startY)>4)moved=true;
+        if(moved)this.placeVideoPopup({x:ev.clientX-dx,y:ev.clientY-dy});
+      };
+      const onDone=()=>{
+        panel.classList.remove('music-popup-interacting');
+        shield.removeEventListener('pointermove',onMove);
+        shield.removeEventListener('pointerup',onUp);
+        shield.removeEventListener('pointercancel',onDone);
+        shield.removeEventListener('lostpointercapture',onDone);
+      };
+      const onUp=ev=>{
+        onDone();
+        if(ev.pointerId===pid&&!moved)this.command('toggle');
+      };
+      shield.addEventListener('pointermove',onMove);
+      shield.addEventListener('pointerup',onUp);
+      shield.addEventListener('pointercancel',onDone);
+      shield.addEventListener('lostpointercapture',onDone);
+    });
+    panel.appendChild(shield);
+    panel.addEventListener('pointerleave',()=>{
+      if(panel.classList.contains('music-mini')&&document.activeElement&&panel.contains(document.activeElement)){
+        document.activeElement.blur();
+      }
+    });
+    rail.addEventListener('dblclick',event=>{if(!event.target.closest('button'))this.resizeVideoPopup();});
+
+    const addResizer=(dirs,cls,label)=>{
+      const handle=document.createElement('div');
+      handle.className='music-popup-resizer '+cls;
+      handle.title=label;
+      handle.setAttribute('aria-label',label);
+      handle.addEventListener('pointerdown',event=>{
+        if(event.button!==0||!panel.classList.contains('music-mini'))return;
+        event.preventDefault();event.stopPropagation();
+        const pid=event.pointerId;
+        const rect=panel.getBoundingClientRect();
+        this.placeVideoPopup({x:rect.left,y:rect.top});
+        panel.classList.add('music-popup-interacting');
+        handle.setPointerCapture(pid);
+        const startX=event.clientX,startY=event.clientY;
+        const startLeft=rect.left,startTop=rect.top,startRight=rect.right,startBottom=rect.bottom;
+        const startW=rect.width,startH=rect.height;
+        const minW=180,minH=120;
+        const hasW=dirs.includes('w'),hasE=dirs.includes('e'),hasN=dirs.includes('n'),hasS=dirs.includes('s');
+        const onMove=ev=>{
+          if(ev.pointerId!==pid)return;
+          const dw=ev.clientX-startX,dh=ev.clientY-startY;
+          let left=startLeft,top=startTop,width=startW,height=startH;
+          if(hasW){
+            left=Math.max(4,Math.min(startRight-minW,startLeft+dw));
+            width=startRight-left;
+          }else if(hasE){
+            width=Math.max(minW,Math.min(innerWidth-4-startLeft,startW+dw));
+          }
+          if(hasN){
+            top=Math.max(4,Math.min(startBottom-minH,startTop+dh));
+            height=startBottom-top;
+          }else if(hasS){
+            height=Math.max(minH,Math.min(innerHeight-4-startTop,startH+dh));
+          }
+          if(this.isVideoProvider())this.popupRatio='free';
+          this.videoPopupSize={w:width,h:height};
+          this.videoPopupPosition={x:left,y:top};
+          this.applyPopupLayout();
+        };
+        const onDone=()=>{
+          panel.classList.remove('music-popup-interacting');
+          handle.removeEventListener('pointermove',onMove);
+          handle.removeEventListener('pointerup',onDone);
+          handle.removeEventListener('pointercancel',onDone);
+          handle.removeEventListener('lostpointercapture',onDone);
+        };
+        handle.addEventListener('pointermove',onMove);
+        handle.addEventListener('pointerup',onDone);
+        handle.addEventListener('pointercancel',onDone);
+        handle.addEventListener('lostpointercapture',onDone);
+      });
+      panel.appendChild(handle);
+    };
+    addResizer('nw','resizer-nw','Kéo góc trên-trái để phóng to / thu nhỏ tự do');
+    addResizer('ne','resizer-ne','Kéo góc trên-phải để phóng to / thu nhỏ tự do');
+    addResizer('sw','resizer-sw','Kéo góc dưới-trái để phóng to / thu nhỏ tự do');
+    addResizer('se','resizer-se resizer-corner','Kéo góc dưới-phải để phóng to / thu nhỏ tự do');
+    addResizer('n','resizer-n','Kéo cạnh trên để chỉnh chiều cao');
+    addResizer('s','resizer-s resizer-bottom','Kéo cạnh dưới để chỉnh chiều cao');
+    addResizer('w','resizer-w','Kéo cạnh trái để chỉnh chiều rộng');
+    addResizer('e','resizer-e resizer-right','Kéo cạnh phải để chỉnh chiều rộng');
+
+    window.addEventListener('resize',()=>{
+      if(panel.classList.contains('music-mini'))this.applyPopupLayout();
+    });
+  }
+  updateMusicPopupButton(){
+    const mini=this.panels.music.classList.contains('music-mini');
+    this.popupButton.textContent=mini?ui('Expand'):'Popup';
+    this.popupButton.setAttribute('aria-label',mini?'Mở rộng trình phát':'Thu nhỏ trình phát thành cửa sổ nổi');
+    this.popupButton.setAttribute('aria-pressed',String(mini));
+  }
+  buildCalendar(){
+    const panel=this.panels.calendar,filters=document.createElement('div');filters.className='calendar-filters';
+    for(const impact of ['High','Medium','Low']){const button=document.createElement('button');button.textContent=ui(impact);button.dataset.impact=impact;button.type='button';button.onclick=()=>{if(this.impacts.has(impact))this.impacts.delete(impact);else this.impacts.add(impact);Workspace.write('terminal_calendar_impacts_v1',[...this.impacts]);this.renderCalendar();};filters.appendChild(button);}
+    const currency=document.createElement('select');currency.setAttribute('aria-label','Calendar currency');for(const name of ['All','USD','EUR','GBP','JPY','CAD','AUD','NZD','CHF','CNY'])currency.add(new Option(name,name));currency.value=this.currency;currency.onchange=()=>{this.currency=currency.value;Workspace.write('terminal_calendar_currency_v1',this.currency);this.renderCalendar();};filters.appendChild(currency);panel.appendChild(filters);this.calendarFilters=filters;
+    this.calendarList=document.createElement('div');this.calendarList.className='calendar-list';panel.appendChild(this.calendarList);this.calendarStatus=document.createElement('footer');panel.appendChild(this.calendarStatus);
+  }
+  async loadCalendar(){
+    if(this.getReplay?.()?.running||this.calendarLoading||Date.now()<(this.calendarNextCheck||0))return;
+    this.calendarLoading=true;
+    try{
+      const response=await fetch('/api/calendar');
+      if(!response.ok)throw Error('Calendar service unavailable');
+      this.calendarData=await response.json();
+      this.calendarNextCheck=Math.max(Date.now()+60000,this.calendarData.next_check_at*1000||Date.now()+900000);
+    }catch(error){
+      this.calendarNextCheck=Date.now()+60000;
+      this.calendarData={...this.calendarData,error:error.message};
+    }finally{
+      this.calendarLoading=false;
+      this.renderCalendar();
+    }
+  }
+  renderCalendar(){
+    const replay=!!this.getReplay?.()?.running;
+    this.calendarFilters.hidden=replay;
+    const data=this.calendarData;
+    const now=new Date();
+    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    const tomorrow=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+    const rawEvents=replay?[]:data?.events||[];
+    const protocolEnabled=!replay&&typeof NewsProtocols!=='undefined'&&(this.currency==='All'||this.currency==='USD');
+    let startDay=today;
+    if(protocolEnabled){
+      const [nyY,nyM,nyD]=NewsProtocols.day(+now/1000).split('-').map(Number);
+      const nyDate=new Date(nyY,nyM-1,nyD);
+      if(nyDate<today)startDay=nyDate;
+    }
+    const events=rawEvents.filter(event=>
+      this.impacts.has(event.impact)&&(this.currency==='All'||event.currency===this.currency)&&event.time*1000>=+startDay);
+    if(!replay&&data&&data!==this.calendarSyncedData&&typeof NewsProtocols!=='undefined'){
+      this.calendarSyncedData=data;
+      const archived=Array.isArray(this.protocolEvents)?this.protocolEvents:Array.isArray(this.news?.events)?this.news.events:[];
+      const merged=NewsProtocols.merge(archived,rawEvents,+now/1000);
+      this.protocolEvents=merged;
+      if(this.news)this.news.events=merged;
+      if(merged.length)Workspace.write('terminal_protocol_events_v1',merged);
+    }
+    const protocolEvents=protocolEnabled?NewsProtocols.merge(this.protocolEvents||this.news?.events||[],rawEvents,+now/1000):[];
+    const next=events.find(event=>!event.tentative&&event.time*1000>+now);
+    const nextToday=events.find(event=>event.time*1000>+now&&event.time*1000<+tomorrow);
+    const key=JSON.stringify([replay,this.currency,[...this.impacts],data?.checked_at,data?.error,+startDay,+today,next?.time,nextToday?.time,protocolEnabled?[protocolEvents.length,protocolEvents[0]?.time,protocolEvents.at(-1)?.time]:0]);
+    this.calendarTimeFormat??=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+    if(key!==this.calendarRenderKey){
+      this.calendarRenderKey=key;
+      const scroll=this.calendarList.scrollTop;
+      this.calendarList.replaceChildren();
+      this.calendarStatus.replaceChildren();
+      this.calendarStatus.removeAttribute('title');
+      this.calendarNow=null;
+      this.calendarCountdown=null;
+      for(const button of this.calendarFilters.querySelectorAll('button')){
+        button.setAttribute('aria-pressed',String(this.impacts.has(button.dataset.impact)));
+      }
+      if(replay){
+        const empty=document.createElement('div');
+        empty.className='calendar-unavailable';
+        empty.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v16H4zM8 2v6m8-6v6M4 11h16M2 2l20 20"/></svg><p>Unavailable in Replay</p>';
+        this.calendarList.appendChild(empty);
+        this.calendarStatus.textContent='Return to Live to view the economic calendar.';
+      }else if(!data){
+        this.calendarList.textContent='Loading economic events…';
+      }else{
+        this.buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents,protocolEnabled,startDay);
+      }
+      this.calendarList.scrollTop=scroll;
+    }
+    if(this.calendarNow){
+      const label='NOW · '+this.calendarTimeFormat.format(now);
+      if(this.calendarNow.textContent!==label)this.calendarNow.textContent=label;
+    }
+    if(this.calendarCountdown&&next){
+      const minutes=Math.ceil((next.time*1000-+now)/60000);
+      const days=Math.floor(minutes/1440),hours=Math.floor(minutes%1440/60),mins=minutes%60;
+      const label='in '+[days&&days+'d',hours&&hours+'h',mins&&mins+'m'].filter(Boolean).join(' ');
+      if(this.calendarCountdown.textContent!==label)this.calendarCountdown.textContent=label;
+    }
+    if(!replay)this.loadCalendar();
+  }
+  buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents=[],protocolEnabled=false,startDay=today){
+    const data=this.calendarData;
+    const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const todayIso=iso(today),tomorrowIso=iso(tomorrow),startIso=iso(startDay);
+    const groups=new Map([[todayIso,{date:today,events:[],cards:[],checked:false}]]);
+    for(const event of events){
+      const dayKey=protocolEnabled&&typeof NewsProtocols!=='undefined'&&event.currency==='USD'?NewsProtocols.day(event.time):null;
+      let day,k;
+      if(dayKey){
+        const [y,m,dd]=dayKey.split('-').map(Number);
+        day=new Date(y,m-1,dd);k=dayKey;
+      }else{
+        const ed=new Date(event.time*1000);
+        day=new Date(ed.getFullYear(),ed.getMonth(),ed.getDate());k=iso(day);
+      }
+      if(k<startIso)continue;
+      if(!groups.has(k))groups.set(k,{date:day,events:[],cards:[],checked:false});
+      groups.get(k).events.push(event);
+    }
+    if(protocolEnabled&&protocolEvents.length){
+      const limit=+today+21*86400000;
+      let maxMs=+today;
+      for(const event of protocolEvents)if(event.time*1000>=+startDay&&event.time*1000<=limit)maxMs=Math.max(maxMs,event.time*1000);
+      const endMs=Math.min(limit,maxMs+5*86400000);
+      for(let d=new Date(startDay);+d<=endMs;d.setDate(d.getDate()+1)){
+        const k=iso(d),cards=NewsProtocols.matchDay(protocolEvents,k);
+        if(cards.length){
+          if(!groups.has(k))groups.set(k,{date:new Date(d),events:[],cards,checked:true});
+          else Object.assign(groups.get(k),{cards,checked:true});
+        }else if(groups.has(k)){
+          groups.get(k).checked=true;
+        }
+      }
+      for(const [k,entry] of groups)if(!entry.checked){entry.cards=NewsProtocols.matchDay(protocolEvents,k);entry.checked=true;}
+    }
+    const dateFormat=new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    this.calendarNow=document.createElement('div');
+    this.calendarNow.className='calendar-now';
+    for(const [dayIso,entry] of [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0]))){
+      const heading=document.createElement('h3');
+      heading.textContent=dayIso===todayIso?trCompanion('Today'):dayIso===tomorrowIso?trCompanion('Tomorrow'):dayIso<todayIso?dateFormat.format(entry.date)+' · NY Session':dateFormat.format(entry.date);
+      this.calendarList.appendChild(heading);
+      if(entry.cards.length){
+        const box=document.createElement('div');
+        box.className='calendar-day-protocols';
+        for(const card of entry.cards)box.appendChild(this.buildCalendarProtocol(card,dayIso,dateFormat));
+        this.calendarList.appendChild(box);
+      }
+      for(const event of entry.events){
+        if(event===nextToday)this.calendarList.appendChild(this.calendarNow);
+        this.calendarList.appendChild(this.buildCalendarEvent(event));
+        if(event===next){
+          this.calendarCountdown=document.createElement('div');
+          this.calendarCountdown.className='calendar-countdown';
+          this.calendarList.appendChild(this.calendarCountdown);
+        }
+      }
+      if(dayIso===todayIso&&!nextToday)this.calendarList.appendChild(this.calendarNow);
+    }
+    if(!events.length){
+      const message=document.createElement('p');
+      message.className='calendar-message';
+      message.textContent=data.error?'Calendar data is temporarily unavailable.':'No upcoming events match these filters.';
+      this.calendarList.appendChild(message);
+    }
+    const updated=Number.isFinite(data.updated_at)
+      ?' · Updated '+dateFormat.format(new Date(data.updated_at*1000))+' '+this.calendarTimeFormat.format(new Date(data.updated_at*1000)):'';
+    this.calendarStatus.append((updated?updated.slice(3)+' · ':'')+'Times on this computer'+(data.error&&events.length?' · Showing cached data':''));
+    this.calendarStatus.title=data.notice||'';
+  }
+  buildCalendarProtocol(card,dayIso,dateFormat){
+    const item=document.createElement('article');
+    item.className='calendar-protocol-card';
+    item.dataset.protocol=card.id;
+    item.title=card.reasons?.join('\n')||card.title;
+    const info=document.createElement('div');
+    info.className='calendar-protocol-info';
+    const head=document.createElement('div');
+    head.className='calendar-protocol-head';
+    const title=document.createElement('strong');
+    title.textContent=card.title;
+    head.appendChild(title);
+    const evts=card.events||[];
+    const hasShifted=evts.some(e=>{
+      if(!dayIso||!Number.isFinite(e?.time))return false;
+      const d=new Date(e.time*1000);
+      const localDay=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      return localDay!==dayIso;
+    });
+    const tagText=card.id.endsWith('-after')?'Sau tin':card.id.endsWith('-before')?'Trước tin':card.id==='nfp-week'?'Tuần NFP':hasShifted?'Phiên NY':'';
+    if(tagText){
+      const tag=document.createElement('span');
+      tag.className='calendar-protocol-tag';
+      tag.textContent=tagText;
+      head.appendChild(tag);
+    }
+    const list=document.createElement('div');
+    list.className='calendar-protocol-events';
+    const dayFmt=dateFormat||new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    for(const e of evts){
+      const row=document.createElement('div');
+      row.className='calendar-protocol-event';
+      const dot=document.createElement('i');
+      if(e.impact)dot.dataset.impact=e.impact;
+      const when=document.createElement('span');
+      when.className='calendar-protocol-when';
+      if(Number.isFinite(e.time)){
+        const d=new Date(e.time*1000);
+        const localDay=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        const clock=e.tentative?'TBD':(this.calendarTimeFormat?this.calendarTimeFormat.format(d):'');
+        when.textContent=localDay!==dayIso?`${clock} (${dayFmt.format(d)})`:clock;
+      }
+      const cur=document.createElement('b');
+      cur.textContent=e.currency||'USD';
+      const name=document.createElement('span');
+      name.className='calendar-protocol-name';
+      name.textContent=e.title||'';
+      row.append(dot,when,cur,name);
+      const vals=[e.actual&&'A '+e.actual,e.forecast&&'F '+e.forecast,e.previous&&'P '+e.previous].filter(Boolean).join(' · ');
+      if(vals){
+        const nums=document.createElement('small');
+        nums.textContent=vals;
+        row.appendChild(nums);
+      }
+      list.appendChild(row);
+    }
+    if(card.nextEvents?.length&&['cpi-day','ppi-day','fed-day'].includes(card.id)){
+      const warn=document.createElement('div');
+      warn.className='calendar-protocol-next';
+      warn.textContent='Lưu ý phiên kế tiếp: '+card.nextEvents.map(e=>e.title).join(', ');
+      list.appendChild(warn);
+    }
+    info.append(head,list);
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='calendar-protocol-thumb';
+    btn.setAttribute('aria-label','Enlarge '+card.title);
+    const img=document.createElement('img');
+    img.src='assets/news-protocols/'+card.id+'.png';
+    img.alt=card.title;
+    btn.appendChild(img);
+    btn.onclick=()=>this.openProtocolLightbox(card);
+    item.append(info,btn);
+    return item;
+  }
+  openProtocolLightbox(card){
+    if(!this.protocolLightbox){
+      const overlay=document.createElement('div');
+      overlay.className='calendar-protocol-lightbox';
+      overlay.hidden=true;
+      overlay.setAttribute('role','dialog');
+      overlay.setAttribute('aria-modal','true');
+      overlay.innerHTML='<div class="calendar-protocol-dialog"><header><strong></strong><button type="button" aria-label="Close protocol image">×</button></header><img></div>';
+      overlay.onclick=e=>{if(e.target===overlay)overlay.hidden=true;};
+      overlay.querySelector('button').onclick=()=>overlay.hidden=true;
+      document.body.appendChild(overlay);
+      this.protocolLightbox=overlay;
+    }
+    this.protocolLightbox.querySelector('strong').textContent=card.title+(card.events?.length?' · '+card.events.map(e=>e.title).join(', '):'');
+    const img=this.protocolLightbox.querySelector('img');
+    img.src='assets/news-protocols/'+card.id+'.png';
+    img.alt=card.title;
+    this.protocolLightbox.hidden=false;
+  }
+  buildCalendarEvent(event){
+    const row=document.createElement('article');
+    row.className='calendar-event';
+    const date=new Date(event.time*1000);
+    const clock=document.createElement(event.tentative?'span':'time');
+    clock.className='calendar-time';
+    clock.textContent=event.tentative?'TBD':this.calendarTimeFormat.format(date);
+    if(!event.tentative)clock.dateTime=date.toISOString();
+    const dot=document.createElement('i');
+    dot.dataset.impact=event.impact;
+    dot.title=event.impact;
+    dot.setAttribute('role','img');
+    dot.setAttribute('aria-label',event.impact+' impact');
+    const currency=document.createElement('b');
+    currency.textContent=event.currency;
+    const title=document.createElement('span');
+    title.className='event-title';
+    title.textContent=event.title;
+    const values=document.createElement('small');
+    values.textContent=[event.actual&&'A '+event.actual,event.forecast&&'F '+event.forecast,event.previous&&'P '+event.previous].filter(Boolean).join(' · ');
+    values.title=[event.actual&&'Actual '+event.actual,event.forecast&&'Forecast '+event.forecast,event.previous&&'Previous '+event.previous].filter(Boolean).join(' · ');
+    row.append(clock,dot,currency,title,values);
+    return row;
+  }
+  buildMusic(){
+    const panel=this.panels.music;panel.insertAdjacentHTML('beforeend',`<form class="music-link-form"><input type="url" required placeholder="Paste YouTube, Spotify, SoundCloud or TikTok link" aria-label="Music link"><button type="submit">Load</button><button type="button" data-audio-file>File</button><input type="file" accept="audio/*,.mp3,.m4a,.flac,.opus" hidden></form><div class="music-now"><div class="music-disc"><img alt="Track artwork" hidden></div><div><h3>Nothing is playing</h3><p>Paste a link to load the official player.</p></div></div><div class="music-hud"><div class="music-progress-row"><div class="music-track" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-disabled="true"><div class="music-rail"><div class="music-buf"></div><div class="music-fill"></div><div class="music-dot"></div></div><div class="music-tip">0:00</div></div><span class="music-clock">0:00 / —</span></div><div class="music-controls"><button type="button" data-command="previous" aria-label="Previous track" title="Bài trước">${MUSIC_ICONS.prev}</button><button type="button" data-command="rewind" aria-label="Rewind 10 seconds" title="Lùi 10 giây">${MUSIC_ICONS.rewind}</button><button type="button" data-command="toggle" aria-label="Play" title="Phát / Tạm dừng">${MUSIC_ICONS.play}</button><button type="button" data-command="forward" aria-label="Forward 10 seconds" title="Tua nhanh 10 giây">${MUSIC_ICONS.forward}</button><button type="button" data-command="next" aria-label="Next track" title="Bài tiếp">${MUSIC_ICONS.next}</button></div></div><div class="music-player-host"></div><p class="music-notice" role="status">Paste a music link or choose an audio file.</p>`);
+    TerminalLanguage.markup(panel);
+    this.form=panel.querySelector('form');
+    const linkInput=this.form.querySelector('input[type=url]');
+    this.form.onsubmit=event=>{event.preventDefault();void this.loadMusic(linkInput.value);};
+    this.disc=panel.querySelector('.music-disc');this.art=this.disc.querySelector('img');this.trackTitle=panel.querySelector('.music-now h3');this.trackAuthor=panel.querySelector('.music-now p');this.clock=panel.querySelector('.music-clock');this.playerHost=panel.querySelector('.music-player-host');this.musicNotice=panel.querySelector('.music-notice');
+    const header=panel.querySelector('header');
+    this.popupButton=document.createElement('button');
+    this.popupButton.type='button';
+    this.popupButton.className='music-popup-button';
+    this.popupButton.disabled=true;
+    this.popupButton.onclick=event=>this.setMusicMini(!panel.classList.contains('music-mini'),event.detail===0);
+    header.lastElementChild.before(this.popupButton);
+    this.installVideoPopup(panel);
+    this.updateMusicPopupButton();
+    const fileInput=this.form.querySelector('input[type=file]');
+    fileInput.accept+=',video/mp4,.mp4';
+    this.form.querySelector('[data-audio-file]').onclick=()=>fileInput.click();
+    this.tiktokFileButton=document.createElement('button');
+    this.tiktokFileButton.type='button';this.tiktokFileButton.hidden=true;
+    this.tiktokFileButton.textContent=ui('Play saved video or audio');
+    this.tiktokFileButton.onclick=()=>fileInput.click();
+    this.musicNotice.after(this.tiktokFileButton);
+    this.tabAudioRequest=0;
+    this.tabAudioButton=document.createElement('button');
+    this.tabAudioButton.type='button';
+    this.tabAudioButton.className='music-tab-audio';
+    this.tabAudioButton.hidden=true;
+    this.tabAudioButton.textContent=ui('Listen to TikTok tab audio');
+    this.tabAudioButton.onclick=()=>{
+      if(this.tabAudioStream)this.stopTabAudio();
+      else void this.startTabAudio();
+    };
+    this.musicNotice.after(this.tabAudioButton);
+    window.addEventListener('pagehide',()=>{
+      this.tabAudioRequest++;
+      this.stopTabAudio();
+    });
+    fileInput.onchange=()=>{
+      const file=fileInput.files[0];
+      if(file)this.loadMusic('',file);
+      fileInput.value='';
+    };
+    const savedVol=Workspace.read('terminal_music_volume_v1',80);
+    this.musicVolume=Number.isFinite(Number(savedVol))?Math.max(0,Math.min(100,Math.round(Number(savedVol)))):80;
+    this.lastNonZeroVolume=this.musicVolume>0?this.musicVolume:80;
+    this.musicVolWrap=document.createElement('div');
+    this.musicVolWrap.className='music-vol-wrap';
+    this.musicVolWrap.hidden=true;
+    this.musicMute=document.createElement('button');
+    this.musicMute.type='button';
+    this.musicMute.className='music-mute-btn';
+    this.musicMute.hidden=true;
+    this.musicMute.innerHTML=MUSIC_ICONS.volume;
+    this.musicMute.onclick=()=>this.toggleMute();
+    this.musicVolPop=document.createElement('div');
+    this.musicVolPop.className='music-vol-pop';
+    this.musicVolSlider=document.createElement('input');
+    this.musicVolSlider.type='range';
+    this.musicVolSlider.className='music-vol-slider';
+    this.musicVolSlider.min='0';
+    this.musicVolSlider.max='100';
+    this.musicVolSlider.step='1';
+    this.musicVolSlider.value=String(this.musicVolume);
+    this.musicVolSlider.setAttribute('aria-label',ui('Volume'));
+    this.musicVolSlider.addEventListener('input',()=>this.setVolume(this.musicVolSlider.value));
+    this.musicVolPop.appendChild(this.musicVolSlider);
+    this.musicVolWrap.append(this.musicMute,this.musicVolPop);
+    panel.querySelector('.music-controls').appendChild(this.musicVolWrap);
+    this.track=panel.querySelector('.music-track');
+    this.trackFill=panel.querySelector('.music-fill');
+    this.trackBuf=panel.querySelector('.music-buf');
+    this.trackDot=panel.querySelector('.music-dot');
+    this.trackTip=panel.querySelector('.music-tip');
+    this.seek={disabled:true,max:1,value:0,dragging:false};
+    const trackTime=clientX=>{
+      const r=this.track.getBoundingClientRect(),dur=this.duration||0;
+      if(!r.width||dur<=0)return {x:0,s:0};
+      const x=Math.min(r.width,Math.max(0,clientX-r.left));
+      return {x,s:(x/r.width)*dur};
+    };
+    this.track.addEventListener('pointerdown',event=>{
+      if(event.button!==0||this.seek.disabled||!(this.duration>0))return;
+      event.preventDefault();event.stopPropagation();
+      this.seek.dragging=true;
+      this.track.classList.add('drag');
+      this.track.setPointerCapture(event.pointerId);
+      const {x,s}=trackTime(event.clientX);
+      this.trackTip.style.left=x+'px';this.trackTip.textContent=this.formatTime(s);
+      this.seekToSeconds(s);
+    });
+    this.track.addEventListener('pointermove',event=>{
+      if(this.seek.disabled||!(this.duration>0))return;
+      const {x,s}=trackTime(event.clientX);
+      this.trackTip.style.left=x+'px';this.trackTip.textContent=this.formatTime(s);
+      if(this.seek.dragging)this.seekToSeconds(s);
+    });
+    const endTrack=()=>{this.seek.dragging=false;this.track.classList.remove('drag');};
+    this.track.addEventListener('pointerup',endTrack);
+    this.track.addEventListener('pointercancel',endTrack);
+    this.track.addEventListener('lostpointercapture',endTrack);
+    const spreadTrackWave=clientX=>{
+      if(!panel.classList.contains('music-mini')||this.link?.provider!=='youtube')return;
+      [...panel.querySelectorAll('.music-controls button:not([data-command=toggle]):not([hidden]), .music-clock')]
+        .map(el=>{const r=el.getBoundingClientRect();return {el,d:Math.abs(r.left+r.width/2-clientX)};})
+        .sort((a,b)=>a.d-b.d)
+        .forEach((o,i)=>o.el.style.setProperty('--dly',(i*0.04).toFixed(2)+'s'));
+    };
+    this.track.addEventListener('pointerenter',event=>spreadTrackWave(event.clientX));
+    this.track.addEventListener('pointerleave',event=>spreadTrackWave(event.clientX));
+    this.track.addEventListener('keydown',event=>{
+      if(this.seek.disabled||!(this.duration>0))return;
+      const step={ArrowLeft:-5,ArrowRight:5,ArrowDown:-5,ArrowUp:5,Home:-this.duration,End:this.duration}[event.key];
+      if(step!==undefined){event.preventDefault();this.seekToSeconds((this.elapsed||0)+step);}
+    });
+    this.musicToggle=panel.querySelector('[data-command=toggle]');
+    panel.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>this.command(b.dataset.command));this.setCommands(false);
+    const toast=document.createElement('div');toast.id='music-track-toast';toast.innerHTML='<img alt=""><div><strong></strong><small></small></div>';toast.setAttribute('role','status');document.body.appendChild(toast);this.songToast=toast;
+    const saved=Workspace.read('terminal_music_link_v1','');if(saved)linkInput.value=saved;
+    this.metadataStatus=document.createElement('p');this.metadataStatus.className='music-metadata-status';this.metadataStatus.setAttribute('role','status');this.musicNotice.after(this.metadataStatus);
+    window.addEventListener('message',e=>{
+      // Accept messages only from the currently mounted official player.
+      if(this.link?.provider!=='tiktok'||e.origin!=='https://www.tiktok.com'||
+          e.source!==this.iframe?.contentWindow||e.data?.['x-tiktok-player']!==true)return;
+      const {type,value}=e.data;
+      if(type==='onPlayerReady'){
+        this.setCommands(true);
+        this.musicMute.disabled=false;
+        if(!this.tiktokStarted)this.tiktokPlayPrompt();
+      }else if(type==='onMute'&&typeof value==='boolean'){
+        this.setTikTokMuted(value);
+      }else if(type==='onStateChange'){
+        this.setPlaying(value===1,value===1||value===3);
+        if(value!==1)return;
+        clearTimeout(this.playerReadyTimer);
+        if(this.tiktokNative&&!this.tiktokStarted&&!panel.classList.contains('music-mini'))this.setVideoHidden(true);
+        this.tiktokStarted=true;
+        panel.classList.add('music-shield-active');
+        if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
+        this.setCommands(true);
+        this.musicVolWrap.hidden=false;
+        this.musicVolWrap.classList.add('no-slider');
+        this.musicMute.hidden=false;
+        this.musicMute.disabled=false;
+        this.tabAudioButton.hidden=true;
+        this.tiktokFileButton.hidden=true;
+        this.musicNotice.textContent='';
+      }else if(type==='onCurrentTime'&&value){
+        if(Number.isFinite(value.currentTime))this.elapsed=Math.max(0,value.currentTime);
+        if(Number.isFinite(value.duration))this.duration=Math.max(0,value.duration);
+        this.updateMusic();
+      }else if(type==='onPlayerError'||type==='onError'){
+        const code=Number(value?.errorCode??value);
+        // Older builds also emit the media-aborted event while initializing.
+        if(type==='onError'&&code===1)return;
+        clearTimeout(this.playerReadyTimer);
+        this.setPlaying(false);
+        if(code===3002){
+          if(this.tiktokManualPlay&&!this.tiktokNative)void this.recoverTikTok(this.epoch,code);
+          else this.tiktokPlayPrompt();
+        }else{
+          void this.recoverTikTok(this.epoch,code);
+        }
+      }
+    });
+  }
+  script(src,ready){return new Promise((resolve,reject)=>{if(ready()){resolve();return;}const existing=document.querySelector(`script[src="${src}"]`),s=existing||document.createElement('script');if(!existing){s.src=src;s.async=true;document.head.appendChild(s);}let count=0;const check=setInterval(()=>{if(ready()){clearInterval(check);resolve();}else if(++count>100){clearInterval(check);s.remove();reject(Error('Provider API could not load. Check connection or blockers.'));}},100);s.addEventListener('error',()=>{clearInterval(check);s.remove();reject(Error('Provider API unavailable.'));},{once:true});});}
+  async loadMusic(url,file){
+    let link;try{link=file?{provider:'audio'}:TerminalMusicLinks.parse(url);}catch(e){this.musicNotice.textContent=ui(e.message);return;}
+    this.tabAudioRequest++;
+    this.stopTabAudio();
+    this.tabAudioButton.hidden=true;
+    const epoch=++this.epoch;
+    this.loadAbort?.abort();this.metadataAbort?.abort();this.loadAbort=new AbortController();this.metadataStatus.textContent='';
+    clearTimeout(this.playerReadyTimer);clearTimeout(this.toastTimer);this.songToast.classList.remove('show');
+    this.audio?.pause();this.audio=null;
+    if(this.audioObjectUrl){URL.revokeObjectURL(this.audioObjectUrl);this.audioObjectUrl=null;}
+    this.youtube?.destroy?.();this.youtube=null;
+    this.spotify?.destroy?.();this.iframe=null;this.widget=null;this.spotify=null;this.playerHost.replaceChildren();this.link=null;this.spotifyFrameOnly=false;this.setPlaying(false);this.currentTrack='';this.metadataURL=null;this.duration=0;this.elapsed=0;this.trackTitle.textContent='Loading…';this.art.hidden=true;
+    this.popupButton.disabled=true;
+    this.panels.music.classList.remove('music-shield-active');
+    this.youtubeStarted=false;
+    this.tiktokNative=false;
+    this.tiktokRecovering=false;
+    this.musicVolWrap.hidden=true;
+    this.musicMute.hidden=true;
+    this.setTikTokMuted(false);
+    this.tiktokFileButton.hidden=true;
+    this.setVideoHidden(true);
+    this.setCommands(false);
+    this.seek.disabled=true;
+    this.seek.value=0;
+    if(link.share){
+      if(location.protocol==='file:'){
+        this.trackTitle.textContent='Link rút gọn';
+        this.musicNotice.textContent='Mở bản preview qua localhost để tải link rút gọn, hoặc mở link gốc rồi dán URL đầy đủ.';
+        return;
+      }
+      this.musicNotice.textContent='Resolving official share link…';
+      try{
+        const response=await fetch('/api/music/resolve?'+new URLSearchParams({url:link.url}),{signal:AbortSignal.any([this.loadAbort.signal,AbortSignal.timeout(18000)])}),result=await response.json();
+        if(!response.ok)throw Error(result.error||'Could not resolve share link');
+        link=TerminalMusicLinks.parse(result.url);if(link.share)throw Error('Paste the full link from the provider');
+      }catch(e){if(epoch===this.epoch){this.trackTitle.textContent='Share link unavailable';this.musicNotice.textContent=e.message;}return;}
+      if(epoch!==this.epoch)return;
+    }
+    this.link=link;
+    this.panels.music.dataset.provider=link.provider;
+    if(this.panels.music.classList.contains('music-mini')){
+      if(this.popupRatioProvider!==link.provider){this.popupRatio='free';this.popupRatioProvider=link.provider;}
+      this.applyPopupLayout();
+    }
+    this.popupButton.disabled=false;
+    if(link.provider==='audio'){
+      if(file)link.url=this.audioObjectUrl=URL.createObjectURL(file);
+      else Workspace.write('terminal_music_link_v1',url);
+      this.loadAudio(link.url,file?.name,epoch,!!file&&(file.type.startsWith('video/')||/\.mp4$/i.test(file.name)));
+      return;
+    }
+    Workspace.write('terminal_music_link_v1',url);
+    this.updateTrack(link.url,({youtube:'YouTube',spotify:'Spotify',soundcloud:'SoundCloud',tiktok:'TikTok'})[link.provider],'',null,0,false);
+    if(link.provider!=='tiktok')this.metadata(link.url,epoch);
+    this.musicNotice.textContent='Loading '+link.provider+'…';
+    try{
+      if(link.provider==='youtube'){
+        await this.loadYouTube(link,epoch);
+      }else if(link.provider==='soundcloud'){
+        const frame=this.frame('https://w.soundcloud.com/player/?'+new URLSearchParams({url:link.url,auto_play:'false',show_artwork:'true',visual:'false'}),200);
+        await this.script('https://w.soundcloud.com/player/api.js',()=>!!window.SC?.Widget);if(epoch!==this.epoch)return;const widget=this.widget=SC.Widget(frame),events=SC.Widget.Events;
+        const track=()=>widget.getCurrentSound(sound=>{if(epoch!==this.epoch||!sound)return;this.updateTrack(String(sound.permalink_url||link.url).replace(/^http:/,'https:'),sound.title,sound.user?.username,sound.artwork_url||sound.user?.avatar_url,sound.duration/1000);});
+        widget.bind(events.ERROR,()=>{if(epoch!==this.epoch)return;this.setPlaying(false);this.musicNotice.textContent='SoundCloud could not play this link. Check its availability in the official player.';});widget.bind(events.READY,()=>{if(epoch===this.epoch){this.setCommands(true);track();widget.getSounds(sounds=>{if(epoch===this.epoch)this.setCommands(true,sounds?.length>1);});}});widget.bind(events.PLAY,()=>{if(epoch!==this.epoch)return;this.setPlaying(true);track();});widget.bind(events.PAUSE,()=>{if(epoch===this.epoch)this.setPlaying(false);});widget.bind(events.FINISH,()=>{if(epoch===this.epoch)this.setPlaying(false);});widget.bind(events.PLAY_PROGRESS,e=>{if(epoch===this.epoch)this.elapsed=e.currentPosition/1000;});this.musicNotice.textContent='SoundCloud playlist controls are available in the official player.';
+      }else if(link.provider==='spotify'){
+        let spotifyAPI=window.terminalSpotifyAPI;window.onSpotifyIframeApiReady=api=>window.terminalSpotifyAPI=api;
+        await this.script('https://open.spotify.com/embed/iframe-api/v1',()=>!!window.terminalSpotifyAPI);if(epoch!==this.epoch)return;spotifyAPI=window.terminalSpotifyAPI;const target=document.createElement('div');this.playerHost.appendChild(target);
+        this.playerReadyTimer=setTimeout(()=>this.useSpotifyFrame(link,epoch),10000);
+        spotifyAPI.createController(target,{uri:link.uri,width:'100%',height:352},controller=>{
+          if(epoch!==this.epoch||this.spotifyFrameOnly){controller.destroy();return;}
+          this.spotify=controller;
+          const frame=this.playerHost.querySelector('iframe');if(frame){frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';frame.title='Official Spotify player';}
+          controller.addListener('ready',()=>{if(epoch!==this.epoch||this.spotifyFrameOnly)return;clearTimeout(this.playerReadyTimer);this.setCommands(true,false);this.musicNotice.textContent='Start playback inside Spotify if the toolbar cannot start it.';});
+          controller.addListener('playback_update',e=>{if(epoch!==this.epoch||this.spotifyFrameOnly||!e?.data)return;clearTimeout(this.playerReadyTimer);this.setCommands(true,false);this.setPlaying(e.data.isPaused===false&&!e.data.isBuffering,e.data.isPaused===false);this.duration=e.data.duration/1000;this.elapsed=e.data.position/1000;if(e.data.playingURI){const [_,type,id]=e.data.playingURI.split(':');if(id)this.metadata(`https://open.spotify.com/${type}/${id}`,epoch,true);}});
+        });
+      }else{
+        // Request oEmbed in parallel so metadata cannot delay the initial player.
+        this.tiktokEmbed=this.loadTikTokMetadata(link,epoch);
+        this.mountTikTok(epoch);
+      }
+    }catch(e){
+      if(epoch!==this.epoch)return;
+      this.musicNotice.textContent=this.iframe?'Dùng nút Play trong trình phát hoặc mở link gốc.':e.message;
+      if(link.provider==='spotify')this.useSpotifyFrame(link,epoch);
+      this.setCommands(false);
+    }
+  }
+
+  async loadTikTokMetadata(link,epoch){
+    if(location.protocol==='file:')return null;
+    try{
+      const response=await fetch('/api/music/metadata?'+new URLSearchParams({url:link.url,embed:'1'}),{
+        signal:AbortSignal.any([this.loadAbort.signal,AbortSignal.timeout(10000)]),cache:'no-store'
+      });
+      if(!response.ok)throw Error('TikTok oEmbed unavailable');
+      const data=await response.json();
+      if(epoch!==this.epoch)return null;
+      this.updateTrack(link.url,data.title||'TikTok',data.author_name,data.thumbnail_url,0,false);
+      if(!data.embed_url)return null;
+      const src=new URL(data.embed_url);
+      if(src.origin==='https://www.tiktok.com'&&!src.username&&!src.password&&
+          src.pathname.replace(/\/$/,'')==='/player/v1/'+link.id)return src;
+    }catch{
+      // Provider metadata is optional. The app's local proxy avoids browser CORS.
+    }
+    return null;
+  }
+
+  mountTikTok(epoch,native=false,embed=null){
+    const src=embed||new URL('https://www.tiktok.com/player/v1/'+this.link.id);
+    // Preserve the provider's oEmbed options for the native click fallback.
+    const options=native?{autoplay:'0',muted:'0'}:{
+      controls:'0',progress_bar:'0',description:'0',music_info:'0',rel:'0',autoplay:'1',force_muted:'0'
+    };
+    for(const [key,value] of Object.entries(options))src.searchParams.set(key,value);
+    this.tiktokNative=native;
+    this.tiktokStarted=false;
+    this.tiktokManualPlay=false;
+    this.musicVolWrap.hidden=false;
+    this.musicVolWrap.classList.add('no-slider');
+    this.musicMute.hidden=false;
+    this.musicMute.disabled=true;
+    this.setTikTokMuted(false);
+    this.frame(src.href,360);
+    this.popupButton.disabled=false;
+    this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));
+    if(native)this.tiktokPlayPrompt();
+    else this.playerReadyTimer=setTimeout(()=>{
+      if(epoch===this.epoch&&!this.tiktokStarted)this.tiktokPlayPrompt();
+    },8000);
+  }
+
+  setTikTokMuted(muted){
+    this.tiktokMuted=muted;
+    this.updateMuteButton(muted);
+  }
+  updateMuteButton(muted){
+    const label=ui(muted?'Unmute':'Mute');
+    this.musicMute.innerHTML=muted?MUSIC_ICONS.muted:MUSIC_ICONS.volume;
+    this.musicMute.setAttribute('aria-label',label);
+    this.musicMute.title=label;
+    this.musicMute.setAttribute('aria-pressed',String(!!muted));
+    const displayVol=muted?0:this.musicVolume;
+    if(this.musicVolSlider){
+      this.musicVolSlider.value=String(displayVol);
+      this.musicVolWrap?.style.setProperty('--vol',displayVol+'%');
+    }
+  }
+  setVolume(val){
+    const v=Math.max(0,Math.min(100,Math.round(Number(val)||0)));
+    this.musicVolume=v;
+    if(v>0)this.lastNonZeroVolume=v;
+    Workspace.write('terminal_music_volume_v1',v);
+    if(this.youtube){
+      this.youtube.setVolume?.(v);
+      if(v===0)this.youtube.mute?.();
+      else if(this.youtube.isMuted?.())this.youtube.unMute?.();
+    }else if(this.audio){
+      this.audio.volume=v/100;
+      this.audio.muted=v===0;
+    }
+    this.updateMuteButton(v===0);
+  }
+  toggleMute(){
+    if(this.link?.provider==='tiktok'){
+      this.sendTikTok(this.tiktokMuted?'unMute':'mute');
+    }else if(this.youtube){
+      const muted=!!this.youtube.isMuted?.();
+      if(muted){
+        const nextVol=this.musicVolume>0?this.musicVolume:(this.lastNonZeroVolume||80);
+        this.musicVolume=nextVol;
+        this.youtube.unMute?.();
+        this.youtube.setVolume?.(nextVol);
+        this.updateMuteButton(false);
+      }else{
+        this.youtube.mute?.();
+        this.updateMuteButton(true);
+      }
+    }else if(this.audio){
+      if(this.audio.muted){
+        const nextVol=this.musicVolume>0?this.musicVolume:(this.lastNonZeroVolume||80);
+        this.musicVolume=nextVol;
+        this.audio.muted=false;
+        this.audio.volume=nextVol/100;
+        this.updateMuteButton(false);
+      }else{
+        this.audio.muted=true;
+        this.updateMuteButton(true);
+      }
+    }
+  }
+
+  tiktokPlayPrompt(){
+    this.setCommands(true);
+    this.musicNotice.textContent=ui(this.tiktokNative?'Tap Play in the TikTok player to start playback.':'Press Play in Music to start TikTok audio.');
+    if(this.tiktokNative)this.tabAudioButton.hidden=false;
+  }
+
+  async recoverTikTok(epoch,code){
+    if(epoch!==this.epoch||this.link?.provider!=='tiktok'||this.tiktokRecovering)return;
+    clearTimeout(this.playerReadyTimer);
+    this.iframe?.remove();
+    this.iframe=null;
+    this.elapsed=0;
+    this.duration=0;
+    this.updateMusic();
+    this.setPlaying(false);
+    this.setCommands(false);
+    this.musicMute.hidden=true;
+    this.popupButton.disabled=true;
+    this.setVideoHidden(false);
+    const panel=this.panels.music;
+    if(panel.classList.contains('music-mini'))this.setMusicMini(false,false);
+    if(!this.tiktokNative&&code!==1001){
+      this.tiktokRecovering=true;
+      this.musicNotice.textContent=ui('Requesting a fresh TikTok player\u2026');
+      const embed=await this.tiktokEmbed;
+      if(epoch!==this.epoch)return;
+      this.tiktokRecovering=false;
+      this.mountTikTok(epoch,true,embed);
+      return;
+    }
+    const error=Number.isFinite(code)?' ('+code+')':'';
+    const message=code===1001?'TikTok could not find this post. Check its link and visibility.':
+      'TikTok could not play this post in the embedded player.';
+    this.musicNotice.textContent=ui(message)+error+' '+ui('If the original post plays, you can share its tab audio here.');
+    this.tabAudioButton.hidden=false;
+    this.tiktokFileButton.hidden=false;
+  }
+
+  async startTabAudio(){
+    const source=this.link;
+    if(source?.provider!=='tiktok')return;
+    if(!navigator.mediaDevices?.getDisplayMedia){
+      this.musicNotice.textContent=ui('Open Terminal in Chrome or Edge to share tab audio.');
+      return;
+    }
+    const request=++this.tabAudioRequest;
+    this.tabAudioButton.disabled=true;
+    this.musicNotice.textContent=ui('Select the TikTok tab that is playing and enable Share tab audio.');
+    let capture;
+    try{
+      capture=await navigator.mediaDevices.getDisplayMedia({
+        video:{displaySurface:'browser',frameRate:{ideal:1}},
+        audio:{suppressLocalAudioPlayback:true},
+        preferCurrentTab:false,
+        selfBrowserSurface:'exclude',
+        surfaceSwitching:'exclude',
+        systemAudio:'exclude',
+        monitorTypeSurfaces:'exclude'
+      });
+    }catch(error){
+      if(request===this.tabAudioRequest){
+        this.musicNotice.textContent=ui('Tab audio was not shared. Open and play TikTok, then try again.');
+      }
+      return;
+    }finally{
+      this.tabAudioButton.disabled=false;
+    }
+    const videoTrack=capture.getVideoTracks()[0];
+    const audioTrack=capture.getAudioTracks()[0];
+    if(request!==this.tabAudioRequest||source!==this.link||!this.panels.music.classList.contains('open')){
+      for(const track of capture.getTracks())track.stop();
+      return;
+    }
+    if(videoTrack?.getSettings().displaySurface!=='browser'||!audioTrack||audioTrack.readyState!=='live'){
+      for(const track of capture.getTracks())track.stop();
+      this.musicNotice.textContent=ui('Choose a browser tab and enable Share tab audio. Window or screen sharing cannot be used here.');
+      return;
+    }
+    const epoch=++this.epoch;
+    this.loadAbort?.abort();
+    this.metadataAbort?.abort();
+    clearTimeout(this.playerReadyTimer);
+    this.iframe?.remove();
+    this.iframe=null;
+    this.setVideoHidden(false);
+    // Keep the browser's share alive, but do not display or consume its video.
+    for(const track of capture.getVideoTracks())track.enabled=false;
+    this.tabAudioStream=capture;
+    this.tabAudioSource=source;
+    this.musicVolWrap.hidden=true;
+    this.musicMute.hidden=true;
+    this.link={provider:'audio',url:source.url};
+    this.panels.music.dataset.provider='audio';
+    this.tiktokFileButton.hidden=true;
+    this.popupButton.disabled=false;
+    this.tabAudioButton.textContent=ui('Stop tab audio');
+    this.updateTrack(source.url,ui('TikTok tab audio'),ui('Live audio'),null,0,false);
+    this.setCommands(true);
+    const audio=this.audio=new Audio();
+    audio.srcObject=new MediaStream([audioTrack]);
+    audio.addEventListener('playing',()=>{if(this.epoch===epoch)this.setPlaying(true);});
+    audio.addEventListener('pause',()=>{if(this.epoch===epoch)this.setPlaying(false);});
+    for(const track of capture.getTracks()){
+      track.addEventListener('ended',()=>{if(this.tabAudioStream===capture)this.stopTabAudio();},{once:true});
+    }
+    this.musicNotice.textContent=ui('Listening to the selected tab. Play or pause the video there, or use Play in Music to mute or resume it here.');
+    audio.play().catch(()=>{
+      if(this.tabAudioStream===capture)this.musicNotice.textContent=ui('Press Play in Music to listen to the shared tab.');
+    });
+  }
+  stopTabAudio(){
+    const stream=this.tabAudioStream;
+    if(!stream)return;
+    this.tabAudioStream=null;
+    this.audio?.pause();
+    if(this.audio)this.audio.srcObject=null;
+    this.audio=null;
+    for(const track of stream.getTracks())track.stop();
+    this.link=this.tabAudioSource;
+    this.tabAudioSource=null;
+    this.panels.music.dataset.provider='tiktok';
+    this.setPlaying(false);
+    this.setCommands(false);
+    this.popupButton.disabled=true;
+    this.tabAudioButton.textContent=ui('Listen to TikTok tab audio');
+    this.musicNotice.textContent=ui('Tab audio stopped.');
+  }
+
+  async loadYouTube(link,epoch){
+    if(location.protocol==='file:'){
+      this.musicNotice.textContent='Mở Trading Terminal qua localhost để phát YouTube trong ứng dụng.';
+      return;
+    }
+    const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1',controls:'0',rel:'0',modestbranding:'1',iv_load_policy:'3'});
+    const isMixList=!!(link.list&&/^RD/i.test(link.list));
+    const mixVideoId=!link.id&&isMixList?link.list.match(/^RD(?:MM|EM|AMVM|CL|CM)?([\w-]{11})$/i)?.[1]||null:null;
+    const videoId=link.id||mixVideoId;
+    const embedList=link.list&&!isMixList?link.list:null;
+    if(embedList){
+      if(!videoId)params.set('listType','playlist');
+      params.set('list',embedList);
+    }
+    const frame=this.frame('https://www.youtube.com/embed/'+(videoId||'videoseries')+'?'+params,240);
+    await this.script('https://www.youtube.com/iframe_api',()=>typeof window.YT?.Player==='function');
+    if(epoch!==this.epoch)return;
+    this.youtube=new window.YT.Player(frame,{
+      events:{
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!embedList);this.musicVolWrap.hidden=false;this.musicVolWrap.classList.remove('no-slider');this.musicMute.hidden=false;this.musicMute.disabled=false;this.youtube?.setVolume?.(this.musicVolume);if(this.musicVolume===0)this.youtube?.mute?.();this.updateMuteButton(this.musicVolume===0||!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';}},
+        onStateChange:({data})=>{
+          if(epoch!==this.epoch)return;
+          this.setPlaying(data===1,data===1||data===3);
+          if(data===1){
+            this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';
+            this.youtubeStarted=true;
+            this.panels.music.classList.add('music-shield-active');
+            if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
+          }
+        },
+        onError:({data})=>{
+          if(epoch!==this.epoch)return;
+          if(embedList&&videoId){
+            this.loadYouTube({provider:'youtube',id:videoId,list:null,url:'https://www.youtube.com/watch?v='+videoId},epoch);
+            return;
+          }
+          this.setPlaying(false);
+          this.setCommands(false);
+          this.musicNotice.textContent=data===153?'YouTube không nhận được trang nhúng. Hãy mở link gốc hoặc dùng bản localhost.':'Video này không phát được trong trình phát nhúng. Hãy mở link gốc.';
+        }
+      }
+    });
+  }
+
+  loadAudio(url,name,epoch,fromVideo=false){
+    const audio=this.audio=fromVideo?document.createElement('video'):new Audio();
+    if(fromVideo)audio.playsInline=true;
+    audio.preload='metadata';
+    this.updateTrack(url,name||new URL(url).pathname.split('/').pop()||'Audio','',null,0,false);
+    this.musicNotice.textContent='';
+    this.musicVolWrap.hidden=false;
+    this.musicVolWrap.classList.remove('no-slider');
+    this.musicMute.hidden=false;
+    this.musicMute.disabled=false;
+    audio.volume=this.musicVolume/100;
+    audio.muted=this.musicVolume===0;
+    this.updateMuteButton(audio.muted);
+    audio.addEventListener('loadedmetadata',()=>{
+      if(epoch!==this.epoch)return;
+      this.duration=audio.duration;
+      this.setCommands(true);
+      this.updateMusic();
+    });
+    audio.addEventListener('playing',()=>{if(epoch===this.epoch)this.setPlaying(true);});
+    audio.addEventListener('pause',()=>{if(epoch===this.epoch)this.setPlaying(false);});
+    audio.addEventListener('ended',()=>{if(epoch===this.epoch)this.setPlaying(false);});
+    audio.addEventListener('error',()=>{
+      if(epoch!==this.epoch)return;
+      this.setCommands(false);
+      this.musicNotice.textContent='This audio source could not be played.';
+    });
+    audio.src=url;
+    this.setCommands(true);
+    if(name)audio.play().catch(()=>{if(epoch===this.epoch)this.musicNotice.textContent=ui('Press Play to start the local file.');});
+  }
+
+  setCommands(play,skip=false){
+    for(const b of this.panels.music.querySelectorAll('[data-command]')){
+      const cmd=b.dataset.command;
+      b.disabled=!(cmd==='toggle'||cmd==='rewind'||cmd==='forward'?play:skip);
+    }
+  }
+  useSpotifyFrame(link,epoch){
+    if(epoch!==this.epoch||link?.provider!=='spotify'||this.spotifyFrameOnly)return;
+    clearTimeout(this.playerReadyTimer);this.spotifyFrameOnly=true;this.spotify?.destroy?.();this.spotify=null;this.setPlaying(false);this.setCommands(false);
+    this.playerHost.replaceChildren();this.frame(`https://open.spotify.com/embed/${link.type}/${link.id}`,352);
+    this.musicNotice.textContent='Use the controls in the Spotify player.';
+  }
+  frame(src,height){const frame=document.createElement('iframe');frame.src=src;frame.height=height;frame.width='100%';frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';frame.allowFullscreen=true;frame.title='Official '+this.link.provider+' player';frame.referrerPolicy='strict-origin-when-cross-origin';this.playerHost.appendChild(frame);this.iframe=frame;return frame;}
+  async metadata(url,epoch,change=false){
+    if(location.protocol==='file:')return;
+    try{url=TerminalMusicLinks.parse(url).url;}catch{return;}
+    if(this.metadataURL===url)return;this.metadataURL=url;
+    this.metadataAbort?.abort();const controller=this.metadataAbort=new AbortController();
+    try{const response=await fetch('/api/music/metadata?'+new URLSearchParams({url}),{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(10000)])});const data=await response.json();if(!response.ok)throw Error(data.error||'Metadata unavailable');if(epoch!==this.epoch||this.metadataURL!==url)return;this.metadataStatus.textContent='';this.updateTrack(url,data.title||this.link.provider,data.author_name,data.thumbnail_url,this.duration,change);}catch(error){if(epoch!==this.epoch||this.metadataURL!==url||controller.signal.aborted)return;this.metadataStatus.textContent=error.name==='TimeoutError'?'Metadata quá hạn; trạng thái phát do player quyết định.':error.message;if(!this.currentTrack)this.updateTrack(url,this.link.provider+' · official player','','',this.duration);}
+  }
+  updateTrack(id,title,author,thumbnail,duration,notify=true){
+    const changed=this.currentTrack&&this.currentTrack!==String(id);this.currentTrack=String(id);this.trackTitle.textContent=title||'Untitled';this.trackAuthor.textContent=author||'';if(duration)this.duration=duration;
+    if(thumbnail?.startsWith('https://')){this.art.src=thumbnail;this.art.hidden=false;}else{this.art.removeAttribute('src');this.art.hidden=true;}
+    if(changed&&notify&&Workspace.read('terminal_music_toast_v1',true)){this.songToast.querySelector('strong').textContent=title;this.songToast.querySelector('small').textContent=this.formatTime(this.duration);const img=this.songToast.querySelector('img');img.hidden=!thumbnail;if(thumbnail)img.src=thumbnail;clearTimeout(this.toastTimer);this.songToast.classList.add('show');this.toastTimer=setTimeout(()=>this.songToast.classList.remove('show'),2000);}
+  }
+  setPlaying(playing,canPause=playing){
+    this.playing=playing;
+    this.canPause=canPause;
+    this.panels.music.classList.toggle('music-playing',playing);
+    this.disc.classList.toggle('playing',playing);
+    this.musicToggle.innerHTML=canPause?MUSIC_ICONS.pause:MUSIC_ICONS.play;
+    this.musicToggle.setAttribute('aria-label',ui(canPause?'Pause':'Play'));
+    document.getElementById('edge-music')?.classList.toggle('music-live',playing);
+  }
+  formatTime(value){if(!Number.isFinite(value)||value<=0)return '—';return Math.floor(value/60)+':'+String(Math.floor(value%60)).padStart(2,'0');}
+  updateMusic(){
+    if(this.audio){
+      this.elapsed=this.audio.currentTime;
+      this.duration=this.audio.duration;
+    }else if(typeof this.youtube?.getCurrentTime==='function'){
+      this.elapsed=this.youtube.getCurrentTime();
+      this.duration=this.youtube.getDuration();
+    }
+    this.clock.textContent=this.tabAudioStream?ui('Live audio'):(this.elapsed?this.formatTime(this.elapsed):'0:00')+' / '+this.formatTime(this.duration);
+    const seekable=Number.isFinite(this.duration)&&this.duration>0&&!!(this.audio||this.widget||this.spotify||this.youtube||this.link?.provider==='tiktok');
+    this.seek.disabled=!seekable;
+    this.seek.max=seekable?this.duration:1;
+    if(!(this.seek.dragging||this.seek.matches?.(':active')))this.seek.value=seekable?this.elapsed:0;
+    const pct=seekable?Math.min(100,Math.max(0,(Number(this.seek.value)/this.duration)*100)):0;
+    this.seek.style?.setProperty?.('--seek-pct',pct.toFixed(2)+'%');
+    if(this.track){
+      this.track.setAttribute('aria-disabled',String(!seekable));
+      this.track.setAttribute('aria-valuemax',String(Math.round(seekable?this.duration:1)));
+      this.track.setAttribute('aria-valuenow',String(Math.round(this.seek.value||0)));
+      const w=pct.toFixed(2)+'%';
+      this.trackFill.style.width=w;
+      this.trackDot.style.left=w;
+      let bufPct=pct;
+      if(seekable&&typeof this.youtube?.getVideoLoadedFraction==='function'){
+        bufPct=Math.max(pct,Math.min(100,(this.youtube.getVideoLoadedFraction()||0)*100));
+      }else if(seekable&&this.audio?.buffered?.length){
+        try{bufPct=Math.max(pct,Math.min(100,(this.audio.buffered.end(this.audio.buffered.length-1)/this.duration)*100));}catch{}
+      }
+      this.trackBuf.style.width=bufPct.toFixed(2)+'%';
+    }
+  }
+  seekToSeconds(seconds){
+    if(!Number.isFinite(seconds))return;
+    const clamped=this.duration>0?Math.max(0,Math.min(this.duration,seconds)):Math.max(0,seconds);
+    if(this.audio)this.audio.currentTime=clamped;
+    else if(this.widget)this.widget.seekTo(clamped*1000);
+    else if(this.spotify)this.spotify.seek(clamped);
+    else if(this.youtube)this.youtube.seekTo?.(clamped,true);
+    else if(this.link?.provider==='tiktok')this.sendTikTok('seekTo',clamped);
+    this.elapsed=clamped;
+    this.updateMusic();
+  }
+  command(action){
+    if(!this.link)return;
+    if(action==='rewind'||action==='forward'){
+      const base=typeof this.youtube?.getCurrentTime==='function'?this.youtube.getCurrentTime():this.audio?this.audio.currentTime:this.elapsed||0;
+      this.seekToSeconds(base+(action==='forward'?10:-10));
+      return;
+    }
+    const pause=action==='pause'||(action==='toggle'&&this.canPause);
+    if(this.audio){
+      if(pause)this.audio.pause();
+      else if(action==='toggle')this.audio.play().catch(()=>{this.musicNotice.textContent='Could not start playback.';});
+    }else if(this.youtube){
+      if(pause)this.youtube.pauseVideo?.();
+      else if(action==='previous')this.youtube.previousVideo?.();
+      else if(action==='next')this.youtube.nextVideo?.();
+      else this.youtube.playVideo?.();
+    }else if(this.widget){
+      if(action==='previous')this.widget.prev();
+      else if(action==='next')this.widget.next();
+      else if(pause)this.widget.pause();
+      else this.widget.play();
+    }else if(this.spotify){
+      if(pause)this.spotify.pause();
+      else if(action==='toggle')this.spotify.togglePlay();
+    }else if(this.link.provider==='tiktok'&&(action==='toggle'||action==='pause')){
+      this.sendTikTok(pause?'pause':'play');
+      if(!pause&&!this.tiktokNative&&!this.tiktokStarted){
+        this.tiktokManualPlay=true;
+        const epoch=this.epoch;
+        clearTimeout(this.playerReadyTimer);
+        this.playerReadyTimer=setTimeout(()=>{
+          if(epoch===this.epoch&&!this.tiktokStarted)void this.recoverTikTok(epoch);
+        },5000);
+      }
+    }
+  }
+  sendTikTok(type,value){
+    this.iframe?.contentWindow?.postMessage({'x-tiktok-player':true,type,value},'https://www.tiktok.com');
+  }
+}
+if(typeof module!=='undefined')module.exports={TerminalMusicLinks,TerminalCompanions};
+  </script>
+  <script>
+/* Reference cards supplied by the user. No market predictions are inferred. */
+const NewsProtocols=(()=>{
+  const zone='America/New_York',format=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  function parts(seconds){return Object.fromEntries(format.formatToParts(new Date(seconds*1000)).map(p=>[p.type,p.value]));}
+  function day(seconds){const p=parts(seconds);return `${p.year}-${p.month}-${p.day}`;}
+  function shift(date,amount){const d=new Date(date+'T12:00:00Z');const step=Math.sign(amount);for(let n=Math.abs(amount);n;){d.setUTCDate(d.getUTCDate()+step);if(![0,6].includes(d.getUTCDay()))n--;}return d.toISOString().slice(0,10);}
+  function monday(date){const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));return d.toISOString().slice(0,10);}
+  function matchDay(events,today){
+    const weekday=new Date(today+'T12:00:00Z').getUTCDay(),groups=new Map();
+    if([0,6].includes(weekday))return [];
+    const usd=events.filter(e=>e&&typeof e.title==='string'&&e.currency==='USD'&&!e.tentative&&Number.isFinite(e.time));
+    const add=(id,title,e,reason)=>{if(!groups.has(id))groups.set(id,{id,title,reasons:[],events:[]});const card=groups.get(id);const key=e.title+' · '+day(e.time);if(!card.events.some(x=>x.title===e.title&&x.time===e.time)){card.events.push(e);card.reasons.push(reason+' · '+key);}};
+    for(const e of usd){
+      const date=day(e.time),p=parts(e.time),title=e.title.toLowerCase(),hm=p.hour+':'+p.minute;
+      const cpi=/\bcpi\b|consumer price index/.test(title),ppi=/\bppi\b|producer price index/.test(title);
+      const nfp=/non[- ]?farm (?:employment|payrolls?)|\bnfp\b/.test(title)&&!/adp/.test(title);
+      const fomc=/fomc (?:statement|press conference)|federal funds rate|fed interest rate decision/.test(title);
+      const fed=/\bpowell\b|fed(?:'s|’s)?\s+chair(?:man)?\b/.test(title)&&!/nomination/.test(title);
+      const isUc=/\b(?:initial\s+)?jobless claims\b|\bunemployment claims\b/.test(title)&&!/4-week|continuing/.test(title);
+      const isRetail=/\bcore retail sales\b|\bretail sales (?:control group|ex[- ]?autos|mom)\b/.test(title);
+      const isPmi=/\bpmi\b|purchasing managers|\bism (?:manufacturing|services|non[- ]?manufacturing)\b/.test(title);
+      if(date===today){
+        if(hm==='08:30'&&((isUc||isRetail)&&['High','Medium'].includes(e.impact)||(isPmi&&e.impact==='High')))add('0830','08:30 Red Folder News · PMI, Core Retail Sales, U.C.',e,'Tin 08:30 ET');
+        else if((hm==='09:45'||hm==='10:00')&&isPmi&&e.impact==='High')add('0830','08:30 Red Folder News · PMI, Core Retail Sales, U.C.',e,'Tin PMI phiên sáng NY');
+      }
+      if(nfp&&monday(date)===monday(today))add('nfp-week','NFP Protocol',e,'Tuần công bố NFP');
+      if(cpi){if(date===today)add('cpi-day','CPI & PPI · CPI Day',e,'Ngày công bố CPI');if(shift(date,-1)===today)add('cpi-before','CPI & PPI · Day before CPI',e,'Ngày làm việc trước CPI');}
+      if(ppi&&date===today)add('ppi-day','CPI & PPI · PPI Day',e,'Ngày công bố PPI');
+      if(fomc){for(const [offset,id,label]of [[-1,'fomc-before','Day Before'],[0,'fomc-day','Event Day'],[1,'fomc-after','Day After']])if((offset?shift(date,offset):date)===today)add(id,'FOMC Statement, Fed Chair Powell · '+label,e,offset<0?'Ngày làm việc trước FOMC':offset>0?'Ngày làm việc sau FOMC':'Ngày FOMC');}
+      if(fed&&!fomc){if(date===today)add('fed-day','Fed Chair Powell · Event Day',e,'Ngày Fed Chair phát biểu');if(shift(date,-1)===today)add('fed-before','Fed Chair Powell · Day Before',e,'Ngày làm việc trước phát biểu');}
+    }
+    const next=shift(today,1),extra=usd.filter(e=>day(e.time)===next&&(parts(e.time).hour==='10'&&parts(e.time).minute==='00'&&e.impact==='High'||/\bppi\b|producer price index/i.test(e.title)));
+    for(const card of groups.values())card.nextEvents=extra;
+    return [...groups.values()];
+  }
+  function match(events,now){return matchDay(events,day(now));}
+  function merge(previous,events,now){const cut=now-60*86400,m=new Map();for(const e of [...previous,...events])if(e&&Number.isFinite(e.time)&&e.time>=cut)m.set([e.time,e.currency,e.title].join('|'),e);return [...m.values()].sort((a,b)=>a.time-b.time).slice(-4000);}
+  return {zone,day,shift,match,matchDay,merge};
+})();
+if(typeof module!=='undefined')module.exports=NewsProtocols;
+</script>
+  <script>
+'use strict';
 const TerminalTime={
   sessions(date,metadata={}){
     const stamp=date.toISOString().slice(0,10).replaceAll('-',''),weekday=String(date.getUTCDay()+1);
@@ -15264,1296 +16888,6 @@ TerminalFeatures.prototype.installChartDividers=function(grid,charts){
 };
   </script>
   <script>
-/* Reference cards supplied by the user. No market predictions are inferred. */
-const NewsProtocols=(()=>{
-  const zone='America/New_York',format=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
-  function parts(seconds){return Object.fromEntries(format.formatToParts(new Date(seconds*1000)).map(p=>[p.type,p.value]));}
-  function day(seconds){const p=parts(seconds);return `${p.year}-${p.month}-${p.day}`;}
-  function shift(date,amount){const d=new Date(date+'T12:00:00Z');const step=Math.sign(amount);for(let n=Math.abs(amount);n;){d.setUTCDate(d.getUTCDate()+step);if(![0,6].includes(d.getUTCDay()))n--;}return d.toISOString().slice(0,10);}
-  function monday(date){const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));return d.toISOString().slice(0,10);}
-  function matchDay(events,today){
-    const weekday=new Date(today+'T12:00:00Z').getUTCDay(),groups=new Map();
-    if([0,6].includes(weekday))return [];
-    const usd=events.filter(e=>e&&typeof e.title==='string'&&e.currency==='USD'&&!e.tentative&&Number.isFinite(e.time));
-    const add=(id,title,e,reason)=>{if(!groups.has(id))groups.set(id,{id,title,reasons:[],events:[]});const card=groups.get(id);const key=e.title+' · '+day(e.time);if(!card.events.some(x=>x.title===e.title&&x.time===e.time)){card.events.push(e);card.reasons.push(reason+' · '+key);}};
-    for(const e of usd){
-      const date=day(e.time),p=parts(e.time),title=e.title.toLowerCase(),hm=p.hour+':'+p.minute;
-      const cpi=/\bcpi\b|consumer price index/.test(title),ppi=/\bppi\b|producer price index/.test(title);
-      const nfp=/non[- ]?farm (?:employment|payrolls?)|\bnfp\b/.test(title)&&!/adp/.test(title);
-      const fomc=/fomc (?:statement|press conference)|federal funds rate|fed interest rate decision/.test(title);
-      const fed=/\bpowell\b|fed(?:'s|’s)?\s+chair(?:man)?\b/.test(title)&&!/nomination/.test(title);
-      const isUc=/\b(?:initial\s+)?jobless claims\b|\bunemployment claims\b/.test(title)&&!/4-week|continuing/.test(title);
-      const isRetail=/\bcore retail sales\b|\bretail sales (?:control group|ex[- ]?autos|mom)\b/.test(title);
-      const isPmi=/\bpmi\b|purchasing managers|\bism (?:manufacturing|services|non[- ]?manufacturing)\b/.test(title);
-      if(date===today){
-        if(hm==='08:30'&&((isUc||isRetail)&&['High','Medium'].includes(e.impact)||(isPmi&&e.impact==='High')))add('0830','08:30 Red Folder News · PMI, Core Retail Sales, U.C.',e,'Tin 08:30 ET');
-        else if((hm==='09:45'||hm==='10:00')&&isPmi&&e.impact==='High')add('0830','08:30 Red Folder News · PMI, Core Retail Sales, U.C.',e,'Tin PMI phiên sáng NY');
-      }
-      if(nfp&&monday(date)===monday(today))add('nfp-week','NFP Protocol',e,'Tuần công bố NFP');
-      if(cpi){if(date===today)add('cpi-day','CPI & PPI · CPI Day',e,'Ngày công bố CPI');if(shift(date,-1)===today)add('cpi-before','CPI & PPI · Day before CPI',e,'Ngày làm việc trước CPI');}
-      if(ppi&&date===today)add('ppi-day','CPI & PPI · PPI Day',e,'Ngày công bố PPI');
-      if(fomc){for(const [offset,id,label]of [[-1,'fomc-before','Day Before'],[0,'fomc-day','Event Day'],[1,'fomc-after','Day After']])if((offset?shift(date,offset):date)===today)add(id,'FOMC Statement, Fed Chair Powell · '+label,e,offset<0?'Ngày làm việc trước FOMC':offset>0?'Ngày làm việc sau FOMC':'Ngày FOMC');}
-      if(fed&&!fomc){if(date===today)add('fed-day','Fed Chair Powell · Event Day',e,'Ngày Fed Chair phát biểu');if(shift(date,-1)===today)add('fed-before','Fed Chair Powell · Day Before',e,'Ngày làm việc trước phát biểu');}
-    }
-    const next=shift(today,1),extra=usd.filter(e=>day(e.time)===next&&(parts(e.time).hour==='10'&&parts(e.time).minute==='00'&&e.impact==='High'||/\bppi\b|producer price index/i.test(e.title)));
-    for(const card of groups.values())card.nextEvents=extra;
-    return [...groups.values()];
-  }
-  function match(events,now){return matchDay(events,day(now));}
-  function merge(previous,events,now){const cut=now-60*86400,m=new Map();for(const e of [...previous,...events])if(e&&Number.isFinite(e.time)&&e.time>=cut)m.set([e.time,e.currency,e.title].join('|'),e);return [...m.values()].sort((a,b)=>a.time-b.time).slice(-4000);}
-  return {zone,day,shift,match,matchDay,merge};
-})();
-if(typeof module!=='undefined')module.exports=NewsProtocols;
-</script>
-  <script>
-'use strict';
-const trCompanion = value => typeof ui === 'function' ? ui(value) : value;
-const TerminalMusicLinks={
-  parse(text){
-    let u;try{u=new URL(text.trim());}catch{throw Error('Paste a full music or playlist link.');}
-    if(u.protocol!=='https:'||u.username||u.password||u.port)throw Error('Use an official HTTPS provider link.');
-    const host=u.hostname.replace(/^www\./,''),path=u.pathname.split('/').filter(Boolean);
-    if(/\.(mp3|m4a|aac|wav|ogg|opus|flac|weba)$/i.test(u.pathname))return {provider:'audio',url:u.href};
-    if(['youtube.com','m.youtube.com','music.youtube.com','youtu.be'].includes(host)){
-      const id=host==='youtu.be'?path[0]:['shorts','embed','live'].includes(path[0])?path[1]:u.searchParams.get('v'),list=u.searchParams.get('list');
-      if((!id||!/^[\w-]{11}$/.test(id))&&(!list||!/^[\w-]{10,100}$/.test(list)))throw Error('Use a YouTube video or playlist link.');
-      const validId=id&&/^[\w-]{11}$/.test(id)?id:null;
-      const validList=list&&/^[\w-]{10,100}$/.test(list)?list:null;
-      return {provider:'youtube',id:validId,list:validList,url:validId?'https://www.youtube.com/watch?v='+validId+(validList?'&list='+validList:''):'https://www.youtube.com/playlist?list='+validList};
-    }
-    if(['vm.tiktok.com','vt.tiktok.com','on.soundcloud.com','spotify.link'].includes(host)&&path.length)return {share:true,url:u.href};
-    if(host==='tiktok.com'&&path[0]==='t'&&path.length===2)return {share:true,url:'https://www.tiktok.com/t/'+path[1]+'/'};
-    if(host==='open.spotify.com'){
-      if(/^intl-/.test(path[0]))path.shift();if(path[0]==='embed')path.shift();const [type,id]=path;
-      if(!['track','playlist','album','episode','show'].includes(type)||!/^[a-zA-Z0-9]{22}$/.test(id||''))throw Error('Use a Spotify track, album or playlist link.');
-      return {provider:'spotify',id,type,url:`https://open.spotify.com/${type}/${id}`,uri:`spotify:${type}:${id}`};
-    }
-    if(['soundcloud.com','m.soundcloud.com'].includes(host)&&path.length>=2&&!['discover','search','you'].includes(path[0]))return {provider:'soundcloud',url:'https://soundcloud.com/'+path.join('/')+(u.searchParams.get('secret_token')?'?'+new URLSearchParams({secret_token:u.searchParams.get('secret_token')}):'')};
-    if(['tiktok.com','m.tiktok.com'].includes(host)&&path[0]==='music')throw Error('Paste a TikTok post link. Sound pages need a post that uses the sound.');
-    if(['tiktok.com','m.tiktok.com'].includes(host)){
-      const post=u.pathname.match(/^\/(@[^/]+\/(?:video|photo)\/(\d{10,25}))\/?$/);
-      if(post)return {provider:'tiktok',id:post[2],url:'https://www.tiktok.com/'+post[1]};
-    }
-    if(host==='tiktok.com'&&path[0]==='player'&&path[1]==='v1'&&/^\d{10,25}$/.test(path[2]||''))return {provider:'tiktok',id:path[2],url:'https://www.tiktok.com/player/v1/'+path[2]};
-    throw Error('Use a YouTube, Spotify, SoundCloud or TikTok video link.');
-  }
-};
-const MUSIC_ICONS={
-  prev:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="6" width="2.2" height="12" rx="1" fill="currentColor"/><path d="M18.5 6.8a1 1 0 0 0-1.56-.83l-7.8 5.2a1 1 0 0 0 0 1.66l7.8 5.2a1 1 0 0 0 1.56-.83V6.8z" fill="currentColor"/></svg>',
-  rewind:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.5 7.2a1 1 0 0 0-1.6-.8l-6.4 4.8a1 1 0 0 0 0 1.6l6.4 4.8a1 1 0 0 0 1.6-.8V7.2zM20.5 7.2a1 1 0 0 0-1.6-.8l-6.4 4.8a1 1 0 0 0 0 1.6l6.4 4.8a1 1 0 0 0 1.6-.8V7.2z" fill="currentColor"/></svg>',
-  play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 5.6a1.1 1.1 0 0 1 1.68-.93l9.4 6a1.1 1.1 0 0 1 0 1.86l-9.4 6A1.1 1.1 0 0 1 8.2 17.6V5.6z" fill="currentColor"/></svg>',
-  pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5.5" width="3.8" height="13" rx="1.4" fill="currentColor"/><rect x="13.7" y="5.5" width="3.8" height="13" rx="1.4" fill="currentColor"/></svg>',
-  forward:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.2a1 1 0 0 1 1.6-.8l6.4 4.8a1 1 0 0 1 0 1.6l-6.4 4.8a1 1 0 0 1-1.6-.8V7.2zM12.5 7.2a1 1 0 0 1 1.6-.8l6.4 4.8a1 1 0 0 1 0 1.6l-6.4 4.8a1 1 0 0 1-1.6-.8V7.2z" fill="currentColor"/></svg>',
-  next:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="16.8" y="6" width="2.2" height="12" rx="1" fill="currentColor"/><path d="M5.5 6.8a1 1 0 0 1 1.56-.83l7.8 5.2a1 1 0 0 1 0 1.66l-7.8 5.2A1 1 0 0 1 5.5 17.2V6.8z" fill="currentColor"/></svg>',
-  volume:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>',
-  muted:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M22 9l-6 6M16 9l6 6"/></svg>',
-  expand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>',
-  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>'
-};
-const POPUP_RATIOS=[
-  {key:'free',label:'Free',ratio:null},
-  {key:'16/9',label:'16:9',ratio:16/9},
-  {key:'9/16',label:'9:16',ratio:9/16},
-  {key:'4/3',label:'4:3',ratio:4/3},
-  {key:'1/1',label:'1:1',ratio:1}
-];
-class TerminalCompanions{
-  constructor(ctx){
-    Object.assign(this,ctx);this.calendarData=null;this.playing=false;this.epoch=0;this.currentTrack='';this.impacts=new Set(Workspace.read('terminal_calendar_impacts_v1',['High','Medium','Low']));this.currency=Workspace.read('terminal_calendar_currency_v1','USD');
-    const savedProtocols=Workspace.read('terminal_protocol_events_v1',[]);this.protocolEvents=Array.isArray(savedProtocols)?savedProtocols:[];
-    this.dock=document.createElement('aside');this.dock.id='terminal-edge-dock';this.dock.setAttribute('aria-label','Calendar and music');(document.getElementById('right-sidebar')||document.body).appendChild(this.dock);
-    this.panels={};for(const [key,title,path] of [['calendar','Calendar','M7 3v4m10-4v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM8 14h2m4 0h2M8 17h2'],['music','Music','M10 5.5a7.5 7.5 0 1 0 0 15a7.5 7.5 0 1 0 0-15ZM10 11.25a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 1 0 0-3.5ZM6.1 11.3A4.25 4.25 0 0 1 10 8.75M20.5 3.5v7l-2 3.5']]){
-      const button=document.createElement('button');button.className='edge-handle';button.id='edge-'+key;button.type='button';button.setAttribute('aria-label',ui(title));button.dataset.dockLabel=ui(title);button.setAttribute('aria-expanded','false');button.innerHTML=`<span>${title}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;TerminalLanguage.markup(button);this.dock.appendChild(button);
-      const panel=document.createElement('section');panel.id=key+'-panel';panel.className='companion-panel';panel.inert=true;panel.setAttribute('aria-label',title);panel.innerHTML=`<header><h2>${title==='Calendar'?'Economic Calendar':title}</h2><button type="button" aria-label="Close ${title}">×</button></header>`;panel.querySelector('button').onclick=()=>this.toggle(key,false);TerminalLanguage.markup(panel);document.body.appendChild(panel);this.panels[key]=panel;button.onclick=()=>this.toggle(key);
-    }
-    this.buildCalendar();this.buildMusic();this.loadCalendar();this.tick=setInterval(()=>{this.syncDockWidth();if(this.open==='calendar')this.renderCalendar();this.loadCalendar();this.updateMusic();},1000);this.syncDockWidth();
-    document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(this.protocolLightbox&&!this.protocolLightbox.hidden){this.protocolLightbox.hidden=true;return;}if(this.open&&!e.target.closest('.modal'))this.toggle(this.open,false);}});
-  }
-  syncDockWidth(){
-    const width=40;
-    if(width===this.edgeWidth)return;
-    this.edgeWidth=width;
-    this.dock.style.setProperty('--edge-width',width+'px');
-    const inset='72px';
-    for(const panel of Object.values(this.panels)){
-      panel.style.setProperty('--companion-inset',inset);
-      if(!panel.classList.contains('music-mini'))panel.style.right=inset;
-    }
-  }
-  closeDocked(){
-    if(this.open)this.toggle(this.open,false);
-  }
-  toggle(key,force){
-    const show=force??this.open!==key;
-    if(show&&this.desktop?.mode){
-      this.desktop.open(null);
-    }
-    if(show&&this.open&&this.open!==key){
-      this.toggle(this.open,false);
-    }
-    if(key==='music'){
-      this.panels.music.classList.remove('music-mini','music-popup-interacting');
-      if(this.panels.music.style)this.panels.music.style.right='72px';
-      this.setVideoHidden?.(true);
-      this.updateMusicPopupButton();
-    }
-    this.panels[key].classList.toggle('open',show);this.panels[key].inert=!show;document.getElementById('edge-'+key)?.setAttribute('aria-expanded',String(show));
-    if(show)this.open=key;
-    else if(this.open===key)this.open=null;
-    this.desktop?.syncRailActive?.();
-    if(key==='calendar'&&show)this.renderCalendar();
-  }
-  setMusicMini(mini,focus=true){
-    if(!this.link)return;
-    const panel=this.panels.music;
-    if(!mini){
-      panel.classList.remove('music-popup-interacting');
-      this.toggle('music',true);
-    }else{
-      panel.classList.add('music-mini','open');
-      panel.inert=false;
-      if(!this.popupRatio||this.popupRatioProvider!==this.link.provider){
-        this.popupRatio='free';
-        this.popupRatioProvider=this.link.provider;
-      }
-      this.setVideoHidden(false);
-      this.applyPopupLayout();
-      if(this.open==='music'){
-        this.open=null;
-        document.getElementById('edge-music')?.setAttribute('aria-expanded','false');
-      }
-      this.desktop?.syncRailActive?.();
-      this.updateMusicPopupButton();
-    }
-    if(focus)(mini&&this.isVideoProvider()&&this.iframe?this.popupExpandButton:this.popupButton)?.focus();
-  }
-  isVideoProvider(){return ['youtube','tiktok'].includes(this.link?.provider);}
-  setVideoHidden(hidden){
-    const panel=this.panels.music;
-    const enabled=this.isVideoProvider()&&!!this.iframe&&!panel.classList.contains('music-mini');
-    panel.classList.toggle('music-video-hidden',enabled&&hidden);
-    if(this.link?.provider==='tiktok'&&this.iframe)this.iframe.tabIndex=enabled&&hidden?-1:0;
-  }
-  getPopupRatioEntry(){
-    return POPUP_RATIOS.find(r=>r.key===this.popupRatio)||POPUP_RATIOS[0];
-  }
-  applyPopupLayout(){
-    const panel=this.panels.music;
-    if(!panel.classList.contains('music-mini'))return;
-    const isTikTok=this.link?.provider==='tiktok';
-    const maxW=Math.max(220,innerWidth-12);
-    const maxH=Math.max(150,innerHeight-12);
-    const defaultW=this.isVideoProvider()?(isTikTok?260:340):340;
-    const defaultH=isTikTok?380:192;
-    const width=Math.round(Math.max(180,Math.min(maxW,this.videoPopupSize?.w||defaultW)));
-    if(this.isVideoProvider()){
-      const entry=this.getPopupRatioEntry();
-      if(entry.key==='free'||!entry.ratio){
-        const height=Math.round(Math.max(120,Math.min(maxH,this.videoPopupSize?.h||defaultH)));
-        panel.style.setProperty('--music-mini-w',width+'px');
-        panel.style.setProperty('--music-mini-h',height+'px');
-        panel.style.setProperty('--music-mini-aspect','auto');
-      }else{
-        const clampedW=Math.max(180,Math.min(width,Math.round(maxH*entry.ratio)));
-        panel.style.setProperty('--music-mini-w',clampedW+'px');
-        panel.style.setProperty('--music-mini-aspect',entry.key);
-        panel.style.setProperty('--music-mini-h','auto');
-      }
-      if(this.popupRatioButton)this.popupRatioButton.textContent=entry.label;
-    }else{
-      panel.style.setProperty('--music-mini-w',width+'px');
-      panel.style.setProperty('--music-mini-h',this.videoPopupSize?.h?Math.round(Math.max(120,Math.min(maxH,this.videoPopupSize.h)))+'px':'auto');
-      panel.style.setProperty('--music-mini-aspect','auto');
-    }
-    this.placeVideoPopup();
-  }
-  placeVideoPopup(position=this.videoPopupPosition){
-    const panel=this.panels.music;
-    if(!panel.classList.contains('music-mini'))return;
-    if(!position){
-      const rect=panel.getBoundingClientRect();
-      if(!rect.width||!rect.height)return;
-      position={x:Math.max(4,innerWidth-rect.width-20),y:Math.max(4,innerHeight-rect.height-20)};
-    }
-    const maxX=Math.max(4,innerWidth-panel.offsetWidth-4);
-    const maxY=Math.max(4,innerHeight-panel.offsetHeight-4);
-    const x=Math.round(Math.max(4,Math.min(position.x,maxX)));
-    const y=Math.round(Math.max(4,Math.min(position.y,maxY)));
-    this.videoPopupPosition={x,y};
-    panel.dataset.floatingPosition='';
-    panel.style.setProperty('--music-left',x+'px');
-    panel.style.setProperty('--music-top',y+'px');
-  }
-  resizeVideoPopup(){
-    const sizes=this.link?.provider==='tiktok'?[240,320,420]:[320,480,680];
-    const cur=this.panels.music.offsetWidth||sizes[0];
-    const next=sizes.find(s=>s>cur+18)||sizes[0];
-    const curH=this.panels.music.offsetHeight||200;
-    const scale=next/cur;
-    this.videoPopupSize={w:next,h:Math.round(curH*scale)};
-    this.applyPopupLayout();
-  }
-  cyclePopupRatio(){
-    if(!this.isVideoProvider())return;
-    const idx=POPUP_RATIOS.findIndex(r=>r.key===this.popupRatio);
-    const next=POPUP_RATIOS[(idx+1)%POPUP_RATIOS.length];
-    this.popupRatio=next.key;
-    if(next.ratio){
-      const w=this.panels.music.offsetWidth||this.videoPopupSize?.w||340;
-      this.videoPopupSize={w,h:Math.round(w/next.ratio)};
-    }
-    this.applyPopupLayout();
-  }
-  installVideoPopup(panel){
-    const rail=document.createElement('div');rail.className='video-popup-tools';
-    const button=(symbol,label,action,cls)=>{
-      const element=document.createElement('button');
-      element.type='button';element.innerHTML=symbol;element.title=ui(label);
-      element.setAttribute('aria-label',element.title);
-      if(cls)element.className=cls;
-      if(action)element.onclick=action;
-      rail.appendChild(element);return element;
-    };
-    this.popupExpandButton=button(MUSIC_ICONS.expand,'Expand',()=>this.setMusicMini(false));
-    button(MUSIC_ICONS.close,'Close popup',()=>this.toggle('music',false));
-    panel.appendChild(rail);
-
-    const startDrag=(event,handle)=>{
-      if(event.button!==0||!panel.classList.contains('music-mini'))return;
-      if(event.target.closest('button,input,a,.music-popup-resizer'))return;
-      event.preventDefault();
-      const rect=panel.getBoundingClientRect();
-      const drag={pointer:event.pointerId,dx:event.clientX-rect.left,dy:event.clientY-rect.top};
-      panel.classList.add('music-popup-interacting');
-      handle.setPointerCapture(event.pointerId);
-      const onMove=ev=>{
-        if(ev.pointerId!==drag.pointer)return;
-        this.placeVideoPopup({x:ev.clientX-drag.dx,y:ev.clientY-drag.dy});
-      };
-      const onDone=()=>{
-        panel.classList.remove('music-popup-interacting');
-        handle.removeEventListener('pointermove',onMove);
-        handle.removeEventListener('pointerup',onDone);
-        handle.removeEventListener('pointercancel',onDone);
-        handle.removeEventListener('lostpointercapture',onDone);
-      };
-      handle.addEventListener('pointermove',onMove);
-      handle.addEventListener('pointerup',onDone);
-      handle.addEventListener('pointercancel',onDone);
-      handle.addEventListener('lostpointercapture',onDone);
-    };
-    rail.addEventListener('pointerdown',e=>startDrag(e,rail));
-    panel.querySelector('header').addEventListener('pointerdown',e=>startDrag(e,panel.querySelector('header')));
-    const hud=panel.querySelector('.music-hud');
-    if(hud)hud.addEventListener('pointerdown',e=>{if(panel.classList.contains('music-mini'))startDrag(e,hud);});
-    const shield=document.createElement('div');
-    shield.className='music-video-shield';
-    shield.setAttribute('aria-hidden','true');
-    shield.addEventListener('pointerdown',event=>{
-      if(event.button!==0||!panel.classList.contains('music-mini'))return;
-      event.preventDefault();
-      const pid=event.pointerId,startX=event.clientX,startY=event.clientY,rect=panel.getBoundingClientRect();
-      let moved=false;
-      const dx=startX-rect.left,dy=startY-rect.top;
-      panel.classList.add('music-popup-interacting');
-      shield.setPointerCapture(pid);
-      const onMove=ev=>{
-        if(ev.pointerId!==pid)return;
-        if(!moved&&Math.hypot(ev.clientX-startX,ev.clientY-startY)>4)moved=true;
-        if(moved)this.placeVideoPopup({x:ev.clientX-dx,y:ev.clientY-dy});
-      };
-      const onDone=()=>{
-        panel.classList.remove('music-popup-interacting');
-        shield.removeEventListener('pointermove',onMove);
-        shield.removeEventListener('pointerup',onUp);
-        shield.removeEventListener('pointercancel',onDone);
-        shield.removeEventListener('lostpointercapture',onDone);
-      };
-      const onUp=ev=>{
-        onDone();
-        if(ev.pointerId===pid&&!moved)this.command('toggle');
-      };
-      shield.addEventListener('pointermove',onMove);
-      shield.addEventListener('pointerup',onUp);
-      shield.addEventListener('pointercancel',onDone);
-      shield.addEventListener('lostpointercapture',onDone);
-    });
-    panel.appendChild(shield);
-    panel.addEventListener('pointerleave',()=>{
-      if(panel.classList.contains('music-mini')&&document.activeElement&&panel.contains(document.activeElement)){
-        document.activeElement.blur();
-      }
-    });
-    rail.addEventListener('dblclick',event=>{if(!event.target.closest('button'))this.resizeVideoPopup();});
-
-    const addResizer=(dirs,cls,label)=>{
-      const handle=document.createElement('div');
-      handle.className='music-popup-resizer '+cls;
-      handle.title=label;
-      handle.setAttribute('aria-label',label);
-      handle.addEventListener('pointerdown',event=>{
-        if(event.button!==0||!panel.classList.contains('music-mini'))return;
-        event.preventDefault();event.stopPropagation();
-        const pid=event.pointerId;
-        const rect=panel.getBoundingClientRect();
-        this.placeVideoPopup({x:rect.left,y:rect.top});
-        panel.classList.add('music-popup-interacting');
-        handle.setPointerCapture(pid);
-        const startX=event.clientX,startY=event.clientY;
-        const startLeft=rect.left,startTop=rect.top,startRight=rect.right,startBottom=rect.bottom;
-        const startW=rect.width,startH=rect.height;
-        const minW=180,minH=120;
-        const hasW=dirs.includes('w'),hasE=dirs.includes('e'),hasN=dirs.includes('n'),hasS=dirs.includes('s');
-        const onMove=ev=>{
-          if(ev.pointerId!==pid)return;
-          const dw=ev.clientX-startX,dh=ev.clientY-startY;
-          let left=startLeft,top=startTop,width=startW,height=startH;
-          if(hasW){
-            left=Math.max(4,Math.min(startRight-minW,startLeft+dw));
-            width=startRight-left;
-          }else if(hasE){
-            width=Math.max(minW,Math.min(innerWidth-4-startLeft,startW+dw));
-          }
-          if(hasN){
-            top=Math.max(4,Math.min(startBottom-minH,startTop+dh));
-            height=startBottom-top;
-          }else if(hasS){
-            height=Math.max(minH,Math.min(innerHeight-4-startTop,startH+dh));
-          }
-          if(this.isVideoProvider())this.popupRatio='free';
-          this.videoPopupSize={w:width,h:height};
-          this.videoPopupPosition={x:left,y:top};
-          this.applyPopupLayout();
-        };
-        const onDone=()=>{
-          panel.classList.remove('music-popup-interacting');
-          handle.removeEventListener('pointermove',onMove);
-          handle.removeEventListener('pointerup',onDone);
-          handle.removeEventListener('pointercancel',onDone);
-          handle.removeEventListener('lostpointercapture',onDone);
-        };
-        handle.addEventListener('pointermove',onMove);
-        handle.addEventListener('pointerup',onDone);
-        handle.addEventListener('pointercancel',onDone);
-        handle.addEventListener('lostpointercapture',onDone);
-      });
-      panel.appendChild(handle);
-    };
-    addResizer('nw','resizer-nw','Kéo góc trên-trái để phóng to / thu nhỏ tự do');
-    addResizer('ne','resizer-ne','Kéo góc trên-phải để phóng to / thu nhỏ tự do');
-    addResizer('sw','resizer-sw','Kéo góc dưới-trái để phóng to / thu nhỏ tự do');
-    addResizer('se','resizer-se resizer-corner','Kéo góc dưới-phải để phóng to / thu nhỏ tự do');
-    addResizer('n','resizer-n','Kéo cạnh trên để chỉnh chiều cao');
-    addResizer('s','resizer-s resizer-bottom','Kéo cạnh dưới để chỉnh chiều cao');
-    addResizer('w','resizer-w','Kéo cạnh trái để chỉnh chiều rộng');
-    addResizer('e','resizer-e resizer-right','Kéo cạnh phải để chỉnh chiều rộng');
-
-    window.addEventListener('resize',()=>{
-      if(panel.classList.contains('music-mini'))this.applyPopupLayout();
-    });
-  }
-  updateMusicPopupButton(){
-    const mini=this.panels.music.classList.contains('music-mini');
-    this.popupButton.textContent=mini?ui('Expand'):'Popup';
-    this.popupButton.setAttribute('aria-label',mini?'Mở rộng trình phát':'Thu nhỏ trình phát thành cửa sổ nổi');
-    this.popupButton.setAttribute('aria-pressed',String(mini));
-  }
-  buildCalendar(){
-    const panel=this.panels.calendar,filters=document.createElement('div');filters.className='calendar-filters';
-    for(const impact of ['High','Medium','Low']){const button=document.createElement('button');button.textContent=ui(impact);button.dataset.impact=impact;button.type='button';button.onclick=()=>{if(this.impacts.has(impact))this.impacts.delete(impact);else this.impacts.add(impact);Workspace.write('terminal_calendar_impacts_v1',[...this.impacts]);this.renderCalendar();};filters.appendChild(button);}
-    const currency=document.createElement('select');currency.setAttribute('aria-label','Calendar currency');for(const name of ['All','USD','EUR','GBP','JPY','CAD','AUD','NZD','CHF','CNY'])currency.add(new Option(name,name));currency.value=this.currency;currency.onchange=()=>{this.currency=currency.value;Workspace.write('terminal_calendar_currency_v1',this.currency);this.renderCalendar();};filters.appendChild(currency);panel.appendChild(filters);this.calendarFilters=filters;
-    this.calendarList=document.createElement('div');this.calendarList.className='calendar-list';panel.appendChild(this.calendarList);this.calendarStatus=document.createElement('footer');panel.appendChild(this.calendarStatus);
-  }
-  async loadCalendar(){
-    if(this.getReplay?.()?.running||this.calendarLoading||Date.now()<(this.calendarNextCheck||0))return;
-    this.calendarLoading=true;
-    try{
-      const response=await fetch('/api/calendar');
-      if(!response.ok)throw Error('Calendar service unavailable');
-      this.calendarData=await response.json();
-      this.calendarNextCheck=Math.max(Date.now()+60000,this.calendarData.next_check_at*1000||Date.now()+900000);
-    }catch(error){
-      this.calendarNextCheck=Date.now()+60000;
-      this.calendarData={...this.calendarData,error:error.message};
-    }finally{
-      this.calendarLoading=false;
-      this.renderCalendar();
-    }
-  }
-  renderCalendar(){
-    const replay=!!this.getReplay?.()?.running;
-    this.calendarFilters.hidden=replay;
-    const data=this.calendarData;
-    const now=new Date();
-    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    const tomorrow=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
-    const rawEvents=replay?[]:data?.events||[];
-    const protocolEnabled=!replay&&typeof NewsProtocols!=='undefined'&&(this.currency==='All'||this.currency==='USD');
-    let startDay=today;
-    if(protocolEnabled){
-      const [nyY,nyM,nyD]=NewsProtocols.day(+now/1000).split('-').map(Number);
-      const nyDate=new Date(nyY,nyM-1,nyD);
-      if(nyDate<today)startDay=nyDate;
-    }
-    const events=rawEvents.filter(event=>
-      this.impacts.has(event.impact)&&(this.currency==='All'||event.currency===this.currency)&&event.time*1000>=+startDay);
-    if(!replay&&data&&data!==this.calendarSyncedData&&typeof NewsProtocols!=='undefined'){
-      this.calendarSyncedData=data;
-      const archived=Array.isArray(this.protocolEvents)?this.protocolEvents:Array.isArray(this.news?.events)?this.news.events:[];
-      const merged=NewsProtocols.merge(archived,rawEvents,+now/1000);
-      this.protocolEvents=merged;
-      if(this.news)this.news.events=merged;
-      if(merged.length)Workspace.write('terminal_protocol_events_v1',merged);
-    }
-    const protocolEvents=protocolEnabled?NewsProtocols.merge(this.protocolEvents||this.news?.events||[],rawEvents,+now/1000):[];
-    const next=events.find(event=>!event.tentative&&event.time*1000>+now);
-    const nextToday=events.find(event=>event.time*1000>+now&&event.time*1000<+tomorrow);
-    const key=JSON.stringify([replay,this.currency,[...this.impacts],data?.checked_at,data?.error,+startDay,+today,next?.time,nextToday?.time,protocolEnabled?[protocolEvents.length,protocolEvents[0]?.time,protocolEvents.at(-1)?.time]:0]);
-    this.calendarTimeFormat??=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
-    if(key!==this.calendarRenderKey){
-      this.calendarRenderKey=key;
-      const scroll=this.calendarList.scrollTop;
-      this.calendarList.replaceChildren();
-      this.calendarStatus.replaceChildren();
-      this.calendarStatus.removeAttribute('title');
-      this.calendarNow=null;
-      this.calendarCountdown=null;
-      for(const button of this.calendarFilters.querySelectorAll('button')){
-        button.setAttribute('aria-pressed',String(this.impacts.has(button.dataset.impact)));
-      }
-      if(replay){
-        const empty=document.createElement('div');
-        empty.className='calendar-unavailable';
-        empty.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v16H4zM8 2v6m8-6v6M4 11h16M2 2l20 20"/></svg><p>Unavailable in Replay</p>';
-        this.calendarList.appendChild(empty);
-        this.calendarStatus.textContent='Return to Live to view the economic calendar.';
-      }else if(!data){
-        this.calendarList.textContent='Loading economic events…';
-      }else{
-        this.buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents,protocolEnabled,startDay);
-      }
-      this.calendarList.scrollTop=scroll;
-    }
-    if(this.calendarNow){
-      const label='NOW · '+this.calendarTimeFormat.format(now);
-      if(this.calendarNow.textContent!==label)this.calendarNow.textContent=label;
-    }
-    if(this.calendarCountdown&&next){
-      const minutes=Math.ceil((next.time*1000-+now)/60000);
-      const days=Math.floor(minutes/1440),hours=Math.floor(minutes%1440/60),mins=minutes%60;
-      const label='in '+[days&&days+'d',hours&&hours+'h',mins&&mins+'m'].filter(Boolean).join(' ');
-      if(this.calendarCountdown.textContent!==label)this.calendarCountdown.textContent=label;
-    }
-    if(!replay)this.loadCalendar();
-  }
-  buildCalendarList(events,next,nextToday,today,tomorrow,protocolEvents=[],protocolEnabled=false,startDay=today){
-    const data=this.calendarData;
-    const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const todayIso=iso(today),tomorrowIso=iso(tomorrow),startIso=iso(startDay);
-    const groups=new Map([[todayIso,{date:today,events:[],cards:[],checked:false}]]);
-    for(const event of events){
-      const dayKey=protocolEnabled&&typeof NewsProtocols!=='undefined'&&event.currency==='USD'?NewsProtocols.day(event.time):null;
-      let day,k;
-      if(dayKey){
-        const [y,m,dd]=dayKey.split('-').map(Number);
-        day=new Date(y,m-1,dd);k=dayKey;
-      }else{
-        const ed=new Date(event.time*1000);
-        day=new Date(ed.getFullYear(),ed.getMonth(),ed.getDate());k=iso(day);
-      }
-      if(k<startIso)continue;
-      if(!groups.has(k))groups.set(k,{date:day,events:[],cards:[],checked:false});
-      groups.get(k).events.push(event);
-    }
-    if(protocolEnabled&&protocolEvents.length){
-      const limit=+today+21*86400000;
-      let maxMs=+today;
-      for(const event of protocolEvents)if(event.time*1000>=+startDay&&event.time*1000<=limit)maxMs=Math.max(maxMs,event.time*1000);
-      const endMs=Math.min(limit,maxMs+5*86400000);
-      for(let d=new Date(startDay);+d<=endMs;d.setDate(d.getDate()+1)){
-        const k=iso(d),cards=NewsProtocols.matchDay(protocolEvents,k);
-        if(cards.length){
-          if(!groups.has(k))groups.set(k,{date:new Date(d),events:[],cards,checked:true});
-          else Object.assign(groups.get(k),{cards,checked:true});
-        }else if(groups.has(k)){
-          groups.get(k).checked=true;
-        }
-      }
-      for(const [k,entry] of groups)if(!entry.checked){entry.cards=NewsProtocols.matchDay(protocolEvents,k);entry.checked=true;}
-    }
-    const dateFormat=new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
-    this.calendarNow=document.createElement('div');
-    this.calendarNow.className='calendar-now';
-    for(const [dayIso,entry] of [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0]))){
-      const heading=document.createElement('h3');
-      heading.textContent=dayIso===todayIso?trCompanion('Today'):dayIso===tomorrowIso?trCompanion('Tomorrow'):dayIso<todayIso?dateFormat.format(entry.date)+' · NY Session':dateFormat.format(entry.date);
-      this.calendarList.appendChild(heading);
-      if(entry.cards.length){
-        const box=document.createElement('div');
-        box.className='calendar-day-protocols';
-        for(const card of entry.cards)box.appendChild(this.buildCalendarProtocol(card,dayIso,dateFormat));
-        this.calendarList.appendChild(box);
-      }
-      for(const event of entry.events){
-        if(event===nextToday)this.calendarList.appendChild(this.calendarNow);
-        this.calendarList.appendChild(this.buildCalendarEvent(event));
-        if(event===next){
-          this.calendarCountdown=document.createElement('div');
-          this.calendarCountdown.className='calendar-countdown';
-          this.calendarList.appendChild(this.calendarCountdown);
-        }
-      }
-      if(dayIso===todayIso&&!nextToday)this.calendarList.appendChild(this.calendarNow);
-    }
-    if(!events.length){
-      const message=document.createElement('p');
-      message.className='calendar-message';
-      message.textContent=data.error?'Calendar data is temporarily unavailable.':'No upcoming events match these filters.';
-      this.calendarList.appendChild(message);
-    }
-    const updated=Number.isFinite(data.updated_at)
-      ?' · Updated '+dateFormat.format(new Date(data.updated_at*1000))+' '+this.calendarTimeFormat.format(new Date(data.updated_at*1000)):'';
-    this.calendarStatus.append((updated?updated.slice(3)+' · ':'')+'Times on this computer'+(data.error&&events.length?' · Showing cached data':''));
-    this.calendarStatus.title=data.notice||'';
-  }
-  buildCalendarProtocol(card,dayIso,dateFormat){
-    const item=document.createElement('article');
-    item.className='calendar-protocol-card';
-    item.dataset.protocol=card.id;
-    item.title=card.reasons?.join('\n')||card.title;
-    const info=document.createElement('div');
-    info.className='calendar-protocol-info';
-    const head=document.createElement('div');
-    head.className='calendar-protocol-head';
-    const title=document.createElement('strong');
-    title.textContent=card.title;
-    head.appendChild(title);
-    const evts=card.events||[];
-    const hasShifted=evts.some(e=>{
-      if(!dayIso||!Number.isFinite(e?.time))return false;
-      const d=new Date(e.time*1000);
-      const localDay=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      return localDay!==dayIso;
-    });
-    const tagText=card.id.endsWith('-after')?'Sau tin':card.id.endsWith('-before')?'Trước tin':card.id==='nfp-week'?'Tuần NFP':hasShifted?'Phiên NY':'';
-    if(tagText){
-      const tag=document.createElement('span');
-      tag.className='calendar-protocol-tag';
-      tag.textContent=tagText;
-      head.appendChild(tag);
-    }
-    const list=document.createElement('div');
-    list.className='calendar-protocol-events';
-    const dayFmt=dateFormat||new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'});
-    for(const e of evts){
-      const row=document.createElement('div');
-      row.className='calendar-protocol-event';
-      const dot=document.createElement('i');
-      if(e.impact)dot.dataset.impact=e.impact;
-      const when=document.createElement('span');
-      when.className='calendar-protocol-when';
-      if(Number.isFinite(e.time)){
-        const d=new Date(e.time*1000);
-        const localDay=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-        const clock=e.tentative?'TBD':(this.calendarTimeFormat?this.calendarTimeFormat.format(d):'');
-        when.textContent=localDay!==dayIso?`${clock} (${dayFmt.format(d)})`:clock;
-      }
-      const cur=document.createElement('b');
-      cur.textContent=e.currency||'USD';
-      const name=document.createElement('span');
-      name.className='calendar-protocol-name';
-      name.textContent=e.title||'';
-      row.append(dot,when,cur,name);
-      const vals=[e.actual&&'A '+e.actual,e.forecast&&'F '+e.forecast,e.previous&&'P '+e.previous].filter(Boolean).join(' · ');
-      if(vals){
-        const nums=document.createElement('small');
-        nums.textContent=vals;
-        row.appendChild(nums);
-      }
-      list.appendChild(row);
-    }
-    if(card.nextEvents?.length&&['cpi-day','ppi-day','fed-day'].includes(card.id)){
-      const warn=document.createElement('div');
-      warn.className='calendar-protocol-next';
-      warn.textContent='Lưu ý phiên kế tiếp: '+card.nextEvents.map(e=>e.title).join(', ');
-      list.appendChild(warn);
-    }
-    info.append(head,list);
-    const btn=document.createElement('button');
-    btn.type='button';
-    btn.className='calendar-protocol-thumb';
-    btn.setAttribute('aria-label','Enlarge '+card.title);
-    const img=document.createElement('img');
-    img.src='assets/news-protocols/'+card.id+'.png';
-    img.alt=card.title;
-    btn.appendChild(img);
-    btn.onclick=()=>this.openProtocolLightbox(card);
-    item.append(info,btn);
-    return item;
-  }
-  openProtocolLightbox(card){
-    if(!this.protocolLightbox){
-      const overlay=document.createElement('div');
-      overlay.className='calendar-protocol-lightbox';
-      overlay.hidden=true;
-      overlay.setAttribute('role','dialog');
-      overlay.setAttribute('aria-modal','true');
-      overlay.innerHTML='<div class="calendar-protocol-dialog"><header><strong></strong><button type="button" aria-label="Close protocol image">×</button></header><img></div>';
-      overlay.onclick=e=>{if(e.target===overlay)overlay.hidden=true;};
-      overlay.querySelector('button').onclick=()=>overlay.hidden=true;
-      document.body.appendChild(overlay);
-      this.protocolLightbox=overlay;
-    }
-    this.protocolLightbox.querySelector('strong').textContent=card.title+(card.events?.length?' · '+card.events.map(e=>e.title).join(', '):'');
-    const img=this.protocolLightbox.querySelector('img');
-    img.src='assets/news-protocols/'+card.id+'.png';
-    img.alt=card.title;
-    this.protocolLightbox.hidden=false;
-  }
-  buildCalendarEvent(event){
-    const row=document.createElement('article');
-    row.className='calendar-event';
-    const date=new Date(event.time*1000);
-    const clock=document.createElement(event.tentative?'span':'time');
-    clock.className='calendar-time';
-    clock.textContent=event.tentative?'TBD':this.calendarTimeFormat.format(date);
-    if(!event.tentative)clock.dateTime=date.toISOString();
-    const dot=document.createElement('i');
-    dot.dataset.impact=event.impact;
-    dot.title=event.impact;
-    dot.setAttribute('role','img');
-    dot.setAttribute('aria-label',event.impact+' impact');
-    const currency=document.createElement('b');
-    currency.textContent=event.currency;
-    const title=document.createElement('span');
-    title.className='event-title';
-    title.textContent=event.title;
-    const values=document.createElement('small');
-    values.textContent=[event.actual&&'A '+event.actual,event.forecast&&'F '+event.forecast,event.previous&&'P '+event.previous].filter(Boolean).join(' · ');
-    values.title=[event.actual&&'Actual '+event.actual,event.forecast&&'Forecast '+event.forecast,event.previous&&'Previous '+event.previous].filter(Boolean).join(' · ');
-    row.append(clock,dot,currency,title,values);
-    return row;
-  }
-  buildMusic(){
-    const panel=this.panels.music;panel.insertAdjacentHTML('beforeend',`<form class="music-link-form"><input type="url" required placeholder="Paste YouTube, Spotify, SoundCloud or TikTok link" aria-label="Music link"><button type="submit">Load</button><button type="button" data-audio-file>File</button><input type="file" accept="audio/*,.mp3,.m4a,.flac,.opus" hidden></form><div class="music-now"><div class="music-disc"><img alt="Track artwork" hidden></div><div><h3>Nothing is playing</h3><p>Paste a link to load the official player.</p></div></div><div class="music-hud"><div class="music-progress-row"><div class="music-track" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-disabled="true"><div class="music-rail"><div class="music-buf"></div><div class="music-fill"></div><div class="music-dot"></div></div><div class="music-tip">0:00</div></div><span class="music-clock">0:00 / —</span></div><div class="music-controls"><button type="button" data-command="previous" aria-label="Previous track" title="Bài trước">${MUSIC_ICONS.prev}</button><button type="button" data-command="rewind" aria-label="Rewind 10 seconds" title="Lùi 10 giây">${MUSIC_ICONS.rewind}</button><button type="button" data-command="toggle" aria-label="Play" title="Phát / Tạm dừng">${MUSIC_ICONS.play}</button><button type="button" data-command="forward" aria-label="Forward 10 seconds" title="Tua nhanh 10 giây">${MUSIC_ICONS.forward}</button><button type="button" data-command="next" aria-label="Next track" title="Bài tiếp">${MUSIC_ICONS.next}</button></div></div><div class="music-player-host"></div><p class="music-notice" role="status">Paste a music link or choose an audio file.</p>`);
-    TerminalLanguage.markup(panel);
-    this.form=panel.querySelector('form');
-    const linkInput=this.form.querySelector('input[type=url]');
-    this.form.onsubmit=event=>{event.preventDefault();void this.loadMusic(linkInput.value);};
-    this.disc=panel.querySelector('.music-disc');this.art=this.disc.querySelector('img');this.trackTitle=panel.querySelector('.music-now h3');this.trackAuthor=panel.querySelector('.music-now p');this.clock=panel.querySelector('.music-clock');this.playerHost=panel.querySelector('.music-player-host');this.musicNotice=panel.querySelector('.music-notice');
-    const header=panel.querySelector('header');
-    this.popupButton=document.createElement('button');
-    this.popupButton.type='button';
-    this.popupButton.className='music-popup-button';
-    this.popupButton.disabled=true;
-    this.popupButton.onclick=event=>this.setMusicMini(!panel.classList.contains('music-mini'),event.detail===0);
-    header.lastElementChild.before(this.popupButton);
-    this.installVideoPopup(panel);
-    this.updateMusicPopupButton();
-    const fileInput=this.form.querySelector('input[type=file]');
-    fileInput.accept+=',video/mp4,.mp4';
-    this.form.querySelector('[data-audio-file]').onclick=()=>fileInput.click();
-    this.tiktokFileButton=document.createElement('button');
-    this.tiktokFileButton.type='button';this.tiktokFileButton.hidden=true;
-    this.tiktokFileButton.textContent=ui('Play saved video or audio');
-    this.tiktokFileButton.onclick=()=>fileInput.click();
-    this.musicNotice.after(this.tiktokFileButton);
-    this.tabAudioRequest=0;
-    this.tabAudioButton=document.createElement('button');
-    this.tabAudioButton.type='button';
-    this.tabAudioButton.className='music-tab-audio';
-    this.tabAudioButton.hidden=true;
-    this.tabAudioButton.textContent=ui('Listen to TikTok tab audio');
-    this.tabAudioButton.onclick=()=>{
-      if(this.tabAudioStream)this.stopTabAudio();
-      else void this.startTabAudio();
-    };
-    this.musicNotice.after(this.tabAudioButton);
-    window.addEventListener('pagehide',()=>{
-      this.tabAudioRequest++;
-      this.stopTabAudio();
-    });
-    fileInput.onchange=()=>{
-      const file=fileInput.files[0];
-      if(file)this.loadMusic('',file);
-      fileInput.value='';
-    };
-    this.musicMute=document.createElement('button');
-    this.musicMute.type='button';
-    this.musicMute.className='music-mute-btn';
-    this.musicMute.hidden=true;
-    this.musicMute.innerHTML=MUSIC_ICONS.volume;
-    this.musicMute.onclick=()=>this.toggleMute();
-    panel.querySelector('.music-controls').appendChild(this.musicMute);
-    this.track=panel.querySelector('.music-track');
-    this.trackFill=panel.querySelector('.music-fill');
-    this.trackBuf=panel.querySelector('.music-buf');
-    this.trackDot=panel.querySelector('.music-dot');
-    this.trackTip=panel.querySelector('.music-tip');
-    this.seek={disabled:true,max:1,value:0,dragging:false};
-    const trackTime=clientX=>{
-      const r=this.track.getBoundingClientRect(),dur=this.duration||0;
-      if(!r.width||dur<=0)return {x:0,s:0};
-      const x=Math.min(r.width,Math.max(0,clientX-r.left));
-      return {x,s:(x/r.width)*dur};
-    };
-    this.track.addEventListener('pointerdown',event=>{
-      if(event.button!==0||this.seek.disabled||!(this.duration>0))return;
-      event.preventDefault();event.stopPropagation();
-      this.seek.dragging=true;
-      this.track.classList.add('drag');
-      this.track.setPointerCapture(event.pointerId);
-      const {x,s}=trackTime(event.clientX);
-      this.trackTip.style.left=x+'px';this.trackTip.textContent=this.formatTime(s);
-      this.seekToSeconds(s);
-    });
-    this.track.addEventListener('pointermove',event=>{
-      if(this.seek.disabled||!(this.duration>0))return;
-      const {x,s}=trackTime(event.clientX);
-      this.trackTip.style.left=x+'px';this.trackTip.textContent=this.formatTime(s);
-      if(this.seek.dragging)this.seekToSeconds(s);
-    });
-    const endTrack=()=>{this.seek.dragging=false;this.track.classList.remove('drag');};
-    this.track.addEventListener('pointerup',endTrack);
-    this.track.addEventListener('pointercancel',endTrack);
-    this.track.addEventListener('lostpointercapture',endTrack);
-    const spreadTrackWave=clientX=>{
-      if(!panel.classList.contains('music-mini')||this.link?.provider!=='youtube')return;
-      [...panel.querySelectorAll('.music-controls button:not([data-command=toggle]):not([hidden]), .music-clock')]
-        .map(el=>{const r=el.getBoundingClientRect();return {el,d:Math.abs(r.left+r.width/2-clientX)};})
-        .sort((a,b)=>a.d-b.d)
-        .forEach((o,i)=>o.el.style.setProperty('--dly',(i*0.04).toFixed(2)+'s'));
-    };
-    this.track.addEventListener('pointerenter',event=>spreadTrackWave(event.clientX));
-    this.track.addEventListener('pointerleave',event=>spreadTrackWave(event.clientX));
-    this.track.addEventListener('keydown',event=>{
-      if(this.seek.disabled||!(this.duration>0))return;
-      const step={ArrowLeft:-5,ArrowRight:5,ArrowDown:-5,ArrowUp:5,Home:-this.duration,End:this.duration}[event.key];
-      if(step!==undefined){event.preventDefault();this.seekToSeconds((this.elapsed||0)+step);}
-    });
-    this.musicToggle=panel.querySelector('[data-command=toggle]');
-    panel.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>this.command(b.dataset.command));this.setCommands(false);
-    const toast=document.createElement('div');toast.id='music-track-toast';toast.innerHTML='<img alt=""><div><strong></strong><small></small></div>';toast.setAttribute('role','status');document.body.appendChild(toast);this.songToast=toast;
-    const saved=Workspace.read('terminal_music_link_v1','');if(saved)linkInput.value=saved;
-    this.metadataStatus=document.createElement('p');this.metadataStatus.className='music-metadata-status';this.metadataStatus.setAttribute('role','status');this.musicNotice.after(this.metadataStatus);
-    window.addEventListener('message',e=>{
-      // Accept messages only from the currently mounted official player.
-      if(this.link?.provider!=='tiktok'||e.origin!=='https://www.tiktok.com'||
-          e.source!==this.iframe?.contentWindow||e.data?.['x-tiktok-player']!==true)return;
-      const {type,value}=e.data;
-      if(type==='onPlayerReady'){
-        this.setCommands(true);
-        this.musicMute.disabled=false;
-        if(!this.tiktokStarted)this.tiktokPlayPrompt();
-      }else if(type==='onMute'&&typeof value==='boolean'){
-        this.setTikTokMuted(value);
-      }else if(type==='onStateChange'){
-        this.setPlaying(value===1,value===1||value===3);
-        if(value!==1)return;
-        clearTimeout(this.playerReadyTimer);
-        if(this.tiktokNative&&!this.tiktokStarted&&!panel.classList.contains('music-mini'))this.setVideoHidden(true);
-        this.tiktokStarted=true;
-        panel.classList.add('music-shield-active');
-        if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
-        this.setCommands(true);
-        this.musicMute.hidden=false;
-        this.musicMute.disabled=false;
-        this.tabAudioButton.hidden=true;
-        this.tiktokFileButton.hidden=true;
-        this.musicNotice.textContent='';
-      }else if(type==='onCurrentTime'&&value){
-        if(Number.isFinite(value.currentTime))this.elapsed=Math.max(0,value.currentTime);
-        if(Number.isFinite(value.duration))this.duration=Math.max(0,value.duration);
-        this.updateMusic();
-      }else if(type==='onPlayerError'||type==='onError'){
-        const code=Number(value?.errorCode??value);
-        // Older builds also emit the media-aborted event while initializing.
-        if(type==='onError'&&code===1)return;
-        clearTimeout(this.playerReadyTimer);
-        this.setPlaying(false);
-        if(code===3002){
-          if(this.tiktokManualPlay&&!this.tiktokNative)void this.recoverTikTok(this.epoch,code);
-          else this.tiktokPlayPrompt();
-        }else{
-          void this.recoverTikTok(this.epoch,code);
-        }
-      }
-    });
-  }
-  script(src,ready){return new Promise((resolve,reject)=>{if(ready()){resolve();return;}const existing=document.querySelector(`script[src="${src}"]`),s=existing||document.createElement('script');if(!existing){s.src=src;s.async=true;document.head.appendChild(s);}let count=0;const check=setInterval(()=>{if(ready()){clearInterval(check);resolve();}else if(++count>100){clearInterval(check);s.remove();reject(Error('Provider API could not load. Check connection or blockers.'));}},100);s.addEventListener('error',()=>{clearInterval(check);s.remove();reject(Error('Provider API unavailable.'));},{once:true});});}
-  async loadMusic(url,file){
-    let link;try{link=file?{provider:'audio'}:TerminalMusicLinks.parse(url);}catch(e){this.musicNotice.textContent=ui(e.message);return;}
-    this.tabAudioRequest++;
-    this.stopTabAudio();
-    this.tabAudioButton.hidden=true;
-    const epoch=++this.epoch;
-    this.loadAbort?.abort();this.metadataAbort?.abort();this.loadAbort=new AbortController();this.metadataStatus.textContent='';
-    clearTimeout(this.playerReadyTimer);clearTimeout(this.toastTimer);this.songToast.classList.remove('show');
-    this.audio?.pause();this.audio=null;
-    if(this.audioObjectUrl){URL.revokeObjectURL(this.audioObjectUrl);this.audioObjectUrl=null;}
-    this.youtube?.destroy?.();this.youtube=null;
-    this.spotify?.destroy?.();this.iframe=null;this.widget=null;this.spotify=null;this.playerHost.replaceChildren();this.link=null;this.spotifyFrameOnly=false;this.setPlaying(false);this.currentTrack='';this.metadataURL=null;this.duration=0;this.elapsed=0;this.trackTitle.textContent='Loading…';this.art.hidden=true;
-    this.popupButton.disabled=true;
-    this.panels.music.classList.remove('music-shield-active');
-    this.youtubeStarted=false;
-    this.tiktokNative=false;
-    this.tiktokRecovering=false;
-    this.musicMute.hidden=true;
-    this.setTikTokMuted(false);
-    this.tiktokFileButton.hidden=true;
-    this.setVideoHidden(true);
-    this.setCommands(false);
-    this.seek.disabled=true;
-    this.seek.value=0;
-    if(link.share){
-      if(location.protocol==='file:'){
-        this.trackTitle.textContent='Link rút gọn';
-        this.musicNotice.textContent='Mở bản preview qua localhost để tải link rút gọn, hoặc mở link gốc rồi dán URL đầy đủ.';
-        return;
-      }
-      this.musicNotice.textContent='Resolving official share link…';
-      try{
-        const response=await fetch('/api/music/resolve?'+new URLSearchParams({url:link.url}),{signal:AbortSignal.any([this.loadAbort.signal,AbortSignal.timeout(18000)])}),result=await response.json();
-        if(!response.ok)throw Error(result.error||'Could not resolve share link');
-        link=TerminalMusicLinks.parse(result.url);if(link.share)throw Error('Paste the full link from the provider');
-      }catch(e){if(epoch===this.epoch){this.trackTitle.textContent='Share link unavailable';this.musicNotice.textContent=e.message;}return;}
-      if(epoch!==this.epoch)return;
-    }
-    this.link=link;
-    this.panels.music.dataset.provider=link.provider;
-    if(this.panels.music.classList.contains('music-mini')){
-      if(this.popupRatioProvider!==link.provider){this.popupRatio='free';this.popupRatioProvider=link.provider;}
-      this.applyPopupLayout();
-    }
-    this.popupButton.disabled=false;
-    if(link.provider==='audio'){
-      if(file)link.url=this.audioObjectUrl=URL.createObjectURL(file);
-      else Workspace.write('terminal_music_link_v1',url);
-      this.loadAudio(link.url,file?.name,epoch,!!file&&(file.type.startsWith('video/')||/\.mp4$/i.test(file.name)));
-      return;
-    }
-    Workspace.write('terminal_music_link_v1',url);
-    this.updateTrack(link.url,({youtube:'YouTube',spotify:'Spotify',soundcloud:'SoundCloud',tiktok:'TikTok'})[link.provider],'',null,0,false);
-    if(link.provider!=='tiktok')this.metadata(link.url,epoch);
-    this.musicNotice.textContent='Loading '+link.provider+'…';
-    try{
-      if(link.provider==='youtube'){
-        await this.loadYouTube(link,epoch);
-      }else if(link.provider==='soundcloud'){
-        const frame=this.frame('https://w.soundcloud.com/player/?'+new URLSearchParams({url:link.url,auto_play:'false',show_artwork:'true',visual:'false'}),200);
-        await this.script('https://w.soundcloud.com/player/api.js',()=>!!window.SC?.Widget);if(epoch!==this.epoch)return;const widget=this.widget=SC.Widget(frame),events=SC.Widget.Events;
-        const track=()=>widget.getCurrentSound(sound=>{if(epoch!==this.epoch||!sound)return;this.updateTrack(String(sound.permalink_url||link.url).replace(/^http:/,'https:'),sound.title,sound.user?.username,sound.artwork_url||sound.user?.avatar_url,sound.duration/1000);});
-        widget.bind(events.ERROR,()=>{if(epoch!==this.epoch)return;this.setPlaying(false);this.musicNotice.textContent='SoundCloud could not play this link. Check its availability in the official player.';});widget.bind(events.READY,()=>{if(epoch===this.epoch){this.setCommands(true);track();widget.getSounds(sounds=>{if(epoch===this.epoch)this.setCommands(true,sounds?.length>1);});}});widget.bind(events.PLAY,()=>{if(epoch!==this.epoch)return;this.setPlaying(true);track();});widget.bind(events.PAUSE,()=>{if(epoch===this.epoch)this.setPlaying(false);});widget.bind(events.FINISH,()=>{if(epoch===this.epoch)this.setPlaying(false);});widget.bind(events.PLAY_PROGRESS,e=>{if(epoch===this.epoch)this.elapsed=e.currentPosition/1000;});this.musicNotice.textContent='SoundCloud playlist controls are available in the official player.';
-      }else if(link.provider==='spotify'){
-        let spotifyAPI=window.terminalSpotifyAPI;window.onSpotifyIframeApiReady=api=>window.terminalSpotifyAPI=api;
-        await this.script('https://open.spotify.com/embed/iframe-api/v1',()=>!!window.terminalSpotifyAPI);if(epoch!==this.epoch)return;spotifyAPI=window.terminalSpotifyAPI;const target=document.createElement('div');this.playerHost.appendChild(target);
-        this.playerReadyTimer=setTimeout(()=>this.useSpotifyFrame(link,epoch),10000);
-        spotifyAPI.createController(target,{uri:link.uri,width:'100%',height:352},controller=>{
-          if(epoch!==this.epoch||this.spotifyFrameOnly){controller.destroy();return;}
-          this.spotify=controller;
-          const frame=this.playerHost.querySelector('iframe');if(frame){frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';frame.title='Official Spotify player';}
-          controller.addListener('ready',()=>{if(epoch!==this.epoch||this.spotifyFrameOnly)return;clearTimeout(this.playerReadyTimer);this.setCommands(true,false);this.musicNotice.textContent='Start playback inside Spotify if the toolbar cannot start it.';});
-          controller.addListener('playback_update',e=>{if(epoch!==this.epoch||this.spotifyFrameOnly||!e?.data)return;clearTimeout(this.playerReadyTimer);this.setCommands(true,false);this.setPlaying(e.data.isPaused===false&&!e.data.isBuffering,e.data.isPaused===false);this.duration=e.data.duration/1000;this.elapsed=e.data.position/1000;if(e.data.playingURI){const [_,type,id]=e.data.playingURI.split(':');if(id)this.metadata(`https://open.spotify.com/${type}/${id}`,epoch,true);}});
-        });
-      }else{
-        // Request oEmbed in parallel so metadata cannot delay the initial player.
-        this.tiktokEmbed=this.loadTikTokMetadata(link,epoch);
-        this.mountTikTok(epoch);
-      }
-    }catch(e){
-      if(epoch!==this.epoch)return;
-      this.musicNotice.textContent=this.iframe?'Dùng nút Play trong trình phát hoặc mở link gốc.':e.message;
-      if(link.provider==='spotify')this.useSpotifyFrame(link,epoch);
-      this.setCommands(false);
-    }
-  }
-
-  async loadTikTokMetadata(link,epoch){
-    if(location.protocol==='file:')return null;
-    try{
-      const response=await fetch('/api/music/metadata?'+new URLSearchParams({url:link.url,embed:'1'}),{
-        signal:AbortSignal.any([this.loadAbort.signal,AbortSignal.timeout(10000)]),cache:'no-store'
-      });
-      if(!response.ok)throw Error('TikTok oEmbed unavailable');
-      const data=await response.json();
-      if(epoch!==this.epoch)return null;
-      this.updateTrack(link.url,data.title||'TikTok',data.author_name,data.thumbnail_url,0,false);
-      if(!data.embed_url)return null;
-      const src=new URL(data.embed_url);
-      if(src.origin==='https://www.tiktok.com'&&!src.username&&!src.password&&
-          src.pathname.replace(/\/$/,'')==='/player/v1/'+link.id)return src;
-    }catch{
-      // Provider metadata is optional. The app's local proxy avoids browser CORS.
-    }
-    return null;
-  }
-
-  mountTikTok(epoch,native=false,embed=null){
-    const src=embed||new URL('https://www.tiktok.com/player/v1/'+this.link.id);
-    // Preserve the provider's oEmbed options for the native click fallback.
-    const options=native?{autoplay:'0',muted:'0'}:{
-      controls:'0',progress_bar:'0',description:'0',music_info:'0',rel:'0',autoplay:'1',force_muted:'0'
-    };
-    for(const [key,value] of Object.entries(options))src.searchParams.set(key,value);
-    this.tiktokNative=native;
-    this.tiktokStarted=false;
-    this.tiktokManualPlay=false;
-    this.musicMute.hidden=false;
-    this.musicMute.disabled=true;
-    this.setTikTokMuted(false);
-    this.frame(src.href,360);
-    this.popupButton.disabled=false;
-    this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));
-    if(native)this.tiktokPlayPrompt();
-    else this.playerReadyTimer=setTimeout(()=>{
-      if(epoch===this.epoch&&!this.tiktokStarted)this.tiktokPlayPrompt();
-    },8000);
-  }
-
-  setTikTokMuted(muted){
-    this.tiktokMuted=muted;
-    this.updateMuteButton(muted);
-  }
-  updateMuteButton(muted){
-    const label=ui(muted?'Unmute':'Mute');
-    this.musicMute.innerHTML=muted?MUSIC_ICONS.muted:MUSIC_ICONS.volume;
-    this.musicMute.setAttribute('aria-label',label);
-    this.musicMute.title=label;
-    this.musicMute.setAttribute('aria-pressed',String(!!muted));
-  }
-  toggleMute(){
-    if(this.link?.provider==='tiktok'){
-      this.sendTikTok(this.tiktokMuted?'unMute':'mute');
-    }else if(this.youtube){
-      const muted=!!this.youtube.isMuted?.();
-      if(muted)this.youtube.unMute?.();
-      else this.youtube.mute?.();
-      this.updateMuteButton(!muted);
-    }else if(this.audio){
-      this.audio.muted=!this.audio.muted;
-      this.updateMuteButton(this.audio.muted);
-    }
-  }
-
-  tiktokPlayPrompt(){
-    this.setCommands(true);
-    this.musicNotice.textContent=ui(this.tiktokNative?'Tap Play in the TikTok player to start playback.':'Press Play in Music to start TikTok audio.');
-    if(this.tiktokNative)this.tabAudioButton.hidden=false;
-  }
-
-  async recoverTikTok(epoch,code){
-    if(epoch!==this.epoch||this.link?.provider!=='tiktok'||this.tiktokRecovering)return;
-    clearTimeout(this.playerReadyTimer);
-    this.iframe?.remove();
-    this.iframe=null;
-    this.elapsed=0;
-    this.duration=0;
-    this.updateMusic();
-    this.setPlaying(false);
-    this.setCommands(false);
-    this.musicMute.hidden=true;
-    this.popupButton.disabled=true;
-    this.setVideoHidden(false);
-    const panel=this.panels.music;
-    if(panel.classList.contains('music-mini'))this.setMusicMini(false,false);
-    if(!this.tiktokNative&&code!==1001){
-      this.tiktokRecovering=true;
-      this.musicNotice.textContent=ui('Requesting a fresh TikTok player\u2026');
-      const embed=await this.tiktokEmbed;
-      if(epoch!==this.epoch)return;
-      this.tiktokRecovering=false;
-      this.mountTikTok(epoch,true,embed);
-      return;
-    }
-    const error=Number.isFinite(code)?' ('+code+')':'';
-    const message=code===1001?'TikTok could not find this post. Check its link and visibility.':
-      'TikTok could not play this post in the embedded player.';
-    this.musicNotice.textContent=ui(message)+error+' '+ui('If the original post plays, you can share its tab audio here.');
-    this.tabAudioButton.hidden=false;
-    this.tiktokFileButton.hidden=false;
-  }
-
-  async startTabAudio(){
-    const source=this.link;
-    if(source?.provider!=='tiktok')return;
-    if(!navigator.mediaDevices?.getDisplayMedia){
-      this.musicNotice.textContent=ui('Open Terminal in Chrome or Edge to share tab audio.');
-      return;
-    }
-    const request=++this.tabAudioRequest;
-    this.tabAudioButton.disabled=true;
-    this.musicNotice.textContent=ui('Select the TikTok tab that is playing and enable Share tab audio.');
-    let capture;
-    try{
-      capture=await navigator.mediaDevices.getDisplayMedia({
-        video:{displaySurface:'browser',frameRate:{ideal:1}},
-        audio:{suppressLocalAudioPlayback:true},
-        preferCurrentTab:false,
-        selfBrowserSurface:'exclude',
-        surfaceSwitching:'exclude',
-        systemAudio:'exclude',
-        monitorTypeSurfaces:'exclude'
-      });
-    }catch(error){
-      if(request===this.tabAudioRequest){
-        this.musicNotice.textContent=ui('Tab audio was not shared. Open and play TikTok, then try again.');
-      }
-      return;
-    }finally{
-      this.tabAudioButton.disabled=false;
-    }
-    const videoTrack=capture.getVideoTracks()[0];
-    const audioTrack=capture.getAudioTracks()[0];
-    if(request!==this.tabAudioRequest||source!==this.link||!this.panels.music.classList.contains('open')){
-      for(const track of capture.getTracks())track.stop();
-      return;
-    }
-    if(videoTrack?.getSettings().displaySurface!=='browser'||!audioTrack||audioTrack.readyState!=='live'){
-      for(const track of capture.getTracks())track.stop();
-      this.musicNotice.textContent=ui('Choose a browser tab and enable Share tab audio. Window or screen sharing cannot be used here.');
-      return;
-    }
-    const epoch=++this.epoch;
-    this.loadAbort?.abort();
-    this.metadataAbort?.abort();
-    clearTimeout(this.playerReadyTimer);
-    this.iframe?.remove();
-    this.iframe=null;
-    this.setVideoHidden(false);
-    // Keep the browser's share alive, but do not display or consume its video.
-    for(const track of capture.getVideoTracks())track.enabled=false;
-    this.tabAudioStream=capture;
-    this.tabAudioSource=source;
-    this.musicMute.hidden=true;
-    this.link={provider:'audio',url:source.url};
-    this.panels.music.dataset.provider='audio';
-    this.tiktokFileButton.hidden=true;
-    this.popupButton.disabled=false;
-    this.tabAudioButton.textContent=ui('Stop tab audio');
-    this.updateTrack(source.url,ui('TikTok tab audio'),ui('Live audio'),null,0,false);
-    this.setCommands(true);
-    const audio=this.audio=new Audio();
-    audio.srcObject=new MediaStream([audioTrack]);
-    audio.addEventListener('playing',()=>{if(this.epoch===epoch)this.setPlaying(true);});
-    audio.addEventListener('pause',()=>{if(this.epoch===epoch)this.setPlaying(false);});
-    for(const track of capture.getTracks()){
-      track.addEventListener('ended',()=>{if(this.tabAudioStream===capture)this.stopTabAudio();},{once:true});
-    }
-    this.musicNotice.textContent=ui('Listening to the selected tab. Play or pause the video there, or use Play in Music to mute or resume it here.');
-    audio.play().catch(()=>{
-      if(this.tabAudioStream===capture)this.musicNotice.textContent=ui('Press Play in Music to listen to the shared tab.');
-    });
-  }
-  stopTabAudio(){
-    const stream=this.tabAudioStream;
-    if(!stream)return;
-    this.tabAudioStream=null;
-    this.audio?.pause();
-    if(this.audio)this.audio.srcObject=null;
-    this.audio=null;
-    for(const track of stream.getTracks())track.stop();
-    this.link=this.tabAudioSource;
-    this.tabAudioSource=null;
-    this.panels.music.dataset.provider='tiktok';
-    this.setPlaying(false);
-    this.setCommands(false);
-    this.popupButton.disabled=true;
-    this.tabAudioButton.textContent=ui('Listen to TikTok tab audio');
-    this.musicNotice.textContent=ui('Tab audio stopped.');
-  }
-
-  async loadYouTube(link,epoch){
-    if(location.protocol==='file:'){
-      this.musicNotice.textContent='Mở Trading Terminal qua localhost để phát YouTube trong ứng dụng.';
-      return;
-    }
-    const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1',controls:'0',rel:'0',modestbranding:'1',iv_load_policy:'3'});
-    const isMixList=!!(link.list&&/^RD/i.test(link.list));
-    const mixVideoId=!link.id&&isMixList?link.list.match(/^RD(?:MM|EM|AMVM|CL|CM)?([\w-]{11})$/i)?.[1]||null:null;
-    const videoId=link.id||mixVideoId;
-    const embedList=link.list&&!isMixList?link.list:null;
-    if(embedList){
-      if(!videoId)params.set('listType','playlist');
-      params.set('list',embedList);
-    }
-    const frame=this.frame('https://www.youtube.com/embed/'+(videoId||'videoseries')+'?'+params,240);
-    await this.script('https://www.youtube.com/iframe_api',()=>typeof window.YT?.Player==='function');
-    if(epoch!==this.epoch)return;
-    this.youtube=new window.YT.Player(frame,{
-      events:{
-        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!embedList);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';}},
-        onStateChange:({data})=>{
-          if(epoch!==this.epoch)return;
-          this.setPlaying(data===1,data===1||data===3);
-          if(data===1){
-            this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';
-            this.youtubeStarted=true;
-            this.panels.music.classList.add('music-shield-active');
-            if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
-          }
-        },
-        onError:({data})=>{
-          if(epoch!==this.epoch)return;
-          if(embedList&&videoId){
-            this.loadYouTube({provider:'youtube',id:videoId,list:null,url:'https://www.youtube.com/watch?v='+videoId},epoch);
-            return;
-          }
-          this.setPlaying(false);
-          this.setCommands(false);
-          this.musicNotice.textContent=data===153?'YouTube không nhận được trang nhúng. Hãy mở link gốc hoặc dùng bản localhost.':'Video này không phát được trong trình phát nhúng. Hãy mở link gốc.';
-        }
-      }
-    });
-  }
-
-  loadAudio(url,name,epoch,fromVideo=false){
-    const audio=this.audio=fromVideo?document.createElement('video'):new Audio();
-    if(fromVideo)audio.playsInline=true;
-    audio.preload='metadata';
-    this.updateTrack(url,name||new URL(url).pathname.split('/').pop()||'Audio','',null,0,false);
-    this.musicNotice.textContent='';
-    this.musicMute.hidden=false;
-    this.musicMute.disabled=false;
-    this.updateMuteButton(false);
-    audio.addEventListener('loadedmetadata',()=>{
-      if(epoch!==this.epoch)return;
-      this.duration=audio.duration;
-      this.setCommands(true);
-      this.updateMusic();
-    });
-    audio.addEventListener('playing',()=>{if(epoch===this.epoch)this.setPlaying(true);});
-    audio.addEventListener('pause',()=>{if(epoch===this.epoch)this.setPlaying(false);});
-    audio.addEventListener('ended',()=>{if(epoch===this.epoch)this.setPlaying(false);});
-    audio.addEventListener('error',()=>{
-      if(epoch!==this.epoch)return;
-      this.setCommands(false);
-      this.musicNotice.textContent='This audio source could not be played.';
-    });
-    audio.src=url;
-    this.setCommands(true);
-    if(name)audio.play().catch(()=>{if(epoch===this.epoch)this.musicNotice.textContent=ui('Press Play to start the local file.');});
-  }
-
-  setCommands(play,skip=false){
-    for(const b of this.panels.music.querySelectorAll('[data-command]')){
-      const cmd=b.dataset.command;
-      b.disabled=!(cmd==='toggle'||cmd==='rewind'||cmd==='forward'?play:skip);
-    }
-  }
-  useSpotifyFrame(link,epoch){
-    if(epoch!==this.epoch||link?.provider!=='spotify'||this.spotifyFrameOnly)return;
-    clearTimeout(this.playerReadyTimer);this.spotifyFrameOnly=true;this.spotify?.destroy?.();this.spotify=null;this.setPlaying(false);this.setCommands(false);
-    this.playerHost.replaceChildren();this.frame(`https://open.spotify.com/embed/${link.type}/${link.id}`,352);
-    this.musicNotice.textContent='Use the controls in the Spotify player.';
-  }
-  frame(src,height){const frame=document.createElement('iframe');frame.src=src;frame.height=height;frame.width='100%';frame.allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';frame.allowFullscreen=true;frame.title='Official '+this.link.provider+' player';frame.referrerPolicy='strict-origin-when-cross-origin';this.playerHost.appendChild(frame);this.iframe=frame;return frame;}
-  async metadata(url,epoch,change=false){
-    if(location.protocol==='file:')return;
-    try{url=TerminalMusicLinks.parse(url).url;}catch{return;}
-    if(this.metadataURL===url)return;this.metadataURL=url;
-    this.metadataAbort?.abort();const controller=this.metadataAbort=new AbortController();
-    try{const response=await fetch('/api/music/metadata?'+new URLSearchParams({url}),{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(10000)])});const data=await response.json();if(!response.ok)throw Error(data.error||'Metadata unavailable');if(epoch!==this.epoch||this.metadataURL!==url)return;this.metadataStatus.textContent='';this.updateTrack(url,data.title||this.link.provider,data.author_name,data.thumbnail_url,this.duration,change);}catch(error){if(epoch!==this.epoch||this.metadataURL!==url||controller.signal.aborted)return;this.metadataStatus.textContent=error.name==='TimeoutError'?'Metadata quá hạn; trạng thái phát do player quyết định.':error.message;if(!this.currentTrack)this.updateTrack(url,this.link.provider+' · official player','','',this.duration);}
-  }
-  updateTrack(id,title,author,thumbnail,duration,notify=true){
-    const changed=this.currentTrack&&this.currentTrack!==String(id);this.currentTrack=String(id);this.trackTitle.textContent=title||'Untitled';this.trackAuthor.textContent=author||'';if(duration)this.duration=duration;
-    if(thumbnail?.startsWith('https://')){this.art.src=thumbnail;this.art.hidden=false;}else{this.art.removeAttribute('src');this.art.hidden=true;}
-    if(changed&&notify&&Workspace.read('terminal_music_toast_v1',true)){this.songToast.querySelector('strong').textContent=title;this.songToast.querySelector('small').textContent=this.formatTime(this.duration);const img=this.songToast.querySelector('img');img.hidden=!thumbnail;if(thumbnail)img.src=thumbnail;clearTimeout(this.toastTimer);this.songToast.classList.add('show');this.toastTimer=setTimeout(()=>this.songToast.classList.remove('show'),2000);}
-  }
-  setPlaying(playing,canPause=playing){
-    this.playing=playing;
-    this.canPause=canPause;
-    this.panels.music.classList.toggle('music-playing',playing);
-    this.disc.classList.toggle('playing',playing);
-    this.musicToggle.innerHTML=canPause?MUSIC_ICONS.pause:MUSIC_ICONS.play;
-    this.musicToggle.setAttribute('aria-label',ui(canPause?'Pause':'Play'));
-    document.getElementById('edge-music')?.classList.toggle('music-live',playing);
-  }
-  formatTime(value){if(!Number.isFinite(value)||value<=0)return '—';return Math.floor(value/60)+':'+String(Math.floor(value%60)).padStart(2,'0');}
-  updateMusic(){
-    if(this.audio){
-      this.elapsed=this.audio.currentTime;
-      this.duration=this.audio.duration;
-    }else if(typeof this.youtube?.getCurrentTime==='function'){
-      this.elapsed=this.youtube.getCurrentTime();
-      this.duration=this.youtube.getDuration();
-    }
-    this.clock.textContent=this.tabAudioStream?ui('Live audio'):(this.elapsed?this.formatTime(this.elapsed):'0:00')+' / '+this.formatTime(this.duration);
-    const seekable=Number.isFinite(this.duration)&&this.duration>0&&!!(this.audio||this.widget||this.spotify||this.youtube||this.link?.provider==='tiktok');
-    this.seek.disabled=!seekable;
-    this.seek.max=seekable?this.duration:1;
-    if(!(this.seek.dragging||this.seek.matches?.(':active')))this.seek.value=seekable?this.elapsed:0;
-    const pct=seekable?Math.min(100,Math.max(0,(Number(this.seek.value)/this.duration)*100)):0;
-    this.seek.style?.setProperty?.('--seek-pct',pct.toFixed(2)+'%');
-    if(this.track){
-      this.track.setAttribute('aria-disabled',String(!seekable));
-      this.track.setAttribute('aria-valuemax',String(Math.round(seekable?this.duration:1)));
-      this.track.setAttribute('aria-valuenow',String(Math.round(this.seek.value||0)));
-      const w=pct.toFixed(2)+'%';
-      this.trackFill.style.width=w;
-      this.trackDot.style.left=w;
-      let bufPct=pct;
-      if(seekable&&typeof this.youtube?.getVideoLoadedFraction==='function'){
-        bufPct=Math.max(pct,Math.min(100,(this.youtube.getVideoLoadedFraction()||0)*100));
-      }else if(seekable&&this.audio?.buffered?.length){
-        try{bufPct=Math.max(pct,Math.min(100,(this.audio.buffered.end(this.audio.buffered.length-1)/this.duration)*100));}catch{}
-      }
-      this.trackBuf.style.width=bufPct.toFixed(2)+'%';
-    }
-  }
-  seekToSeconds(seconds){
-    if(!Number.isFinite(seconds))return;
-    const clamped=this.duration>0?Math.max(0,Math.min(this.duration,seconds)):Math.max(0,seconds);
-    if(this.audio)this.audio.currentTime=clamped;
-    else if(this.widget)this.widget.seekTo(clamped*1000);
-    else if(this.spotify)this.spotify.seek(clamped);
-    else if(this.youtube)this.youtube.seekTo?.(clamped,true);
-    else if(this.link?.provider==='tiktok')this.sendTikTok('seekTo',clamped);
-    this.elapsed=clamped;
-    this.updateMusic();
-  }
-  command(action){
-    if(!this.link)return;
-    if(action==='rewind'||action==='forward'){
-      const base=typeof this.youtube?.getCurrentTime==='function'?this.youtube.getCurrentTime():this.audio?this.audio.currentTime:this.elapsed||0;
-      this.seekToSeconds(base+(action==='forward'?10:-10));
-      return;
-    }
-    const pause=action==='pause'||(action==='toggle'&&this.canPause);
-    if(this.audio){
-      if(pause)this.audio.pause();
-      else if(action==='toggle')this.audio.play().catch(()=>{this.musicNotice.textContent='Could not start playback.';});
-    }else if(this.youtube){
-      if(pause)this.youtube.pauseVideo?.();
-      else if(action==='previous')this.youtube.previousVideo?.();
-      else if(action==='next')this.youtube.nextVideo?.();
-      else this.youtube.playVideo?.();
-    }else if(this.widget){
-      if(action==='previous')this.widget.prev();
-      else if(action==='next')this.widget.next();
-      else if(pause)this.widget.pause();
-      else this.widget.play();
-    }else if(this.spotify){
-      if(pause)this.spotify.pause();
-      else if(action==='toggle')this.spotify.togglePlay();
-    }else if(this.link.provider==='tiktok'&&(action==='toggle'||action==='pause')){
-      this.sendTikTok(pause?'pause':'play');
-      if(!pause&&!this.tiktokNative&&!this.tiktokStarted){
-        this.tiktokManualPlay=true;
-        const epoch=this.epoch;
-        clearTimeout(this.playerReadyTimer);
-        this.playerReadyTimer=setTimeout(()=>{
-          if(epoch===this.epoch&&!this.tiktokStarted)void this.recoverTikTok(epoch);
-        },5000);
-      }
-    }
-  }
-  sendTikTok(type,value){
-    this.iframe?.contentWindow?.postMessage({'x-tiktok-player':true,type,value},'https://www.tiktok.com');
-  }
-}
-if(typeof module!=='undefined')module.exports={TerminalMusicLinks,TerminalCompanions};
-</script>
-  <script>
 /* Preview prices never mutate persisted alerts or take part in trigger checks. */
 const AlertPrice={
   round(price,tick=.01){if(!Number.isFinite(price)||!Number.isFinite(tick)||tick<=0)throw Error('Giá hoặc tick không hợp lệ.');return Number((Math.round(price/tick)*tick).toFixed(10));},
@@ -16948,7 +17282,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if(chart.appearance&&(chart.appearance.lastDayChange||chart.appearance.prevDayLine!=='Hidden'))chart.onPreviousDayDataRequired();
     chart.setData(data['1m'] || []);
     for (const [tf, bars] of Object.entries(data)) if (TF_MAP[tf] && tf !== '1m') chart.setHtfData(tf, bars);
-    if (chart.savedRange && chart.bars.length) { chart.chart.timeScale().setVisibleLogicalRange(chart.savedRange); chart.savedRange = null; }
+    if (chart.savedRange && chart.bars.length) {
+      const rawSpan = Number(chart.savedRange.to) - Number(chart.savedRange.from);
+      const span = Number.isFinite(rawSpan) && rawSpan >= 20 && rawSpan <= 1000 ? rawSpan : 85;
+      const to = chart.bars.length - 1 + (chart.appearance?.rightMargin ?? 10);
+      chart.chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, to - span), to });
+      chart.savedRange = null;
+    }
   }
   function changeSymbol(c,symbol){drawing.saveDrawings(c);c.runner.stop();c.clearCustomSeries();c.symbol=symbol;c.clearData();drawing.loadDrawings(c);hydrate(c);c.runner.restart();}
   const symbolInput = $('symbol-search-input');
@@ -17468,7 +17808,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tf === '1m' && type === 'tick') c.updateBar(message.bar);
       else if (tf === '1m') c.setData(data[tf]);
       else c.setHtfData(tf, data[tf]);
-      if (c.savedRange && c.bars.length) { c.chart.timeScale().setVisibleLogicalRange(c.savedRange); c.savedRange = null; }
+      if (c.savedRange && c.bars.length) {
+        const rawSpan = Number(c.savedRange.to) - Number(c.savedRange.from);
+        const span = Number.isFinite(rawSpan) && rawSpan >= 20 && rawSpan <= 1000 ? rawSpan : 85;
+        const to = c.bars.length - 1 + (c.appearance?.rightMargin ?? 10);
+        c.chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, to - span), to });
+        c.savedRange = null;
+      }
     }
     // All indicators can depend on other symbols, even when no chart displays those symbols.
     charts.filter(c => c.symbol !== symbol&&!c.container.hidden).forEach(c => c.runner.schedule());

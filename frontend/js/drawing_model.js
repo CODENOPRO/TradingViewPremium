@@ -395,10 +395,89 @@ const DrawingModel = (() => {
         pxTag(d.p3.price,stop,hex(d.stopColor)||'#f23645');
       }
     } else if(d.type === 'measure') {
-      if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}ctx.strokeRect(left,top,right-left,bottom-top);
-      ctx.fillStyle=d.textStyle.color;ctx.font='11px Arial';
-      const change=d.p2.price-d.p1.price;
-      ctx.fillText(`${change.toFixed(2)} (${d.p1.price ? (change/d.p1.price*100).toFixed(2) : '—'}%)`,left+5,top+16);
+      const change = d.p2.price - d.p1.price;
+      const isUp = change >= 0;
+      const baseHex = isUp ? '#2962ff' : '#f23645';
+      const fillCss = isUp ? 'rgba(41, 98, 255, 0.20)' : 'rgba(242, 54, 69, 0.20)';
+      const boxW = right - left, boxH = bottom - top;
+      ctx.fillStyle = fillCss;
+      ctx.fillRect(left, top, boxW, boxH);
+
+      ctx.strokeStyle = baseHex;
+      ctx.fillStyle = baseHex;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      const arrowHead = (x, y, dx, dy) => {
+        const len = Math.hypot(dx, dy);
+        if (!len) return;
+        const ux = dx / len, uy = dy / len, sz = 6, hw = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - ux * sz - uy * hw, y - uy * sz + ux * hw);
+        ctx.lineTo(x - ux * sz + uy * hw, y - uy * sz - ux * hw);
+        ctx.closePath();
+        ctx.fill();
+      };
+      const midX = (g.a.x + g.b.x) / 2, midY = (g.a.y + g.b.y) / 2;
+      if (Math.abs(g.b.x - g.a.x) >= 6) {
+        line(g.a.x, midY, g.b.x, midY);
+        arrowHead(g.b.x, midY, g.b.x - g.a.x, 0);
+      }
+      if (Math.abs(g.b.y - g.a.y) >= 6) {
+        line(midX, g.a.y, midX, g.b.y);
+        arrowHead(midX, g.b.y, 0, g.b.y - g.a.y);
+      }
+
+      const tick = chart.metadata?.tickSize;
+      const dec = Number.isFinite(tick) && tick > 0 ? Math.max(0, Math.min(6, Math.ceil(-Math.log10(tick)))) : 2;
+      const pct = d.p1.price ? (change / d.p1.price) * 100 : 0;
+      const sign = change > 0 ? '+' : '';
+      const ticksStr = Number.isFinite(tick) && tick > 0 ? ` ${Math.round(Math.abs(change) / tick)}` : '';
+      const line1 = `${sign}${change.toFixed(dec)} (${sign}${pct.toFixed(2)}%)${ticksStr}`;
+
+      const i1 = DrawingModel.logicalIndex(chart, d.p1.time);
+      const i2 = DrawingModel.logicalIndex(chart, d.p2.time);
+      const barsCount = (i1 != null && i2 != null) ? Math.abs(Math.round(i2 - i1)) : 0;
+      const dt = Math.abs((d.p2.time || 0) - (d.p1.time || 0));
+      let durText = '0m';
+      if (dt < 60) durText = `${Math.round(dt)}s`;
+      else if (dt < 3600) durText = `${Math.round(dt / 60)}m`;
+      else if (dt < 86400) {
+        const h = Math.floor(dt / 3600), mins = Math.round((dt % 3600) / 60);
+        durText = mins ? `${h}h ${mins}m` : `${h}h`;
+      } else {
+        const days = Math.floor(dt / 86400), h = Math.floor((dt % 86400) / 3600);
+        durText = h ? `${days}d ${h}h` : `${days}d`;
+      }
+      const line2 = `${barsCount} ${barsCount === 1 ? 'bar' : 'bars'}, ${durText}`;
+
+      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+      const w1 = ctx.measureText ? ctx.measureText(line1).width : line1.length * 6.2;
+      const w2 = ctx.measureText ? ctx.measureText(line2).width : line2.length * 6.2;
+      const padX = 10, padY = 6, lineH = 15;
+      const tipW = Math.ceil(Math.max(w1, w2) + padX * 2);
+      const tipH = lineH * 2 + padY * 2 - 2;
+      const tipX = Math.max(4, Math.min((width || 800) - tipW - 4, (left + right) / 2 - tipW / 2));
+      let tipY = g.b.y <= g.a.y ? top - tipH - 8 : bottom + 8;
+      if (tipY < 4) tipY = Math.min(plotBottom - tipH - 4, bottom + 8);
+      if (tipY + tipH > plotBottom - 4) tipY = Math.max(4, top - tipH - 8);
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 2;
+      ctx.fillStyle = baseHex;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(tipX, tipY, tipW, tipH, 4);
+      else ctx.rect(tipX, tipY, tipW, tipH);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(line1, tipX + tipW / 2, tipY + padY + lineH * 0.42);
+      ctx.fillText(line2, tipX + tipW / 2, tipY + padY + lineH * 1.42);
     }
     if(d.text || d.type === 'text') {
       const style=d.textStyle;

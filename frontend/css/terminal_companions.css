@@ -489,6 +489,38 @@
 }
 @keyframes wow-icon { from { opacity: 0; transform: scale(.35) rotate(-50deg); } to { opacity: 1; transform: none; } }
 #music-panel.music-mini[data-provider="youtube"] .music-controls button.music-mute-btn[aria-pressed="true"] { opacity: .5; color: #fff; }
+.music-vol-wrap {
+  display: inline-flex; align-items: center; gap: 0; position: relative;
+}
+.music-vol-wrap[hidden] { display: none !important; }
+.music-vol-pop {
+  display: inline-flex; align-items: center;
+  width: 0; opacity: 0; overflow: hidden; padding: 0;
+  transition: width .22s cubic-bezier(.2,1,.4,1), opacity .18s ease, padding .22s ease;
+}
+.music-vol-wrap:not(.no-slider):is(:hover, :focus-within, :active) .music-vol-pop {
+  width: 72px; opacity: 1; padding: 0 6px 0 4px;
+}
+.music-vol-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 62px; height: 4px; margin: 0; padding: 0; border: 0; border-radius: 99px; cursor: pointer;
+  background: linear-gradient(90deg, #fff var(--vol, 80%), rgba(255,255,255,.28) var(--vol, 80%));
+  outline: none;
+}
+#music-panel:not(.music-mini) .music-vol-slider {
+  background: linear-gradient(90deg, var(--accent, #2962ff) var(--vol, 80%), rgba(128,128,128,.35) var(--vol, 80%));
+}
+.music-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 11px; height: 11px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.55); cursor: pointer;
+  transition: transform .12s ease;
+}
+.music-vol-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.music-vol-slider::-moz-range-thumb {
+  width: 11px; height: 11px; border: 0; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.55); cursor: pointer;
+}
 
 /* thời gian: chữ nổi, dưới phải */
 #music-panel.music-mini[data-provider="youtube"] .music-clock {

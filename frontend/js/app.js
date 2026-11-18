@@ -302,7 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if(chart.appearance&&(chart.appearance.lastDayChange||chart.appearance.prevDayLine!=='Hidden'))chart.onPreviousDayDataRequired();
     chart.setData(data['1m'] || []);
     for (const [tf, bars] of Object.entries(data)) if (TF_MAP[tf] && tf !== '1m') chart.setHtfData(tf, bars);
-    if (chart.savedRange && chart.bars.length) { chart.chart.timeScale().setVisibleLogicalRange(chart.savedRange); chart.savedRange = null; }
+    if (chart.savedRange && chart.bars.length) {
+      const rawSpan = Number(chart.savedRange.to) - Number(chart.savedRange.from);
+      const span = Number.isFinite(rawSpan) && rawSpan >= 20 && rawSpan <= 1000 ? rawSpan : 85;
+      const to = chart.bars.length - 1 + (chart.appearance?.rightMargin ?? 10);
+      chart.chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, to - span), to });
+      chart.savedRange = null;
+    }
   }
   function changeSymbol(c,symbol){drawing.saveDrawings(c);c.runner.stop();c.clearCustomSeries();c.symbol=symbol;c.clearData();drawing.loadDrawings(c);hydrate(c);c.runner.restart();}
   const symbolInput = $('symbol-search-input');
@@ -822,7 +828,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tf === '1m' && type === 'tick') c.updateBar(message.bar);
       else if (tf === '1m') c.setData(data[tf]);
       else c.setHtfData(tf, data[tf]);
-      if (c.savedRange && c.bars.length) { c.chart.timeScale().setVisibleLogicalRange(c.savedRange); c.savedRange = null; }
+      if (c.savedRange && c.bars.length) {
+        const rawSpan = Number(c.savedRange.to) - Number(c.savedRange.from);
+        const span = Number.isFinite(rawSpan) && rawSpan >= 20 && rawSpan <= 1000 ? rawSpan : 85;
+        const to = c.bars.length - 1 + (c.appearance?.rightMargin ?? 10);
+        c.chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, to - span), to });
+        c.savedRange = null;
+      }
     }
     // All indicators can depend on other symbols, even when no chart displays those symbols.
     charts.filter(c => c.symbol !== symbol&&!c.container.hidden).forEach(c => c.runner.schedule());

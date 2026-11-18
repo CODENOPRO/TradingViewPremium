@@ -670,13 +670,32 @@ class TerminalCompanions{
       if(file)this.loadMusic('',file);
       fileInput.value='';
     };
+    const savedVol=Workspace.read('terminal_music_volume_v1',80);
+    this.musicVolume=Number.isFinite(Number(savedVol))?Math.max(0,Math.min(100,Math.round(Number(savedVol)))):80;
+    this.lastNonZeroVolume=this.musicVolume>0?this.musicVolume:80;
+    this.musicVolWrap=document.createElement('div');
+    this.musicVolWrap.className='music-vol-wrap';
+    this.musicVolWrap.hidden=true;
     this.musicMute=document.createElement('button');
     this.musicMute.type='button';
     this.musicMute.className='music-mute-btn';
     this.musicMute.hidden=true;
     this.musicMute.innerHTML=MUSIC_ICONS.volume;
     this.musicMute.onclick=()=>this.toggleMute();
-    panel.querySelector('.music-controls').appendChild(this.musicMute);
+    this.musicVolPop=document.createElement('div');
+    this.musicVolPop.className='music-vol-pop';
+    this.musicVolSlider=document.createElement('input');
+    this.musicVolSlider.type='range';
+    this.musicVolSlider.className='music-vol-slider';
+    this.musicVolSlider.min='0';
+    this.musicVolSlider.max='100';
+    this.musicVolSlider.step='1';
+    this.musicVolSlider.value=String(this.musicVolume);
+    this.musicVolSlider.setAttribute('aria-label',ui('Volume'));
+    this.musicVolSlider.addEventListener('input',()=>this.setVolume(this.musicVolSlider.value));
+    this.musicVolPop.appendChild(this.musicVolSlider);
+    this.musicVolWrap.append(this.musicMute,this.musicVolPop);
+    panel.querySelector('.music-controls').appendChild(this.musicVolWrap);
     this.track=panel.querySelector('.music-track');
     this.trackFill=panel.querySelector('.music-fill');
     this.trackBuf=panel.querySelector('.music-buf');
@@ -748,6 +767,8 @@ class TerminalCompanions{
         panel.classList.add('music-shield-active');
         if(document.activeElement===this.iframe){this.iframe.blur();window.focus?.();}
         this.setCommands(true);
+        this.musicVolWrap.hidden=false;
+        this.musicVolWrap.classList.add('no-slider');
         this.musicMute.hidden=false;
         this.musicMute.disabled=false;
         this.tabAudioButton.hidden=true;
@@ -790,6 +811,7 @@ class TerminalCompanions{
     this.youtubeStarted=false;
     this.tiktokNative=false;
     this.tiktokRecovering=false;
+    this.musicVolWrap.hidden=true;
     this.musicMute.hidden=true;
     this.setTikTokMuted(false);
     this.tiktokFileButton.hidden=true;
@@ -890,6 +912,8 @@ class TerminalCompanions{
     this.tiktokNative=native;
     this.tiktokStarted=false;
     this.tiktokManualPlay=false;
+    this.musicVolWrap.hidden=false;
+    this.musicVolWrap.classList.add('no-slider');
     this.musicMute.hidden=false;
     this.musicMute.disabled=true;
     this.setTikTokMuted(false);
@@ -912,18 +936,53 @@ class TerminalCompanions{
     this.musicMute.setAttribute('aria-label',label);
     this.musicMute.title=label;
     this.musicMute.setAttribute('aria-pressed',String(!!muted));
+    const displayVol=muted?0:this.musicVolume;
+    if(this.musicVolSlider){
+      this.musicVolSlider.value=String(displayVol);
+      this.musicVolWrap?.style.setProperty('--vol',displayVol+'%');
+    }
+  }
+  setVolume(val){
+    const v=Math.max(0,Math.min(100,Math.round(Number(val)||0)));
+    this.musicVolume=v;
+    if(v>0)this.lastNonZeroVolume=v;
+    Workspace.write('terminal_music_volume_v1',v);
+    if(this.youtube){
+      this.youtube.setVolume?.(v);
+      if(v===0)this.youtube.mute?.();
+      else if(this.youtube.isMuted?.())this.youtube.unMute?.();
+    }else if(this.audio){
+      this.audio.volume=v/100;
+      this.audio.muted=v===0;
+    }
+    this.updateMuteButton(v===0);
   }
   toggleMute(){
     if(this.link?.provider==='tiktok'){
       this.sendTikTok(this.tiktokMuted?'unMute':'mute');
     }else if(this.youtube){
       const muted=!!this.youtube.isMuted?.();
-      if(muted)this.youtube.unMute?.();
-      else this.youtube.mute?.();
-      this.updateMuteButton(!muted);
+      if(muted){
+        const nextVol=this.musicVolume>0?this.musicVolume:(this.lastNonZeroVolume||80);
+        this.musicVolume=nextVol;
+        this.youtube.unMute?.();
+        this.youtube.setVolume?.(nextVol);
+        this.updateMuteButton(false);
+      }else{
+        this.youtube.mute?.();
+        this.updateMuteButton(true);
+      }
     }else if(this.audio){
-      this.audio.muted=!this.audio.muted;
-      this.updateMuteButton(this.audio.muted);
+      if(this.audio.muted){
+        const nextVol=this.musicVolume>0?this.musicVolume:(this.lastNonZeroVolume||80);
+        this.musicVolume=nextVol;
+        this.audio.muted=false;
+        this.audio.volume=nextVol/100;
+        this.updateMuteButton(false);
+      }else{
+        this.audio.muted=true;
+        this.updateMuteButton(true);
+      }
     }
   }
 
@@ -1016,6 +1075,7 @@ class TerminalCompanions{
     for(const track of capture.getVideoTracks())track.enabled=false;
     this.tabAudioStream=capture;
     this.tabAudioSource=source;
+    this.musicVolWrap.hidden=true;
     this.musicMute.hidden=true;
     this.link={provider:'audio',url:source.url};
     this.panels.music.dataset.provider='audio';
@@ -1073,7 +1133,7 @@ class TerminalCompanions{
     if(epoch!==this.epoch)return;
     this.youtube=new window.YT.Player(frame,{
       events:{
-        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!embedList);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';}},
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!embedList);this.musicVolWrap.hidden=false;this.musicVolWrap.classList.remove('no-slider');this.musicMute.hidden=false;this.musicMute.disabled=false;this.youtube?.setVolume?.(this.musicVolume);if(this.musicVolume===0)this.youtube?.mute?.();this.updateMuteButton(this.musicVolume===0||!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent=isMixList&&videoId?'YouTube Mix (RD...) không hỗ trợ nhúng playlist; đang phát video này.':'';}},
         onStateChange:({data})=>{
           if(epoch!==this.epoch)return;
           this.setPlaying(data===1,data===1||data===3);
@@ -1104,9 +1164,13 @@ class TerminalCompanions{
     audio.preload='metadata';
     this.updateTrack(url,name||new URL(url).pathname.split('/').pop()||'Audio','',null,0,false);
     this.musicNotice.textContent='';
+    this.musicVolWrap.hidden=false;
+    this.musicVolWrap.classList.remove('no-slider');
     this.musicMute.hidden=false;
     this.musicMute.disabled=false;
-    this.updateMuteButton(false);
+    audio.volume=this.musicVolume/100;
+    audio.muted=this.musicVolume===0;
+    this.updateMuteButton(audio.muted);
     audio.addEventListener('loadedmetadata',()=>{
       if(epoch!==this.epoch)return;
       this.duration=audio.duration;

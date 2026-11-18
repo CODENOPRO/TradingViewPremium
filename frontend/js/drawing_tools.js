@@ -7,6 +7,7 @@ class DrawingManager {
     this.drawingsHidden = false;
     this.drawingState = null;
     this.lastPointer = null;
+    this.measureSession = null;
 
     this.undoStacks = new Map();
     this.redoStacks = new Map();
@@ -44,6 +45,7 @@ class DrawingManager {
       return;
     }
 
+    if (this.measureSession) this.clearMeasure();
     if (this.drawingState?.chart) {
       this.drawingState.chart.drawings = this.drawingState.chart.drawings.filter(d => !d.isTemp);
       this.drawingState.chart.renderDrawings();
@@ -179,9 +181,10 @@ class DrawingManager {
     this.loadDrawings(chartEngine);
     this.bindMagnetCrosshair(chartEngine);
     this.bindBrush(chartEngine);
+    this.bindMeasure(chartEngine);
 
     container.addEventListener('click', (e) => {
-      if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.activeTool==='brush' || this.drawingsLocked) return;
+      if (e.target.closest('button, input, select, .indicator-tables') || this.activeTool === 'crosshair' || this.activeTool==='brush' || this.activeTool==='measure' || this.drawingsLocked) return;
       if (this.drawingState?.chart !== chartEngine) this.drawingState = null;
 
       const anchor = this.drawingState?.step === 2 ? this.drawingState.p1 : null;
@@ -305,7 +308,94 @@ class DrawingManager {
     document.addEventListener('keydown',event=>{if(event.key==='Escape')finish(event,true);});
   }
 
+  clearMeasure() {
+    const s = this.measureSession;
+    if (!s) return;
+    this.measureSession = null;
+    if (s.scroll != null) s.chart.chart.applyOptions({ handleScroll: { pressedMouseMove: s.scroll } });
+    if (s.pointerId != null && s.chart.container.hasPointerCapture?.(s.pointerId)) {
+      s.chart.container.releasePointerCapture(s.pointerId);
+    }
+    s.chart.drawings = (s.chart.drawings || []).filter(d => d.id !== 'temp_measure');
+    s.chart.renderDrawings();
+  }
+
+  bindMeasure(chart) {
+    const node = chart.container;
+    const inPlot = (clientX, clientY) => {
+      const r = node.getBoundingClientRect(), x = clientX - r.left, y = clientY - r.top;
+      return x >= 0 && x < node.clientWidth - (chart.chart.priceScale('right').width() || 65) && y >= 0 && y < chart.plotBottom;
+    };
+    const renderMeasure = (p1, p2) => {
+      chart.drawings = (chart.drawings || []).filter(d => d.id !== 'temp_measure');
+      chart.drawings.push({ ...DrawingModel.defaults('measure'), id: 'temp_measure', isTemp: true, type: 'measure', p1, p2 });
+      chart.renderDrawings();
+    };
+    node.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || this.drawingsLocked || e.target.closest('button, input, select, .indicator-tables, .drawing-toolbar')) return;
+      if (this.measureSession?.phase === 'locked') {
+        this.clearMeasure();
+        if (this.activeTool === 'measure' && !e.shiftKey) {
+          this.setTool('crosshair');
+          return;
+        }
+        if (!e.shiftKey && this.activeTool !== 'measure') return;
+      }
+      if (this.measureSession?.phase === 'aiming' && this.measureSession.chart === chart) {
+        const p2 = this.resolvePoint(chart, e.clientX, e.clientY, e);
+        if (p2) { this.measureSession.p2 = p2; renderMeasure(this.measureSession.p1, p2); }
+        this.measureSession.phase = 'locked';
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+      const isShiftMeasure = e.shiftKey && !this.drawingState && (this.activeTool === 'crosshair' || this.activeTool === 'measure');
+      if (!isShiftMeasure && this.activeTool !== 'measure') return;
+      if (!inPlot(e.clientX, e.clientY)) return;
+      const p1 = this.resolvePoint(chart, e.clientX, e.clientY, e);
+      if (!p1) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      node.dispatchEvent(new CustomEvent('chart-activate'));
+      const scroll = chart.chart.options().handleScroll.pressedMouseMove;
+      chart.chart.applyOptions({ handleScroll: { pressedMouseMove: false } });
+      node.setPointerCapture?.(e.pointerId);
+      this.measureSession = { chart, p1, p2: p1, startX: e.clientX, startY: e.clientY, pointerId: e.pointerId, scroll, phase: 'dragging', moved: false };
+      renderMeasure(p1, p1);
+    }, true);
+
+    node.addEventListener('pointermove', e => {
+      const s = this.measureSession;
+      if (!s || s.chart !== chart || (s.phase !== 'dragging' && s.phase !== 'aiming')) return;
+      if (s.phase === 'dragging' && Math.hypot(e.clientX - s.startX, e.clientY - s.startY) >= 4) s.moved = true;
+      const p2 = this.resolvePoint(chart, e.clientX, e.clientY, e);
+      if (!p2) return;
+      s.p2 = p2;
+      renderMeasure(s.p1, p2);
+    }, true);
+
+    const endDrag = e => {
+      const s = this.measureSession;
+      if (!s || s.chart !== chart || s.phase !== 'dragging') return;
+      if (s.scroll != null) chart.chart.applyOptions({ handleScroll: { pressedMouseMove: s.scroll } });
+      s.scroll = null;
+      if (s.pointerId != null && node.hasPointerCapture?.(s.pointerId)) node.releasePointerCapture(s.pointerId);
+      s.pointerId = null;
+      s.phase = s.moved ? 'locked' : 'aiming';
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    node.addEventListener('pointerup', endDrag, true);
+    node.addEventListener('pointercancel', () => this.clearMeasure(), true);
+  }
+
   initHotkeys() {
+    document.addEventListener('pointerdown', e => {
+      if (this.measureSession?.phase !== 'locked') return;
+      if (this.measureSession.chart.container.contains(e.target)) return;
+      this.clearMeasure();
+      if (this.activeTool === 'measure') this.setTool('crosshair');
+    }, true);
     window.addEventListener('keydown', (e) => {
       if (e.target.closest('input, textarea, select, [contenteditable]')) return;
       const chart = window.currentActiveChart;
@@ -313,6 +403,10 @@ class DrawingManager {
         e.preventDefault(); this.historyStep(chart, e.shiftKey); return;
       }
       if (e.key === 'Escape') {
+        if (this.measureSession) {
+          this.clearMeasure();
+          if (this.activeTool === 'measure') this.setTool('crosshair');
+        }
         if (this.drawingState) {
           if (window.currentActiveChart) {
             window.currentActiveChart.drawings = window.currentActiveChart.drawings.filter(d => !d.isTemp);

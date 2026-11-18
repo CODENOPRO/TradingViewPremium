@@ -7,7 +7,7 @@ $CdpPort = if ($env:TERMINAL_CDP_PORT) { [int]$env:TERMINAL_CDP_PORT } else { 92
 $AppUserModelId = "TradingView.Desktop_n534cwy3pjxzj!TradingView.Desktop"
 $TradingViewArguments = "--remote-debugging-port=$CdpPort --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding"
 
-if ($ForceRestart) {
+function Stop-RunningTradingView {
     $running = @(Get-Process -Name "TradingView" -ErrorAction SilentlyContinue)
     if ($running.Count -gt 0) {
         Write-Host "[INFO] Closing running TradingView Desktop processes..."
@@ -27,6 +27,12 @@ if ($ForceRestart) {
         }
         Start-Sleep -Milliseconds 400
     }
+}
+
+$needWaitReady = $false
+if ($ForceRestart) {
+    Stop-RunningTradingView
+    $needWaitReady = $true
 } else {
     try {
         $null = Invoke-RestMethod -Uri "http://localhost:$CdpPort/json" -TimeoutSec 1 -ErrorAction Stop
@@ -38,9 +44,10 @@ if ($ForceRestart) {
 
     $tvProc = Get-Process -Name "TradingView" -ErrorAction SilentlyContinue
     if ($tvProc) {
-        Write-Host "[ACTION NEEDED] TradingView is running without port $CdpPort. Close it normally, then run this launcher again."
-        exit 1
+        Write-Host "[INFO] TradingView is running without port $CdpPort. Restarting with remote debugging..."
+        Stop-RunningTradingView
     }
+    $needWaitReady = $true
 }
 
 $signature = @"
@@ -84,17 +91,17 @@ try {
         }
         if (-not $launched) { throw }
     }
-    if ($ForceRestart) {
+    if ($needWaitReady) {
         $waitEnd = (Get-Date).AddSeconds(20)
         while ((Get-Date) -lt $waitEnd) {
             try {
                 $targets = Invoke-RestMethod -Uri "http://localhost:$CdpPort/json/list" -TimeoutSec 1 -ErrorAction Stop
                 if ($targets) {
-                    Write-Host "[OK] Relaunched TradingView Desktop and CDP port $CdpPort is ready."
+                    Write-Host "[OK] TradingView Desktop and CDP port $CdpPort are ready."
                     exit 0
                 }
             } catch {}
-            Start-Sleep -Milliseconds 400
+            Start-Sleep -Milliseconds 300
         }
     }
     Write-Host "[OK] Launched TradingView Desktop with port $CdpPort."

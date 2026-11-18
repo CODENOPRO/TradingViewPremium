@@ -18,16 +18,21 @@ MIN_TF_GAP = {'5m':240,'15m':600,'30m':1200,'1h':2400,'2h':5400,'4h':10800,'6h':
 
 def clean_bar(value):
     try:
-        bar = {key: float(0 if value.get("volume") is None else value.get("volume", 0)) if key == "volume" else float(value[key])
-               for key in ("time", "open", "high", "low", "close", "volume")}
-        if not all(math.isfinite(v) for v in bar.values()):
+        t = float(value["time"])
+        o = float(value["open"])
+        h = float(value["high"])
+        l = float(value["low"])
+        c = float(value["close"])
+        vol_raw = value.get("volume", 0)
+        v = 0.0 if vol_raw is None else float(vol_raw)
+        if not (math.isfinite(t) and math.isfinite(o) and math.isfinite(h) and math.isfinite(l) and math.isfinite(c) and math.isfinite(v)):
             return None
-        if bar["time"] <= 0 or bar["time"] != int(bar["time"]) or bar["volume"] < 0:
+        ti = int(t)
+        if ti <= 0 or t != ti or v < 0:
             return None
-        if bar["low"] > min(bar["open"], bar["close"]) or bar["high"] < max(bar["open"], bar["close"]):
+        if l > (o if o < c else c) or h < (o if o > c else c):
             return None
-        bar["time"] = int(bar["time"])
-        return bar
+        return {"time": ti, "open": o, "high": h, "low": l, "close": c, "volume": v}
     except (TypeError, ValueError, KeyError, AttributeError, OverflowError):
         return None
 
@@ -36,11 +41,17 @@ def normalize_bars(values, limit=None, timeframe=None):
     if not isinstance(values, list):
         return []
     bars = {}
+    last_t = -1
+    already_sorted = True
     for value in values:
         bar = clean_bar(value)
         if bar:
-            bars[bar["time"]] = bar
-    ordered = sorted(bars.values(), key=lambda bar: bar["time"])
+            t = bar["time"]
+            if t <= last_t:
+                already_sorted = False
+            last_t = t
+            bars[t] = bar
+    ordered = list(bars.values()) if already_sorted else sorted(bars.values(), key=lambda bar: bar["time"])
     return ordered[-limit:] if limit else ordered
 
 
@@ -94,6 +105,9 @@ class MarketStore:
         self.directory = Path(directory)
         self.data = {tf: {} for tf in TIMEFRAMES}
         self.metadata = {}
+        self._dirty_1m = False
+        self._dirty_htf = False
+        self._last_saved_meta = None
         self._save_lock = threading.Lock()
         self.lock = threading.RLock()
 
@@ -106,33 +120,64 @@ class MarketStore:
             for tf, symbols in read_json(self.directory / "market_history_htf.json").items():
                 if tf in TIMEFRAMES and tf != "1m" and isinstance(symbols, dict):
                     self.data[tf] = {sym: normalize_bars(bars, timeframe=tf) for sym, bars in symbols.items() if sym in SYMBOLS}
+            self._dirty_1m = False
+            self._dirty_htf = False
+            self._last_saved_meta = dict(self.metadata)
 
-    def save(self, snapshot=None, metadata=None):
-        if snapshot is None or metadata is None:
-            with self.lock:
-                data = snapshot if snapshot is not None else {tf: {s: list(b) for s, b in syms.items()} for tf, syms in self.data.items()}
-                meta = metadata if metadata is not None else dict(self.metadata)
-        else:
-            data, meta = snapshot, metadata
+    def save(self, snapshot=None, metadata=None, only_dirty=False):
+        with self.lock:
+            need_1m = not only_dirty or self._dirty_1m
+            need_htf = not only_dirty or self._dirty_htf
+            meta = metadata if metadata is not None else dict(self.metadata)
+            need_meta = not only_dirty or meta != self._last_saved_meta
+            if only_dirty and not (need_1m or need_htf or need_meta):
+                return
+            if snapshot is not None:
+                data_1m = snapshot.get("1m", {}) if need_1m else None
+                data_htf = {tf: v for tf, v in snapshot.items() if tf != "1m"} if need_htf else None
+            else:
+                data_1m = {s: list(b) for s, b in self.data.get("1m", {}).items()} if need_1m else None
+                data_htf = {tf: {s: list(b) for s, b in syms.items()} for tf, syms in self.data.items() if tf != "1m"} if need_htf else None
+            if need_1m:
+                self._dirty_1m = False
+            if need_htf:
+                self._dirty_htf = False
+            if need_meta:
+                self._last_saved_meta = dict(meta)
         with self._save_lock:
-            atomic_json(self.directory / "market_history.json", data["1m"])
-            atomic_json(self.directory / "market_history_htf.json", {tf: v for tf, v in data.items() if tf != "1m"})
-            atomic_json(self.directory / "market_metadata.json", meta)
+            if need_1m and data_1m is not None:
+                atomic_json(self.directory / "market_history.json", data_1m)
+            if need_htf and data_htf is not None:
+                atomic_json(self.directory / "market_history_htf.json", data_htf)
+            if need_meta:
+                atomic_json(self.directory / "market_metadata.json", meta)
 
     def merge(self, symbol, timeframe, bars, authoritative=False):
         if symbol not in SYMBOLS or timeframe not in TIMEFRAMES:
             return []
         incoming = normalize_bars(bars, timeframe=timeframe)
+        if not incoming:
+            return []
         with self.lock:
             history = self.data[timeframe].setdefault(symbol, [])
             changed = []
-            if authoritative and timeframe != "1m" and incoming:
+            if authoritative and timeframe != "1m":
                 valid_times = {b["time"] for b in incoming}
                 first_time = incoming[0]["time"]
                 pruned = [b for b in history if b["time"] < first_time or b["time"] in valid_times]
                 if len(pruned) != len(history):
                     history[:] = pruned
+                    self._dirty_htf = True
             for bar in incoming:
+                if history and bar["time"] >= history[-1]["time"]:
+                    if bar["time"] == history[-1]["time"]:
+                        if history[-1] == bar:
+                            continue
+                        history[-1] = bar
+                    else:
+                        history.append(bar)
+                    changed.append(bar)
+                    continue
                 idx = bisect.bisect_left(history, bar["time"], key=lambda item: item["time"])
                 if idx < len(history) and history[idx]["time"] == bar["time"]:
                     if history[idx] == bar:
@@ -141,4 +186,9 @@ class MarketStore:
                 else:
                     history.insert(idx, bar)
                 changed.append(bar)
+            if changed:
+                if timeframe == "1m":
+                    self._dirty_1m = True
+                else:
+                    self._dirty_htf = True
             return changed

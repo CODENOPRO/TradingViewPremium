@@ -341,7 +341,6 @@ class ChartEngine {
   // Histories are independent; live 1m replacements never add the same volume twice.
   setHtfData(tf, values) {
     this.htfData[tf] = MarketData.clean(values);
-    this.htfBaselines[tf] = new Map(this.rawBars.map(b => [b.time, b.volume]));
     // Rendering the active timeframe already emits a data invalidation.
     // For an inactive timeframe, still invalidate request.* consumers once.
     if (this.currentTimeframe === tf) this.renderCurrentTimeframe(false);
@@ -403,7 +402,7 @@ class ChartEngine {
     if(this.replayMode&&Number.isFinite(this.replayClock))this.replayIndex=TerminalTime.closedIndex(available,this.currentTimeframe,this.displaySessionMetadata(),this.replayClock);
     this.bars = this.replayMode ? available.slice(0, this.replayIndex) : available;
     this.renderCandleData();
-    if (reset && this.bars.length) this.resetView();
+    if ((reset || (previous && previousBars.length > 10 && previous.from >= previousBars.length - 5)) && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
     this.container.dataset.empty = this.bars.length ? '' : ui('Không có dữ liệu cho mã/khung này');
@@ -427,8 +426,9 @@ class ChartEngine {
   }
 
   setData(values) {
-    const wasEmpty = !this.rawBars.length;
-    this.rawBars = MarketData.clean(values);
+    const cleaned = MarketData.clean(values);
+    const wasEmpty = !this.rawBars.length || (this.rawBars.length <= 2 && cleaned.length > 2);
+    this.rawBars = cleaned;
     this.htfData['1m'] = this.rawBars;
     this.renderCurrentTimeframe(wasEmpty);
   }

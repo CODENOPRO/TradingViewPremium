@@ -57,9 +57,11 @@ const MarketData = (() => {
     return tf === 'W' ? wOpen : tf === 'D' ? open : open + Math.floor((time - open) / seconds) * seconds;
   }
   function clean(values) {
+    if (!Array.isArray(values) || !values.length) return [];
     const result = new Map();
-    for (const value of values || []) {
-      if (!value || !['time', 'open', 'high', 'low', 'close'].every(k => Number.isFinite(value[k]))) continue;
+    for (let i = 0; i < values.length; i++) {
+      const value = values[i];
+      if (!value || !Number.isFinite(value.time) || !Number.isFinite(value.open) || !Number.isFinite(value.high) || !Number.isFinite(value.low) || !Number.isFinite(value.close)) continue;
       const volume = value.volume ?? 0;
       if (!Number.isFinite(volume) || volume < 0 || !Number.isInteger(value.time) || value.time <= 0 || value.low > Math.min(value.open, value.close) || value.high < Math.max(value.open, value.close)) continue;
       result.set(value.time, { time: value.time, open: value.open, high: value.high, low: value.low, close: value.close, volume });
