@@ -1204,10 +1204,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1227,10 +1237,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
 - File đã sửa: `frontend/js/chart_engine.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1257,10 +1277,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1280,10 +1310,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
 - File đã sửa: `frontend/js/chart_engine.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1310,10 +1350,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1333,10 +1383,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 - File đã sửa: `frontend/index.html`, `frontend/js/chart_engine.js`, `frontend/js/desktop_shell.js`, `frontend/js/paper_panel.js`, `frontend/js/ui_language.js`, `AGENTS.md`.
 - Thay đổi:
   1. Gỡ bỏ 3 khối `.chart-nav-controls` (`-`, `+`, `<`, `>`, `reset`) trong `#box-1`/`#box-2`/`#box-3` và bỏ gọi `this.initNavControls()` trong `chart_engine.js`.
@@ -1369,10 +1429,20 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1392,7 +1462,17 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
+- File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
+- Nguyên nhân & thay đổi: khi thay ô nhập `#drawing-levels` bằng lưới 24 mức `#drawing-fib-levels`, dòng `this.root.querySelector('#drawing-levels').addEventListener(...)` trong `DrawingSettings.bindEvents()` ném `TypeError: Cannot read properties of null`, làm dừng khởi tạo `DrawingManager` và `connect()`. Đã đổi sang optional chaining `?.addEventListener(...)`.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.

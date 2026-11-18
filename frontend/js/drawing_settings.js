@@ -127,7 +127,7 @@ class DrawingSettings {
       this.preview();
     }));
     this.root.querySelector('#drawing-text').addEventListener('input', () => this.preview());
-    this.root.querySelector('#drawing-levels').addEventListener('input', () => this.preview());
+    this.root.querySelector('#drawing-levels')?.addEventListener('input', () => this.preview());
     this.root.querySelector('#drawing-cancel').addEventListener('click', () => this.cancel());
     this.root.querySelector('.modal-close').addEventListener('click', () => this.cancel());
     this.root.addEventListener('click', event => {
