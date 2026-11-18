@@ -59,7 +59,8 @@ const QTSsmt = (() => {
     if (needTable) {
       const stepAmdx = createAmdxTracker(settings.rangeMode === 'Whole Previous Cycle');
       let lastQ = null, lastRes = null;
-      for (let i = 0; i < barsA.length; i++) {
+      const tblStart = Math.max(0, barsA.length - 250);
+      for (let i = tblStart; i < barsA.length; i++) {
         const b = barsA[i];
         const cyc = evalCycle(b.time, cs);
         lastQ = cyc.qNum;
