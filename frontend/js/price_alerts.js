@@ -44,7 +44,7 @@ class AlertChartControls{
       const symArrow=a.condition==='greater'?'↗':a.condition==='less'?'↘':'⇅';
       const priceTxt=Number(price).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
       const pillTxt=`${symArrow} ${priceTxt}${a.triggered?' · Khớp':''}`;
-      ctx.font='600 10.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+      ctx.font='600 10.5px "JetBrains Mono", monospace';
       const tw=ctx.measureText?ctx.measureText(pillTxt).width:pillTxt.length*6.2;
       const pw=tw+14,ph=18,px=Math.max(8,width-pw-28),py=y-ph/2;
       ctx.fillStyle=clr;

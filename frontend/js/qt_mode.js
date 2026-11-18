@@ -2,6 +2,14 @@
  * Drop-in replacement for generic Indicator Library/Editor.
  */
 class QTMode {
+  static GENERAL_LABELS = {
+    tz: 'Cycle timezone',
+    symA: 'Chart symbol',
+    symB: 'SSMT peer 1',
+    symC: 'SSMT peer 2',
+    m1Timing: 'Micro cycle timing'
+  };
+
   constructor(options = {}) {
     this.charts = options.charts || [];
     this.getActive = options.getActive || (() => this.charts[0]);
@@ -137,163 +145,12 @@ class QTMode {
       #topbar #btn-qt-settings:hover {
         background: rgba(120, 123, 134, 0.14);
       }
-      .qt-settings-dialog {
-        width: 590px;
-        max-width: calc(100vw - 24px);
-        max-height: calc(100vh - 36px);
-        display: flex;
-        flex-direction: column;
-        border-radius: 12px;
-        background: #1e222d;
-        border: 1px solid #363a45;
-        color: #d1d4dc;
-        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
-      }
-      .qt-settings-dialog .modal-header {
-        padding: 16px 20px 12px;
-        border-bottom: 1px solid #2a2e39;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .qt-settings-title-wrap {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .qt-settings-badge {
-        font-size: 10px;
-        font-weight: 700;
-        padding: 2px 7px;
-        border-radius: 4px;
-        background: rgba(41, 98, 255, 0.2);
-        color: #82aaff;
-        border: 1px solid rgba(41, 98, 255, 0.4);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .qt-settings-body {
-        overflow-y: auto;
-        min-height: 240px;
-        max-height: 66vh;
-        padding: 0 20px 18px;
-      }
-      .qt-filter-sticky {
-        position: sticky;
-        top: 0;
-        z-index: 4;
-        background: #1e222d;
-        padding: 12px 0 8px;
-        border-bottom: 1px solid #2a2e39;
-        margin-bottom: 6px;
-      }
-      .qt-search {
-        width: 100%;
-        padding: 8px 12px;
-        margin-bottom: 8px;
-        background: #131722;
-        border: 1px solid #363a45;
-        border-radius: 7px;
-        color: #e2e8f0;
-        font-size: 12.5px;
-        outline: none;
-        transition: border-color .15s, box-shadow .15s;
-      }
-      .qt-search:focus {
-        border-color: #2962ff;
-        box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.22);
-      }
-      .qt-group-heading {
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #8b93a7;
-        margin: 16px 0 6px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #2a2e39;
-      }
-      .qt-group-heading:first-child {
-        margin-top: 8px;
-      }
-      .qt-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        min-height: 36px;
-        padding: 4px 8px;
-        margin: 0 -8px;
-        border-radius: 6px;
-        font-size: 13px;
-        color: #d1d4dc;
-        transition: background .12s;
-      }
-      .qt-row:hover {
-        background: rgba(255, 255, 255, 0.035);
-      }
-      .qt-inline-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px 16px;
-        min-height: 38px;
-        padding: 5px 8px;
-        margin: 0 -8px;
-        border-radius: 6px;
-      }
-      .qt-inline-row:hover {
-        background: rgba(255, 255, 255, 0.035);
-      }
-      .qt-inline-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        font-size: 13px;
-        color: #d1d4dc;
-        cursor: pointer;
-      }
-      .qt-row select, .qt-inline-item select,
-      .qt-row input[type="number"], .qt-inline-item input[type="number"],
-      .qt-row input[type="text"] {
-        background: #131722;
-        border: 1px solid #363a45;
-        border-radius: 6px;
-        color: #e0e3eb;
-        padding: 5px 8px;
-        font-size: 12.5px;
-      }
-      .qt-row select { min-width: 195px; max-width: 260px; }
-      .qt-inline-item select { min-width: 96px; }
-      .qt-row input[type="number"] { width: 88px; }
-      .qt-inline-item input[type="number"] { width: 64px; }
-      .qt-row input[type="checkbox"], .qt-inline-item input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        accent-color: #2962ff;
-        cursor: pointer;
-      }
       .tv-indi-popover {
         position: fixed !important;
         z-index: 10020 !important;
         max-height: calc(100vh - 16px);
         overflow-y: auto;
       }
-      .qt-settings-error {
-        color: #f23645;
-        font-size: 12px;
-        padding: 0 20px 6px;
-        min-height: 18px;
-      }
-      .qt-settings-error:empty { display: none; }
-      .qt-settings-dialog .modal-footer {
-        padding: 12px 20px;
-        border-top: 1px solid #2a2e39;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .qt-defaults-btn { margin-right: auto; }
       .qt-table-layer {
         position: absolute;
         inset: 0;
@@ -316,7 +173,7 @@ class QTMode {
       }
       .qt-cycle-table {
         border-collapse: collapse;
-        font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif;
+        font-family: var(--font-ui);
         line-height: 1.25;
         font-variant-numeric: tabular-nums;
       }
@@ -705,20 +562,23 @@ class QTMode {
     modal.setAttribute('aria-modal', 'true');
     modal.setAttribute('aria-label', 'Quantaibay QT Mode Settings');
     modal.innerHTML = `
-      <div class="modal-content qt-settings-dialog">
+      <div class="modal-content chart-settings-dialog qt-settings-dialog">
         <div class="modal-header">
-          <div class="qt-settings-title-wrap">
-            <span>Quantaibay</span>
-            <span class="qt-settings-badge">QT Mode</span>
+          <div class="cs-heading qt-settings-title-wrap">
+            <h2>Quantaibay</h2>
+            <span class="cs-sub">Changes preview live on the chart</span>
           </div>
-          <button type="button" class="modal-close qt-close" aria-label="Close QT settings">×</button>
+          <button type="button" class="modal-close qt-close" aria-label="Close QT settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         </div>
-        <div class="qt-settings-body"></div>
-        <div class="qt-settings-error" role="alert"></div>
+        <div class="chart-settings-layout">
+          <div class="qt-settings-tools"></div>
+          <div class="chart-settings-body qt-settings-body" id="qt-settings-fields"></div>
+        </div>
+        <div class="chart-settings-error qt-settings-error" role="alert"></div>
         <div class="modal-footer">
           <button type="button" class="btn-secondary qt-defaults-btn">Defaults</button>
           <button type="button" class="btn-secondary qt-cancel-btn">Cancel</button>
-          <button type="button" class="btn-primary qt-ok-btn">Ok</button>
+          <button type="button" class="btn-primary qt-ok-btn">OK</button>
         </div>
       </div>
     `;
@@ -769,7 +629,7 @@ class QTMode {
     this.modal.querySelector('.qt-settings-error').textContent = '';
     this.modal.classList.add('show');
     this._renderBody();
-    const firstInput = this.modal.querySelector('.qt-search, .qt-close');
+    const firstInput = this.modal.querySelector('.qt-tab[aria-selected="true"]');
     if (firstInput?.focus) {
       if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => firstInput.focus({ preventScroll: true }));
       else firstInput.focus({ preventScroll: true });
@@ -830,17 +690,11 @@ class QTMode {
 
   _renderBody() {
     this._closePalette();
+    this._tabsObserver?.disconnect();
     const body = this.modal.querySelector('.qt-settings-body');
+    const tools = this.modal.querySelector('.qt-settings-tools');
+    const restoreToolsFocus = tools.contains(document.activeElement) ? document.activeElement.id : '';
     body.replaceChildren();
-
-    const sticky = document.createElement('div');
-    sticky.className = 'qt-filter-sticky';
-    const search = document.createElement('input');
-    search.type = 'search';
-    search.className = 'qt-search';
-    search.placeholder = 'Tìm nhanh setting (SSMT, AMDX, True Open, PSP, Table...)';
-    sticky.appendChild(search);
-
     const categories = [
       ['general', 'General', new Set(['General'])],
       ['ssmt', 'SSMT', new Set(['SSMT Display', 'SSMT Style'])],
@@ -860,52 +714,67 @@ class QTMode {
       table: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 10v10M15 10v10"/>'
     };
     const tabs = document.createElement('div');
-    tabs.className = 'qt-tabs';
+    tabs.className = 'chart-settings-nav qt-tabs';
     tabs.setAttribute('role', 'tablist');
     tabs.setAttribute('aria-label', 'Nhóm cài đặt QT');
-    const thumb = document.createElement('span');
-    thumb.className = 'qt-tab-thumb';
-    thumb.setAttribute('aria-hidden', 'true');
-    tabs.appendChild(thumb);
-    const list = document.createElement('div');
-
-    const placeThumb = (animate = true) => {
-      const el = tabs.querySelector('.qt-tab.active');
-      if (!el || !el.offsetWidth) return;
-      if (!animate) thumb.style.transition = 'none';
-      thumb.style.width = el.offsetWidth + 'px';
-      thumb.style.transform = `translateX(${el.offsetLeft}px)`;
-      if (!animate) { void thumb.offsetWidth; thumb.style.transition = ''; }
-      const l = el.offsetLeft, r = l + el.offsetWidth;
-      if (l < tabs.scrollLeft + 8) tabs.scrollTo({ left: Math.max(0, l - 12), behavior: animate ? 'smooth' : 'auto' });
-      else if (r > tabs.scrollLeft + tabs.clientWidth - 8) tabs.scrollTo({ left: r - tabs.clientWidth + 12, behavior: animate ? 'smooth' : 'auto' });
+    const updateTabFade = () => {
+      const max = tabs.scrollWidth - tabs.clientWidth;
+      tabs.style.setProperty('--fl', tabs.scrollLeft > 2 ? '24px' : '0px');
+      tabs.style.setProperty('--fr', tabs.scrollLeft < max - 2 ? '24px' : '0px');
     };
-
-    const renderFiltered = () => {
-      const q = search.value.trim().toLowerCase();
+    const placeSelected = () => {
+      clearTimeout(this._tabScrollTimer);
+      updateTabFade();
+      const reduceMotion = document.body.classList.contains('reduce-motion');
+      this._tabScrollTimer = setTimeout(() => {
+        const selected = tabs.querySelector('[aria-selected="true"]');
+        if (!selected?.isConnected) return;
+        tabs.scrollTo({
+          left: selected.offsetLeft + (selected.offsetWidth - tabs.clientWidth) / 2,
+          behavior: reduceMotion ? 'auto' : 'smooth'
+        });
+        updateTabFade();
+      }, reduceMotion ? 0 : 300);
+    };
+    tabs.addEventListener('scroll', updateTabFade, { passive: true });
+    const renderFiltered = (animate = false) => {
+      const q = '';
       const catEntry = categories.find(c => c[0] === activeCat) || categories[0];
       const baseFields = q
         ? QuantaibayEngine.INPUT_SCHEMA
         : QuantaibayEngine.INPUT_SCHEMA.filter(f => catEntry[2].has(f.group));
-      list.replaceChildren();
-      this._renderSchemaFields(list, baseFields, q);
+      body.replaceChildren();
+      body.scrollTop = 0;
+      body.setAttribute('role', q ? 'region' : 'tabpanel');
+      if (q) {
+        body.removeAttribute('aria-labelledby');
+        body.setAttribute('aria-label', 'Kết quả tìm kiếm');
+      } else {
+        body.removeAttribute('aria-label');
+        body.setAttribute('aria-labelledby', 'qt-tab-' + activeCat);
+      }
+      const fields = document.createElement('div');
+
+      this._renderSchemaFields(fields, baseFields, q);
+      body.appendChild(fields);
       tabs.classList.toggle('is-searching', !!q);
     };
 
     const tabEls = [];
-    for (const [id, title, groups] of categories) {
-      const count = QuantaibayEngine.INPUT_SCHEMA.filter(f => groups.has(f.group)).length;
+    for (const [id, title] of categories) {
       const tab = document.createElement('button');
       tab.type = 'button';
       tab.className = 'qt-tab' + (id === activeCat ? ' active' : '');
       tab.id = 'qt-tab-' + id;
       tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', 'qt-settings-fields');
+      tab.setAttribute('aria-label', title);
       tab.setAttribute('aria-selected', id === activeCat ? 'true' : 'false');
       tab.tabIndex = id === activeCat ? 0 : -1;
-      tab.innerHTML = `<svg class="qt-tab-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id] || ''}</svg><span class="qt-tab-label"></span><em class="qt-tab-count"></em>`;
+      tab.innerHTML = `<svg class="qt-tab-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id] || ''}</svg><span class="chart-tab-label"><span class="qt-tab-label"></span></span>`;
       tab.querySelector('.qt-tab-label').textContent = title;
-      tab.querySelector('.qt-tab-count').textContent = count;
       tab.onclick = () => {
+        if (activeCat === id) return;
         activeCat = id;
         this._activeInputCat = id;
         for (const t of tabEls) {
@@ -914,8 +783,8 @@ class QTMode {
           t.setAttribute('aria-selected', on ? 'true' : 'false');
           t.tabIndex = on ? 0 : -1;
         }
-        placeThumb(true);
-        renderFiltered();
+        placeSelected();
+        renderFiltered(true);
       };
       tab.onkeydown = e => {
         const i = tabEls.indexOf(tab);
@@ -932,35 +801,91 @@ class QTMode {
       tabEls.push(tab);
       tabs.appendChild(tab);
     }
-    tabs.addEventListener('pointermove', e => {
-      const r = tabs.getBoundingClientRect();
-      tabs.style.setProperty('--mx', (e.clientX - r.left + tabs.scrollLeft) + 'px');
-    }, { passive: true });
-    sticky.appendChild(tabs);
-    if (typeof ResizeObserver === 'function') new ResizeObserver(() => placeThumb(false)).observe(tabs);
-    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => placeThumb(false));
-    body.append(sticky, list);
+    tools.replaceChildren(tabs);
+    placeSelected();
+    this._tabsObserver = new ResizeObserver(updateTabFade);
+    this._tabsObserver.observe(tabs);
     renderFiltered();
-    search.oninput = renderFiltered;
+    if (restoreToolsFocus) document.getElementById(restoreToolsFocus)?.focus({ preventScroll: true });
+  }
+
+  _settingsGroup(field) {
+    const key = field.key;
+    if (field.group === 'General') return key === 'tz' || key === 'm1Timing' ? 'Cycle timing' : 'Symbols & correlation';
+    if (field.group === 'SSMT Display') {
+      if (/^en[0-6]$/.test(key)) return 'Timeframes';
+      return ['maxRow', 'showOld'].includes(key) ? 'Previous cycles' : 'Display';
+    }
+    if (field.group === 'SSMT Style') return /^(cBull|cBear|cHBull|cHBear)$/.test(key) ? 'Line colors' : key.startsWith('lbl') ? 'Labels' : 'Line style';
+    if (field.group === 'Cycle Lines / Q Labels') return /^(showQLabels|qColor|qSizeInput|labelPadPct|showSub|maxQL)$/.test(key) ? 'Quarter labels' : 'Cycle lines';
+    if (field.group === 'AMDX / XAMD') return 'AMDX / XAMD';
+    if (field.group === 'True Open') return 'Open levels';
+    if (field.group === 'True Open Style') return /^(trCol|trWid|trStyleIn)$/.test(key) ? 'Line style' : key === 'trMaxKeep' ? 'History' : 'Labels';
+    if (field.group === 'Advanced PSP') {
+      if (/Body$/.test(key) || key === 'pspMode') return 'Candle appearance';
+      if (/^psp(Bull|Bear)(Clr|Shape)$/.test(key) || key === 'pspSizeStr') return 'Markers';
+      if (/^psp(ShowSmt|Inv)/.test(key)) return 'Peer comparison';
+      return 'Display';
+    }
+    return ['showCycTbl', 'cycPos'].includes(key) ? 'Table layout' : 'Table appearance';
   }
 
   _renderSchemaFields(container, fields, query) {
+    fields = fields.map(field => ({ ...field, group: this._settingsGroup(field), inline: null }));
+    const groups = [...new Set(fields.map(field => field.group))];
+    fields.sort((a, b) => groups.indexOf(a.group) - groups.indexOf(b.group));
     const filtered = query
-      ? fields.filter(f => `${f.label} ${f.group} ${f.key}`.toLowerCase().includes(query))
+      ? fields.filter(f => `${f.label} ${QTMode.GENERAL_LABELS[f.key] || ''} ${f.group} ${f.key}`.toLowerCase().includes(query))
       : fields;
 
+    if (!filtered.length) {
+      const empty = document.createElement('p');
+      empty.className = 'qt-empty';
+      empty.setAttribute('role', 'status');
+      empty.textContent = 'Không tìm thấy cài đặt phù hợp.';
+      container.appendChild(empty);
+      return;
+    }
+
     let curGroup = null;
+    let groupFields;
     let i = 0;
+    const isTimeframe = field => /^en[0-6]$/.test(field?.key || '');
     while (i < filtered.length) {
       const field = filtered[i];
       if (field.group !== curGroup) {
         curGroup = field.group;
-        const h = document.createElement('div');
-        h.className = 'qt-group-heading';
-        h.textContent = curGroup;
-        container.appendChild(h);
+        const section = document.createElement('section');
+        section.className = 'qt-field-group';
+        const heading = document.createElement('h3');
+        heading.className = 'qt-group-heading';
+        heading.textContent = curGroup;
+        groupFields = document.createElement('div');
+        groupFields.className = 'chart-setting-card qt-field-card';
+        section.append(heading, groupFields);
+        container.appendChild(section);
       }
-      if (field.inline && !query) {
+      if (isTimeframe(field)) {
+        const row = document.createElement('div');
+        row.className = 'qt-timeframes';
+        row.setAttribute('role', 'group');
+        row.setAttribute('aria-label', 'SSMT timeframes');
+        while (isTimeframe(filtered[i])) {
+          const { key, label } = filtered[i++];
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.dataset.inputKey = key;
+          button.textContent = label;
+          button.setAttribute('aria-pressed', String(!!this._previewSettings[key]));
+          button.onclick = () => {
+            this._previewSettings[key] = !this._previewSettings[key];
+            button.setAttribute('aria-pressed', String(this._previewSettings[key]));
+            this.scheduleAll();
+          };
+          row.appendChild(button);
+        }
+        groupFields.appendChild(row);
+      } else if (field.inline && !query) {
         const inlineKey = field.inline;
         const row = document.createElement('div');
         row.className = 'qt-inline-row';
@@ -968,9 +893,9 @@ class QTMode {
           row.appendChild(this._createControl(filtered[i], true));
           i++;
         }
-        container.appendChild(row);
+        groupFields.appendChild(row);
       } else {
-        container.appendChild(this._createControl(field, false));
+        groupFields.appendChild(this._createControl(field, false));
         i++;
       }
     }
@@ -982,11 +907,12 @@ class QTMode {
     const val = target[key] ?? QuantaibayEngine.DEFAULTS[key];
 
     const wrap = document.createElement('label');
-    wrap.className = compact ? 'qt-inline-item' : 'qt-row';
+    wrap.className = 'chart-setting-row qt-row';
     if (tooltip) wrap.title = tooltip;
+    else if (QTMode.GENERAL_LABELS[key]) wrap.title = label;
 
     const text = document.createElement('span');
-    text.textContent = label;
+    text.textContent = QTMode.GENERAL_LABELS[key] || label;
 
     if (type === 'color') {
       const btn = document.createElement('button');
@@ -1012,7 +938,8 @@ class QTMode {
       for (const opt of options) {
         const o = document.createElement('option');
         o.value = String(opt);
-        o.textContent = String(opt);
+        o.textContent = key === 'm1Timing' ? String(opt).split(' (')[0] : String(opt);
+        if (key === 'm1Timing') o.title = String(opt);
         sel.appendChild(o);
       }
       sel.value = String(val);

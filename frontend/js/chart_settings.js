@@ -16,7 +16,7 @@ const ChartAppearance = {
       priceRatio:false,priceUnitsPerBar:1,symbolValueMode:'Value according to scale',alertUpColor:'#089981',currencyUnit:'Hidden',scaleModes:'Hidden',plusButton:false,extendedZoom:false,prevDayLine:'Hidden',prevDayColor:'#787b86',prevDayStyle:2,highLowStyle:0,bidColor:'#2962ff',askColor:'#f23645',noOverlap:true,symbolLine:'Value and line',symbolLineColor:'#211f1d',symbolLineStyle:2,indicatorValues:'Hidden',highLow:'Hidden',highColor:'#089981',lowColor:'#f23645',countdown:false,
       dayOfWeek:false,dateFormat:'dd MMM yy',hourFormat:'24-hours',keepLeft:false,
       backgroundMode:'Solid',bgBottom:colors.bg||'#c2baae',verticalGrid:true,horizontalGrid:true,verticalGridColor:colors.grid||'#a8a194',horizontalGridColor:colors.grid||'#a8a194',verticalGridStyle:1,horizontalGridStyle:1,
-      separator:'#655f58',crosshair:'#434651',crosshairStyle:2,watermark:'Hidden',watermarkColor:'#696159',fontSize:10,scaleLines:'#a8a194',navigation:'Visible on mouse over',paneButtons:'Visible on mouse over',topMargin:10,bottomMargin:15,rightMargin:12,
+      separator:'#655f58',crosshair:'#434651',crosshairStyle:2,watermark:'Hidden',watermarkColor:'#696159',fontSize:11,scaleLines:'#a8a194',navigation:'Visible on mouse over',paneButtons:'Visible on mouse over',topMargin:10,bottomMargin:15,rightMargin:12,
       oneClick:true,executionSound:true,executionVolume:60,executionTone:'SFX (Gunshot / TP / SL)',rejectionOnly:false,reversePosition:false,projectOrder:false,positions:true,pnl:true,positionPnl:true,bracketPnl:true,pnlUnit:'Money',bracketValue:'Money',executionMarks:true,executionLabels:true,snapshotOrders:true,extendedLines:true,alignment:'Right',alertLines:true,alertColor:'#f23645',activeAlerts:true,hideToasts:true,sessionBreaks:false,sessionColor:'#2962ff',sessionStyle:2};
   },
   candleData(engine,bars) {
@@ -47,7 +47,7 @@ const ChartAppearance = {
     const s=this.validate(settings),before=engine.appearance;engine.appearance={...s};engine.config={...engine.config,...s};
     const f=this.formatters(s),hasLine=s.symbolLine.toLowerCase().includes('line'),hasValue=s.symbolLine.toLowerCase().includes('value');
     const customPriceLabel=s.countdown||s.symbolValueMode==='Raw price'||s.symbolLine.toLowerCase().includes('name');
-    engine.chart.applyOptions({layout:{background:s.backgroundMode==='Gradient'?{type:'gradient',topColor:s.bg,bottomColor:s.bgBottom}:{type:'solid',color:s.bg},textColor:s.textColor,fontSize:s.fontSize},
+    engine.chart.applyOptions({layout:{background:s.backgroundMode==='Gradient'?{type:'gradient',topColor:s.bg,bottomColor:s.bgBottom}:{type:'solid',color:s.bg},textColor:s.textColor,fontFamily:'"JetBrains Mono", Inter, monospace',fontSize:s.fontSize},
       handleScale:{axisPressedMouseMove:{price:!s.priceRatio}},
       localization:{timeFormatter:t=>f.full(t)},grid:{vertLines:{visible:s.verticalGrid,color:s.verticalGridColor,style:s.verticalGridStyle},horzLines:{visible:s.horizontalGrid,color:s.horizontalGridColor,style:s.horizontalGridStyle}},
       crosshair:{vertLine:{color:s.crosshair,style:s.crosshairStyle},horzLine:{color:s.crosshair,style:s.crosshairStyle}},
@@ -81,9 +81,9 @@ const ChartAppearance = {
   draw(engine,ctx,rect) {
     const s=engine.appearance;if(!s)return;
     const width=rect.width-(engine.chart.priceScale('right').width()||65),height=engine.plotBottom;ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
-    if(s.watermark!=='Hidden'){ctx.fillStyle=s.watermarkColor;ctx.globalAlpha=.22;ctx.font=`600 ${Math.min(60,width/8)}px Arial`;ctx.textAlign='center';ctx.fillText(s.watermark==='Ticker'?engine.symbol:(engine.metadata.description||engine.symbol),width/2,height/2);ctx.globalAlpha=1;ctx.textAlign='left';}
+    if(s.watermark!=='Hidden'){ctx.fillStyle=s.watermarkColor;ctx.globalAlpha=.22;ctx.font=`600 ${Math.min(60,width/8)}px Inter, sans-serif`;ctx.textAlign='center';ctx.fillText(s.watermark==='Ticker'?engine.symbol:(engine.metadata.description||engine.symbol),width/2,height/2);ctx.globalAlpha=1;ctx.textAlign='left';}
     if(s.sessionBreaks&&engine.metadata?.timezone){let prior;ctx.strokeStyle=s.sessionColor;ctx.lineWidth=1;ctx.setLineDash(s.sessionStyle===0?[]:s.sessionStyle===1?[2,3]:[6,4]);for(const b of engine.bars){const bucket=MarketData.bucket(b.time,'D',engine.metadata);if(prior!==undefined&&bucket!==prior){const x=engine.chart.timeScale().timeToCoordinate(b.time);if(x!==null){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height);ctx.stroke();}}prior=bucket;}ctx.setLineDash([]);}
-    if(!engine.alertOverlay)for(const a of engine.priceAlerts||[])if(s.alertLines&&(!s.activeAlerts||!a.triggered)){const y=engine.series.priceToCoordinate(a.price);if(y!==null){ctx.strokeStyle=s.alertColor;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=s.alertColor;ctx.font='11px Arial';ctx.fillText(`Alert ${a.price}`,Math.max(8,width-125),y-5);}}
+    if(!engine.alertOverlay)for(const a of engine.priceAlerts||[])if(s.alertLines&&(!s.activeAlerts||!a.triggered)){const y=engine.series.priceToCoordinate(a.price);if(y!==null){ctx.strokeStyle=s.alertColor;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=s.alertColor;ctx.font='11px "JetBrains Mono", monospace';ctx.fillText(`Alert ${a.price}`,Math.max(8,width-125),y-5);}}
     const lastBar=engine.bars.at(-1);
     if(lastBar&&s.prevDayLine!=='Hidden'){
       const close=engine.previousDayClose?.(lastBar.time);
@@ -95,12 +95,12 @@ const ChartAppearance = {
           ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);
         }
         if(s.prevDayLine.toLowerCase().includes('value')){
-          ctx.font='11px Arial';
+          ctx.font='11px "JetBrains Mono", monospace';
           ctx.fillText('Previous close '+engine.series.priceFormatter().format(close),Math.max(8,width-145),y-5);
         }
       }
     }
-    if(s.highLow!=='Hidden'&&engine.bars.length){const range=engine.chart.timeScale().getVisibleLogicalRange();const bars=range?engine.bars.slice(Math.max(0,Math.floor(range.from)),Math.ceil(range.to)+1):engine.bars;if(bars.length)for(const [label,price,color] of [['High',Math.max(...bars.map(b=>b.high)),s.highColor],['Low',Math.min(...bars.map(b=>b.low)),s.lowColor]]){const y=engine.series.priceToCoordinate(price);if(y!==null){ctx.strokeStyle=color;ctx.fillStyle=color;ctx.font='11px Arial';if(s.highLow.toLowerCase().includes('line')){ctx.setLineDash(s.highLowStyle===0?[]:s.highLowStyle===1?[2,3]:[6,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);}if(s.highLow.toLowerCase().includes('value'))ctx.fillText(`${label} ${price.toFixed(2)}`,Math.max(8,width-130),y-5);}}}
+    if(s.highLow!=='Hidden'&&engine.bars.length){const range=engine.chart.timeScale().getVisibleLogicalRange();const bars=range?engine.bars.slice(Math.max(0,Math.floor(range.from)),Math.ceil(range.to)+1):engine.bars;if(bars.length)for(const [label,price,color] of [['High',Math.max(...bars.map(b=>b.high)),s.highColor],['Low',Math.min(...bars.map(b=>b.low)),s.lowColor]]){const y=engine.series.priceToCoordinate(price);if(y!==null){ctx.strokeStyle=color;ctx.fillStyle=color;ctx.font='11px "JetBrains Mono", monospace';if(s.highLow.toLowerCase().includes('line')){ctx.setLineDash(s.highLowStyle===0?[]:s.highLowStyle===1?[2,3]:[6,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();ctx.setLineDash([]);}if(s.highLow.toLowerCase().includes('value'))ctx.fillText(`${label} ${price.toFixed(2)}`,Math.max(8,width-130),y-5);}}}
     ctx.restore();
   }
 };

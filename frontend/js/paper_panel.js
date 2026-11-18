@@ -2,12 +2,20 @@
 class PaperPanel {
  constructor({paper,charts,getActive,isLive,isReplay,toast,onRender,onToggle}){
   Object.assign(this,{paper,charts,getActive,isLive,isReplay,toast,onRender,onToggle});this.root=document.getElementById('paper-panel');this.tab='positions';this.editing=null;
-  this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Paper Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><span class="paper-dot"></span><strong>Paper Trade</strong><small class="paper-mode-badge">SIM</small></div><div class="paper-account-group"><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" type="button" class="paper-head-btn" title="Tạo tài khoản mới">+ Tài khoản</button></div><div class="paper-head-actions"><button type="button" class="paper-export paper-head-btn" title="Xuất lịch sử giao dịch CSV">CSV</button><button type="button" class="paper-close" aria-label="Close Trading">×</button></div></header><div id="paper-balance" class="paper-summary"></div><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><div class="paper-sym-pill"><strong id="paper-symbol"></strong></div><span id="paper-quote-status"></span></div><div class="paper-type-seg" role="tablist" aria-label="Loại lệnh"><button type="button" data-order-type="market" class="active">Market</button><button type="button" data-order-type="limit">Limit</button><button type="button" data-order-type="stop">Stop</button></div><select id="order-type" hidden aria-hidden="true"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select><div class="paper-ticket-grid"><div class="paper-field paper-qty-field"><div class="paper-field-top"><span>Hợp đồng</span><div class="paper-qty-chips"><button type="button" data-qty-chip="1">1</button><button type="button" data-qty-chip="2">2</button><button type="button" data-qty-chip="5">5</button><button type="button" data-qty-chip="10">10</button></div></div><div class="paper-qty-stepper"><button type="button" data-qty-step="-1" aria-label="Giảm hợp đồng">−</button><input id="order-qty" type="number" min="1" step="1" value="1" aria-label="Hợp đồng"><button type="button" data-qty-step="1" aria-label="Tăng hợp đồng">+</button></div></div><label class="paper-field paper-price-label"><span>Giá đặt lệnh</span><input id="order-price" type="number" step="any" placeholder="Nhập mức giá"></label><label class="paper-field"><span>Stop Loss</span><input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label><label class="paper-field"><span>Take Profit</span><input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell"><span>Sell / Short</span></button><button type="button" id="paper-buy" class="paper-side buy"><span>Buy / Long</span></button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Lưu thay đổi</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer"></p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button type="button" data-paper-tab="positions">Vị thế <span>0</span></button><button type="button" data-paper-tab="orders">Lệnh chờ <span>0</span></button><button type="button" data-paper-tab="history">Lịch sử <span>0</span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
+  this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><strong>Trading</strong><small class="paper-mode-badge">SIM</small></div><div class="paper-head-actions"><button type="button" class="paper-close" aria-label="Close Trading">×</button></div><div class="paper-account-group"><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" type="button" class="paper-head-btn" title="Tạo tài khoản mới">+ Tài khoản</button></div></header><div class="paper-setup"><strong>Chưa có tài khoản mô phỏng</strong><button id="paper-setup-account" type="button" class="btn-primary">Tạo tài khoản demo</button></div><div id="paper-balance" class="paper-summary"></div><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><div class="paper-sym-pill"><strong id="paper-symbol"></strong></div><span id="paper-quote-status"></span></div><div class="paper-type-seg" role="tablist" aria-label="Loại lệnh"><button type="button" data-order-type="market" class="active">Market</button><button type="button" data-order-type="limit">Limit</button><button type="button" data-order-type="stop">Stop</button></div><select id="order-type" hidden aria-hidden="true"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select><div class="paper-ticket-grid"><div class="paper-field paper-qty-field"><div class="paper-field-top"><span>Hợp đồng</span></div><div class="paper-qty-controls"><div class="paper-qty-chips"><button type="button" data-qty-chip="1">1</button><button type="button" data-qty-chip="2">2</button><button type="button" data-qty-chip="5">5</button><button type="button" data-qty-chip="10">10</button></div><div class="paper-qty-stepper"><button type="button" data-qty-step="-1" aria-label="Giảm hợp đồng">−</button><input id="order-qty" type="number" min="1" step="1" value="1" aria-label="Hợp đồng"><button type="button" data-qty-step="1" aria-label="Tăng hợp đồng">+</button></div></div></div><label class="paper-field paper-price-label"><span>Giá đặt lệnh</span><input id="order-price" type="number" step="any" placeholder="Nhập mức giá"></label><label class="paper-field"><span>Stop Loss</span><input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label><label class="paper-field"><span>Take Profit</span><input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell"><span>Sell / Short</span></button><button type="button" id="paper-buy" class="paper-side buy"><span>Buy / Long</span></button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Lưu thay đổi</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer"></p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button type="button" data-paper-tab="positions">Vị thế <span>0</span></button><button type="button" data-paper-tab="orders">Lệnh chờ <span>0</span></button><button type="button" data-paper-tab="history">Lịch sử <span>0</span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
   this.$=id=>document.getElementById(id);
   if(typeof TerminalLanguage!=='undefined')TerminalLanguage.markup(this.root);
-  this.root.querySelector('.paper-close').onclick=()=>this.open(false);this.$('btn-new-account').onclick=()=>{const modal=document.getElementById('account-modal');modal.dataset.opener='btn-new-account';modal.classList.add('show');modal.querySelector('input').focus();};
+  this.root.querySelector('.paper-close').onclick=()=>this.open(false);
+  for (const id of ['btn-new-account', 'paper-setup-account']) {
+   this.$(id).onclick=()=>{
+    const modal=this.$('account-modal');
+    modal.dataset.opener=id;
+    modal.classList.add('show');
+    modal.querySelector('input').focus();
+   };
+  }
   this.$('paper-account').onchange=e=>this.action(()=>{this.paper.select(e.target.value);this.reset();});
-  this.root.querySelector('.paper-export').onclick=()=>this.export();
+  this.buildAccountPicker();
   const archive=document.createElement('button');archive.type='button';archive.className='paper-head-btn';archive.textContent='Lưu Replay';archive.onclick=()=>this.exportReplay?.();this.root.querySelector('.paper-head-actions').insertBefore(archive,this.root.querySelector('.paper-close'));this.archiveButton=archive;
   this.root.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();if(this.editing)this.reset();else this.open(false);}});
   for(const b of this.root.querySelectorAll('[data-paper-tab]'))b.onclick=()=>{this.tab=b.dataset.paperTab;this.render();};
@@ -24,6 +32,80 @@ class PaperPanel {
   this.buildCloseDialog();this.resize();
   for(const chart of charts){chart.paperOverlay=new PaperChartOrders(this,chart);}
   this.timer=setInterval(()=>this.render(false),1000);this.render();
+ }
+ buildAccountPicker(){
+  const select=this.$('paper-account');
+  select.hidden=true;
+  const trigger=document.createElement('button');
+  trigger.type='button';
+  trigger.className='paper-account-trigger';
+  trigger.setAttribute('aria-haspopup','listbox');
+  trigger.setAttribute('aria-expanded','false');
+  trigger.setAttribute('aria-controls','paper-account-options');
+  trigger.setAttribute('aria-label','Tài khoản');
+  trigger.innerHTML='<span></span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>';
+  select.after(trigger);
+  const menu=document.createElement('div');
+  menu.id='paper-account-options';
+  menu.className='paper-account-options';
+  menu.setAttribute('popover','auto');
+  menu.setAttribute('role','listbox');
+  menu.setAttribute('aria-label','Tài khoản mô phỏng');
+  document.body.appendChild(menu);
+  const position=()=>{
+   const rect=trigger.getBoundingClientRect();
+   menu.style.width=Math.min(rect.width,innerWidth-16)+'px';
+   menu.style.left=Math.max(8,Math.min(rect.left,innerWidth-menu.offsetWidth-8))+'px';
+   menu.style.top=Math.max(8,Math.min(rect.bottom+6,innerHeight-menu.offsetHeight-8))+'px';
+  };
+  trigger.onclick=()=>{
+   if(menu.matches(':popover-open')){menu.hidePopover();return;}
+   menu.showPopover();position();
+   (menu.querySelector('[aria-selected="true"]')||menu.querySelector('button'))?.focus();
+  };
+  trigger.onkeydown=e=>{
+   if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!menu.matches(':popover-open'))trigger.click();}
+  };
+  menu.addEventListener('toggle',()=>{
+   trigger.setAttribute('aria-expanded',String(menu.matches(':popover-open')));
+  });
+  menu.onkeydown=e=>{
+   const items=[...menu.querySelectorAll('[role="option"]')];
+   let index=items.indexOf(document.activeElement);
+   if(e.key==='Escape'){e.preventDefault();e.stopPropagation();menu.hidePopover();trigger.focus();return;}
+   if(e.key==='Tab'){menu.hidePopover();trigger.focus();return;}
+   if(!['ArrowDown','ArrowUp','Home','End'].includes(e.key))return;
+   e.preventDefault();
+   index=e.key==='Home'?0:e.key==='End'?items.length-1:(index+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;
+   items[index]?.focus();
+  };
+  window.addEventListener('resize',()=>{if(menu.matches(':popover-open'))position();});
+  this.accountTrigger=trigger;
+  this.accountMenu=menu;
+ }
+ renderAccountPicker(){
+  const active=this.paper.state.active;
+  this.accountTrigger.querySelector('span').textContent=this.paper.account?.name||'Chọn tài khoản';
+  this.accountMenu.replaceChildren();
+  for(const account of this.paper.state.accounts){
+   const option=document.createElement('button');
+   option.type='button';
+   option.setAttribute('role','option');
+   option.setAttribute('aria-selected',String(account.id===active));
+   const name=document.createElement('span');
+   name.textContent=account.name;
+   const check=document.createElement('span');
+   check.setAttribute('aria-hidden','true');
+   check.textContent=account.id===active?'✓':'';
+   option.append(name,check);
+   option.onclick=()=>{
+    this.accountMenu.hidePopover();
+    this.$('paper-account').value=account.id;
+    this.$('paper-account').dispatchEvent(new Event('change'));
+    this.accountTrigger.focus();
+   };
+   this.accountMenu.appendChild(option);
+  }
  }
  setQty(qty){
   const v=String(Math.max(1,Math.round(qty)||1));
@@ -46,7 +128,7 @@ class PaperPanel {
   if(!this.isLive(symbol))throw Error('Đang chờ giá live 1m; không dùng giá cache để khớp lệnh.');
  }
  action(fn){try{fn();this.$('paper-error').textContent='';this.render();return true;}catch(error){this.$('paper-error').textContent=error.message;this.toast?.(error.message,'alert');this.render();return false;}}
- open(show=true){if(show)document.getElementById('indicator-modal')?.classList.remove('show');if(this.root.classList.contains('open')!==show)this.root.classList.toggle('open',show);}
+ open(show=true){if(!show&&this.accountMenu.matches(':popover-open'))this.accountMenu.hidePopover();if(show)document.getElementById('indicator-modal')?.classList.remove('show');if(this.root.classList.contains('open')!==show)this.root.classList.toggle('open',show);}
  reset(){this.editing=null;this.$('order-type').value='market';for(const id of ['order-price','order-sl','order-tp'])this.$(id).value='';this.$('order-qty').value='1';const iq=document.getElementById('trade-inline-qty');if(iq)iq.value='1';this.$('paper-error').textContent='';this.ticket();}
  edit(kind,item,field){this.editing={kind,id:item.id,symbol:item.symbol,account:this.paper.state.active};this.open();this.$('order-type').value=kind==='order'?item.type:'market';this.$('order-qty').value=item.qty;for(const k of ['price','sl','tp'])this.$('order-'+k).value=item[k]??'';this.$('paper-error').textContent='';this.ticket();this.$('order-'+(field||'sl'))?.focus();}
  submit(side){this.action(()=>{const symbol=this.symbol(),origin=this.editing?null:this.getActive();this.guard(symbol,origin);const optional=id=>this.$(id).value.trim()?Number(this.$(id).value):null;const fields={qty:Number(this.$('order-qty').value),price:optional('order-price'),sl:optional('order-sl'),tp:optional('order-tp')};
@@ -239,11 +321,12 @@ class PaperPanel {
   this.root.querySelector('.paper-disclaimer').textContent=this.isReplay()?'Khớp theo giá đóng nến 1m Replay · Tài khoản độc lập':'Khớp theo giá Last trực tiếp · Không tính phí & trượt giá';
   this.closeModal.querySelector('[data-close-confirm]').textContent=this.isReplay()?'Đóng theo giá Replay':'Đóng theo giá live';
   const a=this.paper.account,accounts=this.paper.state.accounts,signature=JSON.stringify([accounts.map(a=>[a.id,a.name]),this.paper.state.active]);
+  this.root.dataset.hasAccount=String(!!a);
   this.notifyExecutions(a);
-  if(signature!==this.accountSignature){this.accountSignature=signature;const select=this.$('paper-account');select.replaceChildren();if(!accounts.length)select.add(new Option('Chưa có tài khoản',''));for(const a of accounts)select.add(new Option(a.name,a.id));select.value=this.paper.state.active||'';}
+  if(signature!==this.accountSignature){this.accountSignature=signature;const select=this.$('paper-account');select.replaceChildren();if(!accounts.length)select.add(new Option('Chưa có tài khoản',''));for(const a of accounts)select.add(new Option(a.name,a.id));select.value=this.paper.state.active||'';this.renderAccountPicker();}
   const stats=this.paper.summary(),unknownMark=a?.positions.some(p=>!this.paper.quotes.has(p.symbol));const summary=this.$('paper-balance');if(!summary.children.length)for(const [key,label] of [['balance','Balance'],['equity','Equity'],['unrealized','PnL mở'],['realized','Đã chốt']]){const cell=document.createElement('div');cell.innerHTML='<small></small><strong></strong>';cell.querySelector('small').textContent=tr(label);cell.dataset.stat=key;summary.appendChild(cell);}
   for(const cell of summary.children){const value=stats[cell.dataset.stat];cell.querySelector('strong').textContent=a&&!(unknownMark&&['equity','unrealized'].includes(cell.dataset.stat))?this.money(value):'—';cell.dataset.sign=['unrealized','realized'].includes(cell.dataset.stat)?value>0?'positive':value<0?'negative':'':'';}
-  for(const button of this.root.querySelectorAll('[data-paper-tab]')){const tab=button.dataset.paperTab;button.classList.toggle('active',tab===this.tab);button.setAttribute('aria-selected',String(tab===this.tab));button.querySelector('span').textContent=tab==='positions'?a?.positions.length||0:tab==='orders'?a?.orders.length||0:a?.history.length||0;}
+  for(const button of this.root.querySelectorAll('[data-paper-tab]')){const tab=button.dataset.paperTab;button.classList.toggle('active',tab===this.tab);button.setAttribute('aria-selected',String(tab===this.tab));const count=tab==='positions'?a?.positions.length:tab==='orders'?a?.orders.length:a?.history.length;const badge=button.querySelector('span');badge.textContent=count||'';badge.hidden=!count;}
   this.ticket();this.renderTable();
   if(redraw)for(const chart of this.charts){chart.pendingOrders=(a?.orders||[]).filter(p=>p.symbol===chart.symbol);chart.positions=(a?.positions||[]).filter(p=>p.symbol===chart.symbol).map(p=>({...p,type:p.side}));chart.renderDrawings();}
   this.onRender?.();
@@ -255,10 +338,8 @@ class PaperPanel {
   list.replaceChildren();const records=this.tab==='positions'?a?.positions||[]:this.tab==='orders'?a?.orders||[]:[...(a?.history||[])].reverse().slice(0,200);
   if(!records.length){
    const empty=document.createElement('div');empty.className='paper-empty';
-   empty.innerHTML='<strong></strong><span></span>';
-   empty.querySelector('strong').textContent=!a?'Chưa có tài khoản mô phỏng':this.tab==='positions'?'Không có vị thế đang mở':this.tab==='orders'?'Không có lệnh chờ khớp':'Chưa có lịch sử giao dịch';
-   empty.querySelector('span').textContent=!a?'Tạo tài khoản mới để chọn số vốn bắt đầu giao dịch.':this.tab==='positions'?'Đặt lệnh từ khung bên trái hoặc cụm nút Buy / Sell trên thanh công cụ.':'Mọi lệnh đã khớp, đóng hoặc hủy sẽ được ghi lại tại đây.';
-   if(!a){const cta=document.createElement('button');cta.type='button';cta.className='btn-primary paper-empty-cta';cta.textContent='+ Tạo tài khoản Demo';cta.onclick=()=>this.$('btn-new-account').click();empty.appendChild(cta);}
+   empty.innerHTML='<strong></strong>';
+   empty.querySelector('strong').textContent=this.tab==='positions'?'Không có vị thế đang mở':this.tab==='orders'?'Không có lệnh chờ khớp':'Chưa có lịch sử giao dịch';
    list.appendChild(empty);return;
   }
   const table=document.createElement('table'),head=document.createElement('thead'),body=document.createElement('tbody');const headers=this.tab==='history'?['Thời gian','Mã','Trạng thái','Chiều','HĐ','Giá','PnL / Lý do']:['Mã','Chiều','HĐ','Giá vào','SL','TP',this.tab==='positions'?'PnL mở':'Loại',''];head.innerHTML='<tr>'+headers.map(t=>'<th>'+t+'</th>').join('')+'</tr>';table.append(head,body);
@@ -281,7 +362,6 @@ class PaperPanel {
  buildCloseDialog(){this.closeModal=document.createElement('div');this.closeModal.className='modal';this.closeModal.setAttribute('role','dialog');this.closeModal.setAttribute('aria-modal','true');this.closeModal.setAttribute('aria-label','Đóng vị thế mô phỏng');this.closeModal.innerHTML='<div class="modal-content paper-close-dialog"><div class="modal-header"><span>Đóng vị thế</span><button class="modal-close" aria-label="Hủy đóng vị thế">×</button></div><div class="modal-body"><p class="paper-close-description"></p><label>Số hợp đồng đóng<input type="number" min="1" step="1" aria-label="Số hợp đồng đóng"></label><p class="paper-close-error" role="status"></p></div><div class="modal-footer"><button class="btn-secondary" data-close-cancel>Hủy</button><button class="btn-primary" data-close-confirm>Đóng theo giá live</button></div></div>';document.body.appendChild(this.closeModal);for(const b of this.closeModal.querySelectorAll('.modal-close,[data-close-cancel]'))b.onclick=()=>this.closeModal.classList.remove('show');this.closeModal.querySelector('[data-close-confirm]').onclick=()=>{try{if(this.closeTarget.account!==this.paper.state.active)throw Error('Tài khoản đã đổi.');this.guard(this.closeTarget.symbol);this.paper.close(this.closeTarget.id,'manual',Number(this.closeModal.querySelector('input').value));this.closeModal.classList.remove('show');this.render();}catch(error){this.closeModal.querySelector('.paper-close-error').textContent=error.message;}};this.closeModal.onkeydown=e=>{if(e.key==='Escape'){e.stopPropagation();this.closeModal.classList.remove('show');}};}
  closeDialog(p){this.closeTarget={id:p.id,symbol:p.symbol,account:this.paper.state.active};this.closeModal.querySelector('.paper-close-description').textContent=`${p.side.toUpperCase()} ${p.qty} ${p.symbol} · Giá vào ${this.price(p.price)}. Có thể đóng một phần.`;const input=this.closeModal.querySelector('input');input.max=p.qty;input.value=p.qty;this.closeModal.querySelector('.paper-close-error').textContent='';this.closeModal.classList.add('show');input.focus();}
  resize(){const grip=this.root.querySelector('.paper-resize');let drag;const set=value=>{const maxW=typeof innerWidth==='number'&&innerWidth>500?Math.min(600,Math.round(innerWidth*.48)):520;this.width=Math.max(310,Math.min(maxW,value));this.root.style.setProperty('--paper-width',this.width+'px');document.body.style.setProperty('--paper-width',this.width+'px');};let preferred=Workspace.read('paper_panel_width_v1',390);set(preferred);window.addEventListener('resize',()=>set(preferred));grip.onpointerdown=e=>{drag={x:e.clientX,width:this.width};grip.setPointerCapture(e.pointerId);};grip.onpointermove=e=>{if(drag)set(drag.width+drag.x-e.clientX);};grip.onpointerup=grip.onpointercancel=()=>{if(drag){preferred=this.width;Workspace.write('paper_panel_width_v1',this.width);}drag=null;};grip.onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();set(this.width+(e.key==='ArrowLeft'?20:-20));preferred=this.width;Workspace.write('paper_panel_width_v1',this.height=this.width);}};}
- export(){const a=this.paper.account;if(!a)return;const rows=[['time','symbol','event','side','quantity','entry','exit','realized_pnl','reason'],...a.history.map(h=>[new Date(h.at||h.created).toISOString(),h.symbol,h.event,h.side,h.qty,h.price,h.exit,h.pnl,h.reason])];const cell=v=>{let s=String(v??'');if(typeof v!=='number'&&/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';};const url=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(cell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='paper-history.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 }
 /* Canvas labels with DOM hit targets: TopstepX-style order lines, zones, axis tags & segmented badges. */
 class PaperChartOrders {
@@ -366,7 +446,7 @@ class PaperChartOrders {
   Object.assign(button.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px',cursor});
  }
  drawSegmented(ctx,x,y,segments){
-  const font='bold 11px Arial, Helvetica, sans-serif';
+  const font='bold 11px "JetBrains Mono", monospace';
   ctx.font=font;
   const h=16,half=8;
   let cur=x;const boxes=[];
@@ -398,7 +478,7 @@ class PaperChartOrders {
   ctx.save();ctx.beginPath();ctx.rect(width,0,axisW,height);ctx.clip();
   const top=Math.max(0,Math.min(height-16,y-8));
   ctx.fillStyle=bg;ctx.fillRect(width+1,top,axisW-2,16);
-  ctx.fillStyle=fg;ctx.font='bold 11px Arial, Helvetica, sans-serif';ctx.textBaseline='middle';ctx.textAlign='left';
+  ctx.fillStyle=fg;ctx.font='bold 11px "JetBrains Mono", monospace';ctx.textBaseline='middle';ctx.textAlign='left';
   ctx.fillText(this.formatAxisPrice(price),width+5,top+8.5,axisW-8);
   ctx.restore();
  }
@@ -417,7 +497,7 @@ class PaperChartOrders {
    ctx.restore();
   };
   const clampX=(x,w)=>Math.max(safeLeft,Math.min(x,Math.max(safeLeft,width-w-6)));
-  const font='bold 11px Arial, Helvetica, sans-serif';
+  const font='bold 11px "JetBrains Mono", monospace';
   const measureSegs=segs=>{
    ctx.save();ctx.font=font;
    let total=0;for(const s of segs)total+=Math.max(s.minW||0,(s.grip?8:0)+Math.ceil(ctx.measureText(s.text).width)+(s.pad??5)*2);
@@ -568,7 +648,7 @@ class PaperChartOrders {
   ctx.strokeStyle=ctx.fillStyle='#edc284';
   ctx.setLineDash([4,4]);
   ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();
-  ctx.font='12px Arial';
+  ctx.font='12px "JetBrains Mono", monospace';
   ctx.fillText(order.side.toUpperCase()+' '+order.qty+' · Projected market order',12,Math.max(12,y-5));
   ctx.restore();
  }
@@ -646,7 +726,7 @@ class PaperChartOrders {
     const avgPrice=totalQty>0?items.reduce((s,it)=>s+it.execPrice*it.qty,0)/totalQty:lastItem.execPrice;
     const label=count>1?`${count}× (${totalQty} @ ${this.formatAxisPrice(avgPrice)})`:`${lastItem.event.qty} @ ${this.formatAxisPrice(lastItem.execPrice)}`;
     const ly=tailY+dir*10;
-    ctx.font='500 11px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font='500 11px "JetBrains Mono", monospace';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.strokeStyle=halo;ctx.lineWidth=3;ctx.strokeText(label,x,ly);
     ctx.fillStyle=labelCol;ctx.fillText(label,x,ly);
    }
