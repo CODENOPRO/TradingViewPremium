@@ -1209,9 +1209,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1219,9 +1233,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1229,9 +1257,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1239,9 +1281,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1259,9 +1315,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1269,9 +1339,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1279,9 +1363,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1289,9 +1387,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1322,9 +1434,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1332,9 +1458,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1342,9 +1482,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1352,9 +1506,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1372,9 +1540,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1382,9 +1564,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1392,9 +1588,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1402,9 +1612,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1442,9 +1666,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1452,9 +1690,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1462,9 +1714,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1472,9 +1738,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1492,9 +1772,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1502,9 +1796,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1512,9 +1820,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1522,9 +1844,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1555,9 +1891,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1565,9 +1915,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1575,9 +1939,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1585,9 +1963,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1605,9 +1997,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1615,9 +2021,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1625,9 +2045,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1635,9 +2069,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1675,9 +2123,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1685,9 +2147,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1695,9 +2171,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1705,9 +2195,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1725,9 +2229,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1735,9 +2253,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1745,9 +2277,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1755,9 +2301,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1788,9 +2348,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1798,9 +2372,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1808,9 +2396,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1818,9 +2420,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1838,9 +2454,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1848,9 +2478,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1858,9 +2502,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1868,9 +2526,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1914,9 +2586,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1924,9 +2610,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1934,9 +2634,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1944,9 +2658,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1964,9 +2692,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1974,9 +2716,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -1984,9 +2740,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -1994,9 +2764,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -2027,9 +2811,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -2037,9 +2835,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -2047,9 +2859,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -2057,9 +2883,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -2077,9 +2917,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -2087,9 +2941,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
@@ -2097,9 +2965,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: thay `<input type="color">` mặc định của Windows trong bảng 24 mức Fib và `Use one color` bằng nút `.tv-pill-color` mở `ColorPicker.mount(...)` đồng bộ với toàn bộ các công cụ vẽ khác; tăng độ rộng ô nhập hệ số `.fib-level-item input[type="number"]` lên `74px` để hiển thị trọn `0.236`, `0.382`, `0.618`, `4.236` không bị cắt chữ.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
@@ -2107,9 +2989,23 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: đối chiếu module `479248` (`LineToolRiskRewardBase`) trên TradingView Desktop `:9222`; thêm tùy chỉnh màu chữ (`textStyle.color`) và cỡ chữ (`textStyle.size`: `8..24`) cho tab Style của Position, đồng bộ render chữ trong `DrawingModel.draw()` bằng `DEFAULT_FONT` thay vì `'Arial'`, và hỗ trợ nhiều `[data-pill]` cùng `id` trong `DrawingSettings`.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: chuyển 2 điểm neo Target/Stop về mép trái (`g.a.x`) giống TradingView để không đè vào vùng giữa; tách pill giữa thành 2 dòng (`Open PnL: ..., Qty: ...` / `Risk/reward ratio: ...`) đặt phía trên/dưới đường entry với viền trắng mỏng và màu xanh/đỏ theo PnL để không đè lên nút neo và nhãn giá.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
+- File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi:
+  1. Trong `DrawingEditor.prototype.cursor()`, bổ sung `hit.handle === 'p1_right'` trả về `'ew-resize'` (mũi tên ngang) thay vì mũi tên chéo.
+  2. Trong `DrawingModel.draw()` cho `position`: quét các nến trong khoảng `[p1.time .. p2.time]` để tìm điểm chạm SL/TP (hoặc giá đóng cửa nến cuối trong vùng), vẽ lớp phủ đậm hơn từ entry tới mức thoát và vẽ mũi tên nét đứt nối từ `(p1.time, p1.price)` tới điểm thoát giống TradingView Desktop.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ

@@ -283,7 +283,7 @@ class DrawingEditor {
     if(hit.drawing.locked||this.manager.drawingsLocked)return 'not-allowed';
     if(hit.drawing.type==='vline')return 'ew-resize';
     if(hit.handle==='body')return 'move';
-    if(hit.handle.endsWith('_time'))return 'ew-resize';
+    if(hit.handle.endsWith('_time')||hit.handle==='p1_right')return 'ew-resize';
     if(hit.handle.endsWith('_price')||hit.drawing.type==='hline')return 'ns-resize';
     const g=DrawingModel.geometry(chart,hit.drawing);if(!g)return 'move';
     const same=(g.a.x-g.b.x)*(g.a.y-g.b.y)>=0;

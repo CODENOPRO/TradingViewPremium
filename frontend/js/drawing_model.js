@@ -588,6 +588,46 @@ const DrawingModel = (() => {
       const rewardTop=Math.min(entry,target),rewardBottom=Math.max(entry,target),riskTop=Math.min(entry,stop),riskBottom=Math.max(entry,stop);
       ctx.fillStyle=rgba(d.profitColor,d.profitOpacity);ctx.fillRect(boxLeft,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
       ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(boxLeft,riskTop,span,Math.max(1,riskBottom-riskTop));
+      const bars=chart.bars||[];
+      let exitBar=null,exitPrice=null;
+      for(let i=0;i<bars.length;i++){
+        const b=bars[i];
+        if(b.time<d.p1.time)continue;
+        if(b.time>d.p2.time)break;
+        exitBar=b;exitPrice=b.close;
+        if(isLong){
+          if(b.low<=d.p3.price){exitPrice=d.p3.price;break;}
+          if(b.high>=d.p2.price){exitPrice=d.p2.price;break;}
+        }else{
+          if(b.high>=d.p3.price){exitPrice=d.p3.price;break;}
+          if(b.low<=d.p2.price){exitPrice=d.p2.price;break;}
+        }
+      }
+      if(exitBar&&Number.isFinite(exitPrice)){
+        const exitPt=point(chart,{time:exitBar.time,price:exitPrice});
+        if(Number.isFinite(exitPt.x)&&Number.isFinite(exitPt.y)){
+          const inProfit=isLong?exitPrice>=d.p1.price:exitPrice<=d.p1.price;
+          const exTop=Math.min(entry,exitPt.y),exH=Math.max(1,Math.abs(exitPt.y-entry));
+          ctx.fillStyle=rgba(inProfit?d.profitColor:d.stopColor,Math.min(45,(inProfit?d.profitOpacity:d.stopOpacity)*0.95));
+          ctx.fillRect(boxLeft,exTop,Math.max(1,exitPt.x-boxLeft),exH);
+          ctx.save();
+          ctx.strokeStyle='rgba(120, 123, 134, 0.78)';
+          ctx.lineWidth=1.5;
+          ctx.setLineDash([5,4]);
+          line(boxLeft,entry,exitPt.x,exitPt.y);
+          ctx.setLineDash([]);
+          const dx=exitPt.x-boxLeft,dy=exitPt.y-entry,len=Math.hypot(dx,dy);
+          if(len>10){
+            const ux=dx/len,uy=dy/len,sz=7;
+            ctx.beginPath();
+            ctx.moveTo(exitPt.x-(ux*sz-uy*4.5),exitPt.y-(uy*sz+ux*4.5));
+            ctx.lineTo(exitPt.x,exitPt.y);
+            ctx.lineTo(exitPt.x-(ux*sz+uy*4.5),exitPt.y-(uy*sz-ux*4.5));
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+      }
       ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
       const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
       if(d.alwaysShowStats===true||isSelected||d.isTemp){
