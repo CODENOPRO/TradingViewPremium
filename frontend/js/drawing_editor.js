@@ -19,6 +19,7 @@ class DrawingEditor {
       + `<button type="button" class="tv-tb-btn" data-action="settings" title="Settings" aria-label="Drawing settings">${DrawingEditor.tbSvg('M12 3.2 19.6 7.6v8.8L12 20.8l-7.6-4.4V7.6zM12 14.8a2.8 2.8 0 1 0 0-5.6 2.8 2.8 0 0 0 0 5.6z')}</button>`
       + `<button type="button" class="tv-tb-btn" data-action="alert" title="Add alert" aria-label="Add alert on drawing">${DrawingEditor.tbSvg('M11.5 9.8v2.7l1.8 1M6.3 6 4.2 8M16.7 6l2.1 2M18 15v5M15.5 17.5h5M17.2 12a5.8 5.8 0 1 0-5.7 6.3')}</button>`
       + `<button type="button" class="tv-tb-btn" data-action="lock" title="Lock / Unlock" aria-label="Lock drawing"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="10.5" width="12" height="9" rx="1.8"/><path d="M12 14.5v1.5"/><path data-lock-shackle d="M8.5 10.5V7.2a3.5 3.5 0 0 1 6.7-1.4"/></svg></button>`
+      + `<button type="button" class="tv-tb-btn" data-action="anchor" title="Anchor" aria-label="Anchor text" hidden>${DrawingEditor.tbSvg('M12 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 0v14m-7-5a7 7 0 0 0 14 0m-14 0H3m16 0h2M8.5 10h7')}</button>`
       + `<button type="button" class="tv-tb-btn" data-action="delete" title="Remove" aria-label="Remove drawing">${DrawingEditor.tbSvg('M5 6.5h14M9.5 6.5V4.5h5v2M7.5 6.5l.8 12a1 1 0 0 0 1 .9h5.4a1 1 0 0 0 1-.9l.8-12')}</button>`
       + `<button type="button" class="tv-tb-btn" data-action="more" title="More" aria-label="More drawing actions"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="17.5" cy="12" r="1.4"/></svg></button>`
       + `<div class="drawing-more" hidden><button type="button" data-action="front">Bring to front</button><button type="button" data-action="back">Send to back</button><div class="chart-context-divider"></div><button type="button" data-action="duplicate">Clone</button><button type="button" data-action="copy">Copy</button><div class="chart-context-divider"></div><button type="button" data-action="hide">Hide</button><button type="button" data-action="template">Template…</button></div>`;
@@ -55,6 +56,20 @@ class DrawingEditor {
       else if(action==='more')this.toolbar.querySelector('.drawing-more').hidden=!this.toolbar.querySelector('.drawing-more').hidden;
       else if(action==='delete')this.remove();
       else if(action==='lock')this.commit({...this.drawing,locked:!this.drawing.locked});
+      else if(action==='anchor'){
+        const d=structuredClone(this.drawing),c=this.selection.chart;
+        if(!d.anchored){
+          const g=DrawingModel.geometry(c,d);
+          if(g){d.anchored=true;d.anchorX=g.a.x;d.anchorY=g.a.y;}
+        }else{
+          d.anchored=false;
+          if(Number.isFinite(d.anchorX)&&Number.isFinite(d.anchorY)){
+            const p=DrawingModel.fromPixel(c,d.anchorX,d.anchorY);
+            if(p)d.p1=p;
+          }
+        }
+        this.commit(d);
+      }
       else if(action==='duplicate'){
         const draft=structuredClone(this.drawing);draft.id=crypto.randomUUID();draft.locked=false;
         const c=this.selection.chart;draft.p1.time=DrawingModel.timeAt(c,DrawingModel.logicalIndex(c,draft.p1.time)+2);
@@ -214,6 +229,8 @@ class DrawingEditor {
     setHidden('[data-tb-pop="textColor"]',!['box','line','hline','vline','text'].includes(d.type));
     setHidden('[data-tb-pop="width"]',isTextOnly);
     setHidden('[data-tb-pop="lineStyle"]',isTextOnly||d.type==='brush');
+    setHidden('[data-action="anchor"]',!isTextOnly);
+    this.toolbar.querySelector('[data-action="anchor"]')?.classList?.toggle('active',!!d.anchored);
     const setSwatch=(key,val)=>{const el=this.toolbar.querySelector(`[data-swatch-bar="${key}"]`);if(el?.style)el.style.background=val;};
     setSwatch('borderColor',DrawingModel.rgba(d.borderColor,d.strokeOpacity??100));
     setSwatch('fillColor',d.fillEnabled===false?'transparent':DrawingModel.rgba(d.fillColor,d.fillOpacity??32));
@@ -355,13 +372,21 @@ class DrawingEditor {
     const {chart,handle,original,start}=this.drag;
     const rect=chart.container.getBoundingClientRect(),x=input.clientX-rect.left,y=input.clientY-rect.top;
     if(Math.hypot(x-this.drag.startX,y-this.drag.startY)<3&&!this.drag.changed)return false;
+    let d=structuredClone(original);
+    if(d.type==='text'&&d.anchored){
+      const baseX=Number.isFinite(original.anchorX)?original.anchorX:this.drag.startX;
+      const baseY=Number.isFinite(original.anchorY)?original.anchorY:this.drag.startY;
+      d.anchorX=baseX+(x-this.drag.startX);
+      d.anchorY=baseY+(y-this.drag.startY);
+      this.drag.changed=true;this.drag.draft=d;this.preview(d);
+      return true;
+    }
     let point=DrawingModel.fromPixel(chart,x,y);if(!point)return false;
     if(handle!=='body')point=this.manager.snapPoint(chart,point.time,point.price,input);
     if(input.shiftKey&&original.type==='line'&&(handle==='p1'||handle==='p2')){
       const anchor=handle==='p1'?original.p2:original.p1;
       point=DrawingModel.constrainLinePoint(chart,anchor,point,{x,y});
     }
-    let d=structuredClone(original);
     if(d.type==='position'){
       const isLong=d.side==='short'?false:(d.side==='long'?true:d.p2.price>=d.p1.price);
       const tick=chart.metadata?.tickSize||0.0001;

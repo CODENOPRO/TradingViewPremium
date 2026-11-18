@@ -463,3 +463,16 @@ test('DrawingModel.inRect and DrawingEditor multiSelection delete multiple drawi
   const hits = chart.drawings.filter(d => DrawingModel.inRect(chart, d, rect)).map(d => d.id);
   assert.deepEqual(hits, ['d1', 'd2']);
 });
+
+test('Anchored text keeps fixed screen coordinates regardless of chart pan/zoom', () => {
+  const chart = {
+    currentTimeframe: '1m',
+    tfSeconds: 60,
+    bars: [{ time: 60 }, { time: 120 }],
+    chart: { timeScale: () => ({ logicalToCoordinate: () => 999 }) },
+    series: { priceToCoordinate: () => 888 }
+  };
+  const anchored = { id: 't_anc', type: 'text', p1: { time: 60, price: 100 }, anchored: true, anchorX: 123, anchorY: 45, text: 'Pinned' };
+  const g = DrawingModel.geometry(chart, anchored);
+  assert.deepEqual(g.a, { x: 123, y: 45 });
+});

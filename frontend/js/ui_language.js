@@ -334,6 +334,7 @@ Brush|Cọ vẽ
 Vertical Line|Đường dọc
 Vertical line|Đường dọc
 Text wrap|Xuống dòng tự động
+Anchor|Ghim vị trí
 Text orientation|Hướng chữ
 Horizontal|Ngang
 Vertical|Dọc

@@ -8,7 +8,7 @@ const DrawingModel = (() => {
   function baseDefaults(type) {
     return baseDefaultsCache[type] || (baseDefaultsCache[type] = {
       title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, showTime:true, smooth:5,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, anchored:false, showTime:true, smooth:5,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
       textStyle:{ color:type==='text'||type==='vline'?'#2962ff':type==='position'?'#ffffff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
@@ -41,7 +41,7 @@ const DrawingModel = (() => {
   }
   function defaults(type) {
     return { title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, showTime:true, smooth:5,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, anchored:false, showTime:true, smooth:5,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
       textStyle:{ color:type==='text'||type==='vline'?'#2962ff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
@@ -125,7 +125,12 @@ const DrawingModel = (() => {
   }
   const dash = style => style === 'dashed' ? [7,5] : style === 'dotted' ? [2,3] : [];
   function geometry(chart, value, preNorm=false) {
-    const normalized=preNorm?value:fastNormalize(value),a=point(chart,normalized.p1),b=normalized.p2?point(chart,normalized.p2):a,c=normalized.p3?point(chart,normalized.p3):null;
+    const normalized=preNorm?value:fastNormalize(value);
+    if (normalized.type==='text' && normalized.anchored && Number.isFinite(normalized.anchorX) && Number.isFinite(normalized.anchorY)) {
+      const a={x:normalized.anchorX,y:normalized.anchorY};
+      return { a, b:a, c:null, left:a.x, right:a.x, top:a.y, bottom:a.y };
+    }
+    const a=point(chart,normalized.p1),b=normalized.p2?point(chart,normalized.p2):a,c=normalized.p3?point(chart,normalized.p3):null;
     if (!Number.isFinite(a.x) || !Number.isFinite(a.y) || !Number.isFinite(b.x) || !Number.isFinite(b.y) || (c && (!Number.isFinite(c.x) || !Number.isFinite(c.y)))) return null;
     if (value.type==='brush'&&value.points?.length) {
       const points=value.points.map(p=>point(chart,p)).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));

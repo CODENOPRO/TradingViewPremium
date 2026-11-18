@@ -77,6 +77,7 @@ class DrawingSettings {
         ${tvRow('<label class="tv-check-label"><input data-field="textStyle.fillBackground" type="checkbox"><span>Background</span></label>', pillHtml('textBg'), 'text')}
         ${tvRow('<label class="tv-check-label"><input data-field="textStyle.drawBorder" type="checkbox"><span>Border</span></label>', pillHtml('textBorder'), 'text')}
         ${tvRow('<label class="tv-check-label"><input data-field="textStyle.wordWrap" type="checkbox"><span>Text wrap</span></label>', '', 'text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="anchored" type="checkbox"><span>Anchor</span></label>', '', 'text')}
         ${tvRow('<span>Text orientation</span>', `<select data-field="textStyle.orientation" aria-label="Text orientation">${selectOpts([['horizontal', 'Horizontal'], ['vertical', 'Vertical']])}</select>`, 'vline')}
         ${tvRow('<span>Text alignment</span>', `<div class="tv-align-pair"><select data-field="textStyle.vertical" data-types="box,line,hline,vline" aria-label="Vertical alignment">${selectOpts([['inside', 'Inside'], ['above', 'Above'], ['below', 'Below'], ['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']])}</select><select data-field="textStyle.horizontal" aria-label="Horizontal alignment">${selectOpts([['left', 'Left'], ['center', 'Center'], ['right', 'Right']])}</select></div>`, 'box,line,hline,vline')}
       </div>
@@ -427,6 +428,10 @@ class DrawingSettings {
     });
     this.root.querySelectorAll('[data-toggle]').forEach(btn => btn.setAttribute('aria-pressed', String(!!this.value(btn.dataset.toggle))));
     for (const pill of this.pills.values()) this.syncPill(pill);
+    if (this.draft.type === 'text' && this.draft.anchored && (!Number.isFinite(this.draft.anchorX) || !Number.isFinite(this.draft.anchorY))) {
+      const g = DrawingModel.geometry(this.chart, { ...this.draft, anchored: false });
+      if (g) { this.draft.anchorX = g.a.x; this.draft.anchorY = g.a.y; }
+    }
     this.root.querySelectorAll('[data-mirror]').forEach(input => input.value = this.value(input.dataset.mirror));
     this.root.querySelector('#drawing-text').value = this.draft.text || '';
     this.root.querySelector('#drawing-levels').value = this.draft.levels.join(', ');
@@ -470,6 +475,10 @@ class DrawingSettings {
       const delta = DrawingModel.logicalIndex(this.chart, this.draft.p1.time) - DrawingModel.logicalIndex(this.chart, brushAnchor.time),
         price = this.draft.p1.price - brushAnchor.price;
       this.draft.points = this.draft.points.map(p => ({ time: DrawingModel.timeAt(this.chart, DrawingModel.logicalIndex(this.chart, p.time) + delta, true), price: p.price + price }));
+    }
+    if (this.draft.type === 'text' && this.draft.anchored && (!Number.isFinite(this.draft.anchorX) || !Number.isFinite(this.draft.anchorY))) {
+      const g = DrawingModel.geometry(this.chart, { ...this.draft, anchored: false });
+      if (g) { this.draft.anchorX = g.a.x; this.draft.anchorY = g.a.y; }
     }
     this.root.querySelectorAll('[data-mirror]').forEach(input => input.value = this.value(input.dataset.mirror));
   }
