@@ -90,7 +90,7 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 /* TradingView Desktop-matched Drawing Settings dialog */
 #drawing-settings{--accent:#eef0f4;background:rgba(0,0,0,.44)}
 #drawing-settings [hidden]{display:none!important}
-#drawing-settings .drawing-dialog{zoom:var(--toolbar-scale,1);width:400px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#d8dce3;border:1px solid rgba(255,255,255,.11)!important;border-radius:14px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
+#drawing-settings .drawing-dialog{zoom:var(--toolbar-scale,1);width:400px;max-width:calc(100vw - 24px);background:#1e222d!important;color:#d1d4dc;border:1px solid #2e323d!important;border-radius:12px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
 .fib-levels-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:6px 0 10px}
 .fib-level-item{display:flex;align-items:center;gap:6px;min-width:0}
 .fib-level-item input[type="number"]{flex:1;min-width:68px;width:74px;padding:4px 7px;font-size:12px}
@@ -155,7 +155,7 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 #drawing-settings .btn-secondary:hover{background:rgba(255,255,255,.06);border-color:#686e7d}
 #drawing-settings .btn-primary{height:34px;padding:0 18px;background:#f0f2f5;border:1px solid #f0f2f5;border-radius:6px;color:#14161b;font-size:13px;font-weight:600;box-shadow:none}
 #drawing-settings .btn-primary:hover{background:#fff}
-.tv-style-popover{position:fixed;z-index:260;width:246px;padding:12px;background:#1d1f24;border:1px solid rgba(255,255,255,.15);border-radius:10px;box-shadow:0 14px 36px rgba(0,0,0,.66);display:flex;flex-direction:column;gap:10px;color:#d2d6de;font-size:12px}
+.tv-style-popover{position:fixed;z-index:260;width:246px;padding:12px;background:#1e222d;border:1px solid #2e323d;border-radius:8px;box-shadow:0 14px 36px rgba(0,0,0,.66);display:flex;flex-direction:column;gap:10px;color:#d1d4dc;font-size:12px}
 .tv-palette-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
 .tv-palette-swatch{height:17px;padding:0;border-radius:3px;border:1px solid rgba(255,255,255,.1);cursor:pointer}
 .tv-palette-swatch.selected{outline:2px solid #fff;outline-offset:1px}
@@ -252,7 +252,8 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 }
 body:not(.reduce-motion) .chart-context-menu[role=menu] { animation: chart-menu-in .15s ease-out; }
 @keyframes chart-menu-in { from { opacity: 0; } to { opacity: 1; } }
-.tv-template-menu{position:fixed;z-index:285;min-width:196px;max-height:min(340px,calc(100vh - 16px));overflow-y:auto}
+.tv-template-menu{position:fixed;z-index:285;min-width:196px;max-height:min(340px,calc(100vh - 16px));overflow-y:auto;background:#1e222d!important;border:1px solid #2e323d!important;border-radius:8px;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:#d1d4dc;box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.tv-template-menu button:hover,.tv-template-menu button:focus-visible{background:#2a2e39!important;color:#ffffff!important}
 .tv-tpl-row{display:flex;align-items:center}
 .chart-context-menu .tv-tpl-row .tv-tpl-apply{flex:1;min-width:0;justify-content:space-between;padding-left:14px}
 .tv-tpl-delete{flex:none;width:28px;height:30px;margin-right:6px;padding:0;background:transparent;border:0;border-radius:4px;color:#8c919c;font-size:15px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
@@ -270,33 +271,33 @@ body:not(.reduce-motion) .chart-context-menu[role=menu] { animation: chart-menu-
 .tv-save-dialog .modal-footer{padding:12px 18px 16px;border:0;display:flex;justify-content:flex-end;gap:8px}
 .tv-save-dialog .btn-secondary{height:34px;padding:0 14px;background:transparent;border:1px solid #484c57;border-radius:6px;color:#e2e5eb;font-size:13px}
 .tv-save-dialog .btn-primary{height:34px;padding:0 16px;background:#f0f2f5;border:1px solid #f0f2f5;border-radius:6px;color:#14161b;font-size:13px;font-weight:600}
-.drawing-toolbar{position:fixed;z-index:120;display:inline-flex;align-items:center;gap:2px;width:max-content;height:38px;min-height:38px;padding:0 6px 0 3px;background:#1e1e1e;border:1px solid #2e3138;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.48);user-select:none}
+.drawing-toolbar{position:fixed;z-index:120;display:inline-flex;align-items:center;gap:2px;width:max-content;height:38px;min-height:38px;padding:0 6px 0 4px;background:#1e222d;border:1px solid #2e323d;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.48);user-select:none}
 .drawing-toolbar [hidden]{display:none!important}
-.drawing-toolbar .drawing-grip{width:18px;height:30px;padding:0;border:0;border-radius:4px;background:transparent;color:#787b86;display:inline-flex;align-items:center;justify-content:center;cursor:grab;flex:none}
+.drawing-toolbar .drawing-grip{width:22px;height:30px;margin-right:2px;padding:0;border:0;border-radius:4px;background:#2a2e39;color:#787b86;display:inline-flex;align-items:center;justify-content:center;cursor:grab;flex:none}
 .drawing-toolbar .drawing-grip svg{width:15px;height:18px;fill:currentColor;stroke:none;display:block;flex:none;pointer-events:none}
-.drawing-toolbar .drawing-grip:hover{background:#2c2f36;color:#d1d4dc}
+.drawing-toolbar .drawing-grip:hover{background:#363a45;color:#d1d4dc}
 .drawing-toolbar .drawing-grip:active{cursor:grabbing}
-.drawing-toolbar .tv-tb-btn{width:auto;min-width:30px;height:30px;padding:0 5px;border:0;border-radius:5px;background:transparent;color:#dbdee6;display:inline-flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-size:13px;line-height:1;transition:background .12s,color .12s}
-.drawing-toolbar .tv-tb-btn:hover{background:#2c2f36;color:#ffffff}
-.drawing-toolbar .tv-tb-btn.active{background:#343842;color:#ffffff}
+.drawing-toolbar .tv-tb-btn{width:auto;min-width:30px;height:30px;padding:0 5px;border:0;border-radius:5px;background:transparent;color:#d1d4dc;display:inline-flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-size:13px;line-height:1;transition:background .12s,color .12s}
+.drawing-toolbar .tv-tb-btn:hover{background:#2a2e39;color:#ffffff}
+.drawing-toolbar .tv-tb-btn.active{background:#363a45;color:#ffffff}
 .drawing-toolbar .tv-tb-btn svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;fill:none;display:block;flex:none;pointer-events:none}
 .drawing-toolbar .tv-tb-btn.tv-tb-color{flex-direction:column;gap:2px;width:32px;padding:2px 0 3px}
 .drawing-toolbar .tv-tb-btn.tv-tb-color svg{width:17px;height:17px}
 .tv-tb-swatch{position:relative;display:block;width:16px;height:3px;border-radius:1.5px;overflow:hidden;background-color:#262930;background-image:linear-gradient(45deg,#3e424c 25%,transparent 25%),linear-gradient(-45deg,#3e424c 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#3e424c 75%),linear-gradient(-45deg,transparent 75%,#3e424c 75%);background-size:4px 4px;background-position:0 0,0 2px,2px -2px,-2px 0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 .tv-tb-swatch i{position:absolute;inset:0;display:block;border-radius:inherit}
-.drawing-toolbar .tv-tb-btn.tv-tb-wide{padding:0 7px;gap:6px;min-width:52px;font-variant-numeric:tabular-nums;font-size:12.5px;font-weight:500;color:#dbdee6}
+.drawing-toolbar .tv-tb-btn.tv-tb-wide{padding:0 7px;gap:6px;min-width:52px;font-variant-numeric:tabular-nums;font-size:12.5px;font-weight:500;color:#d1d4dc}
 .drawing-toolbar .tv-tb-btn .tv-tb-line-preview{width:18px;height:14px}
 .drawing-toolbar .tv-tb-btn.tv-tb-line{padding:0 6px;min-width:32px}
 .drawing-toolbar .tv-tb-btn .tv-tb-style-preview{width:20px;height:14px}
-.drawing-toolbar .drawing-more{position:absolute;top:calc(100% + 6px);right:0;min-width:184px;width:max-content;background:#1e1e1e;border:1px solid #33353b;border-radius:8px;padding:6px 0;box-shadow:0 10px 28px rgba(0,0,0,.55);display:flex;flex-direction:column;z-index:265}
-.drawing-toolbar .drawing-more button{width:100%;height:30px;padding:0 14px;border:0;border-radius:0;background:transparent;color:#e4e6ec;font-size:13px;font-weight:400;display:flex;align-items:center;justify-content:flex-start;text-align:left;cursor:pointer;white-space:nowrap}
-.drawing-toolbar .drawing-more button:hover{background:#2c2f36;color:#ffffff}
-.drawing-toolbar .drawing-more .chart-context-divider{height:1px;margin:5px 0;background:#2f3239}
+.drawing-toolbar .drawing-more{position:absolute;top:calc(100% + 6px);right:0;min-width:184px;width:max-content;background:#1e222d;border:1px solid #2e323d;border-radius:8px;padding:6px 0;box-shadow:0 10px 28px rgba(0,0,0,.55);display:flex;flex-direction:column;z-index:265}
+.drawing-toolbar .drawing-more button{width:100%;height:30px;padding:0 14px;border:0;border-radius:0;background:transparent;color:#d1d4dc;font-size:13px;font-weight:400;display:flex;align-items:center;justify-content:flex-start;text-align:left;cursor:pointer;white-space:nowrap}
+.drawing-toolbar .drawing-more button:hover{background:#2a2e39;color:#ffffff}
+.drawing-toolbar .drawing-more .chart-context-divider{height:1px;margin:5px 0;background:#2e323d}
 .tv-tb-popover{z-index:265;min-width:214px;padding:10px}
-.tv-tb-popover.tv-tb-list-pop{min-width:136px;padding:6px 0;background:#1e1e1e;border:1px solid #33353b;border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
-.tv-tb-list-item{width:100%;height:32px;padding:0 14px;border:0;background:transparent;color:#e4e6ec;font-size:13px;display:flex;align-items:center;gap:10px;cursor:pointer;text-align:left}
-.tv-tb-list-item:hover{background:#2c2f36;color:#ffffff}
-.tv-tb-list-item.active,.tv-tb-list-item[aria-pressed="true"]{background:#2f3440;color:#ffffff;font-weight:500}
+.tv-tb-popover.tv-tb-list-pop{min-width:136px;padding:6px 0;background:#1e222d;border:1px solid #2e323d;border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.tv-tb-list-item{width:100%;height:32px;padding:0 14px;border:0;background:transparent;color:#d1d4dc;font-size:13px;display:flex;align-items:center;gap:10px;cursor:pointer;text-align:left}
+.tv-tb-list-item:hover{background:#2a2e39;color:#ffffff}
+.tv-tb-list-item.active,.tv-tb-list-item[aria-pressed="true"]{background:#363a45;color:#ffffff;font-weight:500}
 .tv-tb-list-item svg{width:54px;height:12px;flex:none;color:currentColor}
 .tv-tb-pop-check{display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid #2e3138;font-size:12.5px;color:#d6d9e0;cursor:pointer;user-select:none}
 .tv-tb-pop-check input{accent-color:#f0f2f5;width:14px;height:14px;margin:0;cursor:pointer}

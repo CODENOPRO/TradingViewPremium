@@ -9416,3 +9416,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — UI Handoff Replace & Sync (`TradingViewPremium-UI-Handoff-20261119`)**:
   - Verified and synced all handoff UI CSS & JS modules (`style.css`, `chart_desktop.css`, `chart_dock.css`, `terminal_polish.css`, `terminal_companions.css`, `terminal_studio.css`, `dialog_redesign.css`, `settings.css`, `wow_overrides.css`, `wow_overrides.js`, `chart_settings.js`, `price_alerts.js`, `qt_mode.js`, `paper_panel.js`) into `frontend/index.html` while preserving `Trading` panel title, stacked execution chevrons in `paper_panel.js`, and `zoom: var(--toolbar-scale, 1)` on settings modals.
   - Verified `node --test tests/*.test.cjs` (169/169 passed) and Playwright Edge (`channel='msedge'`) on `frontend/index.html` (`PAGEERRORS: 0`).
+- **2026-11-19 — Drawing Tool Settings & Toolbar TV Parity**:
+  - Synced `.drawing-toolbar`, `.drawing-grip`, `.drawing-more`, `.tv-tb-popover.tv-tb-list-pop`, `.tv-style-popover`, `.tv-template-menu`, and `#drawing-settings .drawing-dialog` in `frontend/css/fixed_shell.css` and `frontend/index.html` to TradingView Desktop `#1e222d` surface, `6px` radius, and `#2a2e39` drag-grip pill (removing glass/brownish tint on `.tv-template-menu`).
+  - Verified `node --test tests/*.test.cjs` (169/169 passed) and Playwright Edge (`PAGEERRORS: 0`).
