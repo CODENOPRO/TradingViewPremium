@@ -1156,3 +1156,13 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
 - Nguyên nhân gốc & thay đổi: hai ô `<input type="number">` của Position (`accountSize` và `risk`) chỉ khai báo `min` mà không có `max`, khiến `input.max === ""` và biểu thức `Number(input.max)` trong `DrawingSettings.prototype.read()` trả về `0`; mọi giá trị dương (`25000 > 0`, `100 > 0`) đều ném lỗi `Error('Thông số vượt giới hạn.')`. Đã sửa chỉ kiểm tra `min`/`max` khi `input.min !== ''` / `input.max !== ''` và bỏ qua các dòng `[data-types]` đang ẩn (`hidden`).
 - Kiểm chứng: `node --test tests/drawings.test.cjs tests/frontend.test.cjs` đạt **16/16 passed**.
+
+### 2026-11-18 — Viết lại README.md chuyên nghiệp, trực quan theo chuẩn dự án cao cấp
+- File đã sửa: `README.md`, `AGENTS.md`.
+- Thay đổi: thay thế toàn bộ nội dung nháp rời rạc cũ bằng tài liệu chuẩn mực chuyên nghiệp:
+  1. Header hiện đại với các huy hiệu (badges) Platform, Python, Engine, Architecture và Tests Passing.
+  2. Sơ đồ ASCII mô tả trực quan kiến trúc luồng dữ liệu 3 tầng (TradingView Desktop CDP :9222 -> Python Bridge Server :3000/:8080 -> Vanilla JS Lightweight Charts Web Terminal).
+  3. Trình bày chi tiết 7 cụm tính năng cốt lõi: Multi-Chart Grid (1–16 layout), Quantaibay / QT Algorithmic Engine (True Open, SSMT, PSP), Institutional Drawing Suite (Long/Short riêng, Shift-snap, stats pills), Paper Trading với âm thanh sống động (gunshot, cash register, fahhh), Market Replay đồng bộ đa khung, Isolated Worker Indicator Runtime (PineTS/JS), và Audio Station.
+  4. Hướng dẫn khởi động nhanh 1-chạm qua `start_terminal.bat` và bảng tra cứu phím tắt tiện lợi.
+  5. Sơ đồ cây thư mục dự án và lệnh chạy bộ test tự động (165 JS + 43 Python).
+- Kiểm chứng: file Markdown định dạng chuẩn, toàn bộ liên kết nội bộ hợp lệ.
