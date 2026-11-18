@@ -42,7 +42,7 @@ const DrawingModel = (() => {
       textStyle:{ color:type==='text'||type==='vline'?'#2962ff':type==='position'?'#ffffff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], fibLevels:cloneFibLevels(), riskReward:2,
-      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:true, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
       visibility:defaultVis
     });
   }
@@ -79,7 +79,7 @@ const DrawingModel = (() => {
       textStyle:{ color:type==='text'||type==='vline'?'#2962ff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], fibLevels:cloneFibLevels(), riskReward:2,
-      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:true, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
       visibility:Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }])) };
   }
   function normalize(value) {
