@@ -577,22 +577,34 @@ const QTCore = (() => {
     return sub ? base + '\n' + sub : base;
   }
 
+  function sliceCutoff(arr, cutoffTime) {
+    if (!arr || !arr.length || !Number.isFinite(cutoffTime)) return arr || [];
+    if (arr[arr.length - 1].time <= cutoffTime) return arr;
+    if (arr[0].time > cutoffTime) return [];
+    let lo = 0, hi = arr.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (arr[mid].time <= cutoffTime) lo = mid + 1;
+      else hi = mid;
+    }
+    return arr.slice(0, lo);
+  }
+
   function getSeriesForRow(markets, symbol, tfKey, sessionMode, cutoffTime) {
     const sym = shortSym(symbol);
     const entry = markets?.[sym] || Object.entries(markets || {}).find(([k]) => shortSym(k) === sym)?.[1];
     if (!entry) return [];
     const meta = entry.metadata || { timezone: 'America/Chicago', session: '1700-1600' };
-    const filterCut = arr => Number.isFinite(cutoffTime) ? arr.filter(b => b.time <= cutoffTime) : arr;
 
     if (sessionMode === 'RTH' && meta.sessionRegular?.session && !['D', 'W', '1M', '3M'].includes(tfKey) && typeof MarketData !== 'undefined') {
-      const mins = filterCut(entry['1m'] || []).filter(b => MarketData.inRegularSession(b, meta));
+      const mins = sliceCutoff(entry['1m'], cutoffTime).filter(b => MarketData.inRegularSession(b, meta));
       return MarketData.aggregate(mins, tfKey, { ...meta, session: meta.sessionRegular.session, sessionType: 'RTH' });
     }
 
-    if (tfKey === '1m') return filterCut(entry['1m'] || []);
+    if (tfKey === '1m') return sliceCutoff(entry['1m'], cutoffTime);
 
-    const native = filterCut(entry[tfKey] || []);
-    const mins = filterCut(entry['1m'] || []);
+    const native = sliceCutoff(entry[tfKey], cutoffTime);
+    const mins = sliceCutoff(entry['1m'], cutoffTime);
     if (!mins.length || typeof MarketData === 'undefined') return native;
     if (!native.length) return MarketData.aggregate(mins, tfKey, meta);
 

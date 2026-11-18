@@ -223,14 +223,26 @@ const QTCyclesTrueOpen = (() => {
       if (!srcBars.length) continue;
 
       const cs = ROW_SEC[r];
+      const maxSpan = [5 * HOUR_SEC, 12 * HOUR_SEC, 2 * DAY_SEC, 7 * DAY_SEC, 35 * DAY_SEC, 95 * DAY_SEC, 400 * DAY_SEC][r];
+      const minScanT = firstChartT - maxSpan;
+      let startIdx = 0;
+      if (srcBars.length > 64 && srcBars[0].time < minScanT) {
+        let lo = 0, hi = srcBars.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >> 1;
+          if (srcBars[mid].time < minScanT) lo = mid + 1;
+          else hi = mid;
+        }
+        startIdx = Math.max(0, lo - 2);
+      }
       let pQ = null;
       let pSeg = null;
       const found = [];
 
-      for (let i = 0; i < srcBars.length; i++) {
+      for (let i = startIdx; i < srcBars.length; i++) {
         const b = srcBars[i];
         const { qNum: cQNum, segStart: cSeg, extra: cExtra, sess: cSess } = evalCycle(b.time, cs);
-        const q2Start = cQNum === 2 && i > 0 && pQ !== null && (pQ !== 2 || cSeg !== pSeg);
+        const q2Start = cQNum === 2 && i > startIdx && pQ !== null && (pQ !== 2 || cSeg !== pSeg);
         if (q2Start) {
           let endT = null, txt = '';
           if (r === 0) {
