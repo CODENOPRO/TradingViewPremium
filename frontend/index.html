@@ -8065,10 +8065,19 @@ const DrawingModel = (() => {
       const prec=Number.isFinite(tick)&&tick>0?Math.max(0,(String(tick).split('.')[1]||'').length):2;
       const fSize=d.labelFontSize||12;
       const hAlign=d.horzLabelsAlign||'left',vAlign=d.vertLabelsAlign||'middle';
+      const extLeft=d.extend==='left'||d.extend==='both',extRight=d.extend==='right'||d.extend==='both';
       ctx.font=`${fSize}px ${DEFAULT_FONT}`;
-      ctx.textAlign=hAlign==='right'?'right':hAlign==='center'?'center':'left';
       ctx.textBaseline=vAlign==='top'?'bottom':vAlign==='bottom'?'top':'middle';
-      const labelX=hAlign==='right'?(right-4):hAlign==='center'?((left+right)/2):(left+4);
+      let labelX;
+      if(hAlign==='right'){
+        if(extRight){ctx.textAlign='right';labelX=right-6;}
+        else{ctx.textAlign='left';labelX=right+8;}
+      }else if(hAlign==='center'){
+        ctx.textAlign='center';labelX=(left+right)/2;
+      }else{
+        if(extLeft){ctx.textAlign='left';labelX=left+6;}
+        else{ctx.textAlign='right';labelX=left-8;}
+      }
       const labelOffY=vAlign==='top'?-3:vAlign==='bottom'?3:0;
       ctx.lineWidth=d.width||1;
       ctx.setLineDash(dash(d.lineStyle||'solid'));

@@ -1202,6 +1202,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1212,6 +1217,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1235,6 +1245,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1245,6 +1260,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1275,6 +1295,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1285,6 +1310,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1308,6 +1338,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1318,6 +1353,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1348,6 +1388,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1358,6 +1403,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1381,6 +1431,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1391,6 +1446,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1427,6 +1487,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1437,6 +1502,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1460,6 +1530,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   1. Đối chiếu trực tiếp module `LineToolFibRetracement` (`561220`, `975711`) trên TradingView Desktop `:9222`: chuẩn hóa 24 mức Fib mặc định (`0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618, 2.618, 3.618, 4.236` bật sẵn + 13 mức mở rộng tắt sẵn) kèm màu riêng từng mức.
   2. Vẽ đúng dải nền giữa các mức liên tiếp (`fillEnabled` + `fillOpacity: 20`), đường xu hướng chéo nét đứt (`fibTrendline`), đường mức ngang (`levelsStyle` + `extend`), chiều tính từ `p2 -> p1` và chế độ `Reverse`.
   3. Làm lại tab **Style** của Fib trong `DrawingSettings` với lưới 2 cột chỉnh từng mức (bật/tắt, hệ số, màu), `Use one color`, `Background` opacity, `Reverse`, `Prices`, `Levels` (`Values`/`Percents`), `Labels` (`Left`/`Center`/`Right` + `Top`/`Middle`/`Bottom`) và `Font size` (`8..24`).
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
@@ -1470,6 +1545,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 ### 2026-11-19 — Gom dấu khớp lệnh cùng nến thành mũi tên xếp tầng (stacked chevrons) nhất quán trên mọi khung thời gian
 - File đã sửa: `frontend/js/paper_panel.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: trong `PaperChartOrders.prototype.drawExecutions()`, các lệnh khớp cùng phía (Buy/Sell) rơi vào cùng một cây nến của khung thời gian đang xem (kể cả khi đổi từ M1 lên 15m/1h/4h) được gom thành 1 cụm mũi tên xếp tầng gọn gàng (tối đa 5 tầng chevron, viền halo trắng + thân xanh/đỏ) và gộp nhãn (`count× (totalQty @ avgPrice)`) thay vì chồng nhiều mũi tên rời rạc.
+- Kiểm chứng: mở `frontend/index.html` trên Edge via Playwright không còn `pageerror` (`NO ERRORS`), `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Đặt nhãn mức Fib Retracement ra ngoài mép đường (giống TradingView Desktop) thay vì đè lên đường
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: khi `horzLabelsAlign` là `right` (không extend phải) vẽ nhãn bên ngoài mép phải (`right + 8`, `textAlign: left`), khi `left` (không extend trái) vẽ bên ngoài mép trái (`left - 8`, `textAlign: right`), không còn đè lên đường mức Fib hay điểm neo.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
