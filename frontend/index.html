@@ -7714,12 +7714,11 @@ const DrawingModel = (() => {
     return result;
   }
   function positionHandles(g) {
-    const midX=(g.a.x+g.b.x)/2;
     return [
       {handle:'p1',x:g.a.x,y:g.a.y},
       {handle:'p1_right',x:g.b.x,y:g.a.y},
-      {handle:'p2_price',x:midX,y:g.b.y},
-      {handle:'p3_price',x:midX,y:g.c.y}
+      {handle:'p2_price',x:g.a.x,y:g.b.y},
+      {handle:'p3_price',x:g.a.x,y:g.c.y}
     ];
   }
   function smoothBrushPoints(rawPoints, smooth = 5) {
@@ -8110,17 +8109,31 @@ const DrawingModel = (() => {
       const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
       if(d.alwaysShowStats===true||isSelected||d.isTemp){
         const posSize=d.textStyle?.size||11,posTextCol=d.textStyle?.color||'#ffffff';
-        const pill=(text,x,y,fill)=>{ctx.font=`600 ${posSize}px ${DEFAULT_FONT}`;const w=ctx.measureText(text).width+12;ctx.fillStyle=fill;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-w/2,y-10,w,19,4);else ctx.rect(x-w/2,y-10,w,19);ctx.fill();ctx.fillStyle=posTextCol;ctx.textAlign='center';ctx.fillText(text,x,y+3.5);};
-        const tpColor=hex(d.profitColor)||'#089981',slColor=hex(d.stopColor)||'#f23645';
+        const pill=(text,x,y,fill,bordered=false)=>{
+          const lines=Array.isArray(text)?text:[text];
+          ctx.font=`500 ${posSize}px ${DEFAULT_FONT}`;
+          const maxW=lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*6),0);
+          const lh=posSize+3,w=maxW+16,h=lines.length*lh+8;
+          ctx.fillStyle=fill;
+          ctx.beginPath();
+          if(ctx.roundRect)ctx.roundRect(x-w/2,y-h/2,w,h,5);
+          else ctx.rect(x-w/2,y-h/2,w,h);
+          ctx.fill();
+          if(bordered){ctx.strokeStyle='rgba(255,255,255,0.88)';ctx.lineWidth=1;ctx.stroke();}
+          ctx.fillStyle=posTextCol;ctx.textAlign='center';ctx.textBaseline='middle';
+          const startY=y-(lines.length-1)*lh/2;
+          lines.forEach((l,i)=>ctx.fillText(l,x,startY+i*lh));
+        };
+        const tpColor=hex(d.profitColor)||'#089981',slColor=hex(d.stopColor)||'#f23645',midColor=openPnl>=0?tpColor:slColor;
         const tpText=d.compact?`T: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) · ${rewardTicks}`:`Target: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) ${rewardTicks}, Amount: ${((d.accountSize||25000)+rewardAmt).toFixed(2)}`;
         const slText=d.compact?`S: ${risk.toFixed(2)} (${riskPct.toFixed(2)}%) · ${riskTicks}`:`Stop: ${risk.toFixed(2)} (${riskPct.toFixed(2)}%) ${riskTicks}, Amount: ${((d.accountSize||25000)-riskAmt).toFixed(2)}`;
-        const midText=d.compact?`R/R: ${rr.toFixed(2)} · Qty: ${qty.toFixed(2)}`:`Open P&L: ${openPnl>=0?'+':''}${openPnl.toFixed(2)}, Qty: ${qty.toFixed(2)}, Risk/Reward Ratio: ${rr.toFixed(2)}`;
-        pill(tpText,boxLeft+span/2,isLong?rewardTop-12:rewardBottom+12,tpColor);
-        pill(midText,boxLeft+span/2,entry,'#68717c');
-        pill(slText,boxLeft+span/2,isLong?riskBottom+12:riskTop-12,slColor);
+        const midLines=d.compact?[`R/R: ${rr.toFixed(2)} · Qty: ${qty.toFixed(2)}`]:[`Open PnL: ${openPnl.toFixed(2)}, Qty: ${qty.toFixed(3)}`,`Risk/reward ratio: ${rr.toFixed(2)}`];
+        pill(tpText,boxLeft+span/2,isLong?rewardTop-16:rewardBottom+16,tpColor);
+        pill(midLines,boxLeft+span/2,isLong?entry-24:entry+24,midColor,true);
+        pill(slText,boxLeft+span/2,isLong?riskBottom+16:riskTop-16,slColor);
       }
       if(d.showPriceLabels!==false&&isSelected){
-        const pxTag=(val,y,fill)=>{const txt=val.toFixed(2);ctx.font='600 10px Arial';const w=ctx.measureText(txt).width+8;ctx.fillStyle=fill;ctx.fillRect(boxLeft+span+2,y-8,w,16);ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(txt,boxLeft+span+6,y+3.5);};
+        const pxTag=(val,y,fill)=>{const txt=val.toFixed(2);ctx.font=`500 10px ${DEFAULT_FONT}`;const w=ctx.measureText(txt).width+8;ctx.fillStyle=fill;ctx.fillRect(boxLeft+span+2,y-8,w,16);ctx.fillStyle='#fff';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText(txt,boxLeft+span+6,y+3.5);};
         pxTag(d.p2.price,target,hex(d.profitColor)||'#089981');
         pxTag(d.p1.price,entry,'#68717c');
         pxTag(d.p3.price,stop,hex(d.stopColor)||'#f23645');
