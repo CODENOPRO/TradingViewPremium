@@ -578,9 +578,7 @@ class PaperChartOrders {
   const chart=this.chart,scale=chart.chart.timeScale(),bars=chart.bars;
   if(!bars.length)return;
   const light=this.isLightChart(),halo=this.chart.appearance?.bg||this.chart.config?.bg||(light?'#c2baae':'#0f0f0f'),labelCol=settings.textColor||(light?'#111':'#e6e6e6');
-  const stacks=new Map();
-  ctx.save();
-  ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
+  const groups=new Map();
   for(const event of this.panel.paper.account?.history||[]){
    if(event.symbol!==chart.symbol||!(event.event==='filled'||event.event==='closed'&&event.reason!=='offset'))continue;
    const time=event.at/1000;
@@ -595,13 +593,23 @@ class PaperChartOrders {
    const buy=event.event==='filled'?event.side==='buy':event.side==='sell';
    const anchor=chart.series.priceToCoordinate(buy?bar.low:bar.high)??chart.series.priceToCoordinate(execPrice);
    if(x===null||anchor===null||x<0||x>width)continue;
-   const sk=bar.time+':'+(buy?'b':'s'),idx=stacks.get(sk)||0;stacks.set(sk,idx+1);
-   const dir=buy?1:-1,tipY=anchor+dir*(6+idx*24),tailY=tipY+dir*11;
+   const sk=bar.time+':'+(buy?'b':'s');
+   let g=groups.get(sk);
+   if(!g){g={sk,bar,x,anchor,buy,items:[]};groups.set(sk,g);}
+   g.items.push({event,execPrice,qty:Number(event.qty)||0});
+  }
+  if(!groups.size)return;
+  ctx.save();
+  ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
+  for(const g of groups.values()){
+   const {x,anchor,buy,items}=g,count=items.length,chevrons=Math.min(count,5);
+   const dir=buy?1:-1,tipY=anchor+dir*6,step=4.5,tailY=tipY+dir*((chevrons-1)*step+9);
    const color=buy?'#2962ff':'#f23645';
-   const priceY=chart.series.priceToCoordinate(execPrice);
-   const id=(event.id||'')+':'+event.at+':'+(buy?'b':'s')+':'+idx;
+   const lastItem=items[items.length-1];
+   const priceY=chart.series.priceToCoordinate(lastItem.execPrice);
+   const id=g.sk+':'+count+':'+(lastItem.event.id||lastItem.event.at);
    const hovered=this.hoverExec===id;
-   this.execMarks.push({id,x,tipY,tailY,priceY,buy,color,execPrice});
+   this.execMarks.push({id,x,tipY,tailY,priceY,buy,color,execPrice:lastItem.execPrice,count});
    if(hovered){
     const top=Math.min(tipY,tailY)-5,pillH=Math.abs(tailY-tipY)+10,rx=x-9,rw=18,rad=9;
     ctx.fillStyle=buy?'rgba(41,98,255,.22)':'rgba(242,54,69,.22)';
@@ -611,15 +619,18 @@ class PaperChartOrders {
     ctx.fill();
    }
    ctx.lineCap='round';ctx.lineJoin='round';
-   const strokeArrow=(col,lw)=>{
+   const strokeStacked=(col,lw)=>{
     ctx.strokeStyle=col;ctx.lineWidth=lw;
     ctx.beginPath();
     ctx.moveTo(x,tailY);ctx.lineTo(x,tipY);
-    ctx.moveTo(x-4,tipY+dir*4.5);ctx.lineTo(x,tipY);ctx.lineTo(x+4,tipY+dir*4.5);
+    for(let k=0;k<chevrons;k++){
+     const cy=tipY+dir*(k*step);
+     ctx.moveTo(x-4.5,cy+dir*4.5);ctx.lineTo(x,cy);ctx.lineTo(x+4.5,cy+dir*4.5);
+    }
     ctx.stroke();
    };
-   strokeArrow('#ffffff',hovered?3.8:2.8);
-   strokeArrow(color,1.7);
+   strokeStacked('#ffffff',hovered?4.2:3.2);
+   strokeStacked(color,1.9);
    if(hovered&&priceY!==null&&priceY>=0&&priceY<=height){
     const strokeChevron=(col,lw)=>{
      ctx.strokeStyle=col;ctx.lineWidth=lw;
@@ -631,9 +642,11 @@ class PaperChartOrders {
     strokeChevron(color,1.9);
    }
    if(settings.executionLabels!==false){
-    const label=`${event.qty} @ ${this.formatAxisPrice(execPrice)}`;
-    const ly=tailY+dir*11;
-    ctx.font='500 11px Arial, Helvetica, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    const totalQty=items.reduce((s,it)=>s+it.qty,0);
+    const avgPrice=totalQty>0?items.reduce((s,it)=>s+it.execPrice*it.qty,0)/totalQty:lastItem.execPrice;
+    const label=count>1?`${count}× (${totalQty} @ ${this.formatAxisPrice(avgPrice)})`:`${lastItem.event.qty} @ ${this.formatAxisPrice(lastItem.execPrice)}`;
+    const ly=tailY+dir*10;
+    ctx.font='500 11px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.strokeStyle=halo;ctx.lineWidth=3;ctx.strokeText(label,x,ly);
     ctx.fillStyle=labelCol;ctx.fillText(label,x,ly);
    }
