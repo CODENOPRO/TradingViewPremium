@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);
-  const saved = Workspace.read('terminal_workspace_v1', {});
-  const colors = { bg: '#c2baae', grid: '#a8a194', bodyUp: '#e8e4dc', borderUp: '#211f1d', wickUp: '#211f1d', bodyDown: '#211f1d', borderDown: '#211f1d', wickDown: '#211f1d', textColor: '#202020', ...Workspace.read('tv_candle_config', {}) };
+  const saved = Workspace.read('terminal_workspace_v1', {}) || {};
+  const colors = { bg: '#c2baae', grid: '#a8a194', bodyUp: '#e8e4dc', borderUp: '#211f1d', wickUp: '#211f1d', bodyDown: '#211f1d', borderDown: '#211f1d', wickDown: '#211f1d', textColor: '#202020', ...(Workspace.read('tv_candle_config', {}) || {}) };
   const symbols = ['NQ1!', 'ES1!', 'YM1!', 'CL1!'];
   const cache = new Map();
   let bridge = { state: 'connecting', symbols: [] };
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pendingNative.has(key))return;pendingNative.set(key,requirement);
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'request_native',charts:[requirement]}));
   };
-  for(let i=4;i<=16;i++){const node=$('box-1').cloneNode(true);node.id=`box-${i}`;node.classList.remove('active');$('chart-grid').appendChild(node);}
+  for(let i=4;i<=16;i++){const node=$('box-1').cloneNode(true);node.id=`box-${i}`;node.hidden=true;node.style.display='none';node.classList.remove('active');$('chart-grid').appendChild(node);}
   let features,replay,paperPanel;
   const charts = Array.from({length:16},(_,i)=>['NQ1!','ES1!','YM1!'][i%3]).map((symbol, i) => {
     const Engine=window.TERMINAL_ENGINE_V5?ChartEngineV5:ChartEngine;
@@ -157,16 +157,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     chart.chart.timeScale().subscribeVisibleLogicalRangeChange(() => { saveWorkspace(); });
   }
-  const qtMode = new QTMode({
-    charts,
-    getActive: () => active,
-    getMarkets: () => replay?.running ? replay.markets(cache) : cache,
-    isReplay: () => !!replay?.running,
-    requestNative,
-    toast
-  });
-  window.qtMode = qtMode;
-  qtMode.mountTopbar($('btn-indicator'));
+  let qtMode = null;
+  try {
+    if (typeof QTMode === 'function') {
+      qtMode = new QTMode({
+        charts,
+        getActive: () => active,
+        getMarkets: () => replay?.running ? replay.markets(cache) : cache,
+        isReplay: () => !!replay?.running,
+        requestNative,
+        toast
+      });
+      window.qtMode = qtMode;
+      qtMode.mountTopbar($('btn-indicator'));
+    }
+  } catch (err) {
+    console.error('[QTMode] initialization failed:', err);
+  }
   activate(active);
   const changeTimeframe=tf=>{
     if(tf==='12h')return toast('Nguồn TradingView hiện chặn custom interval 12h; các chart khác vẫn cập nhật.','alert');
@@ -427,18 +434,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Local accounts retain the existing storage key and legacy positions.
-  const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }), state => Workspace.write('terminal_paper_v1', state));
+  const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }) || { accounts: [], active: null }, state => Workspace.write('terminal_paper_v1', state));
   paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast,onToggle:()=>{desktop?.syncRailActive?.();desktop?.fitToolbar?.();}});
   function renderPaper(){paperPanel.render();}
   $('create-account').addEventListener('click',()=>paperPanel.action(()=>{paperPanel.paper.create($('account-name').value,Number($('account-balance').value),Number($('account-margin')?.value||0));closeModal($('account-modal'));}));
   $('btn-trade-buy').addEventListener('click',()=>paperPanel.quickMarket('buy'));
   $('btn-trade-sell').addEventListener('click',()=>paperPanel.quickMarket('sell'));
 
-  function toggleIndicator(chart){qtMode.toggleChart(chart);}
+  function toggleIndicator(chart){qtMode?.toggleChart(chart);}
   charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
 
   // Settings and scale controls.
-  const appearanceStore=Workspace.read('terminal_chart_settings_v1',{});
+  const appearanceStore=Workspace.read('terminal_chart_settings_v1',{})||{};
   const oldProfiles=structuredClone(appearanceStore);
   for (const chart of charts) {
     const profile = ChartAppearance.desktopProfile(appearanceStore[chart.id], colors, chart.symbol);
@@ -651,9 +658,9 @@ document.addEventListener('DOMContentLoaded', () => {
     [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
     ['Lịch', () => $('edge-calendar')?.click()],
     ['Nhạc', () => $('edge-music')?.click()],
-    ['QT Mode · Bật / Tắt', () => $('btn-indicator').click()],
-    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode.openSettings(active)],
-    ['Layout', () => $('btn-layout').click()],
+    ['QT Mode · Bật / Tắt', () => $('btn-indicator')?.click()],
+    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode?.openSettings(active)],
+    ['Layout', () => $('btn-layout')?.click()],
     ['Alerts', () => openAlert(active)],
     ['Replay', () => $('btn-replay').click()],
     ['Paper Trading', () => paperPanel.open(!$('paper-panel').classList.contains('open'))],

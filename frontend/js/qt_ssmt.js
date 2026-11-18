@@ -1,6 +1,7 @@
 /* Quantaibay Feature Module 2 — Realtime Multi-Asset SSMT Engine & AMDX Cycle Table. */
 const QTSsmt = (() => {
-  const Core = typeof QTCore !== 'undefined' ? QTCore : require('./qt_core.js');
+  const Core = typeof QTCore !== 'undefined' ? QTCore : (typeof require === 'function' ? require('./qt_core.js') : null);
+  if (!Core) return { computeSsmtAndTable: () => ({ drawings: [], tables: [] }) };
   const {
     DAY_SEC, HOUR_SEC, TFN, ROW_KEYS, ROW_SEC,
     themeColor, sizePx, lineStyleNorm, sessionStart, wkStart, wkNext,

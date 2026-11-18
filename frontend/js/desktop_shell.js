@@ -92,14 +92,14 @@ class DesktopShell {
       }
       if(!stacked&&header.getBoundingClientRect&&right?.getBoundingClientRect){
         const hRect=header.getBoundingClientRect(),rRect=right.getBoundingClientRect();
-        const freeVisual=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left-12);
+        const span=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left);
         const visualW=left.offsetWidth*scale;
         const idealCenter=(hRect.width-visualW)/2;
-        const margin=idealCenter+visualW<=freeVisual?idealCenter:(freeVisual-visualW)/2;
-        left.style.marginLeft=Math.max(0,Math.round(margin))+'px';
+        const margin=hRect.width>=1800&&idealCenter+visualW+48<=span?idealCenter:(span-visualW)/2;
+        left.style.marginLeft=Math.max(0,Math.min(Math.max(0,span-visualW-12),Math.round(margin)))+'px';
       }
     };
-    this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);this.fitToolbar();
+    this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);const statusPill=document.getElementById('dock-market-status');if(statusPill)this.toolbarObserver.observe(statusPill);this.fitToolbar();
   }
   button(label,icon,action){const b=document.createElement('button');b.type='button';b.title=ui(label);b.setAttribute('aria-label',ui(label));b.innerHTML=DesktopShell.icon(icon);b.onclick=action;return b;}
   installTools(){

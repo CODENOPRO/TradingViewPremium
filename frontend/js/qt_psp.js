@@ -1,6 +1,7 @@
 /* Quantaibay Feature Module 3 — Advanced PSP (Adaptive Triad/Dyad Peer Candle Crack). */
 const QTPsp = (() => {
-  const Core = typeof QTCore !== 'undefined' ? QTCore : require('./qt_core.js');
+  const Core = typeof QTCore !== 'undefined' ? QTCore : (typeof require === 'function' ? require('./qt_core.js') : null);
+  if (!Core) return { computeAdvancedPsp: () => ({ candleColors: [], drawings: [] }) };
   const { parseColor, sizePx, tfToSeconds, getSeriesForRow } = Core;
 
   function computeAdvancedPsp({ bars, tf, chartSec, triad, ownShort, markets, sessionMode, cutoffTime, s }) {

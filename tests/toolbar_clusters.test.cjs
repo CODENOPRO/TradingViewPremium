@@ -48,3 +48,12 @@ test('toolbar scale clamps, persists, updates --toolbar-scale live and resets cl
  assert.equal(styles.get('--toolbar-scale'),'0.85');
  assert.equal(stored.get('terminal_toolbar_scale_v1'),85);
 });
+test('QT browser scripts never throw ReferenceError when loaded out-of-order or without Node require',()=>{
+ for(const file of ['frontend/js/qt_cycles_trueopen.js','frontend/js/qt_ssmt.js','frontend/js/qt_psp.js','frontend/js/qt_engine.js']){
+  const browserCtx=vm.createContext({window:{}});
+  assert.doesNotThrow(()=>vm.runInContext(fs.readFileSync(file,'utf8'),browserCtx),file+' threw without require/QTCore');
+ }
+ const html=fs.readFileSync('frontend/index.html','utf8');
+ assert.match(html,/#chart-grid:not\(\.terminal-layout\)\s*>\s*\.chart-wrapper:nth-of-type\(n\+4\)/);
+ assert.match(html,/node\.hidden=true;node\.style\.display='none'/);
+});

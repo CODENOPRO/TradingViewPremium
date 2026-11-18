@@ -908,7 +908,10 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
   font-weight:600;
 }
 
-/* ---------- 11. Toolbar Scale (--toolbar-scale) ---------- */
+/* ---------- 11. Toolbar Scale (--toolbar-scale) & Grid Guard ---------- */
+#chart-grid:not(.terminal-layout) > .chart-wrapper:nth-of-type(n+4){
+  display:none !important;
+}
 #topbar .topbar-left{
   scale:var(--toolbar-scale, 1);
   transform-origin:left top;
@@ -918,11 +921,16 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
   transform-origin:right top;
 }
 @media (min-width: 720px){
+  #topbar{
+    justify-content:flex-start !important;
+  }
   #topbar .topbar-left{
     position:static !important;
     left:auto !important;
     transform:none !important;
     flex:0 0 auto !important;
+    margin:0;
+    max-width:calc((100% - 320px * var(--toolbar-scale, 1)) / var(--toolbar-scale, 1));
   }
   #topbar .topbar-right{
     position:absolute !important;
@@ -1001,7 +1009,7 @@ body.paper-panel-open .edge-panel-dock{
   right:calc(var(--paper-push) - 6px) !important;
 }
 body.paper-panel-open :is(#desktop-panel, .companion-panel:not(.music-mini)){
-  right:calc(var(--paper-push) + 66px) !important;
+  right:calc(var(--paper-push) + var(--right-rail-inset, 72px) - 6px) !important;
 }
 body.paper-panel-open #replay-toolbar{
   right:calc(var(--paper-push) + 8px) !important;

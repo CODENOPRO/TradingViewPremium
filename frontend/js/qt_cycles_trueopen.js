@@ -1,6 +1,7 @@
 /* Quantaibay Feature Module 1 — Cycle Vertical Lines, Q / AMDX Labels & Multi-TF True Open. */
 const QTCyclesTrueOpen = (() => {
-  const Core = typeof QTCore !== 'undefined' ? QTCore : require('./qt_core.js');
+  const Core = typeof QTCore !== 'undefined' ? QTCore : (typeof require === 'function' ? require('./qt_core.js') : null);
+  if (!Core) return { pinQLabels() {}, pinTrueOpenLabels() {}, computeCyclesAndTrueOpen: () => ({ drawings: [], qLabelMeta: [], trLabelMeta: [] }) };
   const {
     DAY_SEC, HOUR_SEC, MIN_SEC, ROW_KEYS, ROW_SEC,
     parseColor, themeColor, sizePx, lineStyleNorm, sessionStart,

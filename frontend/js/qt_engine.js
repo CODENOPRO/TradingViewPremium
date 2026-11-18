@@ -2,10 +2,31 @@
  * Composes modular feature files: qt_core.js, qt_cycles_trueopen.js, qt_ssmt.js, qt_psp.js.
  */
 const QuantaibayEngine = (() => {
-  const Core = typeof QTCore !== 'undefined' ? QTCore : require('./qt_core.js');
-  const Cycles = typeof QTCyclesTrueOpen !== 'undefined' ? QTCyclesTrueOpen : require('./qt_cycles_trueopen.js');
-  const Ssmt = typeof QTSsmt !== 'undefined' ? QTSsmt : require('./qt_ssmt.js');
-  const Psp = typeof QTPsp !== 'undefined' ? QTPsp : require('./qt_psp.js');
+  const req = p => (typeof require === 'function' ? require(p) : null);
+  const Core = typeof QTCore !== 'undefined' ? QTCore : req('./qt_core.js');
+  const Cycles = typeof QTCyclesTrueOpen !== 'undefined' ? QTCyclesTrueOpen : req('./qt_cycles_trueopen.js');
+  const Ssmt = typeof QTSsmt !== 'undefined' ? QTSsmt : req('./qt_ssmt.js');
+  const Psp = typeof QTPsp !== 'undefined' ? QTPsp : req('./qt_psp.js');
+  if (!Core || !Cycles || !Ssmt || !Psp) {
+    return {
+      name: 'Quantaibay',
+      DEFAULTS: {},
+      INPUT_SCHEMA: [],
+      TIMEZONES: ['America/New_York'],
+      ASSET_OPTIONS: ['AUTO'],
+      parseColor: () => ({ css: '#787b86', hexAlpha: '#787b86ff' }),
+      isDarkCanvas: () => false,
+      tfToSeconds: () => 60,
+      resolveTriad: sym => [sym],
+      parts: () => ({ year: 2026, month: 1, day: 1, hour: 0, minute: 0 }),
+      timestamp: () => 0,
+      sessionStart: t => t,
+      makeCycleEvaluator: () => () => ({}),
+      calculate: () => ({ name: 'Quantaibay', triad: [], drawings: [], candleColors: [], qLabels: [], trLabels: [], labelPadPct: 8, tables: [], warnings: [] }),
+      pinQLabels() {},
+      pinTrueOpenLabels() {}
+    };
+  }
 
   const {
     DEFAULTS, INPUT_SCHEMA, TIMEZONES, ASSET_OPTIONS,
