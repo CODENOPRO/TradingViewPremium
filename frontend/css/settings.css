@@ -35,6 +35,7 @@
 #settings-modal > .tv-chart-color-popover { pointer-events: auto; }
 
 #settings-modal .chart-settings-dialog {
+  zoom: var(--toolbar-scale, 1);
   pointer-events: auto;
   box-sizing: border-box;
   display: flex;

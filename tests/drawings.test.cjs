@@ -387,3 +387,58 @@ test('DrawingEditor renders TradingView toolbar controls, toggles per-tool visib
   assert.equal(bySel.get('[data-tb-pop="lineStyle"]').hidden, true);
   assert.equal(bySel.get('[data-tb-pop="textColor"]').hidden, false);
 });
+
+test('vline, TradingView brush smoothing, and TradingView text defaults/settings work cleanly', () => {
+  const vm = require('vm'), fs = require('fs');
+  const ctx = vm.createContext({ DrawingModel, Workspace: { read: (_, d) => d, write: () => true } });
+  vm.runInContext(fs.readFileSync('frontend/js/drawing_settings.js', 'utf8') + ';this.Settings = DrawingSettings;', ctx);
+  const proto = ctx.Settings.prototype;
+
+  assert.deepEqual([...proto.tabsFor('vline')], ['style', 'text', 'coordinates', 'visibility']);
+  assert.deepEqual([...proto.tabsFor('brush')], ['style', 'visibility']);
+  assert.deepEqual([...proto.tabsFor('text')], ['text', 'coordinates', 'visibility']);
+
+  const vDef = DrawingModel.defaults('vline');
+  assert.equal(vDef.borderColor, '#2962ff');
+  assert.equal(vDef.showTime, true);
+
+  const bDef = DrawingModel.defaults('brush');
+  assert.equal(bDef.smooth, 5);
+  assert.equal(bDef.fillEnabled, false);
+
+  const tDef = DrawingModel.defaults('text');
+  assert.equal(tDef.textStyle.size, 14);
+  assert.equal(tDef.textStyle.color, '#2962ff');
+  assert.equal(tDef.textStyle.fillBackground, false);
+  assert.equal(tDef.textStyle.drawBorder, false);
+  assert.equal(tDef.textStyle.wordWrap, false);
+
+  const chart = {
+    currentTimeframe: '1m',
+    tfSeconds: 60,
+    bars: [{ time: 60 }, { time: 120 }, { time: 180 }],
+    container: { clientWidth: 600, clientHeight: 400 },
+    plotHeight: 374,
+    chart: { priceScale: () => ({ width: () => 60 }), timeScale: () => ({ logicalToCoordinate: i => 60 + i * 60, coordinateToLogical: x => (x - 60) / 60 }) },
+    series: { priceToCoordinate: p => 300 - p, coordinateToPrice: y => 300 - y }
+  };
+  const vline = { ...vDef, id: 'v1', type: 'vline', p1: { time: 120, price: 100 }, text: 'NY Open' };
+  assert.equal(DrawingModel.hit(chart, vline, 120, 200), 'body');
+  assert.equal(DrawingModel.hit(chart, vline, 150, 200), null);
+
+  const ops = [];
+  const drawCtx = {
+    save() {}, restore() {}, setLineDash() {}, beginPath() {}, moveTo() { ops.push('move'); },
+    lineTo() { ops.push('line'); }, stroke() { ops.push('stroke'); }, fill() { ops.push('fill'); },
+    fillRect() { ops.push('fillRect'); }, strokeRect() { ops.push('strokeRect'); },
+    translate() {}, rotate() {}, measureText: t => ({ width: t.length * 7 }),
+    fillText(t) { ops.push('text:' + t); }
+  };
+  DrawingModel.draw(drawCtx, chart, vline);
+  DrawingModel.draw(drawCtx, chart, { ...bDef, id: 'b1', type: 'brush', fillEnabled: true, p1: { time: 60, price: 100 }, points: [{ time: 60, price: 100 }, { time: 90, price: 110 }, { time: 120, price: 105 }, { time: 150, price: 115 }] });
+  DrawingModel.draw(drawCtx, chart, { ...tDef, id: 't1', type: 'text', p1: { time: 60, price: 100 }, text: 'Hello TradingView world wrap test', textStyle: { ...tDef.textStyle, fillBackground: true, drawBorder: true, wordWrap: true, wordWrapWidth: 80 } });
+  assert.ok(ops.includes('text:NY Open'));
+  assert.ok(ops.includes('fill'));
+  assert.ok(ops.includes('fillRect'));
+  assert.ok(ops.includes('strokeRect'));
+});

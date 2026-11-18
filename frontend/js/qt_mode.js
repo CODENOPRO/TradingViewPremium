@@ -316,7 +316,7 @@ class QTMode {
       }
       .qt-cycle-table {
         border-collapse: collapse;
-        font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif;
         line-height: 1.25;
         font-variant-numeric: tabular-nums;
       }

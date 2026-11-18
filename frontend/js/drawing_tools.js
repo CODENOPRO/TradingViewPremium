@@ -195,10 +195,26 @@ class DrawingManager {
       // Horizontal Line: 1-click drop
       if (this.activeTool === 'hline') {
         chartEngine.drawings.push({
+          ...DrawingModel.defaults('hline'),
           id: 'draw_' + Date.now(),
           type: 'hline',
           p1: { time, price },
-          color: '#2962ff'
+          color: '#2962ff',
+          borderColor: '#2962ff'
+        });
+        this.saveDrawings(chartEngine);
+        chartEngine.renderDrawings();
+        this.setTool('crosshair');
+        return;
+      }
+
+      // Vertical Line: 1-click drop
+      if (this.activeTool === 'vline') {
+        chartEngine.drawings.push({
+          ...DrawingModel.defaults('vline'),
+          id: 'draw_' + Date.now(),
+          type: 'vline',
+          p1: { time, price }
         });
         this.saveDrawings(chartEngine);
         chartEngine.renderDrawings();
@@ -291,7 +307,7 @@ class DrawingManager {
       if(x<0||x>=node.clientWidth-(chart.chart.priceScale('right').width()||65)||y<0||y>=chart.plotBottom)return;
       const p=DrawingModel.fromPixel(chart,x,y,true);if(!p)return;
       event.preventDefault();event.stopImmediatePropagation();node.dispatchEvent(new CustomEvent('chart-activate'));
-      const d={...DrawingModel.defaults('brush'),type:'brush',id:crypto.randomUUID(),isTemp:true,p1:{...p},points:[p],width:2};
+      const d={...DrawingModel.defaults('brush'),type:'brush',id:crypto.randomUUID(),isTemp:true,p1:{...p},points:[p]};
       stroke={drawing:d,pointer:event.pointerId,symbol:chart.symbol,x,y,scroll:chart.chart.options().handleScroll.pressedMouseMove};chart.drawings.push(d);
       chart.chart.applyOptions({handleScroll:{pressedMouseMove:false}});node.setPointerCapture(event.pointerId);
     },true);

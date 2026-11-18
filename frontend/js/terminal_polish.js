@@ -50,6 +50,7 @@ TerminalFeatures.prototype.installPolish=function(){
   applyMotion();
   const opacity=document.createElement('input');opacity.type='range';opacity.id='set-calendar-opacity';opacity.min=0;opacity.max=90;opacity.step=5;opacity.value=Workspace.read('terminal_calendar_transparency_v1',0);opacity.setAttribute('aria-label','Calendar transparency');opacity.oninput=()=>{document.documentElement.style.setProperty('--calendar-opacity',String(1-opacity.value/100));Workspace.write('terminal_calendar_transparency_v1',+opacity.value);};add('Calendar transparency',opacity);opacity.oninput();
   const songToast=document.createElement('input');songToast.type='checkbox';songToast.id='set-music-toast';songToast.checked=Workspace.read('terminal_music_toast_v1',true);songToast.onchange=()=>Workspace.write('terminal_music_toast_v1',songToast.checked);add('Show song-change notification (2 seconds)',songToast);
+  if(typeof TerminalLanguage!=='undefined')TerminalLanguage.markup(controls);
   // Keep vendor notices and a product link, outside the Settings dialog.
   modal.querySelector('.library-credit')?.remove();
   const credit=document.createElement('a');credit.id='terminal-library-link';credit.href='https://www.tradingview.com/';credit.target='_blank';credit.rel='noopener noreferrer';credit.title='TradingView Lightweight Charts™';credit.textContent='TradingView';document.querySelector('.bottom-ranges')?.appendChild(credit);

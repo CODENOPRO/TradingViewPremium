@@ -1166,3 +1166,15 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   4. Hướng dẫn khởi động nhanh 1-chạm qua `start_terminal.bat` và bảng tra cứu phím tắt tiện lợi.
   5. Sơ đồ cây thư mục dự án và lệnh chạy bộ test tự động (165 JS + 43 Python).
 - Kiểm chứng: file Markdown định dạng chuẩn, toàn bộ liên kết nội bộ hợp lệ.
+
+### 2026-11-19 — Đối chiếu TradingView Desktop CDP :9222: chuẩn hóa font, thêm Vertical Line, làm lại Brush & Text, sửa chậm countdown khi đổi timeframe, scale hộp Settings, đồng bộ ngôn ngữ
+- File đã sửa: `frontend/css/fixed_shell.css`, `frontend/css/terminal_studio.css`, `frontend/css/settings.css`, `frontend/js/chart_engine.js`, `frontend/js/qt_mode.js`, `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/js/drawing_settings.js`, `frontend/js/desktop_shell.js`, `frontend/js/terminal_polish.js`, `frontend/js/terminal_features.js`, `frontend/js/ui_language.js`, `frontend/js/app.js`, `frontend/index.html`, `tests/drawings.test.cjs`.
+- Thay đổi:
+  1. Kiểm tra trực tiếp TradingView Desktop trên CDP cổng `9222`: xác nhận font chuẩn UI, thang giá và `LineToolText` là `-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif` (cỡ chữ thang giá `12px`); đồng bộ toàn bộ CSS/canvas/Text tool sang font này.
+  2. Thêm công cụ **Vertical Line** (`vline`): nút trên thanh công cụ vẽ (sau Horizontal line), đặt 1-click, vẽ/chọn/kéo ngang, tùy chỉnh Style (`Line`, `Show time`), Text (`Text orientation` ngang/dọc, căn lề), Coordinates (`#1 bar`), Visibility và Favourite tools.
+  3. Làm lại công cụ **Brush** theo `LineToolBrush` / `BrushBasePaneView` của TradingView: làm mượt nét vẽ bằng chia đoạn + bộ lọc trung bình trượt (`smooth: 5`), hỗ trợ bật/tắt `Background` tô vùng, ẩn tab Coordinates (chỉ giữ Style & Visibility), và hiển thị đúng 2 điểm neo đầu/cuối khi chọn.
+  4. Làm lại công cụ **Text** theo `LineToolText` của TradingView: cỡ chữ mặc định `14`, màu `#2962ff`, danh sách cỡ chữ `[10, 11, 12, 14, 16, 20, 24, 28, 32, 40]`, bổ sung `Background` (màu + độ mờ), `Border` (màu viền), `Text wrap` (`wordWrapWidth: 200`), `boxPadding = size / 6`, viền chọn `#2962ff` và ẩn Text alignment không thuộc `LineToolText`.
+  5. Sửa lỗi countdown đóng nến hiện chậm khi đổi timeframe (vd. sang `4h`/`D`): gọi `updateCountdown()` ngay trong `renderCurrentTimeframe()` (kèm `requestAnimationFrame` cập nhật vị trí) và ưu tiên đọc `this.bars` đã dựng sẵn thay vì chờ `htfData`.
+  6. Áp dụng `zoom: var(--toolbar-scale, 1)` cho `#settings-modal .chart-settings-dialog` và `#drawing-settings .drawing-dialog` để hộp thoại Settings thu nhỏ/phóng to theo thanh kéo `Toolbar scale`.
+  7. Đồng bộ ngôn ngữ EN/VI: bổ sung các cặp dịch còn thiếu vào `ui_language.js`, bọc `ui(...)` và gọi `TerminalLanguage.markup(...)` cho các nhãn/thông báo trước đây bị lẫn tiếng Việt/tiếng Anh.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **166/166 passed**.

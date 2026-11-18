@@ -9,12 +9,14 @@ class DrawingSettings {
   ];
 
   static STROKE_SPECS = [
-    { id: 'border', label: 'Border', types: 'box,line,hline,fib,position,measure,brush', colorPath: 'borderColor', opacityPath: 'strokeOpacity', widthPath: 'width', stylePath: 'lineStyle', syncColor: true },
+    { id: 'border', label: 'Border', types: 'box,line,hline,vline,fib,position,measure,brush', colorPath: 'borderColor', opacityPath: 'strokeOpacity', widthPath: 'width', stylePath: 'lineStyle', syncColor: true },
     { id: 'middleLine', label: 'Middle line', types: 'box', checkPath: 'middleLine.enabled', colorPath: 'middleLine.color', opacityPath: 'middleLine.opacity', widthPath: 'middleLine.width', stylePath: 'middleLine.style' },
-    { id: 'fill', label: 'Background', types: 'box,measure', checkPath: 'fillEnabled', colorPath: 'fillColor', opacityPath: 'fillOpacity' },
+    { id: 'fill', label: 'Background', types: 'box,measure,brush', checkPath: 'fillEnabled', colorPath: 'fillColor', opacityPath: 'fillOpacity' },
     { id: 'profit', label: 'Profit zone', types: 'position', colorPath: 'profitColor', opacityPath: 'profitOpacity' },
     { id: 'stop', label: 'Stop zone', types: 'position', colorPath: 'stopColor', opacityPath: 'stopOpacity' },
-    { id: 'text', label: '', types: 'box,line,hline,text', colorPath: 'textStyle.color' }
+    { id: 'text', label: '', types: 'box,line,hline,vline,text', colorPath: 'textStyle.color' },
+    { id: 'textBg', label: 'Background', types: 'text', checkPath: 'textStyle.fillBackground', colorPath: 'textStyle.backgroundColor', opacityPath: 'textStyle.backgroundOpacity' },
+    { id: 'textBorder', label: 'Border', types: 'text', checkPath: 'textStyle.drawBorder', colorPath: 'textStyle.borderColor' }
   ];
 
   constructor(editor) {
@@ -46,14 +48,15 @@ class DrawingSettings {
           <input id="drawing-title-input" type="text" maxlength="64" aria-label="Drawing name" hidden>
           <button type="button" id="drawing-rename" class="drawing-rename-btn" title="Rename" aria-label="Rename drawing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
         </div>
-        <button type="button" class="modal-close" aria-label="Đóng setting hình"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <button type="button" class="modal-close" aria-label="Close drawing settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
       </div>
       <div class="drawing-tabs" role="tablist">${['Style', 'Text', 'Coordinates', 'Visibility'].map((tab, i) => `<button type="button" role="tab" data-tab="${tab.toLowerCase()}" aria-selected="${i === 0}">${tab}</button>`).join('')}</div>
       <div class="modal-body drawing-panel" data-panel="style">
         ${tvRow('<span>Extend</span>', `<select data-field="extend" aria-label="Extend">${selectOpts([['none', "Don't extend"], ['left', 'Extend left'], ['right', 'Extend right'], ['both', 'Extend both']])}</select>`, 'box,line,fib')}
-        ${tvRow('<span id="drawing-stroke-label">Border</span>', pillHtml('border'), 'box,line,hline,fib,position,measure,brush')}
+        ${tvRow('<span id="drawing-stroke-label">Border</span>', pillHtml('border'), 'box,line,hline,vline,fib,position,measure,brush')}
         ${tvRow('<label class="tv-check-label"><input data-field="middleLine.enabled" type="checkbox"><span>Middle line</span></label>', pillHtml('middleLine'), 'box')}
-        ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', pillHtml('fill'), 'box,measure')}
+        ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', pillHtml('fill'), 'box,measure,brush')}
+        ${tvRow('<span>Show time</span>', '<input type="checkbox" data-field="showTime" aria-label="Show time">', 'vline')}
         ${tvRow('<span>Profit zone</span>', pillHtml('profit'), 'position')}
         ${tvRow('<span>Stop zone</span>', pillHtml('stop'), 'position')}
         ${tvRow('<span>Position side</span>', `<select data-field="side" aria-label="Position side">${selectOpts([['long', 'Long'], ['short', 'Short']])}</select>`, 'position')}
@@ -66,14 +69,18 @@ class DrawingSettings {
       <div class="modal-body drawing-panel" data-panel="text" hidden>
         <div class="drawing-text-toolbar">
           ${pillHtml('text')}
-          <select data-field="textStyle.size" aria-label="Text size">${[8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48].map(n => `<option value="${n}">${n}</option>`).join('')}</select>
+          <select data-field="textStyle.size" aria-label="Text size">${[10, 11, 12, 14, 16, 20, 24, 28, 32, 40].map(n => `<option value="${n}">${n}</option>`).join('')}</select>
           <button type="button" class="tv-format-btn" data-toggle="textStyle.bold" aria-pressed="false" aria-label="Bold"><strong>B</strong></button>
           <button type="button" class="tv-format-btn" data-toggle="textStyle.italic" aria-pressed="false" aria-label="Italic"><em>I</em></button>
         </div>
         <textarea id="drawing-text" aria-label="Drawing text" placeholder="Add text" spellcheck="false"></textarea>
-        ${tvRow('<span>Text alignment</span>', `<div class="tv-align-pair"><select data-field="textStyle.vertical" data-types="box,line,hline" aria-label="Vertical alignment">${selectOpts([['inside', 'Inside'], ['above', 'Above'], ['below', 'Below']])}</select><select data-field="textStyle.horizontal" aria-label="Horizontal alignment">${selectOpts([['left', 'Left'], ['center', 'Center'], ['right', 'Right']])}</select></div>`, 'box,line,hline,text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="textStyle.fillBackground" type="checkbox"><span>Background</span></label>', pillHtml('textBg'), 'text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="textStyle.drawBorder" type="checkbox"><span>Border</span></label>', pillHtml('textBorder'), 'text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="textStyle.wordWrap" type="checkbox"><span>Text wrap</span></label>', '', 'text')}
+        ${tvRow('<span>Text orientation</span>', `<select data-field="textStyle.orientation" aria-label="Text orientation">${selectOpts([['horizontal', 'Horizontal'], ['vertical', 'Vertical']])}</select>`, 'vline')}
+        ${tvRow('<span>Text alignment</span>', `<div class="tv-align-pair"><select data-field="textStyle.vertical" data-types="box,line,hline,vline" aria-label="Vertical alignment">${selectOpts([['inside', 'Inside'], ['above', 'Above'], ['below', 'Below'], ['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']])}</select><select data-field="textStyle.horizontal" aria-label="Horizontal alignment">${selectOpts([['left', 'Left'], ['center', 'Center'], ['right', 'Right']])}</select></div>`, 'box,line,hline,vline')}
       </div>
-      <div class="modal-body drawing-panel" data-panel="coordinates" hidden><p class="editor-help">Bar index theo nến đang tải; thời gian của điểm được lưu cố định.</p><div id="drawing-points"></div></div>
+      <div class="modal-body drawing-panel" data-panel="coordinates" hidden><p class="editor-help">Bar index follows loaded candles; point timestamp is saved.</p><div id="drawing-points"></div></div>
       <div class="modal-body drawing-panel" data-panel="visibility" hidden>${visRows}</div>
       <p id="drawing-settings-error" role="alert"></p>
       <div class="modal-footer">
@@ -84,6 +91,7 @@ class DrawingSettings {
     </div>`;
 
     document.body.appendChild(this.root);
+    if (typeof TerminalLanguage !== 'undefined') TerminalLanguage.markup(this.root);
     for (const spec of DrawingSettings.STROKE_SPECS) {
       const btn = this.root.querySelector(`[data-pill="${spec.id}"]`);
       this.pills.set(spec.id, { btn, spec });
@@ -213,7 +221,8 @@ class DrawingSettings {
 
   tabsFor(type) {
     if (type === 'text') return ['text', 'coordinates', 'visibility'];
-    if (['box', 'line', 'hline'].includes(type)) return ['style', 'text', 'coordinates', 'visibility'];
+    if (type === 'brush') return ['style', 'visibility'];
+    if (['box', 'line', 'hline', 'vline'].includes(type)) return ['style', 'text', 'coordinates', 'visibility'];
     return ['style', 'coordinates', 'visibility'];
   }
 
@@ -360,10 +369,11 @@ class DrawingSettings {
     this.root.querySelector('#drawing-title-input').hidden = true;
     this.root.querySelector('#drawing-settings-title').hidden = false;
     this.root.querySelector('#drawing-rename').hidden = false;
-    this.root.querySelector('#drawing-settings-title').textContent = this.draft.title || (drawing.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[drawing.type]) || drawing.type;
-
-    const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', fib: 'Trend line', position: 'Entry line', brush: 'Stroke' };
-    this.root.querySelector('#drawing-stroke-label').textContent = strokeLabels[drawing.type] || 'Border / Line';
+    const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', vline: 'Line', fib: 'Trend line', position: 'Entry line', brush: 'Line' };
+    const titleLabel = this.draft.title || (drawing.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[drawing.type]) || drawing.type;
+    this.root.querySelector('#drawing-settings-title').textContent = typeof ui === 'function' ? ui(titleLabel) : titleLabel;
+    const strokeText = strokeLabels[drawing.type] || 'Border / Line';
+    this.root.querySelector('#drawing-stroke-label').textContent = typeof ui === 'function' ? ui(strokeText) : strokeText;
 
     const allowedTabs = this.tabsFor(drawing.type);
     this.root.querySelectorAll('[data-tab]').forEach(btn => { btn.hidden = !allowedTabs.includes(btn.dataset.tab); });
@@ -375,10 +385,11 @@ class DrawingSettings {
     const pointLabels = drawing.type === 'position'
       ? { p1: '#1 Entry (price, bar)', p2: '#2 Target (price, bar)', p3: '#3 Stop (price, bar)' }
       : drawing.type === 'hline' ? { p1: '#1 (price)' }
+      : drawing.type === 'vline' ? { p1: '#1 (bar)' }
       : { p1: '#1 (price, bar)', p2: '#2 (price, bar)' };
     for (const key of pointKeys) {
       const row = document.createElement('div');
-      row.className = 'coordinate-row' + (drawing.type === 'hline' ? ' coordinate-single' : '');
+      row.className = 'coordinate-row' + (drawing.type === 'hline' || drawing.type === 'vline' ? ' coordinate-single' : '');
       const label = document.createElement('label');
       label.textContent = pointLabels[key] || key;
       const price = document.createElement('input');
@@ -388,6 +399,7 @@ class DrawingSettings {
       bar.type = 'number'; bar.step = '1'; bar.dataset.point = key; bar.dataset.coordinate = 'bar';
       bar.setAttribute('aria-label', key + ' bar');
       if (drawing.type === 'hline') bar.hidden = true;
+      if (drawing.type === 'vline') price.hidden = true;
       row.append(label, price, bar);
       points.appendChild(row);
       price.addEventListener('input', () => this.preview());
@@ -431,26 +443,26 @@ class DrawingSettings {
       if (input.closest('[data-types]')?.hidden) return;
       const isNum = input.type === 'number' || input.type === 'range' || input.dataset.field === 'textStyle.size';
       const value = input.type === 'checkbox' ? input.checked : isNum ? Number(input.value) : input.value;
-      if (isNum && (input.value === '' || !Number.isFinite(value))) throw new Error('Thông số vượt giới hạn.');
-      if ((input.type === 'number' || input.type === 'range') && ((input.min !== '' && value < Number(input.min)) || (input.max !== '' && value > Number(input.max)))) throw new Error('Thông số vượt giới hạn.');
+      if (isNum && (input.value === '' || !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Value out of range.') : 'Value out of range.');
+      if ((input.type === 'number' || input.type === 'range') && ((input.min !== '' && value < Number(input.min)) || (input.max !== '' && value > Number(input.max)))) throw new Error(typeof ui === 'function' ? ui('Value out of range.') : 'Value out of range.');
       this.assign(input.dataset.field, value);
     });
-    for (const [name, rule] of Object.entries(this.draft.visibility)) if (rule.min > rule.max) throw new Error(`${name}: minimum phải ≤ maximum.`);
+    for (const [name, rule] of Object.entries(this.draft.visibility)) if (rule.min > rule.max) throw new Error(`${name}: ${typeof ui === 'function' ? ui('minimum must be ≤ maximum.') : 'minimum must be ≤ maximum.'}`);
     this.draft.text = this.root.querySelector('#drawing-text').value;
     const levels = this.root.querySelector('#drawing-levels').value.split(',').map(value => Number(value.trim()));
-    if (!levels.length || levels.length > 30 || levels.some(value => !Number.isFinite(value))) throw new Error('Fib levels không hợp lệ.');
+    if (!levels.length || levels.length > 30 || levels.some(value => !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Invalid Fib levels.') : 'Invalid Fib levels.');
     this.draft.levels = levels;
     const brushAnchor = this.draft.type === 'brush' ? { ...this.draft.p1 } : null;
     this.root.querySelectorAll('[data-point]').forEach(input => {
       if (input.hidden) return;
       const value = Number(input.value);
-      if (!input.value || !Number.isFinite(value)) throw new Error('Tọa độ không hợp lệ.');
+      if (!input.value || !Number.isFinite(value)) throw new Error(typeof ui === 'function' ? ui('Invalid coordinates.') : 'Invalid coordinates.');
       const point = this.draft[input.dataset.point];
       if (!point || input.value === input.dataset.original) return;
       if (input.dataset.coordinate === 'price') point.price = value;
       else {
         const time = DrawingModel.timeAt(this.chart, value);
-        if (time === null || time <= 0) throw new Error('Bar không hợp lệ.');
+        if (time === null || time <= 0) throw new Error(typeof ui === 'function' ? ui('Invalid bar index.') : 'Invalid bar index.');
         point.time = time;
       }
     });

@@ -1,7 +1,7 @@
 /* Pinned desktop frame. Original implementation inspired by side-dock navigation.
    React Bits Pro source is not bundled. Chart appearance stays in ChartSettings. */
 :root{--chrome:#101113;--chrome-well:#15161a;--panel:#18191c;--line:#303136;--text:#d5d6da;--muted:#85878e;--accent:#89a9ff;--frame-top:60px;--frame-left:44px;--frame-right:36px;--frame-panel:280px;--studio-shadow:none}
-body{font-family:Arial,'Segoe UI',sans-serif;letter-spacing:0;background:var(--chrome-well)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;letter-spacing:0;background:var(--chrome-well)}
 #topbar{position:fixed;inset:6px 8px auto;height:48px;min-height:48px;display:flex;align-items:center;gap:4px;padding:0 10px;border:1px solid rgba(255,255,255,.1);border-radius:24px;background:linear-gradient(180deg,#0b0b0e 0%,#050507 100%);pointer-events:auto;box-shadow:0 8px 24px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.06)}
 #topbar .topbar-left,#topbar .topbar-right{height:100%;padding:0;gap:3px;background:transparent;border:0;border-radius:0;box-shadow:none;align-items:center}
 #topbar .topbar-left{flex:1;min-width:0;overflow:hidden}
@@ -90,7 +90,7 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 /* TradingView Desktop-matched Drawing Settings dialog */
 #drawing-settings{--accent:#eef0f4;background:rgba(0,0,0,.44)}
 #drawing-settings [hidden]{display:none!important}
-#drawing-settings .drawing-dialog{width:400px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#d8dce3;border:1px solid rgba(255,255,255,.11)!important;border-radius:14px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
+#drawing-settings .drawing-dialog{zoom:var(--toolbar-scale,1);width:400px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#d8dce3;border:1px solid rgba(255,255,255,.11)!important;border-radius:14px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
 #drawing-settings .modal-header{padding:18px 20px 10px;border:0;align-items:center;gap:10px}
 #drawing-settings .drawing-title-wrap{display:flex;align-items:center;gap:8px;min-width:0}
 #drawing-settings-title{font-size:18px;font-weight:600;color:#e3e6ec;letter-spacing:-.01em}

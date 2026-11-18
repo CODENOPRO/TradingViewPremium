@@ -8,7 +8,7 @@
   <style>
 :root { color-scheme: dark; --chrome:#0f0f0f; --panel:#191919; --line:#303030; --text:#dbdbdb; --muted:#999; --accent:#2962ff; --chart:#c2baae; }
 * { box-sizing:border-box; }
-body { margin:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; background:var(--chrome); color:var(--text); font:13px -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; }
+body { margin:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; background:var(--chrome); color:var(--text); font:13px -apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif; }
 button,input,select,textarea { font:inherit; }
 button { cursor:pointer; color:inherit; }
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible { outline:2px solid #6891ff; outline-offset:2px; }
@@ -1345,7 +1345,7 @@ body.reduce-motion #music-panel.music-mini[data-provider="youtube"] :is(.music-c
 /* Local graphite studio. Inspired by React Bits dock, Magic UI borders and Uiverse controls.
    Chart palette, candle series, canvas and price scales are intentionally owned by ChartSettings. */
 :root{--chrome:#11151b;--panel:#171c24;--line:#2b333f;--text:#e6eaf0;--muted:#929dab;--accent:#82e2c1;--studio-shadow:0 12px 32px #05080d38,inset 0 1px 0 #ffffff0b;--studio-height:48vh}
-body{font-family:Inter,'Segoe UI',sans-serif;letter-spacing:.01em}
+body{font-family:-apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;letter-spacing:0}
 button,input,select,textarea{accent-color:var(--accent)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 #topbar{top:10px;left:10px;right:10px;gap:12px}
@@ -1932,7 +1932,7 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
 /* Pinned desktop frame. Original implementation inspired by side-dock navigation.
    React Bits Pro source is not bundled. Chart appearance stays in ChartSettings. */
 :root{--chrome:#101113;--chrome-well:#15161a;--panel:#18191c;--line:#303136;--text:#d5d6da;--muted:#85878e;--accent:#89a9ff;--frame-top:60px;--frame-left:44px;--frame-right:36px;--frame-panel:280px;--studio-shadow:none}
-body{font-family:Arial,'Segoe UI',sans-serif;letter-spacing:0;background:var(--chrome-well)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;letter-spacing:0;background:var(--chrome-well)}
 #topbar{position:fixed;inset:6px 8px auto;height:48px;min-height:48px;display:flex;align-items:center;gap:4px;padding:0 10px;border:1px solid rgba(255,255,255,.1);border-radius:24px;background:linear-gradient(180deg,#0b0b0e 0%,#050507 100%);pointer-events:auto;box-shadow:0 8px 24px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.06)}
 #topbar .topbar-left,#topbar .topbar-right{height:100%;padding:0;gap:3px;background:transparent;border:0;border-radius:0;box-shadow:none;align-items:center}
 #topbar .topbar-left{flex:1;min-width:0;overflow:hidden}
@@ -2021,7 +2021,7 @@ body.terminal-fullscreen #app-body{inset:0;border-top:0}
 /* TradingView Desktop-matched Drawing Settings dialog */
 #drawing-settings{--accent:#eef0f4;background:rgba(0,0,0,.44)}
 #drawing-settings [hidden]{display:none!important}
-#drawing-settings .drawing-dialog{width:400px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#d8dce3;border:1px solid rgba(255,255,255,.11)!important;border-radius:14px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
+#drawing-settings .drawing-dialog{zoom:var(--toolbar-scale,1);width:400px;max-width:calc(100vw - 24px);background:#1f2126!important;color:#d8dce3;border:1px solid rgba(255,255,255,.11)!important;border-radius:14px;box-shadow:0 20px 54px rgba(0,0,0,.62)!important}
 #drawing-settings .modal-header{padding:18px 20px 10px;border:0;align-items:center;gap:10px}
 #drawing-settings .drawing-title-wrap{display:flex;align-items:center;gap:8px;min-width:0}
 #drawing-settings-title{font-size:18px;font-weight:600;color:#e3e6ec;letter-spacing:-.01em}
@@ -4480,6 +4480,7 @@ body:not(.reduce-motion) #indicator-modal.show:not(.studio-editing) > .modal-con
 #settings-modal > .tv-chart-color-popover { pointer-events: auto; }
 
 #settings-modal .chart-settings-dialog {
+  zoom: var(--toolbar-scale, 1);
   pointer-events: auto;
   box-sizing: border-box;
   display: flex;
@@ -7326,6 +7327,40 @@ Long Position|Vị thế Long
 Short Position|Vị thế Short
 Measure price and bars|Đo giá và số nến
 Brush|Cọ vẽ
+Vertical Line|Đường dọc
+Vertical line|Đường dọc
+Text wrap|Xuống dòng tự động
+Text orientation|Hướng chữ
+Horizontal|Ngang
+Vertical|Dọc
+Show time|Hiện thời gian
+Top|Trên
+Middle|Giữa
+Bottom|Dưới
+Close drawing settings|Đóng cài đặt hình vẽ
+Bar index follows loaded candles; point timestamp is saved.|Bar index theo nến đang tải; thời gian của điểm được lưu cố định.
+Value out of range.|Thông số vượt giới hạn.
+Invalid Fib levels.|Fib levels không hợp lệ.
+Invalid coordinates.|Tọa độ không hợp lệ.
+Invalid bar index.|Bar không hợp lệ.
+minimum must be ≤ maximum.|minimum phải ≤ maximum.
+Short Position|Vị thế Short
+Long Position|Vị thế Long
+Unlock drawing before deleting.|Mở khóa bản vẽ trước khi xóa.
+Copied drawing|Đã sao chép đối tượng
+No data for this symbol/timeframe|Không có dữ liệu cho mã/khung này
+No commands found|Không tìm thấy lệnh
+Toggle light / dark theme|Đổi giao diện sáng tối
+Watchlist|Theo dõi
+Calendar|Lịch
+Music|Nhạc
+QT Mode · Toggle|QT Mode · Bật / Tắt
+QT Mode · Settings (Quantaibay)|QT Mode · Cài đặt (Quantaibay)
+source error|lỗi nguồn
+cached data|dữ liệu đã lưu
+waiting for source|chờ nguồn
+Session closed|Nghỉ phiên
+Favourite tools|Công cụ yêu thích
 Music link|Link nhạc
 Playback position|Vị trí phát
 Play|Phát
@@ -7390,7 +7425,7 @@ Low|Thấp`.split('\n').map(line=>line.split('|'));
   return {language,text,markup,save:next=>['en','vi'].includes(next)&&Workspace.write(key,next)};
 })();
 const ui=TerminalLanguage.text;
-  </script>
+</script>
     <script>
 /* One source of truth for candle validation, session alignment and chart routing. */
 const MarketData = (() => {
@@ -7526,16 +7561,17 @@ if(typeof module!=='undefined')module.exports=BridgeProtocol;
       <script>
 /* Drawing properties are plain data so saved workspaces and templates share one format. */
 const DrawingModel = (() => {
-  const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure',brush:'Brush' };
+  const DEFAULT_FONT = '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';
+  const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', vline:'Vertical Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure', brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
   const defaultVis = Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }]));
   const baseDefaultsCache = {};
   function baseDefaults(type) {
     return baseDefaultsCache[type] || (baseDefaultsCache[type] = {
-      title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
+      title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, showTime:true, smooth:5,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
-      textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
+      textStyle:{ color:type==='text'||type==='vline'?'#2962ff':type==='position'?'#ffffff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
       side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
@@ -7565,10 +7601,10 @@ const DrawingModel = (() => {
     return normalized;
   }
   function defaults(type) {
-    return { title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
+    return { title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, showTime:true, smooth:5,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
-      textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
+      textStyle:{ color:type==='text'||type==='vline'?'#2962ff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
       side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
@@ -7690,14 +7726,64 @@ const DrawingModel = (() => {
       {handle:'p3_price',x:midX,y:g.c.y}
     ];
   }
+  function smoothBrushPoints(rawPoints, smooth = 5) {
+    const pts = rawPoints.filter(p => Number.isFinite(p.x) && Number.isFinite(p.y));
+    if (pts.length <= 2) return pts;
+    const step = Math.max(1, Number(smooth) || 5);
+    const sub = [pts[0]];
+    for (let i = 1; i < pts.length; i++) {
+      const dx = pts[i].x - pts[i - 1].x, dy = pts[i].y - pts[i - 1].y;
+      const len = Math.hypot(dx, dy);
+      const count = Math.min(5, Math.floor(len / step));
+      if (count > 1 && len > 0) {
+        const ux = dx / len, uy = dy / len, seg = len / count;
+        for (let k = 1; k < count; k++) sub.push({ x: pts[i - 1].x + ux * seg * k, y: pts[i - 1].y + uy * seg * k });
+      }
+      sub.push(pts[i]);
+    }
+    const out = new Array(sub.length);
+    for (let r = 0; r < sub.length; r++) {
+      let sx = 0, sy = 0;
+      for (let k = 0; k < step; k++) {
+        const a = sub[Math.max(r - k, 0)], b = sub[Math.min(r + k, sub.length - 1)];
+        sx += a.x + b.x; sy += a.y + b.y;
+      }
+      out[r] = { x: sx * 0.5 / step, y: sy * 0.5 / step };
+    }
+    out.push(sub[sub.length - 1]);
+    return out;
+  }
+  function wrapTextLines(ctx, text, maxWidth) {
+    const rawLines = String(text || '').split('\n');
+    if (!maxWidth || maxWidth <= 0 || !ctx?.measureText) return rawLines;
+    const out = [];
+    for (const para of rawLines) {
+      if (!para) { out.push(''); continue; }
+      const words = para.split(' ');
+      let line = '';
+      for (const word of words) {
+        const test = line ? line + ' ' + word : word;
+        if (line && ctx.measureText(test).width > maxWidth) {
+          out.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      }
+      out.push(line);
+    }
+    return out;
+  }
   function hit(chart,value,x,y) {
     if (!visible(value,chart.currentTimeframe)) return null;
     const g=geometry(chart,value);if(!g)return null;
     if(value.type==='brush'){
-      const points=(value.points||[]).map(p=>point(chart,p));
+      const rawPts=(value.points||[]).map(p=>point(chart,p));
+      const points=rawPts.length>5?smoothBrushPoints(rawPts,value.smooth??5):rawPts;
       for(let i=1;i<points.length;i++)if(distance(x,y,points[i-1],points[i])<7)return 'body';
       return null;
     }
+    if(value.type==='vline') return Math.abs(x-g.a.x)<7 ? 'body' : null;
     if (value.type==='position'&&g.c) {
       for (const h of positionHandles(g)) if (Math.hypot(x-h.x,y-h.y) < 9) return h.handle;
     }
@@ -7708,7 +7794,14 @@ const DrawingModel = (() => {
     if(value.type === 'box' && Math.hypot(x-g.b.x,y-g.a.y)<9)return 'p2x_p1y';
     if(value.type === 'box')for(const edge of boxEdges(g))if(Math.hypot(x-edge.x,y-edge.y)<9)return edge.handle;
     if(value.type === 'hline') return Math.abs(y-g.a.y)<7 ? 'body' : null;
-    if(value.type === 'text') return x>=g.a.x-8 && x<=g.a.x+Math.max(50,(value.text||'').length*(value.textStyle?.size||12)*.65) && Math.abs(y-g.a.y)<22 ? 'body' : null;
+    if(value.type === 'text') {
+      const style=value.textStyle||{},sz=style.size||14,pad=sz/6,lh=sz*1.25;
+      const lines=String(value.text||'Text').split('\n');
+      const maxLen=lines.reduce((m,l)=>Math.max(m,l.length),0);
+      const boxW=(style.wordWrap?Math.min(style.wordWrapWidth||200,maxLen*sz*0.6):maxLen*sz*0.6)+pad*2;
+      const boxH=lines.length*lh+pad*2;
+      return x>=g.a.x-pad-4 && x<=g.a.x+boxW+4 && y>=g.a.y-pad-4 && y<=g.a.y+boxH+4 ? 'body' : null;
+    }
     if(['box','position','measure','fib'].includes(value.type)) return x>=g.left-6 && x<=g.right+6 && y>=g.top-6 && y<=g.bottom+6 ? 'body' : null;
     return distance(x,y,g.a,g.b)<7 ? 'body' : null;
   }
@@ -7736,8 +7829,42 @@ const DrawingModel = (() => {
     ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;ctx.setLineDash(dash(d.lineStyle));
     const line=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
     if(d.type==='brush'){
-      const points=(d.points||[]).map(p=>point(chart,p));ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
-      points.forEach((p,i)=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)){if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);}});ctx.stroke();
+      const points=smoothBrushPoints((d.points||[]).map(p=>point(chart,p)), d.smooth??5);
+      if(points.length){
+        ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash([]);ctx.beginPath();
+        points.forEach((p,i)=>{if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});
+        if(d.fillEnabled&&points.length>2){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity??20);ctx.fill();}
+        ctx.stroke();
+      }
+    } else if(d.type==='vline') {
+      if(g.a.x >= -2 && g.a.x <= width + 2) {
+        line(g.a.x,0,g.a.x,plotBottom);
+        if(d.text){
+          const style=d.textStyle||{},sz=style.size||14;
+          const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':DEFAULT_FONT;
+          ctx.save();
+          ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;
+          ctx.fillStyle=style.color||d.borderColor||'#2962ff';
+          ctx.setLineDash([]);
+          const lines=String(d.text).split('\n'),lh=sz*1.25;
+          const vy=style.vertical==='top'?12:style.vertical==='bottom'?plotBottom-12:plotBottom/2;
+          if((style.orientation||'vertical')==='vertical'){
+            ctx.translate(g.a.x,vy);
+            ctx.rotate(-Math.PI/2);
+            ctx.textAlign=style.vertical==='top'?'right':style.vertical==='bottom'?'left':'center';
+            ctx.textBaseline=style.horizontal==='left'?'bottom':style.horizontal==='right'?'top':'middle';
+            const offY=style.horizontal==='left'?-5:style.horizontal==='right'?5:0;
+            lines.forEach((t,i)=>ctx.fillText(t,0,offY+(i-(lines.length-1)/2)*lh));
+          } else {
+            ctx.textAlign=style.horizontal==='left'?'right':style.horizontal==='right'?'left':'center';
+            ctx.textBaseline=style.vertical==='top'?'top':style.vertical==='bottom'?'bottom':'middle';
+            const offX=style.horizontal==='left'?-6:style.horizontal==='right'?6:0;
+            lines.forEach((t,i)=>ctx.fillText(t,g.a.x+offX,vy+i*lh));
+          }
+          ctx.restore();
+        }
+      }
+      ctx.restore();return;
     } else if(d.type === 'line') {
       if(d.axis==='vertical') {
         line(g.a.x,0,g.a.x,plotBottom);ctx.restore();return;
@@ -7752,7 +7879,7 @@ const DrawingModel = (() => {
         b={x:a.x,y:plotBottom};
       }
       if (d.text && d.textStyle?.inlineOnLine) {
-        const style=d.textStyle,family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
+        const style=d.textStyle,family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':DEFAULT_FONT;
         const dx=b.x-a.x,dy=b.y-a.y,segLen=Math.hypot(dx,dy),pos=style.inlinePos||'center';
         const fontStr=sz=>`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;
         let baseSz=style.size||11;
@@ -7771,7 +7898,21 @@ const DrawingModel = (() => {
           }else if(pos==='right'){
             const endX=b.x>width-6&&a.x<width-tw-18?width-6:b.x;
             tx=endX-tw/2;
-          }else{
+          }else if(d.type==='text'){
+        const pad=effSize/6;
+        const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));
+        const boxW=maxW+pad*2,boxH=lines.length*lh+pad*2;
+        if(style.fillBackground){
+          ctx.fillStyle=rgba(style.backgroundColor||'#2962ff',style.backgroundOpacity??25);
+          ctx.fillRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        if(style.drawBorder){
+          ctx.strokeStyle=style.borderColor||'#787b86';ctx.lineWidth=1;
+          ctx.strokeRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=style.color||'#2962ff';
+        lines.forEach((text,index)=>ctx.fillText(text,g.a.x,g.a.y+index*lh));
+      }else{
             const visA=Math.max(6,a.x),visB=Math.min(width-6,b.x);
             tx=visB-visA>tw+12?(visA+visB)/2:(a.x+b.x)/2;
           }
@@ -8005,17 +8146,18 @@ const DrawingModel = (() => {
       ctx.fillText(line1, tipX + tipW / 2, tipY + padY + lineH * 0.42);
       ctx.fillText(line2, tipX + tipW / 2, tipY + padY + lineH * 1.42);
     }
-    if(d.text || d.type === 'text') {
+    if((d.text || d.type === 'text') && d.type !== 'vline') {
       const style=d.textStyle;
-      let effSize=style.size,lines=(d.text||(d.type==='text'?'Text':'')).split('\n');
+      let effSize=style.size||(d.type==='text'?14:12);
       if(d._qtTrueOpenSpan){
         if(d._qtTier===0)effSize=Math.min(effSize,9.5);
         else if(d._qtTier===1)effSize=Math.min(effSize,10);
       }
       let lh=effSize*1.25;
-      const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
+      const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':DEFAULT_FONT;
       const setFont=sz=>{ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;};
       ctx.setLineDash([]);setFont(effSize);
+      let lines=(d.type==='text'&&style.wordWrap&&!style.pine)?wrapTextLines(ctx,d.text||'Text',style.wordWrapWidth||200):(d.text||(d.type==='text'?'Text':'')).split('\n');
       if(d.type==='text'&&style.pine){
         const place=style.placement||'center',padX=6,padY=3;
         const align=place==='label_left'?'left':place==='label_right'?'right':(style.horizontal||'center');
@@ -8085,6 +8227,20 @@ const DrawingModel = (() => {
         }
         ctx.textAlign=align;ctx.textBaseline=base;ctx.fillStyle=style.color;
         lines.forEach((text,index)=>ctx.fillText(text,x,startY+index*lh));
+      }else if(d.type==='text'){
+        const pad=effSize/6;
+        const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));
+        const boxW=maxW+pad*2,boxH=lines.length*lh+pad*2;
+        if(style.fillBackground){
+          ctx.fillStyle=rgba(style.backgroundColor||'#2962ff',style.backgroundOpacity??25);
+          ctx.fillRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        if(style.drawBorder){
+          ctx.strokeStyle=style.borderColor||'#787b86';ctx.lineWidth=1;
+          ctx.strokeRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=style.color||'#2962ff';
+        lines.forEach((text,index)=>ctx.fillText(text,g.a.x,g.a.y+index*lh));
       }else{
         ctx.textAlign=style.horizontal;ctx.fillStyle=style.color;
         const x=d.type === 'text'?g.a.x:style.horizontal === 'left'?left+6:style.horizontal === 'center'?(left+right)/2:right-6;
@@ -8092,7 +8248,21 @@ const DrawingModel = (() => {
           ctx.textBaseline=style.vertical==='top'?'top':style.vertical==='bottom'?'bottom':'middle';
           const y=style.vertical==='top'?top+4:style.vertical==='bottom'?bottom-4-(lines.length-1)*lh:(top+bottom)/2-(lines.length-1)*lh*.5;
           lines.forEach((text,index)=>ctx.fillText(text,x,y+index*lh));
-        }else{
+        }else if(d.type==='text'){
+        const pad=effSize/6;
+        const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));
+        const boxW=maxW+pad*2,boxH=lines.length*lh+pad*2;
+        if(style.fillBackground){
+          ctx.fillStyle=rgba(style.backgroundColor||'#2962ff',style.backgroundOpacity??25);
+          ctx.fillRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        if(style.drawBorder){
+          ctx.strokeStyle=style.borderColor||'#787b86';ctx.lineWidth=1;
+          ctx.strokeRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=style.color||'#2962ff';
+        lines.forEach((text,index)=>ctx.fillText(text,g.a.x,g.a.y+index*lh));
+      }else{
           const y=style.vertical === 'above'?top-8-(lines.length-1)*style.size*1.3:style.vertical === 'below'?bottom+style.size+6:d.type === 'text'?g.a.y:(top+bottom)/2-(lines.length-1)*style.size*.65;
           lines.forEach((text,index)=>ctx.fillText(text,x,y+index*style.size*1.3));
         }
@@ -8103,7 +8273,7 @@ const DrawingModel = (() => {
   return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,draw,boxEdges,resizeBox,positionHandles};
 })();
 if(typeof module !== 'undefined')module.exports=DrawingModel;
-  </script>
+</script>
   <script>
 /* Renderer-neutral Pine pane plots and fills, shared by the v4 canvas and v5 primitive. */
 const PinePainter={
@@ -8238,7 +8408,7 @@ class ChartEngine {
         attributionLogo:false,
         background: { type: 'solid', color: this.config.bg },
         textColor: this.config.textColor,
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, sans-serif'
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif'
       },
       localization: { timeFormatter: time => CHART_DATETIME.format(new Date(time * 1000)) },
       grid: {
@@ -8569,8 +8739,10 @@ class ChartEngine {
     if ((reset || (previous && previousBars.length > 10 && previous.from >= previousBars.length - 5)) && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
-    this.container.dataset.empty = this.bars.length ? '' : ui('Không có dữ liệu cho mã/khung này');
+    this.container.dataset.empty = this.bars.length ? '' : ui('No data for this symbol/timeframe');
     this.renderDrawings();
+    this.updateCountdown?.();
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => this.positionCountdown?.());
     this.dataUpdateKind = 'replace';
     this.dataRevision++;this.onDataChange?.();
   }
@@ -9034,7 +9206,8 @@ class ChartEngine {
     this.series.applyOptions({lastValueVisible:false});
     const b=this.bars.at(-1),now=this.replayMode?this.replayClock:Date.now()/1000;
     const metadata=this.displaySessionMetadata();
-    const raw=metadata.sessionType==='RTH'&&this.appearance?.sessionMode==='RTH'?this.getBarsForTimeframe(this.currentTimeframe):this.currentTimeframe==='1m'?this.rawBars:this.htfData[this.currentTimeframe]||[];
+    const nativeOrAgg=this.currentTimeframe==='1m'?this.rawBars:(this.htfData[this.currentTimeframe]?.length?this.htfData[this.currentTimeframe]:this.getBarsForTimeframe(this.currentTimeframe));
+    const raw=(metadata.sessionType==='RTH'&&this.appearance?.sessionMode==='RTH')?this.getBarsForTimeframe(this.currentTimeframe):(this.replayMode?nativeOrAgg:(this.bars?.length?this.bars:nativeOrAgg));
     let lo=0,hi=raw.length;while(lo<hi){const mid=(lo+hi)>>1;if(raw[mid].time<=now)lo=mid+1;else hi=mid;}
     // Read timestamps only for the in-progress interval; Replay price/indicators stay closed-bar only.
     const current=raw[lo-1],session=TerminalTime.activeSession(now,metadata),seconds=current?Math.max(0,Math.ceil(TerminalTime.end({time:current.time},this.currentTimeframe,metadata)-now)):0;
@@ -9191,7 +9364,7 @@ class ChartEngine {
     return this.chart.timeScale().timeToCoordinate(time);
   }
 }
-  </script>
+</script>
   <script>
 /* v5 preview: rendering uses a native series primitive, native scales and separators. */
 class NativeCyclePane {
@@ -10222,12 +10395,14 @@ class DrawingSettings {
   ];
 
   static STROKE_SPECS = [
-    { id: 'border', label: 'Border', types: 'box,line,hline,fib,position,measure,brush', colorPath: 'borderColor', opacityPath: 'strokeOpacity', widthPath: 'width', stylePath: 'lineStyle', syncColor: true },
+    { id: 'border', label: 'Border', types: 'box,line,hline,vline,fib,position,measure,brush', colorPath: 'borderColor', opacityPath: 'strokeOpacity', widthPath: 'width', stylePath: 'lineStyle', syncColor: true },
     { id: 'middleLine', label: 'Middle line', types: 'box', checkPath: 'middleLine.enabled', colorPath: 'middleLine.color', opacityPath: 'middleLine.opacity', widthPath: 'middleLine.width', stylePath: 'middleLine.style' },
-    { id: 'fill', label: 'Background', types: 'box,measure', checkPath: 'fillEnabled', colorPath: 'fillColor', opacityPath: 'fillOpacity' },
+    { id: 'fill', label: 'Background', types: 'box,measure,brush', checkPath: 'fillEnabled', colorPath: 'fillColor', opacityPath: 'fillOpacity' },
     { id: 'profit', label: 'Profit zone', types: 'position', colorPath: 'profitColor', opacityPath: 'profitOpacity' },
     { id: 'stop', label: 'Stop zone', types: 'position', colorPath: 'stopColor', opacityPath: 'stopOpacity' },
-    { id: 'text', label: '', types: 'box,line,hline,text', colorPath: 'textStyle.color' }
+    { id: 'text', label: '', types: 'box,line,hline,vline,text', colorPath: 'textStyle.color' },
+    { id: 'textBg', label: 'Background', types: 'text', checkPath: 'textStyle.fillBackground', colorPath: 'textStyle.backgroundColor', opacityPath: 'textStyle.backgroundOpacity' },
+    { id: 'textBorder', label: 'Border', types: 'text', checkPath: 'textStyle.drawBorder', colorPath: 'textStyle.borderColor' }
   ];
 
   constructor(editor) {
@@ -10259,14 +10434,15 @@ class DrawingSettings {
           <input id="drawing-title-input" type="text" maxlength="64" aria-label="Drawing name" hidden>
           <button type="button" id="drawing-rename" class="drawing-rename-btn" title="Rename" aria-label="Rename drawing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
         </div>
-        <button type="button" class="modal-close" aria-label="Đóng setting hình"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <button type="button" class="modal-close" aria-label="Close drawing settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
       </div>
       <div class="drawing-tabs" role="tablist">${['Style', 'Text', 'Coordinates', 'Visibility'].map((tab, i) => `<button type="button" role="tab" data-tab="${tab.toLowerCase()}" aria-selected="${i === 0}">${tab}</button>`).join('')}</div>
       <div class="modal-body drawing-panel" data-panel="style">
         ${tvRow('<span>Extend</span>', `<select data-field="extend" aria-label="Extend">${selectOpts([['none', "Don't extend"], ['left', 'Extend left'], ['right', 'Extend right'], ['both', 'Extend both']])}</select>`, 'box,line,fib')}
-        ${tvRow('<span id="drawing-stroke-label">Border</span>', pillHtml('border'), 'box,line,hline,fib,position,measure,brush')}
+        ${tvRow('<span id="drawing-stroke-label">Border</span>', pillHtml('border'), 'box,line,hline,vline,fib,position,measure,brush')}
         ${tvRow('<label class="tv-check-label"><input data-field="middleLine.enabled" type="checkbox"><span>Middle line</span></label>', pillHtml('middleLine'), 'box')}
-        ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', pillHtml('fill'), 'box,measure')}
+        ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', pillHtml('fill'), 'box,measure,brush')}
+        ${tvRow('<span>Show time</span>', '<input type="checkbox" data-field="showTime" aria-label="Show time">', 'vline')}
         ${tvRow('<span>Profit zone</span>', pillHtml('profit'), 'position')}
         ${tvRow('<span>Stop zone</span>', pillHtml('stop'), 'position')}
         ${tvRow('<span>Position side</span>', `<select data-field="side" aria-label="Position side">${selectOpts([['long', 'Long'], ['short', 'Short']])}</select>`, 'position')}
@@ -10279,14 +10455,18 @@ class DrawingSettings {
       <div class="modal-body drawing-panel" data-panel="text" hidden>
         <div class="drawing-text-toolbar">
           ${pillHtml('text')}
-          <select data-field="textStyle.size" aria-label="Text size">${[8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48].map(n => `<option value="${n}">${n}</option>`).join('')}</select>
+          <select data-field="textStyle.size" aria-label="Text size">${[10, 11, 12, 14, 16, 20, 24, 28, 32, 40].map(n => `<option value="${n}">${n}</option>`).join('')}</select>
           <button type="button" class="tv-format-btn" data-toggle="textStyle.bold" aria-pressed="false" aria-label="Bold"><strong>B</strong></button>
           <button type="button" class="tv-format-btn" data-toggle="textStyle.italic" aria-pressed="false" aria-label="Italic"><em>I</em></button>
         </div>
         <textarea id="drawing-text" aria-label="Drawing text" placeholder="Add text" spellcheck="false"></textarea>
-        ${tvRow('<span>Text alignment</span>', `<div class="tv-align-pair"><select data-field="textStyle.vertical" data-types="box,line,hline" aria-label="Vertical alignment">${selectOpts([['inside', 'Inside'], ['above', 'Above'], ['below', 'Below']])}</select><select data-field="textStyle.horizontal" aria-label="Horizontal alignment">${selectOpts([['left', 'Left'], ['center', 'Center'], ['right', 'Right']])}</select></div>`, 'box,line,hline,text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="textStyle.fillBackground" type="checkbox"><span>Background</span></label>', pillHtml('textBg'), 'text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="textStyle.drawBorder" type="checkbox"><span>Border</span></label>', pillHtml('textBorder'), 'text')}
+        ${tvRow('<label class="tv-check-label"><input data-field="textStyle.wordWrap" type="checkbox"><span>Text wrap</span></label>', '', 'text')}
+        ${tvRow('<span>Text orientation</span>', `<select data-field="textStyle.orientation" aria-label="Text orientation">${selectOpts([['horizontal', 'Horizontal'], ['vertical', 'Vertical']])}</select>`, 'vline')}
+        ${tvRow('<span>Text alignment</span>', `<div class="tv-align-pair"><select data-field="textStyle.vertical" data-types="box,line,hline,vline" aria-label="Vertical alignment">${selectOpts([['inside', 'Inside'], ['above', 'Above'], ['below', 'Below'], ['top', 'Top'], ['middle', 'Middle'], ['bottom', 'Bottom']])}</select><select data-field="textStyle.horizontal" aria-label="Horizontal alignment">${selectOpts([['left', 'Left'], ['center', 'Center'], ['right', 'Right']])}</select></div>`, 'box,line,hline,vline')}
       </div>
-      <div class="modal-body drawing-panel" data-panel="coordinates" hidden><p class="editor-help">Bar index theo nến đang tải; thời gian của điểm được lưu cố định.</p><div id="drawing-points"></div></div>
+      <div class="modal-body drawing-panel" data-panel="coordinates" hidden><p class="editor-help">Bar index follows loaded candles; point timestamp is saved.</p><div id="drawing-points"></div></div>
       <div class="modal-body drawing-panel" data-panel="visibility" hidden>${visRows}</div>
       <p id="drawing-settings-error" role="alert"></p>
       <div class="modal-footer">
@@ -10297,6 +10477,7 @@ class DrawingSettings {
     </div>`;
 
     document.body.appendChild(this.root);
+    if (typeof TerminalLanguage !== 'undefined') TerminalLanguage.markup(this.root);
     for (const spec of DrawingSettings.STROKE_SPECS) {
       const btn = this.root.querySelector(`[data-pill="${spec.id}"]`);
       this.pills.set(spec.id, { btn, spec });
@@ -10426,7 +10607,8 @@ class DrawingSettings {
 
   tabsFor(type) {
     if (type === 'text') return ['text', 'coordinates', 'visibility'];
-    if (['box', 'line', 'hline'].includes(type)) return ['style', 'text', 'coordinates', 'visibility'];
+    if (type === 'brush') return ['style', 'visibility'];
+    if (['box', 'line', 'hline', 'vline'].includes(type)) return ['style', 'text', 'coordinates', 'visibility'];
     return ['style', 'coordinates', 'visibility'];
   }
 
@@ -10573,10 +10755,11 @@ class DrawingSettings {
     this.root.querySelector('#drawing-title-input').hidden = true;
     this.root.querySelector('#drawing-settings-title').hidden = false;
     this.root.querySelector('#drawing-rename').hidden = false;
-    this.root.querySelector('#drawing-settings-title').textContent = this.draft.title || (drawing.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[drawing.type]) || drawing.type;
-
-    const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', fib: 'Trend line', position: 'Entry line', brush: 'Stroke' };
-    this.root.querySelector('#drawing-stroke-label').textContent = strokeLabels[drawing.type] || 'Border / Line';
+    const strokeLabels = { box: 'Border', measure: 'Border', line: 'Line', hline: 'Line', vline: 'Line', fib: 'Trend line', position: 'Entry line', brush: 'Line' };
+    const titleLabel = this.draft.title || (drawing.type === 'position' ? (this.draft.side === 'short' ? 'Short Position' : 'Long Position') : DrawingModel.names[drawing.type]) || drawing.type;
+    this.root.querySelector('#drawing-settings-title').textContent = typeof ui === 'function' ? ui(titleLabel) : titleLabel;
+    const strokeText = strokeLabels[drawing.type] || 'Border / Line';
+    this.root.querySelector('#drawing-stroke-label').textContent = typeof ui === 'function' ? ui(strokeText) : strokeText;
 
     const allowedTabs = this.tabsFor(drawing.type);
     this.root.querySelectorAll('[data-tab]').forEach(btn => { btn.hidden = !allowedTabs.includes(btn.dataset.tab); });
@@ -10588,10 +10771,11 @@ class DrawingSettings {
     const pointLabels = drawing.type === 'position'
       ? { p1: '#1 Entry (price, bar)', p2: '#2 Target (price, bar)', p3: '#3 Stop (price, bar)' }
       : drawing.type === 'hline' ? { p1: '#1 (price)' }
+      : drawing.type === 'vline' ? { p1: '#1 (bar)' }
       : { p1: '#1 (price, bar)', p2: '#2 (price, bar)' };
     for (const key of pointKeys) {
       const row = document.createElement('div');
-      row.className = 'coordinate-row' + (drawing.type === 'hline' ? ' coordinate-single' : '');
+      row.className = 'coordinate-row' + (drawing.type === 'hline' || drawing.type === 'vline' ? ' coordinate-single' : '');
       const label = document.createElement('label');
       label.textContent = pointLabels[key] || key;
       const price = document.createElement('input');
@@ -10601,6 +10785,7 @@ class DrawingSettings {
       bar.type = 'number'; bar.step = '1'; bar.dataset.point = key; bar.dataset.coordinate = 'bar';
       bar.setAttribute('aria-label', key + ' bar');
       if (drawing.type === 'hline') bar.hidden = true;
+      if (drawing.type === 'vline') price.hidden = true;
       row.append(label, price, bar);
       points.appendChild(row);
       price.addEventListener('input', () => this.preview());
@@ -10644,26 +10829,26 @@ class DrawingSettings {
       if (input.closest('[data-types]')?.hidden) return;
       const isNum = input.type === 'number' || input.type === 'range' || input.dataset.field === 'textStyle.size';
       const value = input.type === 'checkbox' ? input.checked : isNum ? Number(input.value) : input.value;
-      if (isNum && (input.value === '' || !Number.isFinite(value))) throw new Error('Thông số vượt giới hạn.');
-      if ((input.type === 'number' || input.type === 'range') && ((input.min !== '' && value < Number(input.min)) || (input.max !== '' && value > Number(input.max)))) throw new Error('Thông số vượt giới hạn.');
+      if (isNum && (input.value === '' || !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Value out of range.') : 'Value out of range.');
+      if ((input.type === 'number' || input.type === 'range') && ((input.min !== '' && value < Number(input.min)) || (input.max !== '' && value > Number(input.max)))) throw new Error(typeof ui === 'function' ? ui('Value out of range.') : 'Value out of range.');
       this.assign(input.dataset.field, value);
     });
-    for (const [name, rule] of Object.entries(this.draft.visibility)) if (rule.min > rule.max) throw new Error(`${name}: minimum phải ≤ maximum.`);
+    for (const [name, rule] of Object.entries(this.draft.visibility)) if (rule.min > rule.max) throw new Error(`${name}: ${typeof ui === 'function' ? ui('minimum must be ≤ maximum.') : 'minimum must be ≤ maximum.'}`);
     this.draft.text = this.root.querySelector('#drawing-text').value;
     const levels = this.root.querySelector('#drawing-levels').value.split(',').map(value => Number(value.trim()));
-    if (!levels.length || levels.length > 30 || levels.some(value => !Number.isFinite(value))) throw new Error('Fib levels không hợp lệ.');
+    if (!levels.length || levels.length > 30 || levels.some(value => !Number.isFinite(value))) throw new Error(typeof ui === 'function' ? ui('Invalid Fib levels.') : 'Invalid Fib levels.');
     this.draft.levels = levels;
     const brushAnchor = this.draft.type === 'brush' ? { ...this.draft.p1 } : null;
     this.root.querySelectorAll('[data-point]').forEach(input => {
       if (input.hidden) return;
       const value = Number(input.value);
-      if (!input.value || !Number.isFinite(value)) throw new Error('Tọa độ không hợp lệ.');
+      if (!input.value || !Number.isFinite(value)) throw new Error(typeof ui === 'function' ? ui('Invalid coordinates.') : 'Invalid coordinates.');
       const point = this.draft[input.dataset.point];
       if (!point || input.value === input.dataset.original) return;
       if (input.dataset.coordinate === 'price') point.price = value;
       else {
         const time = DrawingModel.timeAt(this.chart, value);
-        if (time === null || time <= 0) throw new Error('Bar không hợp lệ.');
+        if (time === null || time <= 0) throw new Error(typeof ui === 'function' ? ui('Invalid bar index.') : 'Invalid bar index.');
         point.time = time;
       }
     });
@@ -10701,7 +10886,7 @@ class DrawingSettings {
   }
   cancel() { this.hide(); }
 }
-  </script>
+</script>
   <script>
 class DrawingEditor {
   static tbSvg(d, fill = false) {
@@ -10915,10 +11100,10 @@ class DrawingEditor {
     const isTextOnly=d.type==='text';
     const setHidden=(sel,hide)=>{const el=this.toolbar.querySelector(sel);if(el)el.hidden=hide;};
     setHidden('[data-tb-pop="borderColor"]',isTextOnly);
-    setHidden('[data-tb-pop="fillColor"]',!['box','measure'].includes(d.type));
-    setHidden('[data-tb-pop="textColor"]',!['box','line','hline','text'].includes(d.type));
+    setHidden('[data-tb-pop="fillColor"]',!['box','measure','brush'].includes(d.type));
+    setHidden('[data-tb-pop="textColor"]',!['box','line','hline','vline','text'].includes(d.type));
     setHidden('[data-tb-pop="width"]',isTextOnly);
-    setHidden('[data-tb-pop="lineStyle"]',isTextOnly);
+    setHidden('[data-tb-pop="lineStyle"]',isTextOnly||d.type==='brush');
     const setSwatch=(key,val)=>{const el=this.toolbar.querySelector(`[data-swatch-bar="${key}"]`);if(el?.style)el.style.background=val;};
     setSwatch('borderColor',DrawingModel.rgba(d.borderColor,d.strokeOpacity??100));
     setSwatch('fillColor',d.fillEnabled===false?'transparent':DrawingModel.rgba(d.fillColor,d.fillOpacity??32));
@@ -10953,12 +11138,13 @@ class DrawingEditor {
     const c=this.selection.chart,index=c.drawings.findIndex(d=>d.id===this.selection.id);if(index<0)return;
     c.drawings[index]=DrawingModel.normalize(structuredClone(value));c.drawingPreview=null;this.manager.saveDrawings(c);this.updateToolbar();c.renderDrawings();
   }
-  remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.('Mở khóa bản vẽ trước khi xóa.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
+  remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.(typeof ui==='function'?ui('Unlock drawing before deleting.'):'Unlock drawing before deleting.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
   open(tab='style'){if(this.drawing)this.settings.open(this.selection.chart,this.drawing,tab);}
   find(chart,x,y){if(chart.drawingsHidden||y>chart.plotBottom)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
   cursor(chart,hit){
     if(!hit)return '';
     if(hit.drawing.locked||this.manager.drawingsLocked)return 'not-allowed';
+    if(hit.drawing.type==='vline')return 'ew-resize';
     if(hit.handle==='body')return 'move';
     if(hit.handle.endsWith('_time'))return 'ew-resize';
     if(hit.handle.endsWith('_price')||hit.drawing.type==='hline')return 'ns-resize';
@@ -11047,10 +11233,27 @@ class DrawingEditor {
     if(chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe)){this.toolbar.hidden=true;return;}
     this.toolbar.hidden=false;
     const g=DrawingModel.geometry(chart,d);if(!g)return;
-    const points=d.type==='position'&&g.c?DrawingModel.positionHandles(g):[g.a];
-    if(d.type!=='position'){if(d.p2)points.push(g.b);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});}
+    let points;
+    if(d.type==='brush'&&d.points?.length){
+      const first=DrawingModel.point(chart,d.points[0]),last=DrawingModel.point(chart,d.points[d.points.length-1]);
+      points=d.points.length>1?[first,last]:[first];
+    } else if(d.type==='position'&&g.c){
+      points=DrawingModel.positionHandles(g);
+    } else {
+      points=[g.a];
+      if(d.p2)points.push(g.b);
+      if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
+    }
     ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
-    points.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
+    if(d.type==='text'){
+      const st=d.textStyle||{},sz=st.size||14,pad=sz/6,lh=sz*1.25;
+      ctx.font=`${st.italic?'italic ':''}${st.bold?'bold ':''}${sz}px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif`;
+      const lines=String(d.text||'Text').split('\n');
+      const maxW=Math.max(st.wordWrap?(st.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*sz*0.6),0));
+      ctx.lineWidth=1.5;ctx.strokeRect(g.a.x-pad,g.a.y-pad,maxW+pad*2,lines.length*lh+pad*2);
+      ctx.lineWidth=2;
+    }
+    points.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
     if(d.type==='box'){
       ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
       for(const p of DrawingModel.boxEdges(g)){ctx.fillRect(p.x-4,p.y-4,8,8);ctx.strokeRect(p.x-4,p.y-4,8,8);}ctx.restore();
@@ -11256,10 +11459,26 @@ class DrawingManager {
       // Horizontal Line: 1-click drop
       if (this.activeTool === 'hline') {
         chartEngine.drawings.push({
+          ...DrawingModel.defaults('hline'),
           id: 'draw_' + Date.now(),
           type: 'hline',
           p1: { time, price },
-          color: '#2962ff'
+          color: '#2962ff',
+          borderColor: '#2962ff'
+        });
+        this.saveDrawings(chartEngine);
+        chartEngine.renderDrawings();
+        this.setTool('crosshair');
+        return;
+      }
+
+      // Vertical Line: 1-click drop
+      if (this.activeTool === 'vline') {
+        chartEngine.drawings.push({
+          ...DrawingModel.defaults('vline'),
+          id: 'draw_' + Date.now(),
+          type: 'vline',
+          p1: { time, price }
         });
         this.saveDrawings(chartEngine);
         chartEngine.renderDrawings();
@@ -11352,7 +11571,7 @@ class DrawingManager {
       if(x<0||x>=node.clientWidth-(chart.chart.priceScale('right').width()||65)||y<0||y>=chart.plotBottom)return;
       const p=DrawingModel.fromPixel(chart,x,y,true);if(!p)return;
       event.preventDefault();event.stopImmediatePropagation();node.dispatchEvent(new CustomEvent('chart-activate'));
-      const d={...DrawingModel.defaults('brush'),type:'brush',id:crypto.randomUUID(),isTemp:true,p1:{...p},points:[p],width:2};
+      const d={...DrawingModel.defaults('brush'),type:'brush',id:crypto.randomUUID(),isTemp:true,p1:{...p},points:[p]};
       stroke={drawing:d,pointer:event.pointerId,symbol:chart.symbol,x,y,scroll:chart.chart.options().handleScroll.pressedMouseMove};chart.drawings.push(d);
       chart.chart.applyOptions({handleScroll:{pressedMouseMove:false}});node.setPointerCapture(event.pointerId);
     },true);
@@ -11522,7 +11741,7 @@ class DrawingManager {
     chartEngine.renderDrawings();
   }
 }
-  </script>
+</script>
   <script>
 class SyncController {
   constructor() {
@@ -13916,7 +14135,7 @@ class DesktopShell {
     for(const key of ['crosshair','line','box','text','fib','position','short_position','measure','brush','magnet','lock','eye','trash']){
       let b=rail.querySelector(`[data-tool="${key}"]`);
       if(!b&&key==='short_position'){
-        b=this.button('Vị thế Short','forecast_short',()=>this.drawing.setTool('short_position'));
+        b=this.button('Short Position','forecast_short',()=>this.drawing.setTool('short_position'));
         b.className='tool-btn';
         b.dataset.tool='short_position';
       }
@@ -13926,6 +14145,7 @@ class DesktopShell {
       rail.appendChild(b);
       if(key==='line'){
         const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';h.innerHTML=TerminalIcons.svg('horizontal');rail.appendChild(h);
+        const v=this.button('Vertical line','vertical',()=>this.drawing.setTool('vline'));v.className='tool-btn';v.dataset.tool='vline';v.innerHTML=TerminalIcons.svg('vertical');rail.appendChild(v);
       }
       if(key==='measure'||key==='box'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
       if(key==='magnet'){
@@ -14344,7 +14564,7 @@ class DesktopShell {
   }
 }
 if(typeof module!=='undefined')module.exports=DesktopShell;
-  </script>
+</script>
   <script>
 /* Pinned terminal chrome; legacy floating preferences remain available for recovery. */
 class ToolbarClusters {
@@ -16684,7 +16904,7 @@ class TerminalFeatures{
       const manage=document.createElement('button');manage.type='button';manage.textContent='☆';manage.className='tool-btn';manage.dataset.manageFavourites='true';manage.setAttribute('aria-label','Manage favourite drawing tools');manage.setAttribute('aria-controls','favorite-tool-menu');manage.setAttribute('aria-expanded',String(!menu.hidden));manage.onclick=()=>menu.hidden?this.openFavorites(manage.getBoundingClientRect()):closeMenu();bar.appendChild(manage);
       for(const key of this.favorites){const original=document.querySelector(`#left-sidebar [data-tool="${CSS.escape(key)}"]`);if(!original)continue;const b=original.cloneNode(true);b.removeAttribute('id');b.querySelector('.favorite-star')?.remove();b.onclick=()=>this.drawing.setTool(key);b.oncontextmenu=e=>{e.preventDefault();this.favorites=this.favorites.filter(x=>x!==key);Workspace.write('terminal_drawing_favorites_v1',this.favorites);draw();};bar.appendChild(b);}bar.hidden=false;this.clampFavorites();};
     this.renderFavorites=draw;bar.dataset.orientation='vertical';
-    const menu=document.createElement('section');menu.id='favorite-tool-menu';menu.hidden=true;menu.setAttribute('aria-label','Công cụ yêu thích');document.body.appendChild(menu);
+    const menu=document.createElement('section');menu.id='favorite-tool-menu';menu.hidden=true;menu.setAttribute('aria-label',ui('Favourite tools'));document.body.appendChild(menu);
     const manageButton=()=>bar.querySelector('[data-manage-favourites]');
     const closeMenu=(restoreFocus=false)=>{
       menu.hidden=true;
@@ -16698,7 +16918,7 @@ class TerminalFeatures{
       menu.style.top=Math.max(8,Math.min(innerHeight-height-8,above?y-height-10:y))+'px';
       manageButton()?.setAttribute('aria-expanded','true');
     };
-    const names={crosshair:'Con trỏ',line:'Đường xu hướng',hline:'Đường ngang',box:'Hộp Order Block / Range',text:'Ghi chú',fib:'Fibonacci Retracement',position:'Vị thế Long',short_position:'Vị thế Short',measure:'Đo giá và số nến',brush:'Cọ vẽ'};
+    const names={crosshair:'Con trỏ',line:'Đường xu hướng',hline:'Đường ngang',vline:'Đường dọc',box:'Hộp Order Block / Range',text:'Ghi chú',fib:'Fibonacci Retracement',position:'Vị thế Long',short_position:'Vị thế Short',measure:'Đo giá và số nến',brush:'Cọ vẽ'};
     this.openFavorites=rect=>{
       menu.replaceChildren();
       const header=document.createElement('header');
@@ -16751,7 +16971,7 @@ class TerminalFeatures{
   clampFavorites(){const b=this.favoriteBar;if(!b||b.hidden)return;b.style.left=Math.max(0,Math.min(innerWidth-b.offsetWidth,parseFloat(b.style.left)||0))+'px';b.style.top=Math.max(0,Math.min(innerHeight-b.offsetHeight,parseFloat(b.style.top)||0))+'px';}
 }
 if(typeof module!=='undefined')module.exports={TerminalTime,TerminalReplay};
-  </script>
+</script>
       <script>
 /* Settings, motion and input behavior shared by the terminal chrome. */
 TerminalFeatures.contrast=color=>{const hex=String(color).replace('#','');if(!/^[\da-f]{6}$/i.test(hex))return '#fff';const rgb=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722>.179?'#111':'#fff';};
@@ -16805,6 +17025,7 @@ TerminalFeatures.prototype.installPolish=function(){
   applyMotion();
   const opacity=document.createElement('input');opacity.type='range';opacity.id='set-calendar-opacity';opacity.min=0;opacity.max=90;opacity.step=5;opacity.value=Workspace.read('terminal_calendar_transparency_v1',0);opacity.setAttribute('aria-label','Calendar transparency');opacity.oninput=()=>{document.documentElement.style.setProperty('--calendar-opacity',String(1-opacity.value/100));Workspace.write('terminal_calendar_transparency_v1',+opacity.value);};add('Calendar transparency',opacity);opacity.oninput();
   const songToast=document.createElement('input');songToast.type='checkbox';songToast.id='set-music-toast';songToast.checked=Workspace.read('terminal_music_toast_v1',true);songToast.onchange=()=>Workspace.write('terminal_music_toast_v1',songToast.checked);add('Show song-change notification (2 seconds)',songToast);
+  if(typeof TerminalLanguage!=='undefined')TerminalLanguage.markup(controls);
   // Keep vendor notices and a product link, outside the Settings dialog.
   modal.querySelector('.library-credit')?.remove();
   const credit=document.createElement('a');credit.id='terminal-library-link';credit.href='https://www.tradingview.com/';credit.target='_blank';credit.rel='noopener noreferrer';credit.title='TradingView Lightweight Charts™';credit.textContent='TradingView';document.querySelector('.bottom-ranges')?.appendChild(credit);
@@ -16908,7 +17129,7 @@ TerminalFeatures.prototype.installChartDividers=function(grid,charts){
     }
   };
 };
-  </script>
+</script>
   <script>
 /* Preview prices never mutate persisted alerts or take part in trigger checks. */
 const AlertPrice={
@@ -17658,16 +17879,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandQuery = $('dock-command-query');
   const commandResults = $('dock-command-results');
   const commandActions = [
-    [ui('Đổi mã'), () => $('btn-symbol-search').click()],
-    [ui('Cài đặt · Chart Settings'), () => chartSettings.open()],
+    [ui('Change symbol'), () => $('btn-symbol-search').click()],
+    [ui('Chart Settings'), () => chartSettings.open()],
     [ui('Toolbar scale'), () => { chartSettings.tab = 'Toolbars'; chartSettings.open(); }],
-    ['Đổi giao diện sáng tối', toggleDockTheme],
-    ...[['Theo dõi','watch'],['Cảnh báo','alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
-    [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
-    ['Lịch', () => $('edge-calendar')?.click()],
-    ['Nhạc', () => $('edge-music')?.click()],
-    ['QT Mode · Bật / Tắt', () => $('btn-indicator')?.click()],
-    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode?.openSettings(active)],
+    [ui('Toggle light / dark theme'), toggleDockTheme],
+    ...[[ui('Watchlist'),'watch'],[ui('Alerts'),'alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
+    [ui('Layers & data'), () => desktop.open('objects')],
+    [ui('Calendar'), () => $('edge-calendar')?.click()],
+    [ui('Music'), () => $('edge-music')?.click()],
+    [ui('QT Mode · Toggle'), () => $('btn-indicator')?.click()],
+    [ui('QT Mode · Settings (Quantaibay)'), () => qtMode?.openSettings(active)],
     ['Layout', () => $('btn-layout')?.click()],
     ['Alerts', () => openAlert(active)],
     ['Replay', () => $('btn-replay').click()],
@@ -17688,7 +17909,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return button;
     });
     commandResults.replaceChildren(...buttons);
-    if (!buttons.length) commandResults.textContent = 'Không tìm thấy lệnh';
+    if (!buttons.length) commandResults.textContent = ui('No commands found');
   }
   function openCommands() {
     if (commandDialog.open || document.querySelector('.modal.show')) return;
@@ -17722,7 +17943,7 @@ document.addEventListener('DOMContentLoaded', () => {
   new ToolbarClusters(()=>$('btn-settings').click(),()=>{desktop.fitToolbar?.();charts.forEach(c=>c.positionSymbolBadge());});
   const contextMenu=new ChartContextMenu({charts,drawing,desktop,activate,openAlert,chartSettings,paperPanel,sync,toast});
   drawing.editor.onAlert=(chart,price)=>openAlert(chart,price);
-  drawing.editor.onCopy=d=>{contextMenu.copyDrawing(d);toast('Đã sao chép đối tượng');};
+  drawing.editor.onCopy=d=>{contextMenu.copyDrawing(d);toast(ui('Copied drawing'));};
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { document.querySelectorAll('.modal.show:not(#settings-modal)').forEach(closeModal); $('layout-popover').classList.remove('show'); }
     if (event.target.closest('input, textarea, select, [contenteditable]')) return;
@@ -17737,7 +17958,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && key === 'c' && drawing.editor.drawing && !window.getSelection?.()?.toString()) {
       event.preventDefault();
       contextMenu.copyDrawing(drawing.editor.drawing);
-      toast('Đã sao chép đối tượng');
+      toast(ui('Copied drawing'));
     }
     else if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && key === 'v' && contextMenu.clipboard) {
       event.preventDefault();
@@ -17786,7 +18007,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const dash=`${fill} 100`;
       if(ringValue.getAttribute('stroke-dasharray')!==dash)ringValue.setAttribute('stroke-dasharray',dash);
     }
-    charts.forEach(c=>{const source=(bridge.sources||[]).find(s=>s.symbol===c.symbol&&s.timeframe===c.currentTimeframe);c.marketLive=bridge.state==='connected'&&source&&!source.error&&now-source.updated<8;const closed=!TerminalTime.activeSession(now,c.metadata);c.sourceBadge.hidden=c.marketLive||(closed&&bridge.state==='connected'&&!source?.error)||c.replayMode;c.sourceBadge.textContent=source?.error?`${c.symbol} · lỗi nguồn`:`${c.symbol} · ${c.bars.length?'dữ liệu đã lưu':'chờ nguồn'}`;c.sourceBadge.title=source?.error||'';if(c.symbolBadge)c.symbolBadge.title=c.marketLive?`${c.symbol} · Live`:closed?'Nghỉ phiên':c.sourceBadge.textContent;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));if(!c.container.hidden)c.updateCountdown?.();});
+    charts.forEach(c=>{const source=(bridge.sources||[]).find(s=>s.symbol===c.symbol&&s.timeframe===c.currentTimeframe);c.marketLive=bridge.state==='connected'&&source&&!source.error&&now-source.updated<8;const closed=!TerminalTime.activeSession(now,c.metadata);c.sourceBadge.hidden=c.marketLive||(closed&&bridge.state==='connected'&&!source?.error)||c.replayMode;c.sourceBadge.textContent=source?.error?`${c.symbol} · ${ui('source error')}`:`${c.symbol} · ${c.bars.length?ui('cached data'):ui('waiting for source')}`;c.sourceBadge.title=source?.error||'';if(c.symbolBadge)c.symbolBadge.title=c.marketLive?`${c.symbol} · Live`:closed?ui('Session closed'):c.sourceBadge.textContent;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));if(!c.container.hidden)c.updateCountdown?.();});
     updateHeader();desktop?.refresh();
   }
   function receive(message) {

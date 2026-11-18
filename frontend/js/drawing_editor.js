@@ -210,10 +210,10 @@ class DrawingEditor {
     const isTextOnly=d.type==='text';
     const setHidden=(sel,hide)=>{const el=this.toolbar.querySelector(sel);if(el)el.hidden=hide;};
     setHidden('[data-tb-pop="borderColor"]',isTextOnly);
-    setHidden('[data-tb-pop="fillColor"]',!['box','measure'].includes(d.type));
-    setHidden('[data-tb-pop="textColor"]',!['box','line','hline','text'].includes(d.type));
+    setHidden('[data-tb-pop="fillColor"]',!['box','measure','brush'].includes(d.type));
+    setHidden('[data-tb-pop="textColor"]',!['box','line','hline','vline','text'].includes(d.type));
     setHidden('[data-tb-pop="width"]',isTextOnly);
-    setHidden('[data-tb-pop="lineStyle"]',isTextOnly);
+    setHidden('[data-tb-pop="lineStyle"]',isTextOnly||d.type==='brush');
     const setSwatch=(key,val)=>{const el=this.toolbar.querySelector(`[data-swatch-bar="${key}"]`);if(el?.style)el.style.background=val;};
     setSwatch('borderColor',DrawingModel.rgba(d.borderColor,d.strokeOpacity??100));
     setSwatch('fillColor',d.fillEnabled===false?'transparent':DrawingModel.rgba(d.fillColor,d.fillOpacity??32));
@@ -248,12 +248,13 @@ class DrawingEditor {
     const c=this.selection.chart,index=c.drawings.findIndex(d=>d.id===this.selection.id);if(index<0)return;
     c.drawings[index]=DrawingModel.normalize(structuredClone(value));c.drawingPreview=null;this.manager.saveDrawings(c);this.updateToolbar();c.renderDrawings();
   }
-  remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.('Mở khóa bản vẽ trước khi xóa.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
+  remove(){if(!this.drawing)return;if(this.drawing.locked||this.manager.drawingsLocked)return window.showToast?.(typeof ui==='function'?ui('Unlock drawing before deleting.'):'Unlock drawing before deleting.','alert');const c=this.selection.chart;c.drawings=c.drawings.filter(d=>d.id!==this.selection.id);this.manager.saveDrawings(c);this.clear();}
   open(tab='style'){if(this.drawing)this.settings.open(this.selection.chart,this.drawing,tab);}
   find(chart,x,y){if(chart.drawingsHidden||y>chart.plotBottom)return null;for(let i=chart.drawings.length-1;i>=0;i--){const d=chart.drawings[i];if(d.isTemp)continue;const handle=DrawingModel.hit(chart,d,x,y);if(handle)return {drawing:d,handle};}return null;}
   cursor(chart,hit){
     if(!hit)return '';
     if(hit.drawing.locked||this.manager.drawingsLocked)return 'not-allowed';
+    if(hit.drawing.type==='vline')return 'ew-resize';
     if(hit.handle==='body')return 'move';
     if(hit.handle.endsWith('_time'))return 'ew-resize';
     if(hit.handle.endsWith('_price')||hit.drawing.type==='hline')return 'ns-resize';
@@ -342,10 +343,27 @@ class DrawingEditor {
     if(chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe)){this.toolbar.hidden=true;return;}
     this.toolbar.hidden=false;
     const g=DrawingModel.geometry(chart,d);if(!g)return;
-    const points=d.type==='position'&&g.c?DrawingModel.positionHandles(g):[g.a];
-    if(d.type!=='position'){if(d.p2)points.push(g.b);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});}
+    let points;
+    if(d.type==='brush'&&d.points?.length){
+      const first=DrawingModel.point(chart,d.points[0]),last=DrawingModel.point(chart,d.points[d.points.length-1]);
+      points=d.points.length>1?[first,last]:[first];
+    } else if(d.type==='position'&&g.c){
+      points=DrawingModel.positionHandles(g);
+    } else {
+      points=[g.a];
+      if(d.p2)points.push(g.b);
+      if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
+    }
     ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
-    points.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
+    if(d.type==='text'){
+      const st=d.textStyle||{},sz=st.size||14,pad=sz/6,lh=sz*1.25;
+      ctx.font=`${st.italic?'italic ':''}${st.bold?'bold ':''}${sz}px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif`;
+      const lines=String(d.text||'Text').split('\n');
+      const maxW=Math.max(st.wordWrap?(st.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*sz*0.6),0));
+      ctx.lineWidth=1.5;ctx.strokeRect(g.a.x-pad,g.a.y-pad,maxW+pad*2,lines.length*lh+pad*2);
+      ctx.lineWidth=2;
+    }
+    points.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
     if(d.type==='box'){
       ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
       for(const p of DrawingModel.boxEdges(g)){ctx.fillRect(p.x-4,p.y-4,8,8);ctx.strokeRect(p.x-4,p.y-4,8,8);}ctx.restore();

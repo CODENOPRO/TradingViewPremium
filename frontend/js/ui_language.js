@@ -330,6 +330,40 @@ Long Position|Vị thế Long
 Short Position|Vị thế Short
 Measure price and bars|Đo giá và số nến
 Brush|Cọ vẽ
+Vertical Line|Đường dọc
+Vertical line|Đường dọc
+Text wrap|Xuống dòng tự động
+Text orientation|Hướng chữ
+Horizontal|Ngang
+Vertical|Dọc
+Show time|Hiện thời gian
+Top|Trên
+Middle|Giữa
+Bottom|Dưới
+Close drawing settings|Đóng cài đặt hình vẽ
+Bar index follows loaded candles; point timestamp is saved.|Bar index theo nến đang tải; thời gian của điểm được lưu cố định.
+Value out of range.|Thông số vượt giới hạn.
+Invalid Fib levels.|Fib levels không hợp lệ.
+Invalid coordinates.|Tọa độ không hợp lệ.
+Invalid bar index.|Bar không hợp lệ.
+minimum must be ≤ maximum.|minimum phải ≤ maximum.
+Short Position|Vị thế Short
+Long Position|Vị thế Long
+Unlock drawing before deleting.|Mở khóa bản vẽ trước khi xóa.
+Copied drawing|Đã sao chép đối tượng
+No data for this symbol/timeframe|Không có dữ liệu cho mã/khung này
+No commands found|Không tìm thấy lệnh
+Toggle light / dark theme|Đổi giao diện sáng tối
+Watchlist|Theo dõi
+Calendar|Lịch
+Music|Nhạc
+QT Mode · Toggle|QT Mode · Bật / Tắt
+QT Mode · Settings (Quantaibay)|QT Mode · Cài đặt (Quantaibay)
+source error|lỗi nguồn
+cached data|dữ liệu đã lưu
+waiting for source|chờ nguồn
+Session closed|Nghỉ phiên
+Favourite tools|Công cụ yêu thích
 Music link|Link nhạc
 Playback position|Vị trí phát
 Play|Phát

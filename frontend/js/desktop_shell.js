@@ -108,7 +108,7 @@ class DesktopShell {
     for(const key of ['crosshair','line','box','text','fib','position','short_position','measure','brush','magnet','lock','eye','trash']){
       let b=rail.querySelector(`[data-tool="${key}"]`);
       if(!b&&key==='short_position'){
-        b=this.button('Vị thế Short','forecast_short',()=>this.drawing.setTool('short_position'));
+        b=this.button('Short Position','forecast_short',()=>this.drawing.setTool('short_position'));
         b.className='tool-btn';
         b.dataset.tool='short_position';
       }
@@ -118,6 +118,7 @@ class DesktopShell {
       rail.appendChild(b);
       if(key==='line'){
         const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';h.innerHTML=TerminalIcons.svg('horizontal');rail.appendChild(h);
+        const v=this.button('Vertical line','vertical',()=>this.drawing.setTool('vline'));v.className='tool-btn';v.dataset.tool='vline';v.innerHTML=TerminalIcons.svg('vertical');rail.appendChild(v);
       }
       if(key==='measure'||key==='box'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
       if(key==='magnet'){

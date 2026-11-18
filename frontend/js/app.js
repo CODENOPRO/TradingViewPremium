@@ -656,16 +656,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandQuery = $('dock-command-query');
   const commandResults = $('dock-command-results');
   const commandActions = [
-    [ui('Đổi mã'), () => $('btn-symbol-search').click()],
-    [ui('Cài đặt · Chart Settings'), () => chartSettings.open()],
+    [ui('Change symbol'), () => $('btn-symbol-search').click()],
+    [ui('Chart Settings'), () => chartSettings.open()],
     [ui('Toolbar scale'), () => { chartSettings.tab = 'Toolbars'; chartSettings.open(); }],
-    ['Đổi giao diện sáng tối', toggleDockTheme],
-    ...[['Theo dõi','watch'],['Cảnh báo','alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
-    [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
-    ['Lịch', () => $('edge-calendar')?.click()],
-    ['Nhạc', () => $('edge-music')?.click()],
-    ['QT Mode · Bật / Tắt', () => $('btn-indicator')?.click()],
-    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode?.openSettings(active)],
+    [ui('Toggle light / dark theme'), toggleDockTheme],
+    ...[[ui('Watchlist'),'watch'],[ui('Alerts'),'alerts']].map(([label,key]) => [label, () => document.querySelector('#right-sidebar [data-panel='+key+']')?.click()]),
+    [ui('Layers & data'), () => desktop.open('objects')],
+    [ui('Calendar'), () => $('edge-calendar')?.click()],
+    [ui('Music'), () => $('edge-music')?.click()],
+    [ui('QT Mode · Toggle'), () => $('btn-indicator')?.click()],
+    [ui('QT Mode · Settings (Quantaibay)'), () => qtMode?.openSettings(active)],
     ['Layout', () => $('btn-layout')?.click()],
     ['Alerts', () => openAlert(active)],
     ['Replay', () => $('btn-replay').click()],
@@ -686,7 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return button;
     });
     commandResults.replaceChildren(...buttons);
-    if (!buttons.length) commandResults.textContent = 'Không tìm thấy lệnh';
+    if (!buttons.length) commandResults.textContent = ui('No commands found');
   }
   function openCommands() {
     if (commandDialog.open || document.querySelector('.modal.show')) return;
@@ -720,7 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
   new ToolbarClusters(()=>$('btn-settings').click(),()=>{desktop.fitToolbar?.();charts.forEach(c=>c.positionSymbolBadge());});
   const contextMenu=new ChartContextMenu({charts,drawing,desktop,activate,openAlert,chartSettings,paperPanel,sync,toast});
   drawing.editor.onAlert=(chart,price)=>openAlert(chart,price);
-  drawing.editor.onCopy=d=>{contextMenu.copyDrawing(d);toast('Đã sao chép đối tượng');};
+  drawing.editor.onCopy=d=>{contextMenu.copyDrawing(d);toast(ui('Copied drawing'));};
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { document.querySelectorAll('.modal.show:not(#settings-modal)').forEach(closeModal); $('layout-popover').classList.remove('show'); }
     if (event.target.closest('input, textarea, select, [contenteditable]')) return;
@@ -735,7 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && key === 'c' && drawing.editor.drawing && !window.getSelection?.()?.toString()) {
       event.preventDefault();
       contextMenu.copyDrawing(drawing.editor.drawing);
-      toast('Đã sao chép đối tượng');
+      toast(ui('Copied drawing'));
     }
     else if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && key === 'v' && contextMenu.clipboard) {
       event.preventDefault();
@@ -784,7 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const dash=`${fill} 100`;
       if(ringValue.getAttribute('stroke-dasharray')!==dash)ringValue.setAttribute('stroke-dasharray',dash);
     }
-    charts.forEach(c=>{const source=(bridge.sources||[]).find(s=>s.symbol===c.symbol&&s.timeframe===c.currentTimeframe);c.marketLive=bridge.state==='connected'&&source&&!source.error&&now-source.updated<8;const closed=!TerminalTime.activeSession(now,c.metadata);c.sourceBadge.hidden=c.marketLive||(closed&&bridge.state==='connected'&&!source?.error)||c.replayMode;c.sourceBadge.textContent=source?.error?`${c.symbol} · lỗi nguồn`:`${c.symbol} · ${c.bars.length?'dữ liệu đã lưu':'chờ nguồn'}`;c.sourceBadge.title=source?.error||'';if(c.symbolBadge)c.symbolBadge.title=c.marketLive?`${c.symbol} · Live`:closed?'Nghỉ phiên':c.sourceBadge.textContent;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));if(!c.container.hidden)c.updateCountdown?.();});
+    charts.forEach(c=>{const source=(bridge.sources||[]).find(s=>s.symbol===c.symbol&&s.timeframe===c.currentTimeframe);c.marketLive=bridge.state==='connected'&&source&&!source.error&&now-source.updated<8;const closed=!TerminalTime.activeSession(now,c.metadata);c.sourceBadge.hidden=c.marketLive||(closed&&bridge.state==='connected'&&!source?.error)||c.replayMode;c.sourceBadge.textContent=source?.error?`${c.symbol} · ${ui('source error')}`:`${c.symbol} · ${c.bars.length?ui('cached data'):ui('waiting for source')}`;c.sourceBadge.title=source?.error||'';if(c.symbolBadge)c.symbolBadge.title=c.marketLive?`${c.symbol} · Live`:closed?ui('Session closed'):c.sourceBadge.textContent;if(c.appearance?.marketStatus)c.updateLegend(c.bars.at(-1));if(!c.container.hidden)c.updateCountdown?.();});
     updateHeader();desktop?.refresh();
   }
   function receive(message) {

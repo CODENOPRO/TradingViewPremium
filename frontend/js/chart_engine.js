@@ -74,7 +74,7 @@ class ChartEngine {
         attributionLogo:false,
         background: { type: 'solid', color: this.config.bg },
         textColor: this.config.textColor,
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, sans-serif'
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif'
       },
       localization: { timeFormatter: time => CHART_DATETIME.format(new Date(time * 1000)) },
       grid: {
@@ -405,8 +405,10 @@ class ChartEngine {
     if ((reset || (previous && previousBars.length > 10 && previous.from >= previousBars.length - 5)) && this.bars.length) this.resetView();
     else if (previous) this.chart.timeScale().setVisibleLogicalRange(ChartEngine.rebaseRange(previousBars,this.bars,previous,this.tfSeconds));
     this.updateLegend(this.bars[this.bars.length - 1]);
-    this.container.dataset.empty = this.bars.length ? '' : ui('Không có dữ liệu cho mã/khung này');
+    this.container.dataset.empty = this.bars.length ? '' : ui('No data for this symbol/timeframe');
     this.renderDrawings();
+    this.updateCountdown?.();
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => this.positionCountdown?.());
     this.dataUpdateKind = 'replace';
     this.dataRevision++;this.onDataChange?.();
   }
@@ -870,7 +872,8 @@ class ChartEngine {
     this.series.applyOptions({lastValueVisible:false});
     const b=this.bars.at(-1),now=this.replayMode?this.replayClock:Date.now()/1000;
     const metadata=this.displaySessionMetadata();
-    const raw=metadata.sessionType==='RTH'&&this.appearance?.sessionMode==='RTH'?this.getBarsForTimeframe(this.currentTimeframe):this.currentTimeframe==='1m'?this.rawBars:this.htfData[this.currentTimeframe]||[];
+    const nativeOrAgg=this.currentTimeframe==='1m'?this.rawBars:(this.htfData[this.currentTimeframe]?.length?this.htfData[this.currentTimeframe]:this.getBarsForTimeframe(this.currentTimeframe));
+    const raw=(metadata.sessionType==='RTH'&&this.appearance?.sessionMode==='RTH')?this.getBarsForTimeframe(this.currentTimeframe):(this.replayMode?nativeOrAgg:(this.bars?.length?this.bars:nativeOrAgg));
     let lo=0,hi=raw.length;while(lo<hi){const mid=(lo+hi)>>1;if(raw[mid].time<=now)lo=mid+1;else hi=mid;}
     // Read timestamps only for the in-progress interval; Replay price/indicators stay closed-bar only.
     const current=raw[lo-1],session=TerminalTime.activeSession(now,metadata),seconds=current?Math.max(0,Math.ceil(TerminalTime.end({time:current.time},this.currentTimeframe,metadata)-now)):0;

@@ -1,15 +1,16 @@
 /* Drawing properties are plain data so saved workspaces and templates share one format. */
 const DrawingModel = (() => {
-  const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure',brush:'Brush' };
+  const DEFAULT_FONT = '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif';
+  const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', vline:'Vertical Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure', brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
   const defaultVis = Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }]));
   const baseDefaultsCache = {};
   function baseDefaults(type) {
     return baseDefaultsCache[type] || (baseDefaultsCache[type] = {
-      title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
+      title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, showTime:true, smooth:5,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
-      textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
+      textStyle:{ color:type==='text'||type==='vline'?'#2962ff':type==='position'?'#ffffff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
       side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
@@ -39,10 +40,10 @@ const DrawingModel = (() => {
     return normalized;
   }
   function defaults(type) {
-    return { title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
-      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
+    return { title:'', color:type==='vline'||type==='brush'?'#2962ff':'#211f1d', borderColor:type==='position'?'#dce1e8':(type==='vline'||type==='brush')?'#2962ff':'#211f1d', width:type==='brush'?2:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:type==='brush'?false:true, fillColor:type==='brush'?'#2962ff':'#916966', fillOpacity:type==='brush'?20:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false, showTime:true, smooth:5,
       middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
-      textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
+      textStyle:{ color:type==='text'||type==='vline'?'#2962ff':'#ffffff', size:type==='text'||type==='vline'?14:12, bold:false, italic:false, horizontal:type==='text'?'left':type==='vline'?'center':'right', vertical:type==='vline'?'middle':'inside', orientation:type==='vline'?'vertical':'horizontal', fillBackground:false, backgroundColor:'#2962ff', backgroundOpacity:25, drawBorder:false, borderColor:'#787b86', wordWrap:false, wordWrapWidth:200 },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
       side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
@@ -164,14 +165,64 @@ const DrawingModel = (() => {
       {handle:'p3_price',x:midX,y:g.c.y}
     ];
   }
+  function smoothBrushPoints(rawPoints, smooth = 5) {
+    const pts = rawPoints.filter(p => Number.isFinite(p.x) && Number.isFinite(p.y));
+    if (pts.length <= 2) return pts;
+    const step = Math.max(1, Number(smooth) || 5);
+    const sub = [pts[0]];
+    for (let i = 1; i < pts.length; i++) {
+      const dx = pts[i].x - pts[i - 1].x, dy = pts[i].y - pts[i - 1].y;
+      const len = Math.hypot(dx, dy);
+      const count = Math.min(5, Math.floor(len / step));
+      if (count > 1 && len > 0) {
+        const ux = dx / len, uy = dy / len, seg = len / count;
+        for (let k = 1; k < count; k++) sub.push({ x: pts[i - 1].x + ux * seg * k, y: pts[i - 1].y + uy * seg * k });
+      }
+      sub.push(pts[i]);
+    }
+    const out = new Array(sub.length);
+    for (let r = 0; r < sub.length; r++) {
+      let sx = 0, sy = 0;
+      for (let k = 0; k < step; k++) {
+        const a = sub[Math.max(r - k, 0)], b = sub[Math.min(r + k, sub.length - 1)];
+        sx += a.x + b.x; sy += a.y + b.y;
+      }
+      out[r] = { x: sx * 0.5 / step, y: sy * 0.5 / step };
+    }
+    out.push(sub[sub.length - 1]);
+    return out;
+  }
+  function wrapTextLines(ctx, text, maxWidth) {
+    const rawLines = String(text || '').split('\n');
+    if (!maxWidth || maxWidth <= 0 || !ctx?.measureText) return rawLines;
+    const out = [];
+    for (const para of rawLines) {
+      if (!para) { out.push(''); continue; }
+      const words = para.split(' ');
+      let line = '';
+      for (const word of words) {
+        const test = line ? line + ' ' + word : word;
+        if (line && ctx.measureText(test).width > maxWidth) {
+          out.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      }
+      out.push(line);
+    }
+    return out;
+  }
   function hit(chart,value,x,y) {
     if (!visible(value,chart.currentTimeframe)) return null;
     const g=geometry(chart,value);if(!g)return null;
     if(value.type==='brush'){
-      const points=(value.points||[]).map(p=>point(chart,p));
+      const rawPts=(value.points||[]).map(p=>point(chart,p));
+      const points=rawPts.length>5?smoothBrushPoints(rawPts,value.smooth??5):rawPts;
       for(let i=1;i<points.length;i++)if(distance(x,y,points[i-1],points[i])<7)return 'body';
       return null;
     }
+    if(value.type==='vline') return Math.abs(x-g.a.x)<7 ? 'body' : null;
     if (value.type==='position'&&g.c) {
       for (const h of positionHandles(g)) if (Math.hypot(x-h.x,y-h.y) < 9) return h.handle;
     }
@@ -182,7 +233,14 @@ const DrawingModel = (() => {
     if(value.type === 'box' && Math.hypot(x-g.b.x,y-g.a.y)<9)return 'p2x_p1y';
     if(value.type === 'box')for(const edge of boxEdges(g))if(Math.hypot(x-edge.x,y-edge.y)<9)return edge.handle;
     if(value.type === 'hline') return Math.abs(y-g.a.y)<7 ? 'body' : null;
-    if(value.type === 'text') return x>=g.a.x-8 && x<=g.a.x+Math.max(50,(value.text||'').length*(value.textStyle?.size||12)*.65) && Math.abs(y-g.a.y)<22 ? 'body' : null;
+    if(value.type === 'text') {
+      const style=value.textStyle||{},sz=style.size||14,pad=sz/6,lh=sz*1.25;
+      const lines=String(value.text||'Text').split('\n');
+      const maxLen=lines.reduce((m,l)=>Math.max(m,l.length),0);
+      const boxW=(style.wordWrap?Math.min(style.wordWrapWidth||200,maxLen*sz*0.6):maxLen*sz*0.6)+pad*2;
+      const boxH=lines.length*lh+pad*2;
+      return x>=g.a.x-pad-4 && x<=g.a.x+boxW+4 && y>=g.a.y-pad-4 && y<=g.a.y+boxH+4 ? 'body' : null;
+    }
     if(['box','position','measure','fib'].includes(value.type)) return x>=g.left-6 && x<=g.right+6 && y>=g.top-6 && y<=g.bottom+6 ? 'body' : null;
     return distance(x,y,g.a,g.b)<7 ? 'body' : null;
   }
@@ -210,8 +268,42 @@ const DrawingModel = (() => {
     ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;ctx.setLineDash(dash(d.lineStyle));
     const line=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
     if(d.type==='brush'){
-      const points=(d.points||[]).map(p=>point(chart,p));ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
-      points.forEach((p,i)=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)){if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);}});ctx.stroke();
+      const points=smoothBrushPoints((d.points||[]).map(p=>point(chart,p)), d.smooth??5);
+      if(points.length){
+        ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash([]);ctx.beginPath();
+        points.forEach((p,i)=>{if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});
+        if(d.fillEnabled&&points.length>2){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity??20);ctx.fill();}
+        ctx.stroke();
+      }
+    } else if(d.type==='vline') {
+      if(g.a.x >= -2 && g.a.x <= width + 2) {
+        line(g.a.x,0,g.a.x,plotBottom);
+        if(d.text){
+          const style=d.textStyle||{},sz=style.size||14;
+          const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':DEFAULT_FONT;
+          ctx.save();
+          ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;
+          ctx.fillStyle=style.color||d.borderColor||'#2962ff';
+          ctx.setLineDash([]);
+          const lines=String(d.text).split('\n'),lh=sz*1.25;
+          const vy=style.vertical==='top'?12:style.vertical==='bottom'?plotBottom-12:plotBottom/2;
+          if((style.orientation||'vertical')==='vertical'){
+            ctx.translate(g.a.x,vy);
+            ctx.rotate(-Math.PI/2);
+            ctx.textAlign=style.vertical==='top'?'right':style.vertical==='bottom'?'left':'center';
+            ctx.textBaseline=style.horizontal==='left'?'bottom':style.horizontal==='right'?'top':'middle';
+            const offY=style.horizontal==='left'?-5:style.horizontal==='right'?5:0;
+            lines.forEach((t,i)=>ctx.fillText(t,0,offY+(i-(lines.length-1)/2)*lh));
+          } else {
+            ctx.textAlign=style.horizontal==='left'?'right':style.horizontal==='right'?'left':'center';
+            ctx.textBaseline=style.vertical==='top'?'top':style.vertical==='bottom'?'bottom':'middle';
+            const offX=style.horizontal==='left'?-6:style.horizontal==='right'?6:0;
+            lines.forEach((t,i)=>ctx.fillText(t,g.a.x+offX,vy+i*lh));
+          }
+          ctx.restore();
+        }
+      }
+      ctx.restore();return;
     } else if(d.type === 'line') {
       if(d.axis==='vertical') {
         line(g.a.x,0,g.a.x,plotBottom);ctx.restore();return;
@@ -226,7 +318,7 @@ const DrawingModel = (() => {
         b={x:a.x,y:plotBottom};
       }
       if (d.text && d.textStyle?.inlineOnLine) {
-        const style=d.textStyle,family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
+        const style=d.textStyle,family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':DEFAULT_FONT;
         const dx=b.x-a.x,dy=b.y-a.y,segLen=Math.hypot(dx,dy),pos=style.inlinePos||'center';
         const fontStr=sz=>`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;
         let baseSz=style.size||11;
@@ -245,7 +337,21 @@ const DrawingModel = (() => {
           }else if(pos==='right'){
             const endX=b.x>width-6&&a.x<width-tw-18?width-6:b.x;
             tx=endX-tw/2;
-          }else{
+          }else if(d.type==='text'){
+        const pad=effSize/6;
+        const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));
+        const boxW=maxW+pad*2,boxH=lines.length*lh+pad*2;
+        if(style.fillBackground){
+          ctx.fillStyle=rgba(style.backgroundColor||'#2962ff',style.backgroundOpacity??25);
+          ctx.fillRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        if(style.drawBorder){
+          ctx.strokeStyle=style.borderColor||'#787b86';ctx.lineWidth=1;
+          ctx.strokeRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=style.color||'#2962ff';
+        lines.forEach((text,index)=>ctx.fillText(text,g.a.x,g.a.y+index*lh));
+      }else{
             const visA=Math.max(6,a.x),visB=Math.min(width-6,b.x);
             tx=visB-visA>tw+12?(visA+visB)/2:(a.x+b.x)/2;
           }
@@ -479,17 +585,18 @@ const DrawingModel = (() => {
       ctx.fillText(line1, tipX + tipW / 2, tipY + padY + lineH * 0.42);
       ctx.fillText(line2, tipX + tipW / 2, tipY + padY + lineH * 1.42);
     }
-    if(d.text || d.type === 'text') {
+    if((d.text || d.type === 'text') && d.type !== 'vline') {
       const style=d.textStyle;
-      let effSize=style.size,lines=(d.text||(d.type==='text'?'Text':'')).split('\n');
+      let effSize=style.size||(d.type==='text'?14:12);
       if(d._qtTrueOpenSpan){
         if(d._qtTier===0)effSize=Math.min(effSize,9.5);
         else if(d._qtTier===1)effSize=Math.min(effSize,10);
       }
       let lh=effSize*1.25;
-      const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':'Arial';
+      const family=style.fontFamily==='monospace'?'Consolas, "Courier New", monospace':DEFAULT_FONT;
       const setFont=sz=>{ctx.font=`${style.italic?'italic ':''}${style.bold?'bold ':''}${sz}px ${family}`;};
       ctx.setLineDash([]);setFont(effSize);
+      let lines=(d.type==='text'&&style.wordWrap&&!style.pine)?wrapTextLines(ctx,d.text||'Text',style.wordWrapWidth||200):(d.text||(d.type==='text'?'Text':'')).split('\n');
       if(d.type==='text'&&style.pine){
         const place=style.placement||'center',padX=6,padY=3;
         const align=place==='label_left'?'left':place==='label_right'?'right':(style.horizontal||'center');
@@ -559,6 +666,20 @@ const DrawingModel = (() => {
         }
         ctx.textAlign=align;ctx.textBaseline=base;ctx.fillStyle=style.color;
         lines.forEach((text,index)=>ctx.fillText(text,x,startY+index*lh));
+      }else if(d.type==='text'){
+        const pad=effSize/6;
+        const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));
+        const boxW=maxW+pad*2,boxH=lines.length*lh+pad*2;
+        if(style.fillBackground){
+          ctx.fillStyle=rgba(style.backgroundColor||'#2962ff',style.backgroundOpacity??25);
+          ctx.fillRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        if(style.drawBorder){
+          ctx.strokeStyle=style.borderColor||'#787b86';ctx.lineWidth=1;
+          ctx.strokeRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=style.color||'#2962ff';
+        lines.forEach((text,index)=>ctx.fillText(text,g.a.x,g.a.y+index*lh));
       }else{
         ctx.textAlign=style.horizontal;ctx.fillStyle=style.color;
         const x=d.type === 'text'?g.a.x:style.horizontal === 'left'?left+6:style.horizontal === 'center'?(left+right)/2:right-6;
@@ -566,7 +687,21 @@ const DrawingModel = (() => {
           ctx.textBaseline=style.vertical==='top'?'top':style.vertical==='bottom'?'bottom':'middle';
           const y=style.vertical==='top'?top+4:style.vertical==='bottom'?bottom-4-(lines.length-1)*lh:(top+bottom)/2-(lines.length-1)*lh*.5;
           lines.forEach((text,index)=>ctx.fillText(text,x,y+index*lh));
-        }else{
+        }else if(d.type==='text'){
+        const pad=effSize/6;
+        const maxW=Math.max(style.wordWrap?(style.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*effSize*0.6),0));
+        const boxW=maxW+pad*2,boxH=lines.length*lh+pad*2;
+        if(style.fillBackground){
+          ctx.fillStyle=rgba(style.backgroundColor||'#2962ff',style.backgroundOpacity??25);
+          ctx.fillRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        if(style.drawBorder){
+          ctx.strokeStyle=style.borderColor||'#787b86';ctx.lineWidth=1;
+          ctx.strokeRect(g.a.x-pad,g.a.y-pad,boxW,boxH);
+        }
+        ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=style.color||'#2962ff';
+        lines.forEach((text,index)=>ctx.fillText(text,g.a.x,g.a.y+index*lh));
+      }else{
           const y=style.vertical === 'above'?top-8-(lines.length-1)*style.size*1.3:style.vertical === 'below'?bottom+style.size+6:d.type === 'text'?g.a.y:(top+bottom)/2-(lines.length-1)*style.size*.65;
           lines.forEach((text,index)=>ctx.fillText(text,x,y+index*style.size*1.3));
         }

@@ -456,7 +456,7 @@ class TerminalFeatures{
       const manage=document.createElement('button');manage.type='button';manage.textContent='☆';manage.className='tool-btn';manage.dataset.manageFavourites='true';manage.setAttribute('aria-label','Manage favourite drawing tools');manage.setAttribute('aria-controls','favorite-tool-menu');manage.setAttribute('aria-expanded',String(!menu.hidden));manage.onclick=()=>menu.hidden?this.openFavorites(manage.getBoundingClientRect()):closeMenu();bar.appendChild(manage);
       for(const key of this.favorites){const original=document.querySelector(`#left-sidebar [data-tool="${CSS.escape(key)}"]`);if(!original)continue;const b=original.cloneNode(true);b.removeAttribute('id');b.querySelector('.favorite-star')?.remove();b.onclick=()=>this.drawing.setTool(key);b.oncontextmenu=e=>{e.preventDefault();this.favorites=this.favorites.filter(x=>x!==key);Workspace.write('terminal_drawing_favorites_v1',this.favorites);draw();};bar.appendChild(b);}bar.hidden=false;this.clampFavorites();};
     this.renderFavorites=draw;bar.dataset.orientation='vertical';
-    const menu=document.createElement('section');menu.id='favorite-tool-menu';menu.hidden=true;menu.setAttribute('aria-label','Công cụ yêu thích');document.body.appendChild(menu);
+    const menu=document.createElement('section');menu.id='favorite-tool-menu';menu.hidden=true;menu.setAttribute('aria-label',ui('Favourite tools'));document.body.appendChild(menu);
     const manageButton=()=>bar.querySelector('[data-manage-favourites]');
     const closeMenu=(restoreFocus=false)=>{
       menu.hidden=true;
@@ -470,7 +470,7 @@ class TerminalFeatures{
       menu.style.top=Math.max(8,Math.min(innerHeight-height-8,above?y-height-10:y))+'px';
       manageButton()?.setAttribute('aria-expanded','true');
     };
-    const names={crosshair:'Con trỏ',line:'Đường xu hướng',hline:'Đường ngang',box:'Hộp Order Block / Range',text:'Ghi chú',fib:'Fibonacci Retracement',position:'Vị thế Long',short_position:'Vị thế Short',measure:'Đo giá và số nến',brush:'Cọ vẽ'};
+    const names={crosshair:'Con trỏ',line:'Đường xu hướng',hline:'Đường ngang',vline:'Đường dọc',box:'Hộp Order Block / Range',text:'Ghi chú',fib:'Fibonacci Retracement',position:'Vị thế Long',short_position:'Vị thế Short',measure:'Đo giá và số nến',brush:'Cọ vẽ'};
     this.openFavorites=rect=>{
       menu.replaceChildren();
       const header=document.createElement('header');
