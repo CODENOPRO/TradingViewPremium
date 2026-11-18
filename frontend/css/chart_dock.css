@@ -236,7 +236,7 @@
   --dock-ink: var(--text);
   --dock-muted: var(--muted);
   --dock-shadow: 0 6px 22px #0003;
-  --dock-font: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --dock-font: var(--font-ui);
 }
 :root[data-dock-theme="light"] {
   --bg: #f4f4f5;

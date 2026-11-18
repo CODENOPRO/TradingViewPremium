@@ -218,9 +218,9 @@ body.reduce-motion #settings-modal .chart-settings-nav :is(button, span) { trans
 .chart-sound-preview { flex:none; min-height:32px; padding:6px 9px; font-size:11px; white-space:nowrap; }
 #settings-modal.theme-mode .chart-settings-dialog { width:min(860px,calc(100vw - 32px)); }
 #settings-modal.theme-mode .chart-settings-body { padding-top:10px; }
-.theme-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; max-height:min(54vh,520px); overflow:auto; padding:8px 2px 4px; }
-.theme-option { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; min-height:52px; padding:0 12px; border:1px solid color-mix(in srgb,var(--theme-text) 18%,transparent); border-radius:14px; background:var(--theme-bg); color:var(--theme-text); text-align:left; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
-.theme-option:hover { transform:translateY(-1px); border-color:color-mix(in srgb,var(--theme-text) 45%,transparent); }
+.theme-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:8px 2px 4px; }
+.theme-option { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; min-height:52px; padding:0 12px; border:1px solid color-mix(in srgb,var(--theme-text) 18%,transparent); border-radius:14px; background:var(--theme-bg); color:var(--theme-text); text-align:left; cursor:pointer; }
+.theme-option:hover { border-color:color-mix(in srgb,var(--theme-text) 45%,transparent); }
 .theme-option[aria-pressed="true"] { border-color:#89a9ff; box-shadow:0 0 0 2px color-mix(in srgb,#89a9ff 65%,transparent); }
 .theme-option-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:600; }
 .theme-option-dots { display:flex; flex:none; align-items:center; gap:4px; }

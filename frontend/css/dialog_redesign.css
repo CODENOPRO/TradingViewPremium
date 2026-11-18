@@ -291,7 +291,7 @@ body:not(.reduce-motion) #indicator-modal.show:not(.studio-editing) > .modal-con
 #indicator-modal.studio-editing {
   --editor-gutter: 52px;
   --editor-pad: 14px;
-  --editor-font: 13px / 21px Consolas, "Cascadia Code", monospace;
+  --editor-font: 13px var(--font-mono);
   --editor-accent: #55cfb4;
   --editor-code-bg: #141417;
   --editor-selection: rgb(85 207 180 / .2);

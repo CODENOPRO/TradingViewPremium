@@ -1,7 +1,7 @@
 /* Local graphite studio. Inspired by React Bits dock, Magic UI borders and Uiverse controls.
    Chart palette, candle series, canvas and price scales are intentionally owned by ChartSettings. */
 :root{--chrome:#11151b;--panel:#171c24;--line:#2b333f;--text:#e6eaf0;--muted:#929dab;--accent:#82e2c1;--studio-shadow:0 12px 32px #05080d38,inset 0 1px 0 #ffffff0b;--studio-height:48vh}
-body{font-family:-apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;letter-spacing:0}
+body{font-family: var(--font-ui);letter-spacing:.01em}
 button,input,select,textarea{accent-color:var(--accent)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 #topbar{top:10px;left:10px;right:10px;gap:12px}
@@ -83,10 +83,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .editor-language{font-weight:650;color:#9edcc7;letter-spacing:.08em}
 .editor-shortcuts{margin-left:auto;color:#6f8197}
 .editor-surface{position:relative;display:flex;flex:1;min-height:60px;background:#10161f;overflow:hidden}
-#editor-lines{margin:0;padding:12px 14px 12px 18px;width:72px;min-width:72px;flex:none;text-align:right;font:12px/21px Consolas,'Cascadia Code',monospace;color:#4e6178;user-select:none;overflow:hidden;background:#0e141c;border-right:1px solid #ffffff06}
-.studio-editing #indicator-code{min-height:0;height:100%;resize:none;flex:1;min-width:0;border:0;outline:0;border-radius:0;padding:12px 16px;font:12px/21px Consolas,'Cascadia Code',monospace;color:#d8e6f7;background:transparent;tab-size:4;letter-spacing:0;white-space:pre;overflow:auto;box-shadow:none}
+#editor-lines{margin:0;padding:12px 14px 12px 18px;width:72px;min-width:72px;flex:none;text-align:right;font:12px/21px var(--font-mono);color:#4e6178;user-select:none;overflow:hidden;background:#0e141c;border-right:1px solid #ffffff06}
+.studio-editing #indicator-code{min-height:0;height:100%;resize:none;flex:1;min-width:0;border:0;outline:0;border-radius:0;padding:12px 16px;font:12px/21px var(--font-mono);color:#d8e6f7;background:transparent;tab-size:4;letter-spacing:0;white-space:pre;overflow:auto;box-shadow:none}
 .studio-editing #indicator-code:focus-visible{box-shadow:inset 2px 0 #82e2c130}
-.editor-highlight{position:absolute;inset:0 0 0 72px;margin:0;padding:12px 16px;overflow:hidden;pointer-events:none;font:12px/21px Consolas,'Cascadia Code',monospace;letter-spacing:0;tab-size:4;white-space:pre;color:#d8e6f7}
+.editor-highlight{position:absolute;inset:0 0 0 72px;margin:0;padding:12px 16px;overflow:hidden;pointer-events:none;font:12px/21px var(--font-mono);letter-spacing:0;tab-size:4;white-space:pre;color:#d8e6f7}
 .studio-editing #indicator-code{color:transparent;caret-color:#d8e6f7;position:relative}
 .studio-editing #indicator-code::selection{background:#82e2c130;color:transparent}
 .pine-comment{color:#61778f}.pine-string{color:#afd8a1}.pine-number{color:#efc78d}.pine-keyword{color:#b6a3ed}.pine-builtin{color:#8bcbd8}
@@ -96,10 +96,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .music-link-form button,.music-controls button{background:#ffffff08;border:1px solid #ffffff16;border-radius:8px;color:#b7d6cc}
 .music-controls button[data-command=toggle]{background:#a3e7cd;color:#10271f;border-color:#a3e7cd}
 .music-metadata-status{color:#b3a084;font-size:10px;line-height:1.6;margin:0 0 8px}.music-metadata-status:empty{display:none}
-.editor-position{display:flex;justify-content:space-between;gap:10px;padding:4px 18px;color:#667e97;font:10px Consolas,monospace;border-top:1px solid #ffffff06;flex:none}
+.editor-position{display:flex;justify-content:space-between;gap:10px;padding:4px 18px;color:#667e97;font:10px var(--font-mono);border-top:1px solid #ffffff06;flex:none}
 .editor-console-heading{padding:6px 18px 0;font-size:9px;font-weight:650;letter-spacing:.1em;color:#a5b6ca;flex:none}
 .editor-console-heading span{font-size:9px;font-weight:400;letter-spacing:0;margin-left:12px;color:#61768e}
-.studio-editing .indicator-console{font:11px/1.6 Consolas,monospace;margin:0;padding:7px 18px 9px;min-height:32px;max-height:70px;overflow:auto;white-space:pre-wrap;color:#91cbb7;flex:none;background:transparent}
+.studio-editing .indicator-console{font:11px/1.6 var(--font-mono);margin:0;padding:7px 18px 9px;min-height:32px;max-height:70px;overflow:auto;white-space:pre-wrap;color:#91cbb7;flex:none;background:transparent}
 .studio-editing .indicator-console.is-error{color:#ffa6a0;background:#ef6c6810;border-left:2px solid #ed918a}
 .studio-editing .modal-footer{padding:8px 18px;min-height:46px;background:#181f29;flex:none}
 .indicator-save-state{margin-right:auto;color:#8a9db3;font-size:11px}
@@ -127,7 +127,7 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
   box-shadow: -12px 18px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  font-family: var(--dock-font, 'Sora', Inter, sans-serif);
+  font-family: var(--dock-font, var(--font-ui));
   z-index: 75;
 }
 :root[data-dock-theme="light"] #paper-panel {
@@ -136,10 +136,11 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
 #paper-panel.open {
   display: flex;
   flex-direction: column;
-  animation: paper-dock-rise .2s cubic-bezier(.22, 1, .36, 1);
+  animation: paper-dock-rise .42s cubic-bezier(.22, 1.12, .36, 1) both;
 }
 @keyframes paper-dock-rise {
-  from { opacity: 0; transform: translateX(14px) scale(.992); }
+  from { opacity: 0; transform: translateX(48px) scale(.92); }
+  60% { opacity: 1; }
   to { opacity: 1; transform: none; }
 }
 .paper-resize {
@@ -582,4 +583,4 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
 .alert-list-row [role=button]{cursor:pointer}
 
 .chart-wrapper .tv-lightweight-charts canvas{cursor:var(--drawing-cursor,inherit)}
-.alert-chart-remove{position:absolute;z-index:1;width:22px;height:22px;padding:0!important;border:1px solid #f23645!important;border-radius:4px;background:#231c20!important;color:#ff7c87!important;font:18px/18px Arial;cursor:pointer;pointer-events:auto;touch-action:none}.alert-chart-remove:hover,.alert-chart-remove:focus-visible{background:#80313a!important;color:#fff!important}#btn-delete-alert{color:#ff8d97;border-color:#a34953}
+.alert-chart-remove{position:absolute;z-index:1;width:22px;height:22px;padding:0!important;border:1px solid #f23645!important;border-radius:4px;background:#231c20!important;color:#ff7c87!important;font:18px/18px var(--font-ui);cursor:pointer;pointer-events:auto;touch-action:none}.alert-chart-remove:hover,.alert-chart-remove:focus-visible{background:#80313a!important;color:#fff!important}#btn-delete-alert{color:#ff8d97;border-color:#a34953}

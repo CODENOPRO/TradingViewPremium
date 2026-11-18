@@ -46,7 +46,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
   background:#242424;
   color:#eee;
   cursor:pointer;
-  font:18px/1 system-ui,sans-serif;
+  font:18px/1 var(--font-ui);
   opacity:0;
   visibility:hidden;
   pointer-events:none;

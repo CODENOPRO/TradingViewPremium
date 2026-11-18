@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Terminal</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap">
   <style>
 :root { color-scheme: dark; --chrome:#0f0f0f; --panel:#191919; --line:#303030; --text:#dbdbdb; --muted:#999; --accent:#2962ff; --chart:#c2baae; }
 * { box-sizing:border-box; }
-body { margin:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; background:var(--chrome); color:var(--text); font:13px -apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif; }
+body { margin:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; background:var(--chrome); color:var(--text); font:13px var(--font-ui); }
 button,input,select,textarea { font:inherit; }
 button { cursor:pointer; color:inherit; }
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible { outline:2px solid #6891ff; outline-offset:2px; }
@@ -91,7 +93,7 @@ input { min-width:0; }
 .btn-primary,.btn-secondary { border-radius:5px; padding:8px 12px; font-size:12px; white-space:nowrap; }.btn-primary { background:#2962ff; color:#fff; }.btn-primary:hover { background:#4476ff; }.btn-secondary { background:#343434; color:#ddd; }.btn-secondary:hover { background:#414141; }
 .search-input { width:100%; }.symbol-list { margin-top:14px; }.symbol-item { display:flex; align-items:center; gap:12px; padding:11px 6px; cursor:pointer; border-bottom:1px solid #303030; }.symbol-item:hover { background:#303030; }.symbol-info { display:flex; flex:1; flex-direction:column; gap:5px; }.symbol-name { font-weight:600; }.symbol-desc,.symbol-cat { font-size:11px; color:#aaa; }
 .setting-row { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:16px; }.setting-row input:not([type="color"]) { max-width:200px; }.color-picker-pair { display:flex; gap:8px; }input[type="color"] { width:40px; height:30px; padding:2px; }.num-input { width:150px; }
-.script-dialog { width:850px; }.script-body { display:flex; flex-direction:column; gap:10px; }.script-actions { display:flex; gap:10px; }.file-button { display:flex; align-items:center; cursor:pointer; }.editor-help { margin:0; color:#aaa; font-size:11px; line-height:1.6; }.code-area { width:100%; min-height:280px; background:#141414; color:#dedede; font:12px/1.65 Consolas,monospace; padding:14px; tab-size:2; }.settings-code { min-height:70px; height:85px; }.settings-label { font-size:12px; color:#aaa; }
+.script-dialog { width:850px; }.script-body { display:flex; flex-direction:column; gap:10px; }.script-actions { display:flex; gap:10px; }.file-button { display:flex; align-items:center; cursor:pointer; }.editor-help { margin:0; color:#aaa; font-size:11px; line-height:1.6; }.code-area { width:100%; min-height:280px; background:#141414; color:#dedede; font:12px/1.65 var(--font-mono); padding:14px; tab-size:2; }.settings-code { min-height:70px; height:85px; }.settings-label { font-size:12px; color:#aaa; }
 .indicator-tables { position:absolute; right:76px; top:12px; display:flex; gap:8px; z-index:22; max-height:80%; overflow:auto; }.indicator-tables table { border-collapse:collapse; background:#ddd7cce8; color:#242321; font-size:11px; }.indicator-tables td { border:1px solid #928b81; padding:4px 7px; }.indicator-tables caption { font-weight:600; padding:4px; background:#d4cfc4; }
 .replay-bar { display:none; gap:12px; align-items:center; padding:8px 12px; background:#191919; border-top:1px solid #414141; }.replay-bar.show { display:flex; }.replay-btn { background:#333; padding:6px 10px; border-radius:4px; }.replay-badge { color:#91adff; font-size:11px; }.replay-exit { margin-left:auto; }
 #paper-panel { display:none; max-height:250px; overflow:auto; border-top:1px solid #454545; background:#171717; padding:12px 16px; }#paper-panel.open { display:block; }.paper-heading { display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:12px; }.paper-heading select { padding:5px; }#paper-balance { color:#b7b7b7; font-variant-numeric:tabular-nums; }.order-ticket { display:flex; align-items:flex-end; flex-wrap:wrap; gap:10px; margin:12px 0; }.order-ticket label { display:flex; flex-direction:column; gap:5px; font-size:11px; color:#aaa; }.order-ticket input { width:110px; padding:5px; }.order-ticket select { padding:5px; }.paper-row { display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid #333; padding:7px 0; font-size:12px; }.paper-row button { border-radius:4px; background:#333; padding:4px 9px; }
@@ -305,7 +307,7 @@ input { min-width:0; }
 .indicator-empty { padding:20px 6px; color:#aaa; font-size:13px; }
 .indicator-create { margin:12px 6px; }
 .indicator-save-state { margin-right:auto; color:#aeb7c5; font-size:12px; max-width:280px; }
-.indicator-console { min-height:18px; margin:0; color:#aeb7c5; font:12px/1.5 Consolas,monospace; white-space:pre-wrap; }
+.indicator-console { min-height:18px; margin:0; color:#aeb7c5; font:12px/1.5 var(--font-mono); white-space:pre-wrap; }
 .indicator-console.is-error { color:#ff8c95; }
 .indicator-back { align-self:flex-start; }
 .indicator-legends { position:absolute; top:75px; left:9px; z-index:24; max-width:calc(100% - 80px); }
@@ -612,8 +614,10 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
   color:#ddd;
   cursor:pointer;
   overflow:hidden;
-  transition:padding .25s ease;
+  transform-origin:right center;
+  transition:padding .25s ease,transform .22s cubic-bezier(.34,1.56,.64,1),background-color .2s;
 }
+body.reduce-motion .edge-handle{transition:padding .25s ease,background-color .2s}
 .edge-handle svg {
   width:16px;
   height:16px;
@@ -753,24 +757,24 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
 .music-progress-row .music-clock {flex:none;white-space:nowrap}
 .music-track {position:relative;width:100%;padding:8px 0;cursor:pointer;touch-action:none;outline:none;border-radius:8px;user-select:none}
 .music-track[aria-disabled="true"] {opacity:.42;cursor:default;pointer-events:none}
-.music-track:focus-visible {outline:2px solid #ffb36b;outline-offset:2px}
+.music-track:focus-visible {outline:2px solid var(--accent,#2962ff);outline-offset:2px}
 .music-rail {position:relative;height:4px;border-radius:4px;background:rgba(255,255,255,.16);transition:height .15s ease}
 :root[data-dock-theme="light"] #music-panel:not(.music-mini) .music-rail {background:rgba(0,0,0,.14)}
 .music-rail .music-buf {position:absolute;inset:0 auto 0 0;width:0;background:rgba(255,255,255,.24);border-radius:4px;pointer-events:none}
 :root[data-dock-theme="light"] #music-panel:not(.music-mini) .music-rail .music-buf {background:rgba(0,0,0,.18)}
-.music-rail .music-fill {position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#ff5c8a,#ffb36b);border-radius:4px;pointer-events:none}
+.music-rail .music-fill {position:absolute;inset:0 auto 0 0;width:0;background:var(--accent,#2962ff);border-radius:4px;pointer-events:none}
 .music-rail .music-dot {
-  position:absolute;top:50%;left:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;
-  background:#f4eef7;box-shadow:0 0 0 0 rgba(255,92,138,.35);transform:scale(.65);
+  position:absolute;top:50%;left:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;
+  background:var(--accent-ink,#fff);border:2px solid var(--accent,#2962ff);box-shadow:0 1px 3px rgba(0,0,0,.35);transform:scale(.6);
   transition:transform .15s ease,box-shadow .15s ease;pointer-events:none
 }
-:root[data-dock-theme="light"] #music-panel:not(.music-mini) .music-rail .music-dot {background:#18181b}
+:root[data-dock-theme="light"] #music-panel:not(.music-mini) .music-rail .music-dot {background:var(--accent-ink,#fff)}
 .music-track:hover .music-rail,.music-track.drag .music-rail {height:7px}
 .music-track:hover .music-dot,.music-track.drag .music-dot,.music-track:focus-visible .music-dot {
-  transform:scale(1.12);box-shadow:0 0 0 6px rgba(255,92,138,.25)
+  transform:scale(1.1);box-shadow:0 1px 4px rgba(0,0,0,.4)
 }
 .music-tip {
-  position:absolute;bottom:calc(100% + 2px);transform:translateX(-50%);background:#f4eef7;color:#1a1422;
+  position:absolute;bottom:calc(100% + 2px);transform:translateX(-50%);background:var(--text,#e2e8f0);color:var(--bg,#111);
   font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;pointer-events:none;opacity:0;
   transition:opacity .12s ease;font-variant-numeric:tabular-nums;white-space:nowrap
 }
@@ -1345,7 +1349,7 @@ body.reduce-motion #music-panel.music-mini[data-provider="youtube"] :is(.music-c
 /* Local graphite studio. Inspired by React Bits dock, Magic UI borders and Uiverse controls.
    Chart palette, candle series, canvas and price scales are intentionally owned by ChartSettings. */
 :root{--chrome:#11151b;--panel:#171c24;--line:#2b333f;--text:#e6eaf0;--muted:#929dab;--accent:#82e2c1;--studio-shadow:0 12px 32px #05080d38,inset 0 1px 0 #ffffff0b;--studio-height:48vh}
-body{font-family:-apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;letter-spacing:0}
+body{font-family: var(--font-ui);letter-spacing:.01em}
 button,input,select,textarea{accent-color:var(--accent)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 #topbar{top:10px;left:10px;right:10px;gap:12px}
@@ -1427,10 +1431,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .editor-language{font-weight:650;color:#9edcc7;letter-spacing:.08em}
 .editor-shortcuts{margin-left:auto;color:#6f8197}
 .editor-surface{position:relative;display:flex;flex:1;min-height:60px;background:#10161f;overflow:hidden}
-#editor-lines{margin:0;padding:12px 14px 12px 18px;width:72px;min-width:72px;flex:none;text-align:right;font:12px/21px Consolas,'Cascadia Code',monospace;color:#4e6178;user-select:none;overflow:hidden;background:#0e141c;border-right:1px solid #ffffff06}
-.studio-editing #indicator-code{min-height:0;height:100%;resize:none;flex:1;min-width:0;border:0;outline:0;border-radius:0;padding:12px 16px;font:12px/21px Consolas,'Cascadia Code',monospace;color:#d8e6f7;background:transparent;tab-size:4;letter-spacing:0;white-space:pre;overflow:auto;box-shadow:none}
+#editor-lines{margin:0;padding:12px 14px 12px 18px;width:72px;min-width:72px;flex:none;text-align:right;font:12px/21px var(--font-mono);color:#4e6178;user-select:none;overflow:hidden;background:#0e141c;border-right:1px solid #ffffff06}
+.studio-editing #indicator-code{min-height:0;height:100%;resize:none;flex:1;min-width:0;border:0;outline:0;border-radius:0;padding:12px 16px;font:12px/21px var(--font-mono);color:#d8e6f7;background:transparent;tab-size:4;letter-spacing:0;white-space:pre;overflow:auto;box-shadow:none}
 .studio-editing #indicator-code:focus-visible{box-shadow:inset 2px 0 #82e2c130}
-.editor-highlight{position:absolute;inset:0 0 0 72px;margin:0;padding:12px 16px;overflow:hidden;pointer-events:none;font:12px/21px Consolas,'Cascadia Code',monospace;letter-spacing:0;tab-size:4;white-space:pre;color:#d8e6f7}
+.editor-highlight{position:absolute;inset:0 0 0 72px;margin:0;padding:12px 16px;overflow:hidden;pointer-events:none;font:12px/21px var(--font-mono);letter-spacing:0;tab-size:4;white-space:pre;color:#d8e6f7}
 .studio-editing #indicator-code{color:transparent;caret-color:#d8e6f7;position:relative}
 .studio-editing #indicator-code::selection{background:#82e2c130;color:transparent}
 .pine-comment{color:#61778f}.pine-string{color:#afd8a1}.pine-number{color:#efc78d}.pine-keyword{color:#b6a3ed}.pine-builtin{color:#8bcbd8}
@@ -1440,10 +1444,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .music-link-form button,.music-controls button{background:#ffffff08;border:1px solid #ffffff16;border-radius:8px;color:#b7d6cc}
 .music-controls button[data-command=toggle]{background:#a3e7cd;color:#10271f;border-color:#a3e7cd}
 .music-metadata-status{color:#b3a084;font-size:10px;line-height:1.6;margin:0 0 8px}.music-metadata-status:empty{display:none}
-.editor-position{display:flex;justify-content:space-between;gap:10px;padding:4px 18px;color:#667e97;font:10px Consolas,monospace;border-top:1px solid #ffffff06;flex:none}
+.editor-position{display:flex;justify-content:space-between;gap:10px;padding:4px 18px;color:#667e97;font:10px var(--font-mono);border-top:1px solid #ffffff06;flex:none}
 .editor-console-heading{padding:6px 18px 0;font-size:9px;font-weight:650;letter-spacing:.1em;color:#a5b6ca;flex:none}
 .editor-console-heading span{font-size:9px;font-weight:400;letter-spacing:0;margin-left:12px;color:#61768e}
-.studio-editing .indicator-console{font:11px/1.6 Consolas,monospace;margin:0;padding:7px 18px 9px;min-height:32px;max-height:70px;overflow:auto;white-space:pre-wrap;color:#91cbb7;flex:none;background:transparent}
+.studio-editing .indicator-console{font:11px/1.6 var(--font-mono);margin:0;padding:7px 18px 9px;min-height:32px;max-height:70px;overflow:auto;white-space:pre-wrap;color:#91cbb7;flex:none;background:transparent}
 .studio-editing .indicator-console.is-error{color:#ffa6a0;background:#ef6c6810;border-left:2px solid #ed918a}
 .studio-editing .modal-footer{padding:8px 18px;min-height:46px;background:#181f29;flex:none}
 .indicator-save-state{margin-right:auto;color:#8a9db3;font-size:11px}
@@ -1471,7 +1475,7 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
   box-shadow: -12px 18px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  font-family: var(--dock-font, 'Sora', Inter, sans-serif);
+  font-family: var(--dock-font, var(--font-ui));
   z-index: 75;
 }
 :root[data-dock-theme="light"] #paper-panel {
@@ -1480,10 +1484,11 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
 #paper-panel.open {
   display: flex;
   flex-direction: column;
-  animation: paper-dock-rise .2s cubic-bezier(.22, 1, .36, 1);
+  animation: paper-dock-rise .42s cubic-bezier(.22, 1.12, .36, 1) both;
 }
 @keyframes paper-dock-rise {
-  from { opacity: 0; transform: translateX(14px) scale(.992); }
+  from { opacity: 0; transform: translateX(48px) scale(.92); }
+  60% { opacity: 1; }
   to { opacity: 1; transform: none; }
 }
 .paper-resize {
@@ -1926,7 +1931,7 @@ body.paper-panel-open .edge-drawing-dock { bottom: 0 !important; left: calc((100
 .alert-list-row [role=button]{cursor:pointer}
 
 .chart-wrapper .tv-lightweight-charts canvas{cursor:var(--drawing-cursor,inherit)}
-.alert-chart-remove{position:absolute;z-index:1;width:22px;height:22px;padding:0!important;border:1px solid #f23645!important;border-radius:4px;background:#231c20!important;color:#ff7c87!important;font:18px/18px Arial;cursor:pointer;pointer-events:auto;touch-action:none}.alert-chart-remove:hover,.alert-chart-remove:focus-visible{background:#80313a!important;color:#fff!important}#btn-delete-alert{color:#ff8d97;border-color:#a34953}
+.alert-chart-remove{position:absolute;z-index:1;width:22px;height:22px;padding:0!important;border:1px solid #f23645!important;border-radius:4px;background:#231c20!important;color:#ff7c87!important;font:18px/18px var(--font-ui);cursor:pointer;pointer-events:auto;touch-action:none}.alert-chart-remove:hover,.alert-chart-remove:focus-visible{background:#80313a!important;color:#fff!important}#btn-delete-alert{color:#ff8d97;border-color:#a34953}
 </style>
   <style>
 /* Pinned desktop frame. Original implementation inspired by side-dock navigation.
@@ -4204,7 +4209,7 @@ body:not(.reduce-motion) #indicator-modal.show:not(.studio-editing) > .modal-con
 #indicator-modal.studio-editing {
   --editor-gutter: 52px;
   --editor-pad: 14px;
-  --editor-font: 13px / 21px Consolas, "Cascadia Code", monospace;
+  --editor-font: 13px var(--font-mono);
   --editor-accent: #55cfb4;
   --editor-code-bg: #141417;
   --editor-selection: rgb(85 207 180 / .2);
@@ -4667,9 +4672,9 @@ body.reduce-motion #settings-modal .chart-settings-nav :is(button, span) { trans
 .chart-sound-preview { flex:none; min-height:32px; padding:6px 9px; font-size:11px; white-space:nowrap; }
 #settings-modal.theme-mode .chart-settings-dialog { width:min(860px,calc(100vw - 32px)); }
 #settings-modal.theme-mode .chart-settings-body { padding-top:10px; }
-.theme-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; max-height:min(54vh,520px); overflow:auto; padding:8px 2px 4px; }
-.theme-option { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; min-height:52px; padding:0 12px; border:1px solid color-mix(in srgb,var(--theme-text) 18%,transparent); border-radius:14px; background:var(--theme-bg); color:var(--theme-text); text-align:left; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
-.theme-option:hover { transform:translateY(-1px); border-color:color-mix(in srgb,var(--theme-text) 45%,transparent); }
+.theme-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:8px 2px 4px; }
+.theme-option { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; min-height:52px; padding:0 12px; border:1px solid color-mix(in srgb,var(--theme-text) 18%,transparent); border-radius:14px; background:var(--theme-bg); color:var(--theme-text); text-align:left; cursor:pointer; }
+.theme-option:hover { border-color:color-mix(in srgb,var(--theme-text) 45%,transparent); }
 .theme-option[aria-pressed="true"] { border-color:#89a9ff; box-shadow:0 0 0 2px color-mix(in srgb,#89a9ff 65%,transparent); }
 .theme-option-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:600; }
 .theme-option-dots { display:flex; flex:none; align-items:center; gap:4px; }
@@ -6505,6 +6510,1191 @@ body.paper-panel-open #replay-toolbar{
     }
     #clock-timezone-menu button[aria-pressed="true"]::after { content: "✓"; color: var(--accent); }
   </style>
+<style id="wow-overrides-css">
+/* WOW overrides: QT hover extension, QT settings, Paper Trade, Buy/Sell, Music, reload dialog. Theme-synced via --accent / --trade-sell-bg / --glass tokens. */
+:root{--wow-buy:var(--accent);--wow-buy-ink:var(--trade-buy-ink,var(--accent-ink));--wow-sell:var(--trade-sell-bg,var(--muted));--wow-sell-ink:var(--trade-sell-ink,var(--text));--wow-ease:cubic-bezier(.2,.9,.3,1)}
+/* 1. QT gear is tucked inside the QT pill; hover QT -> gear slides out, hover away -> it retracts the same way (animated by JS/WAAPI, so it ignores prefers-reduced-motion).
+   width/min-width/margin are intentionally NOT !important here: !important always wins over a running animation, which was clipping the retract animation to an instant snap. The selectors are already specific enough (html #topbar(.qt-hot) #btn-qt-settings) to win on specificity alone. */
+html #topbar #btn-qt-settings{width:0;min-width:0;margin:0;padding:0!important;opacity:0;overflow:hidden;pointer-events:none;transform:translateX(-14px) rotate(-180deg);transform-origin:50% 50%}
+html #topbar.qt-hot #btn-qt-settings{width:32px;min-width:32px;margin-left:2px;opacity:1;pointer-events:auto;transform:none;color:var(--accent)!important;background:color-mix(in srgb,var(--accent) 14%,transparent)}
+html #topbar.qt-hot #btn-indicator{box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent),0 0 16px color-mix(in srgb,var(--accent) 30%,transparent)}
+/* 2. Quantaibay shares the Chart Settings design. */
+/* ==========================================================================
+   Chart settings panel (#qt-settings-modal) - the only stylesheet that styles it.
+
+   A floating dock sheet on the right. The chart behind stays sharp, undimmed
+   and interactive, because every change previews live on it. No backdrop
+   blur, no scrim. Colours come from the dock theme tokens (--bg, --text,
+   --muted, --line, --accent, --accent-ink), so light/dark follows the app.
+   ========================================================================== */
+
+#qt-settings-modal {
+  --cs-card: color-mix(in srgb, var(--text) 5.5%, var(--bg));
+  --cs-field: var(--bg);
+  --cs-hair: color-mix(in srgb, var(--text) 9%, transparent);
+  --cs-off: color-mix(in srgb, var(--text) 22%, transparent);
+  --cs-ease: cubic-bezier(.3, 1, .3, 1);
+}
+
+/* ---------- shell: no scrim, panel docked right, chart stays live ---------- */
+
+#qt-settings-modal.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  padding: var(--frame-top, 68px) 12px 12px 12px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+#qt-settings-modal.modal.show { display: flex; }
+
+#qt-settings-modal > .tv-chart-color-popover { pointer-events: auto; }
+
+#qt-settings-modal .chart-settings-dialog {
+  zoom: var(--toolbar-scale, 1);
+  pointer-events: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(468px, 100%);
+  height: min(740px, 100%);
+  max-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--text) 8%, transparent) inset,
+    0 28px 70px -12px rgb(0 0 0 / .5),
+    0 6px 20px rgb(0 0 0 / .22);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+#qt-settings-modal.show .chart-settings-dialog { animation: cs-in .34s var(--cs-ease) both; }
+@keyframes cs-in {
+  from { opacity: 0; transform: translateX(32px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- header ---------- */
+
+#qt-settings-modal .modal-header {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 0;
+  padding: 20px 18px 14px 22px;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+#qt-settings-modal .cs-heading { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+#qt-settings-modal .qt-settings-title-wrap h2 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  color: var(--text);
+}
+#qt-settings-modal .cs-sub {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+#qt-settings-modal .cs-sub::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok, #4ade80);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok, #4ade80) 22%, transparent);
+}
+#qt-settings-modal .modal-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cs-card);
+  color: var(--muted);
+  transition: background-color .15s, color .15s, transform .2s var(--cs-ease);
+}
+#qt-settings-modal .modal-close svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+#qt-settings-modal .modal-close:hover { background: var(--text); color: var(--bg); transform: rotate(90deg); }
+
+/* ---------- tabs: icon pills, the active one opens to show its name ---------- */
+
+#qt-settings-modal .chart-settings-layout {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+#qt-settings-modal .chart-settings-nav {
+  --nav-dur: 460ms;
+  --nav-ease: var(--dock-reveal-ease, cubic-bezier(.3, .65, .3, 1));
+  --fl: 0px;
+  --fr: 0px;
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: auto;
+  margin: 0 14px;
+  padding: 5px;
+  background: var(--cs-card);
+  border: 0;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%);
+}
+#qt-settings-modal .chart-settings-nav::-webkit-scrollbar { display: none; }
+#qt-settings-modal .chart-settings-nav button {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-width: 40px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: var(--muted);
+  font: 600 12px/1 var(--dock-font);
+  letter-spacing: .01em;
+  white-space: nowrap;
+  transition: background-color .25s, color .25s, box-shadow .35s;
+}
+#qt-settings-modal .chart-settings-nav button svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#qt-settings-modal .chart-settings-nav button svg .d { fill: currentColor; fill-opacity: .22; }
+#qt-settings-modal .chart-settings-nav button svg .dot { fill: currentColor; stroke: none; }
+#qt-settings-modal .chart-settings-nav .chart-tab-label {
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns var(--nav-dur) var(--nav-ease);
+}
+#qt-settings-modal .chart-settings-nav .chart-tab-label > span {
+  min-width: 0;
+  overflow: hidden;
+  padding-left: 0;
+  opacity: 0;
+  transition: padding-left var(--nav-dur) var(--nav-ease), opacity .2s ease;
+}
+#qt-settings-modal .chart-settings-nav button:hover {
+  background: var(--glass2);
+  color: var(--text);
+}
+#qt-settings-modal .chart-settings-nav button[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 6px 16px -8px var(--accent);
+}
+#qt-settings-modal .chart-settings-nav button[aria-selected="true"] .chart-tab-label {
+  grid-template-columns: 1fr;
+}
+#qt-settings-modal .chart-settings-nav button[aria-selected="true"] .chart-tab-label > span {
+  padding-left: 9px;
+  opacity: 1;
+  transition: padding-left var(--nav-dur) var(--nav-ease), opacity .3s ease .1s;
+}
+#qt-settings-modal .chart-settings-nav button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+body.reduce-motion #qt-settings-modal .chart-settings-nav :is(button, span) { transition: none; }
+.chart-sound-preview { flex:none; min-height:32px; padding:6px 9px; font-size:11px; white-space:nowrap; }
+#qt-settings-modal.theme-mode .chart-settings-dialog { width:min(860px,calc(100vw - 32px)); }
+#qt-settings-modal.theme-mode .chart-settings-body { padding-top:10px; }
+.theme-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:8px 2px 4px; }
+.theme-option { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; min-height:52px; padding:0 12px; border:1px solid color-mix(in srgb,var(--theme-text) 18%,transparent); border-radius:14px; background:var(--theme-bg); color:var(--theme-text); text-align:left; cursor:pointer; }
+.theme-option:hover { border-color:color-mix(in srgb,var(--theme-text) 45%,transparent); }
+.theme-option[aria-pressed="true"] { border-color:#89a9ff; box-shadow:0 0 0 2px color-mix(in srgb,#89a9ff 65%,transparent); }
+.theme-option-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:600; }
+.theme-option-dots { display:flex; flex:none; align-items:center; gap:4px; }
+.theme-option-dots i { width:11px; height:11px; border-radius:50%; box-shadow:0 0 0 1px #0002; }
+@media(max-width:700px) { .theme-gallery { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:460px) { .theme-gallery { grid-template-columns:1fr; } }
+
+/* ---------- body ---------- */
+
+#qt-settings-modal .chart-settings-body {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  padding: 6px 14px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cs-off) transparent;
+}
+#qt-settings-modal .chart-settings-body h3 {
+  margin: 20px 8px 9px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-transform: none;
+  color: var(--muted);
+}
+#qt-settings-modal .chart-settings-body h3:first-child { margin-top: 14px; }
+
+#qt-settings-modal .chart-setting-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  background: var(--cs-card);
+  border: 0;
+  border-radius: 18px;
+}
+
+#qt-settings-modal .chart-setting-row,
+#qt-settings-modal .setting-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 52px;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--cs-hair);
+  font-size: 13.5px;
+  color: var(--text);
+}
+#qt-settings-modal .chart-setting-card > :last-child { border-bottom: 0; }
+#qt-settings-modal .chart-setting-row label,
+#qt-settings-modal .setting-row > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text);
+  cursor: pointer;
+}
+#qt-settings-modal .chart-setting-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  max-width: none;
+}
+#qt-settings-modal .chart-setting-controls > span:not(.chart-color-pair) {
+  min-width: 26px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* rows whose feature is not wired to the engine yet: visible, honest, inert */
+#qt-settings-modal .chart-setting-row.unimplemented { opacity: .5; }
+#qt-settings-modal .chart-setting-row.unimplemented label { cursor: default; }
+#qt-settings-modal .chart-unavailable-note {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  border-radius: 50%;
+  border: 1px solid var(--cs-off);
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: help;
+}
+
+/* ---------- switch ---------- */
+
+#qt-settings-modal .chart-settings-body input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  position: relative;
+  width: 40px;
+  min-width: 40px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cs-off);
+  cursor: pointer;
+  transition: background-color .22s;
+}
+#qt-settings-modal .chart-settings-body input[type="checkbox"]::before { content: none; }
+#qt-settings-modal .chart-settings-body input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .35);
+  transition: transform .32s cubic-bezier(.3, 1.55, .5, 1), background-color .22s;
+}
+#qt-settings-modal .chart-settings-body input[type="checkbox"]:checked { background: var(--accent); }
+#qt-settings-modal .chart-settings-body input[type="checkbox"]:checked::after {
+  background: var(--accent-ink);
+  transform: translateX(16px);
+}
+#qt-settings-modal .chart-settings-body input[type="checkbox"]:disabled { cursor: default; opacity: .55; }
+
+/* ---------- selects, numbers, range ---------- */
+
+#qt-settings-modal .chart-settings-body select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: auto;
+  min-width: 118px;
+  max-width: 200px;
+  height: 34px;
+  padding: 0 32px 0 12px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--cs-field) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%238a8a93' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E") no-repeat right 11px center / 12px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  font: 500 12.5px/1 inherit;
+  font-family: inherit;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: box-shadow .15s;
+}
+#qt-settings-modal .chart-settings-body select:hover { box-shadow: inset 0 0 0 1px var(--cs-off); }
+#qt-settings-modal .chart-settings-body select option { background: var(--bg); color: var(--text); }
+#qt-settings-modal .chart-settings-body select.chart-line-style { min-width: 0; width: 74px; padding-left: 10px; letter-spacing: -.5px; }
+#qt-settings-modal .chart-settings-body select:disabled { cursor: default; }
+
+#qt-settings-modal .chart-settings-body input[type="number"] {
+  width: 86px;
+  height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--cs-field);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text);
+  font: 500 13px/1 inherit;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+#qt-settings-modal .chart-settings-body input[type="number"]:focus { outline: none; box-shadow: inset 0 0 0 1.5px var(--text); }
+
+#qt-settings-modal .chart-settings-body input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 150px;
+  max-width: 150px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+#qt-settings-modal .chart-settings-body input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: var(--cs-off); }
+#qt-settings-modal .chart-settings-body input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--cs-card), 0 1px 4px rgb(0 0 0 / .4);
+  transition: transform .15s;
+}
+#qt-settings-modal .chart-settings-body input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.12); }
+#qt-settings-modal .chart-settings-body input[type="range"]::-moz-range-track { height: 4px; border-radius: 4px; background: var(--cs-off); }
+#qt-settings-modal .chart-settings-body input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--cs-card);
+}
+
+#qt-settings-modal .chart-setting-controls > .chart-range-value {
+  min-width: 4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+#chart-grid .chart-legend:not([hidden]) { display: flex !important; }
+#chart-grid .tv-trade-pill:not([hidden]) { display: flex !important; }
+.chart-scale-modes, .chart-scale-currency, .chart-price-plus {
+  position: absolute;
+  right: 2px;
+  z-index: 21;
+  color: var(--chart-text);
+}
+.chart-scale-modes { bottom: 28px; display: flex; gap: 2px; }
+.chart-scale-currency { top: 8px; pointer-events: none; font-size: 10px; }
+.chart-scale-modes button, .chart-price-plus {
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: var(--pane-background);
+  color: var(--chart-text);
+  cursor: pointer;
+}
+.chart-scale-modes button[aria-pressed="true"] { font-weight: 800; }
+.chart-scale-modes[data-visibility="Hidden"], .chart-scale-currency[data-visibility="Hidden"],
+.chart-wrapper:not(:hover):not(:focus-within) [data-visibility="Visible on mouse over"],
+.chart-price-plus[hidden], .chart-wrapper:not(:hover) .chart-price-plus { display: none; }
+
+.indicator-status-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.paper-order-confirmation {
+  max-width: min(420px, 90vw);
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.paper-order-confirmation::backdrop { background: transparent; }
+.paper-order-confirmation form { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ---------- colour chips: up/down pairs overlap, then part on hover ---------- */
+
+#qt-settings-modal .chart-color-pair { display: flex; align-items: center; }
+#qt-settings-modal .chart-color {
+  flex: none;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background:
+    conic-gradient(#8884 25%, transparent 0 50%, #8884 0 75%, transparent 0) 0 0 / 8px 8px;
+  outline: 2.5px solid var(--cs-card);
+  box-shadow: 0 0 0 1px var(--cs-off);
+  transition: transform .18s var(--cs-ease), margin .25s var(--cs-ease), box-shadow .15s;
+}
+#qt-settings-modal .chart-color > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(127 127 127 / .35);
+}
+#qt-settings-modal .chart-color-pair .chart-color + .chart-color { margin-left: -10px; }
+#qt-settings-modal .chart-color-pair:hover .chart-color + .chart-color { margin-left: 3px; }
+#qt-settings-modal .chart-color:not(:disabled):hover { transform: translateY(-1px) scale(1.08); z-index: 1; }
+#qt-settings-modal .chart-color.active { box-shadow: 0 0 0 2px var(--text); z-index: 2; }
+#qt-settings-modal .chart-color:disabled { opacity: .45; pointer-events: none; }
+#qt-settings-modal .tv-palette-swatch { transition: transform .15s; }
+#qt-settings-modal .tv-palette-swatch:not(:disabled):hover { transform: scale(1.12); }
+
+#qt-settings-modal .chart-data-settings .chart-setting-row {
+  min-height: 42px;
+  gap: 10px;
+  padding-block: 4px;
+}
+#qt-settings-modal .chart-data-settings select:is(#chart-set-precision, #chart-set-timezone) {
+  width: 132px;
+  height: 32px;
+}
+
+/* ---------- notes and the Toolbars tab ---------- */
+
+#qt-settings-modal .desktop-panel-note,
+#qt-settings-modal .editor-help {
+  margin: 14px 4px 0;
+  padding: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+#qt-settings-modal .chart-setting-card > .editor-help { order: -1; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--cs-hair); }
+#qt-settings-modal .setting-row input[type="range"] { flex: none; }
+
+/* ---------- error + footer ---------- */
+
+#qt-settings-modal .chart-settings-error {
+  flex: none;
+  margin: 0 22px 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #f23645;
+}
+#qt-settings-modal .chart-settings-error:empty { display: none; }
+
+#qt-settings-modal .modal-footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--cs-hair);
+  background: transparent;
+}
+#qt-settings-modal .modal-footer button {
+  height: 38px;
+  min-height: 0;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  font: 500 13px/1 inherit;
+  font-family: inherit;
+  transition: background-color .15s, color .15s, transform .15s var(--cs-ease);
+}
+#qt-settings-modal .modal-footer button:active { transform: scale(.97); }
+#qt-settings-modal .qt-defaults-btn {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 14px 0 16px;
+  background: var(--cs-card);
+  color: var(--text);
+}
+#qt-settings-modal .qt-defaults-btn:hover,
+#qt-settings-modal .qt-defaults-btn[aria-expanded="true"] { background: var(--cs-off); }
+#qt-settings-modal .qt-defaults-btn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#qt-settings-modal #reset-dock-settings { background: transparent; color: var(--muted); padding: 0 12px; }
+#qt-settings-modal #reset-dock-settings:hover { color: var(--text); }
+#qt-settings-modal .qt-cancel-btn { background: var(--cs-card); color: var(--text); }
+#qt-settings-modal .qt-cancel-btn:hover { background: var(--cs-off); }
+#qt-settings-modal .qt-ok-btn { padding: 0 26px; background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+#qt-settings-modal .qt-ok-btn:hover { filter: brightness(1.12); }
+
+/* ---------- focus ---------- */
+
+#qt-settings-modal :is(button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* ---------- small screens: bottom sheet ---------- */
+
+@media (max-width: 640px) {
+  #qt-settings-modal.modal { padding: 0; align-items: flex-end; justify-content: center; }
+  #qt-settings-modal .chart-settings-dialog {
+    width: 100%;
+    height: min(88dvh, 100%);
+    border-radius: 24px 24px 0 0;
+    border-bottom: 0;
+  }
+  #qt-settings-modal.show .chart-settings-dialog { animation-name: cs-up; }
+  @keyframes cs-up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+  #qt-settings-modal .chart-setting-controls > select { max-width: 150px; min-width: 96px; }
+}
+
+
+/* Toolbars tab rows are plain .setting-row elements: keep their inputs inside the card */
+#qt-settings-modal .setting-row > input[type="range"],
+#qt-settings-modal .setting-row > .toolbar-transparency { flex: none; margin: 0; }
+#qt-settings-modal .setting-row > input:not([type="checkbox"]) { width: 150px; max-width: 150px; }
+
+/* ---------- 6. Chart Settings (#qt-settings-modal) — toàn bộ ---------- */
+#qt-settings-modal{ --cs-ease: var(--wow-spring); }
+#qt-settings-modal .chart-settings-dialog{
+  background:var(--wow-glass);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--wow-border);
+  border-radius:26px;
+  box-shadow:var(--wow-shadow);
+}
+/* The wide theme list scrolls over live charts without sampling their pixels. */
+#qt-settings-modal.theme-mode .chart-settings-dialog{
+  background:var(--bg);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+#qt-settings-modal .qt-settings-title-wrap h2{letter-spacing:-.02em}
+#qt-settings-modal .modal-close:hover{background:var(--accent);color:var(--accent-ink)}
+
+#qt-settings-modal .chart-settings-nav{background:var(--wow-tint-1);box-shadow:inset 0 0 0 1px var(--wow-border)}
+#qt-settings-modal .chart-settings-nav button:hover{background:var(--wow-tint-2)}
+#qt-settings-modal .chart-settings-nav button[aria-selected="true"]{
+  background:var(--accent);
+  color:var(--accent-ink);
+  box-shadow:0 2px 10px color-mix(in srgb,#000 18%,transparent);
+}
+
+#qt-settings-modal .chart-setting-card{
+  background:var(--wow-tint-1);
+  border:1px solid var(--wow-border);
+  transition:border-color .22s var(--wow-ease), background .22s;
+}
+#qt-settings-modal .chart-setting-card:hover{border-color:color-mix(in srgb, var(--text) 22%, transparent)}
+#qt-settings-modal .chart-setting-row,#qt-settings-modal .setting-row{border-bottom-color:var(--wow-divider)}
+
+#qt-settings-modal .chart-settings-body input[type="checkbox"]{background:var(--wow-tint-3)}
+#qt-settings-modal .chart-settings-body input[type="checkbox"]:checked{background:var(--accent)}
+#qt-settings-modal .chart-settings-body input[type="checkbox"]:checked::after{background:var(--accent-ink)}
+
+#qt-settings-modal .chart-settings-body select,
+#qt-settings-modal .chart-settings-body input[type="number"]{
+  background:var(--wow-tint-1);
+  box-shadow:inset 0 0 0 1px var(--wow-border);
+  transition:box-shadow .2s var(--wow-ease);
+}
+#qt-settings-modal .chart-settings-body select:hover{box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--text) 25%, transparent)}
+#qt-settings-modal .chart-settings-body input[type="number"]:focus{
+  box-shadow:inset 0 0 0 1.5px var(--text), var(--wow-ring);
+}
+
+#qt-settings-modal .chart-settings-body input[type="range"]::-webkit-slider-runnable-track{background:var(--wow-tint-3)}
+#qt-settings-modal .chart-settings-body input[type="range"]::-webkit-slider-thumb{
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--bg);
+}
+#qt-settings-modal .chart-settings-body input[type="range"]::-moz-range-track{background:var(--wow-tint-3)}
+#qt-settings-modal .chart-settings-body input[type="range"]::-moz-range-thumb{
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--bg);
+}
+
+#qt-settings-modal .chart-color{outline-color:var(--bg);box-shadow:0 0 0 1px color-mix(in srgb, var(--text) 18%, transparent)}
+#qt-settings-modal .chart-color:not(:disabled):hover{box-shadow:0 0 0 1px color-mix(in srgb, var(--text) 32%, transparent)}
+#qt-settings-modal .chart-color.active{box-shadow:0 0 0 2px var(--text)}
+
+#qt-settings-modal .modal-footer{border-top-color:var(--wow-divider)}
+#qt-settings-modal .modal-footer button{transition:background-color .18s,color .18s,transform .2s var(--wow-ease),box-shadow .2s}
+#qt-settings-modal .qt-defaults-btn{background:var(--wow-tint-1)}
+#qt-settings-modal .qt-defaults-btn:hover,
+#qt-settings-modal .qt-defaults-btn[aria-expanded="true"]{background:var(--wow-tint-2)}
+#qt-settings-modal .qt-cancel-btn{background:var(--wow-tint-1)}
+#qt-settings-modal .qt-cancel-btn:hover{background:var(--wow-tint-2)}
+#qt-settings-modal .qt-ok-btn{
+  background:var(--accent);
+  color:var(--accent-ink);
+}
+#qt-settings-modal .qt-ok-btn:hover{
+  filter:none;
+  transform:translateY(-1.5px);
+  box-shadow:0 10px 22px color-mix(in srgb,#000 20%,transparent);
+}
+
+#qt-settings-modal :is(button,input,select,[tabindex]):focus-visible{outline-color:var(--text)}
+
+.theme-option[aria-pressed="true"]{border-color:var(--text);box-shadow:0 0 0 2px color-mix(in srgb, var(--text) 35%, transparent)}
+
+
+/* Quantaibay fields use the same shell, nav and cards as Chart Settings. */
+#qt-settings-modal .qt-settings-title-wrap { display:flex;flex-direction:column;align-items:flex-start;gap:3px; }
+#qt-settings-modal .qt-settings-title-wrap h2 { margin:0; }
+#qt-settings-modal .qt-settings-tools { display:contents; }
+#qt-settings-modal .qt-field-group { display:contents; }
+#qt-settings-modal .qt-row > span { min-width:0;flex:1;overflow-wrap:anywhere; }
+#qt-settings-modal .qt-row > :is(input,select,button) { flex:none; }
+#qt-settings-modal .qt-row select { max-width:48%;min-width:100px; }
+#qt-settings-modal .qt-timeframes {
+ display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:12px 0;
+}
+#qt-settings-modal .qt-timeframes button {
+ min-width:0;height:30px;padding:0;border:1px solid var(--line);border-radius:8px;
+ background:transparent;color:var(--muted);font:500 11px var(--font-ui);
+}
+#qt-settings-modal .qt-timeframes button[aria-pressed="true"] {
+ background:var(--accent);color:var(--accent-ink);border-color:var(--accent);
+}
+#qt-settings-modal .qt-defaults-btn { margin-right:auto; }
+#qt-settings-modal .qt-field-card .chart-color { flex:none; }
+#qt-settings-modal .qt-field-card .chart-color > span { display:block;width:100%;height:100%;border-radius:inherit; }
+#qt-settings-modal .qt-row { gap:10px; }
+#qt-settings-modal .qt-empty { padding:20px;color:var(--muted); }
+
+@keyframes wow-pop { from { opacity: 0; transform: translateY(22px) scale(.94); } }
+/* 3. Paper Trade panel */
+#paper-panel {
+  --paper-tint: color-mix(in srgb, var(--accent) 12%, var(--glass2));
+  --paper-edge: color-mix(in srgb, var(--accent) 36%, var(--line));
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--dock-shadow, 0 12px 32px #0003);
+  backdrop-filter: blur(18px);
+  color: var(--text);
+}
+#paper-panel .paper-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px 8px;
+  padding: 10px 12px;
+  background: transparent;
+}
+#paper-panel .paper-brand { gap: 6px; min-width: 0; }
+#paper-panel .paper-mode-badge {
+  background: var(--glass2);
+  color: var(--muted);
+}
+#paper-panel[data-replay="true"] .paper-mode-badge { color: var(--text); }
+#paper-panel .paper-account-group {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+#paper-panel #paper-account {
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+  background: var(--glass2);
+  color: var(--text);
+  border-color: var(--line);
+}
+:root[data-dock-theme="dark"] #paper-account { color-scheme: dark; }
+:root[data-dock-theme="light"] #paper-account { color-scheme: light; }
+#paper-panel #paper-account option {
+  background: var(--bg);
+  color: var(--text);
+}
+#paper-panel #paper-account:focus {
+  outline: 1px solid color-mix(in srgb, var(--accent) 35%, var(--muted));
+  outline-offset: 1px;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+#paper-panel .paper-close { border-radius: 50%; }
+#paper-panel .paper-setup {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin: 14px 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--glass2);
+  font-size: 13px;
+}
+#paper-panel[data-has-account="false"] :is(.paper-account-group, .paper-summary, .paper-workspace),
+#paper-panel[data-has-account="true"] .paper-setup,
+#paper-panel .paper-tabs [hidden] { display: none; }
+
+#paper-panel .paper-summary {
+  width: auto;
+  margin: 10px 12px 0;
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--glass2);
+}
+#paper-panel .paper-summary > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+#paper-panel .paper-summary > div:nth-child(even) { border-inline-start: 1px solid var(--line); }
+#paper-panel .paper-summary > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+#paper-panel .paper-summary strong { white-space: normal; overflow-wrap: anywhere; }
+
+#paper-panel .paper-ticket {
+  gap: 7px;
+  padding: 10px 12px;
+  max-height: 72%;
+}
+#paper-panel .paper-sym-pill, #paper-panel #paper-quote-status {
+  padding-inline: 0;
+  background: transparent;
+}
+#paper-panel #paper-quote-status[data-live="true"] { color: var(--ok); }
+#paper-panel .paper-type-seg {
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--glass2);
+}
+#paper-panel :is(.paper-type-seg, .paper-qty-chips, .paper-tabs) button.active {
+  color: var(--text);
+  background: var(--paper-tint);
+  box-shadow: inset 0 0 0 1px var(--paper-edge);
+  border-color: transparent;
+}
+#paper-panel .paper-qty-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+#paper-panel .paper-qty-stepper {
+  flex: 1 1 104px;
+  min-width: 0;
+  max-width: 154px;
+  height: 30px;
+}
+#paper-panel .paper-qty-stepper input { min-width: 0; background: transparent; }
+#paper-panel .paper-qty-chips button { height: 28px; }
+#paper-panel .paper-estimate {
+  padding: 0;
+  background: transparent;
+}
+#paper-panel :is(.paper-side, #paper-setup-account) {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--glass2);
+  color: var(--text);
+  box-shadow: none;
+  font-weight: 650;
+}
+#paper-panel :is(.paper-side.buy, #paper-setup-account) {
+  border-color: var(--paper-edge);
+  background: var(--paper-tint);
+}
+#paper-panel .paper-side:hover:not(:disabled) { border-color: var(--muted); filter: none; }
+#paper-panel :is(button, input, select):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 48%, var(--muted));
+  outline-offset: 1px;
+}
+#paper-panel .paper-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 6px 10px;
+}
+#paper-panel .paper-tabs button {
+  justify-content: center;
+  min-width: 0;
+  height: auto;
+  min-height: 30px;
+  padding: 3px;
+  font-size: 11px;
+}
+#paper-panel .paper-tabs span { min-width: 14px; padding-inline: 3px; }
+#paper-panel .paper-empty { min-height: 0; padding: 14px 10px; }
+@keyframes wow-pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok,#22c55e) 55%,transparent)}70%,100%{box-shadow:0 0 0 7px transparent}}
+#account-modal {
+  padding: 12px;
+  backdrop-filter: blur(4px);
+}
+#account-modal .demo-account-dialog {
+  width: min(360px, 100%);
+  max-height: calc(100dvh - 24px);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--glass);
+  color: var(--text);
+  box-shadow: var(--dock-shadow, 0 16px 36px #0004);
+  font: 500 13px/1.4 var(--dock-font, system-ui);
+}
+#account-modal :is(.modal-header, .modal-body, .modal-footer) {
+  padding: 12px 16px;
+  border-color: var(--line);
+  background: transparent;
+}
+#account-modal h2 {
+  margin: 0;
+  font-size: 17px;
+}
+#account-modal .modal-close {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--glass2);
+  color: var(--text);
+  font: 500 18px/1 var(--dock-font, system-ui);
+}
+#account-modal .modal-body, #account-modal .demo-account-field {
+  display: grid;
+  gap: 10px;
+}
+#account-modal .demo-account-field {
+  gap: 4px;
+  color: var(--muted);
+}
+#account-modal .demo-account-field input {
+  width: 100%;
+  min-width: 0;
+  height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--glass2);
+  color: var(--text);
+  font: inherit;
+}
+#account-modal .editor-help { margin: 0; color: var(--muted); font-size: 11px; }
+#account-modal #create-account {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 13%, var(--glass2));
+  color: var(--text);
+  box-shadow: none;
+  font: 600 12px/1 var(--dock-font, system-ui);
+}
+#account-modal #create-account:hover { border-color: var(--muted); }
+#account-modal input:focus,
+#account-modal button:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--accent) 42%, var(--muted));
+  outline-offset: 1px;
+  box-shadow: none;
+}
+
+/* 5. Music -- calm, theme-synced, no neon. One accent touch (the disc ring) instead of
+   gradients/glows on every element. */
+#music-panel{background:var(--glass)!important;backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid var(--line)!important;border-radius:22px!important;box-shadow:0 20px 56px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.07)}
+#music-panel .music-disc{position:relative;border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.4);transition:box-shadow .4s;border:1px solid var(--line)}
+#music-panel .music-disc:not(:has(img:not([hidden]))){background:repeating-radial-gradient(#15151b 0 2px,#1c1c24 3px 4px)}
+#music-panel .music-disc:not(:has(img:not([hidden])))::before{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px #15151b}
+#music-panel .music-disc.playing{box-shadow:0 6px 18px rgba(0,0,0,.4),0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+#music-panel .music-rail .music-fill{background:var(--accent)!important}
+#music-panel .music-rail .music-dot{background:var(--accent-ink)!important;border:2px solid var(--accent)!important}
+#music-panel .music-controls button[data-command=toggle]{width:50px;height:50px;background:var(--accent)!important;color:var(--accent-ink)!important;box-shadow:0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)!important;transition:transform .15s cubic-bezier(.3,1.4,.5,1),filter .15s}
+#music-panel .music-controls button[data-command=toggle]:hover:not(:disabled){transform:scale(1.05);filter:brightness(1.08)}
+#music-panel .music-controls button{color:var(--muted)}
+#music-panel .music-controls button:hover:not(:disabled){color:var(--text)}
+#music-panel :is(.music-link-form button,.music-popup-button){border-radius:10px!important;transition:border-color .2s}
+#music-panel :is(.music-link-form button,.music-popup-button):hover{border-color:var(--accent)}
+#music-panel .music-link-form input[type=url]{border-radius:10px!important;outline:0;transition:border-color .2s,box-shadow .2s}
+#music-panel .music-link-form input[type=url]:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+/* 6. Reload dialog */
+dialog.reload-confirm {
+  width: min(380px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 20px;
+  overflow: auto;
+  border: 1px solid var(--wow-border, var(--line));
+  border-radius: 24px;
+  background: var(--wow-glass, var(--glass));
+  color: var(--text);
+  box-shadow: var(--wow-shadow, var(--dock-shadow));
+  backdrop-filter: blur(20px);
+  text-align: left;
+  font: 400 13px/1.5 var(--font-ui);
+}
+dialog.reload-confirm::backdrop {
+  background: rgb(0 0 0 / .32);
+  backdrop-filter: blur(4px);
+}
+body:not(.reduce-motion) dialog.reload-confirm {
+  animation: cs-in .34s var(--cs-ease, cubic-bezier(.3,1,.3,1)) both;
+}
+dialog.reload-confirm .rc-ic {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--glass2);
+  color: var(--muted);
+}
+dialog.reload-confirm .rc-ic svg { width: 19px; height: 19px; }
+dialog.reload-confirm h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+dialog.reload-confirm p { margin: 0 0 20px; color: var(--muted); }
+dialog.reload-confirm form {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+dialog.reload-confirm button {
+  min-width: 76px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: 500 12px var(--font-ui);
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color .18s, border-color .18s;
+}
+dialog.reload-confirm .btn-secondary {
+  background: var(--glass2);
+  color: var(--text);
+}
+dialog.reload-confirm .btn-primary {
+  background: color-mix(in srgb, var(--accent) 14%, var(--glass2));
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--line));
+  color: var(--text);
+}
+dialog.reload-confirm button:hover { border-color: var(--muted); }
+dialog.reload-confirm button:focus-visible {
+  outline: 1px solid var(--muted);
+  outline-offset: 2px;
+}
+@keyframes wow-fade { from { opacity: 0; } }
+
+/* Typography — Inter UI and JetBrains Mono market data. */
+:root {
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+  --dock-font: var(--font-ui);
+}
+*, *::before, *::after { font-variant-ligatures: none; }
+html, body {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1;
+}
+button, input, select, textarea { font-family: inherit; }
+.num-tabular, .watchlist-price, .account-metric, .stat-value, .balance-value,
+#paper-panel .paper-summary strong {
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1, "cv02" 1, "cv11" 1;
+}
+#paper-panel .paper-summary strong { font-size: clamp(14px, calc(var(--paper-width, 390px) * .045), 20px); font-weight: 700; white-space: nowrap; }
+#paper-panel .paper-summary > div { overflow: hidden; }
+#paper-panel .paper-summary strong { overflow-wrap: anywhere; }
+.font-mono-trading, .dom-price, .dom-size, .orderbook-row, .ohlc-values,
+.price-axis-label, .pnl-value, .price-value, .volume-value,
+#live-clock, #paper-quote-status, #paper-estimate,
+#paper-panel .paper-summary [data-stat="unrealized"] strong,
+#paper-panel .paper-table-scroll td:nth-child(n+3),
+.legend-ohlc, .trade-price, #price-buy, #price-sell,
+#paper-panel input[type="number"], #account-modal input[type="number"],
+#qt-settings-modal input[type="number"], #drawing-settings input[type="number"],
+input[type="number"] {
+  font-family: var(--font-mono) !important;
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+  letter-spacing: -.02em;
+}
+#paper-panel .paper-summary [data-stat="unrealized"] strong { font-size: 13px; font-weight: 600; }
+#paper-panel input[type="number"], #account-modal input[type="number"] { font-size: 13px; font-weight: 500; }
+#paper-panel .paper-table-scroll td:nth-child(n+3) { font-size: 12px; }
+#paper-symbol, .symbol-name { font-family: var(--font-ui); font-weight: 600; letter-spacing: -.01em; }
+
+/* Account picker */
+#paper-panel #paper-account[hidden] { display: none; }
+#paper-panel .paper-account-trigger {
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  min-width:0;width:100%;height:32px;padding:0 10px;
+  background:var(--glass2);color:var(--text);border:1px solid var(--line);
+  border-radius:10px;font:500 12px var(--font-ui);text-align:left;
+}
+.paper-account-trigger > span { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.paper-account-trigger svg { width:14px;height:14px;flex:none;fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round; }
+#paper-panel .paper-account-trigger[aria-expanded="true"] { border-color:var(--muted); }
+.paper-account-options {
+  position:fixed;inset:auto;margin:0;padding:4px;
+  max-height:min(280px,calc(100dvh - 16px));overflow:auto;
+  background:var(--glass);color:var(--text);border:1px solid var(--line);
+  border-radius:12px;box-shadow:var(--dock-shadow,0 8px 24px #0003);
+  backdrop-filter:blur(18px);font:500 12px var(--font-ui);
+}
+.paper-account-options button {
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  width:100%;min-height:34px;padding:7px 9px;border:0;border-radius:8px;
+  background:transparent;color:var(--text);font:inherit;text-align:left;
+}
+.paper-account-options button > span:first-child { overflow-wrap:anywhere; }
+.paper-account-options button[aria-selected="true"] { background:var(--glass2); }
+.paper-account-options button:hover,.paper-account-options button:focus-visible {
+  background:color-mix(in srgb,var(--accent) 12%,var(--glass2));outline:none;
+}
+body:not(.reduce-motion) .paper-account-options:popover-open { animation:paper-accounts-in .15s ease-out; }
+@keyframes paper-accounts-in { from { opacity:0;transform:translateY(-3px); } }
+
+/* Shared dropdown options, including Quantaibay settings. */
+.terminal-select-menu {
+ position:fixed;inset:auto;margin:0;padding:5px;box-sizing:border-box;
+ overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;
+ background:var(--glass);color:var(--text);border:1px solid var(--line);
+ border-radius:12px;box-shadow:var(--dock-shadow,0 10px 28px #0004);
+ backdrop-filter:blur(18px);font:500 12px/1.4 var(--font-ui);
+}
+.terminal-select-menu button {
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ width:100%;min-height:32px;padding:6px 9px;border:0;border-radius:8px;
+ background:transparent;color:var(--text);font:inherit;text-align:left;
+}
+.terminal-select-menu button > span:first-child { min-width:0;overflow-wrap:anywhere; }
+.terminal-select-menu button > span:last-child { flex:none; }
+.terminal-select-menu button[aria-selected="true"] { background:var(--glass2); }
+.terminal-select-menu button:not(:disabled):is(:hover,:focus-visible) {
+ background:color-mix(in srgb,var(--accent) 13%,var(--glass2));
+ outline:none;
+}
+.terminal-select-menu button:disabled { opacity:.4;cursor:default; }
+body:not(.reduce-motion) .terminal-select-menu:popover-open { animation:paper-accounts-in .15s ease-out; }
+#qt-settings-modal select:focus, #settings-modal select:focus, #drawing-settings select:focus {
+ outline:1px solid var(--muted);outline-offset:1px;
+}
+
+
+/* Every right-side sheet makes room for the revealing dock. */
+@media (min-width: 720px) and (hover: hover) and (pointer: fine) {
+  body {
+    --panel-dock-gap: 0px;
+    --panel-paper-offset: 0px;
+  }
+  body.paper-panel-open { --panel-paper-offset: calc(var(--paper-push) - 6px); }
+  body:has(.edge-panel-dock[data-dock-hover], .edge-panel-dock :focus-visible, .edge-panel-dock > .dock-pin[aria-pressed="true"]) {
+    --panel-dock-gap: calc(12px + 52px * var(--toolbar-scale, 1));
+  }
+  body:has(#qt-settings-modal.show, #settings-modal.show, #desktop-panel:not([hidden]), .companion-panel.open, #paper-panel.open)
+  .edge-panel-dock { z-index: 201; }
+  :is(#qt-settings-modal, #settings-modal).modal {
+    padding-right: calc(12px + var(--panel-dock-gap) + var(--panel-paper-offset));
+  }
+  #desktop-panel, .companion-panel:not(.music-mini) {
+    right: calc(12px + var(--panel-dock-gap) + var(--panel-paper-offset)) !important;
+  }
+  body:not(.reduce-motion) :is(#qt-settings-modal, #settings-modal).modal {
+    transition: padding-right var(--dock-open-duration, .42s) var(--dock-reveal-ease, ease);
+  }
+  body:not(.reduce-motion) :is(#desktop-panel, .companion-panel:not(.music-mini)) {
+    transition: right .42s var(--dock-reveal-ease, ease), transform .4s cubic-bezier(.18,.75,.24,1), opacity .4s, visibility .4s;
+  }
+}
+</style>
 </head>
 
 <body class="icon-labels-only">
@@ -18726,6 +19916,73 @@ document.addEventListener('DOMContentLoaded', () => {
   document.fonts?.ready.then(syncInk);requestAnimationFrame(syncInk);setTimeout(syncInk,400);
 })();
 
+</script>
+<script id="wow-overrides-js">
+/* Slide the QT settings gear in and out at the same speed. */
+(()=>{
+  const closed = {width:'0px', minWidth:'0px', marginLeft:'0px', opacity:0};
+  const open = {width:'32px', minWidth:'32px', marginLeft:'2px', opacity:1};
+  const closedTransform = 'translateX(-14px) rotate(-180deg)';
+  const top = () => document.getElementById('topbar');
+  const gear = () => document.getElementById('btn-qt-settings');
+  let closeTimer;
+  let hot = false;
+
+  function setHot(next) {
+    clearTimeout(closeTimer);
+    if (next === hot) return;
+    const button = gear();
+    if (!button) return;
+
+    // Start at the current position if the pointer changes direction mid-animation.
+    const style = getComputedStyle(button);
+    const current = {width:style.width, minWidth:style.minWidth, marginLeft:style.marginLeft, opacity:style.opacity};
+    const transform = style.transform;
+    button.getAnimations().forEach(animation => animation.cancel());
+    hot = next;
+    top()?.classList.toggle('qt-hot', next);
+    button.animate([current, next ? open : closed], {
+      duration:520, easing:'cubic-bezier(.2,.9,.3,1)', fill:'forwards'
+    });
+    button.animate([{transform}, {transform:next ? 'none' : closedTransform}], {
+      duration:720, easing:'cubic-bezier(.3,1.55,.5,1)', fill:'forwards'
+    });
+    if (next) {
+      document.getElementById('btn-indicator')?.animate(
+        [{transform:'scale(1)'}, {transform:'scale(1.06)', offset:.35}, {transform:'scale(1)'}],
+        {duration:520, easing:'ease-out'}
+      );
+    }
+  }
+
+  const isQtControl = target => Boolean(target?.closest?.('#btn-indicator, #btn-qt-settings'));
+  const attached = new WeakSet();
+  function hold(button) {
+    if (!button || attached.has(button)) return;
+    attached.add(button);
+    button.addEventListener('mouseenter', () => setHot(true));
+    button.addEventListener('mouseleave', event => {
+      if (!isQtControl(event.relatedTarget)) {
+        // Allow a quick crossing of the small gap between the two buttons.
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => setHot(false), 40);
+      }
+    });
+    button.addEventListener('focusin', () => setHot(true));
+    button.addEventListener('focusout', event => {
+      if (!isQtControl(event.relatedTarget) && !top()?.querySelector(':is(#btn-indicator, #btn-qt-settings):hover')) {
+        setHot(false);
+      }
+    });
+  }
+  const attach = () => { hold(document.getElementById('btn-indicator')); hold(gear()); };
+  new MutationObserver(attach).observe(document.body, {childList:true, subtree:true});
+  document.addEventListener('DOMContentLoaded', attach);
+  attach();
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') setHot(false);
+  });
+})();
 </script>
 </body>
 </html>
