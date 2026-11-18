@@ -114,6 +114,16 @@ class DesktopShell {
         const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';h.innerHTML=TerminalIcons.svg('horizontal');rail.appendChild(h);
       }
       if(key==='measure'||key==='box'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
+      if(key==='position'){
+        const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
+        const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');
+        const closeMenu=()=>{menu.hidden=true;b.setAttribute('aria-expanded','false');};
+        const showMenu=()=>{menu.hidden=!menu.hidden;b.setAttribute('aria-expanded',String(!menu.hidden));if(!menu.hidden){const rect=group.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(innerWidth-menu.offsetWidth-8,rect.left))+'px';menu.style.top=Math.max(8,rect.top-menu.offsetHeight-8)+'px';}};
+        b.setAttribute('aria-haspopup','menu');b.setAttribute('aria-expanded','false');
+        b.oncontextmenu=e=>{e.preventDefault();showMenu();};
+        for(const [side,label] of [['long','Long Position'],['short','Short Position']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.setAttribute('role','menuitem');option.onclick=()=>{this.drawing.positionSide=side;this.drawing.setTool('position');b.dataset.positionSide=side;closeMenu();};menu.appendChild(option);}
+        document.body.appendChild(menu);document.addEventListener('click',e=>{if(!group.contains(e.target)&&!menu.contains(e.target))closeMenu();});menu.onkeydown=e=>{if(e.key==='Escape'){closeMenu();b.focus();}};
+      }
       if(key==='magnet'){
         const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
         const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');

@@ -209,11 +209,28 @@ class DrawingManager {
       }
 
       if(this.activeTool==='position'){
-        if(!this.drawingState){this.drawingState={step:3,chart:chartEngine,points:[{time,price}]};return;}
-        this.drawingState.points.push({time,price});
-        if(this.drawingState.points.length<3)return;
-        const [p1,p2,p3]=this.drawingState.points,newDrawing={id:crypto.randomUUID(),type:'position',p1,p2,p3,...DrawingModel.defaults('position')};
-        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);chartEngine.drawings.push(newDrawing);this.editor.select(chartEngine,newDrawing);this.saveDrawings(chartEngine);this.drawingState=null;this.setTool('crosshair');chartEngine.renderDrawings();return;
+        const idx=DrawingModel.logicalIndex(chartEngine,time)??0;
+        const rightTime=DrawingModel.timeAt(chartEngine,idx+12)||time+(chartEngine.tfSeconds||60)*12;
+        const vis=chartEngine.chart?.timeScale?.().getVisibleLogicalRange?.();
+        const from=Math.max(0,Math.floor(vis?.from??0)),to=Math.min((chartEngine.bars?.length||1)-1,Math.ceil(vis?.to??((chartEngine.bars?.length||1)-1)));
+        let hi=-Infinity,lo=Infinity;
+        for(let i=from;i<=to;i++){const b=chartEngine.bars?.[i];if(b){if(b.high>hi)hi=b.high;if(b.low<lo)lo=b.low;}}
+        const span=Number.isFinite(hi)&&Number.isFinite(lo)&&hi>lo?(hi-lo)*0.12:Math.max(Math.abs(price)*0.002,(chartEngine.metadata?.tickSize||0.25)*20);
+        const tick=chartEngine.metadata?.tickSize;
+        const snapTick=v=>Number.isFinite(tick)&&tick>0?Math.round(v/tick)*tick:v;
+        const isShort=this.positionSide==='short';
+        const p1={time,price};
+        const p2={time:rightTime,price:snapTick(isShort?price-span*2:price+span*2)};
+        const p3={time:rightTime,price:snapTick(isShort?price+span:price-span)};
+        const newDrawing={id:crypto.randomUUID(),type:'position',p1,p2,p3,...DrawingModel.defaults('position'),side:isShort?'short':'long'};
+        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);
+        chartEngine.drawings.push(newDrawing);
+        this.editor.select(chartEngine,newDrawing);
+        this.saveDrawings(chartEngine);
+        this.drawingState=null;
+        this.setTool('crosshair');
+        chartEngine.renderDrawings();
+        return;
       }
 
       // 2-point tools (line, box, fib, position, measure)

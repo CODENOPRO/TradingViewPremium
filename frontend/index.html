@@ -7412,6 +7412,7 @@ const DrawingModel = (() => {
       textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:true, showPriceLabels:true,
       visibility:Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }])) };
   }
   function normalize(value) {
@@ -7422,6 +7423,9 @@ const DrawingModel = (() => {
     if(normalized.type==='position'&&normalized.p1&&normalized.p2&&!normalized.p3){
       const reward=normalized.p2.price-normalized.p1.price;
       normalized.p3={time:normalized.p2.time,price:normalized.p1.price-reward/Math.max(.1,normalized.riskReward)};
+    }
+    if(normalized.type==='position'&&!value.side&&normalized.p1&&normalized.p2){
+      normalized.side=normalized.p2.price<normalized.p1.price?'short':'long';
     }
     return normalized;
   }
@@ -7504,6 +7508,15 @@ const DrawingModel = (() => {
     if(['p1','p2'].includes(key)&&['time','price'].includes(axis))result[key][axis]=point[axis];
     return result;
   }
+  function positionHandles(g) {
+    const midX=(g.a.x+g.b.x)/2;
+    return [
+      {handle:'p1',x:g.a.x,y:g.a.y},
+      {handle:'p1_right',x:g.b.x,y:g.a.y},
+      {handle:'p2_price',x:midX,y:g.b.y},
+      {handle:'p3_price',x:midX,y:g.c.y}
+    ];
+  }
   function hit(chart,value,x,y) {
     if (!visible(value,chart.currentTimeframe)) return null;
     const g=geometry(chart,value);if(!g)return null;
@@ -7511,6 +7524,9 @@ const DrawingModel = (() => {
       const points=(value.points||[]).map(p=>point(chart,p));
       for(let i=1;i<points.length;i++)if(distance(x,y,points[i-1],points[i])<7)return 'body';
       return null;
+    }
+    if (value.type==='position'&&g.c) {
+      for (const h of positionHandles(g)) if (Math.hypot(x-h.x,y-h.y) < 9) return h.handle;
     }
     if (Math.hypot(x-g.a.x,y-g.a.y) < 9) return 'p1';
     if (value.p2 && Math.hypot(x-g.b.x,y-g.b.y) < 9) return 'p2';
@@ -7689,16 +7705,37 @@ const DrawingModel = (() => {
     } else if(d.type === 'fib') {
       for(const level of d.levels){const y=g.a.y+(g.b.y-g.a.y)*level;line(left,y,right,y);ctx.fillStyle=rgba(d.borderColor,d.strokeOpacity);ctx.font='10px Arial';ctx.fillText(`${level} (${(d.p1.price+(d.p2.price-d.p1.price)*level).toFixed(2)})`,left+4,y-4);}
     } else if(d.type === 'position'&&g.c) {
-      const span=Math.max(30,right-left),entry=g.a.y,target=g.b.y,stop=g.c.y,isLong=d.p2.price>=d.p1.price;
+      const boxLeft=g.a.x,span=Math.max(30,g.b.x-g.a.x),entry=g.a.y,target=g.b.y,stop=g.c.y;
+      const isLong=d.side==='short'?false:(d.side==='long'?true:d.p2.price>=d.p1.price);
       const reward=Math.abs(d.p2.price-d.p1.price),risk=Math.abs(d.p1.price-d.p3.price),rr=risk?reward/risk:0;
+      const tick=chart.metadata?.tickSize||0.25,pv=chart.metadata?.pointValue||1;
+      const rewardTicks=Math.round(reward/tick),riskTicks=Math.round(risk/tick);
+      const rewardPct=d.p1.price?(reward/d.p1.price*100):0,riskPct=d.p1.price?(risk/d.p1.price*100):0;
+      const riskAmt=d.riskDisplayMode==='percents'?((d.accountSize||25000)*(d.risk||1)/100):(d.risk??100);
+      const rewardAmt=riskAmt*rr,qty=risk>0?(riskAmt/(risk*pv)):0;
+      const lastClose=chart.bars?.at(-1)?.close;
+      const openPnl=Number.isFinite(lastClose)&&risk>0?((isLong?lastClose-d.p1.price:d.p1.price-lastClose)/risk)*riskAmt:0;
       const rewardTop=Math.min(entry,target),rewardBottom=Math.max(entry,target),riskTop=Math.min(entry,stop),riskBottom=Math.max(entry,stop);
-      ctx.fillStyle=rgba(d.profitColor,d.profitOpacity);ctx.fillRect(left,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
-      ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(left,riskTop,span,Math.max(1,riskBottom-riskTop));
-      ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[5,5]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(left,entry,left+span,entry);ctx.setLineDash([]);
-      const pill=(text,x,y,fill)=>{ctx.font='600 11px Arial';const w=ctx.measureText(text).width+10;ctx.fillStyle=fill;ctx.fillRect(x-w/2,y-10,w,19);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(text,x,y+3);};
-      pill(`PnL: ${isLong?'+':'-'}${reward.toFixed(2)}`,left+span/2,rewardTop+9,'#3c7b9e');
-      pill(`PnL: ${isLong?'-':'+'}${risk.toFixed(2)}`,left+span/2,riskBottom+9,'#616b77');
-      pill(`Risk/reward ratio: ${rr.toFixed(2)}`,left+span/2,entry,'#68717c');
+      ctx.fillStyle=rgba(d.profitColor,d.profitOpacity);ctx.fillRect(boxLeft,rewardTop,span,Math.max(1,rewardBottom-rewardTop));
+      ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(boxLeft,riskTop,span,Math.max(1,riskBottom-riskTop));
+      ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
+      const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
+      if(d.alwaysShowStats!==false||isSelected){
+        const pill=(text,x,y,fill)=>{ctx.font='600 11px Arial';const w=ctx.measureText(text).width+12;ctx.fillStyle=fill;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-w/2,y-10,w,19,4);else ctx.rect(x-w/2,y-10,w,19);ctx.fill();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(text,x,y+3.5);};
+        const tpColor=hex(d.profitColor)||'#089981',slColor=hex(d.stopColor)||'#f23645';
+        const tpText=d.compact?`T: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) · ${rewardTicks}`:`Target: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) ${rewardTicks}, Amount: ${((d.accountSize||25000)+rewardAmt).toFixed(2)}`;
+        const slText=d.compact?`S: ${risk.toFixed(2)} (${riskPct.toFixed(2)}%) · ${riskTicks}`:`Stop: ${risk.toFixed(2)} (${riskPct.toFixed(2)}%) ${riskTicks}, Amount: ${((d.accountSize||25000)-riskAmt).toFixed(2)}`;
+        const midText=d.compact?`R/R: ${rr.toFixed(2)} · Qty: ${qty.toFixed(2)}`:`Open P&L: ${openPnl>=0?'+':''}${openPnl.toFixed(2)}, Qty: ${qty.toFixed(2)}, Risk/Reward Ratio: ${rr.toFixed(2)}`;
+        pill(tpText,boxLeft+span/2,isLong?rewardTop-12:rewardBottom+12,tpColor);
+        pill(midText,boxLeft+span/2,entry,'#68717c');
+        pill(slText,boxLeft+span/2,isLong?riskBottom+12:riskTop-12,slColor);
+      }
+      if(d.showPriceLabels!==false&&isSelected){
+        const pxTag=(val,y,fill)=>{const txt=val.toFixed(2);ctx.font='600 10px Arial';const w=ctx.measureText(txt).width+8;ctx.fillStyle=fill;ctx.fillRect(boxLeft+span+2,y-8,w,16);ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(txt,boxLeft+span+6,y+3.5);};
+        pxTag(d.p2.price,target,hex(d.profitColor)||'#089981');
+        pxTag(d.p1.price,entry,'#68717c');
+        pxTag(d.p3.price,stop,hex(d.stopColor)||'#f23645');
+      }
     } else if(d.type === 'measure') {
       if(d.fillEnabled){ctx.fillStyle=rgba(d.fillColor,d.fillOpacity);ctx.fillRect(left,top,right-left,bottom-top);}ctx.strokeRect(left,top,right-left,bottom-top);
       ctx.fillStyle=d.textStyle.color;ctx.font='11px Arial';
@@ -7800,7 +7837,7 @@ const DrawingModel = (() => {
     }
     ctx.restore();
   }
-  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,draw,boxEdges,resizeBox};
+  return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,draw,boxEdges,resizeBox,positionHandles};
 })();
 if(typeof module !== 'undefined')module.exports=DrawingModel;
 </script>
@@ -9952,6 +9989,10 @@ class DrawingSettings {
         ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', pillHtml('fill'), 'box,measure')}
         ${tvRow('<span>Profit zone</span>', pillHtml('profit'), 'position')}
         ${tvRow('<span>Stop zone</span>', pillHtml('stop'), 'position')}
+        ${tvRow('<span>Position side</span>', `<select data-field="side" aria-label="Position side">${selectOpts([['long', 'Long'], ['short', 'Short']])}</select>`, 'position')}
+        ${tvRow('<span>Account size</span>', '<input type="number" step="any" min="1" data-field="accountSize" aria-label="Account size">', 'position')}
+        ${tvRow('<span>Risk</span>', `<div class="tv-align-pair"><input type="number" step="any" min="0.01" data-field="risk" aria-label="Risk"><select data-field="riskDisplayMode" aria-label="Risk display mode">${selectOpts([['money', 'Money ($)'], ['percents', 'Percent (%)']])}</select></div>`, 'position')}
+        ${tvRow('<span>Stats display</span>', `<div class="drawing-line-stats">${check('Always show stats', 'alwaysShowStats')}${check('Compact stats', 'compact')}${check('Price labels', 'showPriceLabels')}</div>`, 'position')}
         ${tvRow('<span>Levels</span>', '<input id="drawing-levels" type="text" placeholder="0, 0.236, 0.382, 0.5, 0.618, 0.786, 1">', 'fib')}
         <div data-types="line" class="drawing-stats-group"><div class="tv-section-label">Stats</div><div class="drawing-line-stats">${check('Price range', 'stats.price')}${check('Percent change', 'stats.percent')}${check('Bars range', 'stats.bars')}${check('Date / time range', 'stats.time')}${check('Middle point', 'stats.middle')}</div></div>
       </div>
@@ -10693,7 +10734,18 @@ class DrawingEditor {
       point=DrawingModel.constrainLinePoint(chart,anchor,point,{x,y});
     }
     let d=structuredClone(original);
-    if(handle==='p1'||handle==='p2'||handle==='p3')d[handle]=point;
+    if(d.type==='position'){
+      const isLong=d.side==='short'?false:(d.side==='long'?true:d.p2.price>=d.p1.price);
+      const tick=chart.metadata?.tickSize||0.0001;
+      if(handle==='p1_right'){d.p2.time=point.time;if(d.p3)d.p3.time=point.time;}
+      else if(handle==='p2_price'){d.p2.price=isLong?Math.max(d.p1.price+tick,point.price):Math.min(d.p1.price-tick,point.price);}
+      else if(handle==='p3_price'&&d.p3){d.p3.price=isLong?Math.min(d.p1.price-tick,point.price):Math.max(d.p1.price+tick,point.price);}
+      else if(handle==='p1'){d.p1=point;if(d.p2)d.p2.price=isLong?Math.max(point.price+tick,d.p2.price):Math.min(point.price-tick,d.p2.price);if(d.p3)d.p3.price=isLong?Math.min(point.price-tick,d.p3.price):Math.max(point.price+tick,d.p3.price);}
+      else if(handle==='p2'){d.p2.time=point.time;if(d.p3)d.p3.time=point.time;d.p2.price=isLong?Math.max(d.p1.price+tick,point.price):Math.min(d.p1.price-tick,point.price);}
+      else if(handle==='p3'&&d.p3){d.p3.time=point.time;if(d.p2)d.p2.time=point.time;d.p3.price=isLong?Math.min(d.p1.price-tick,point.price):Math.max(d.p1.price+tick,point.price);}
+      else {const delta=Math.round(DrawingModel.logicalIndex(chart,point.time)-DrawingModel.logicalIndex(chart,start.time));for(const key of original.p3?['p1','p2','p3']:['p1','p2']){d[key].time=DrawingModel.timeAt(chart,DrawingModel.logicalIndex(chart,original[key].time)+delta);d[key].price=original[key].price+point.price-start.price;}}
+    }
+    else if(handle==='p1'||handle==='p2'||handle==='p3')d[handle]=point;
     else if(handle==='p1x_p2y'){d.p1.time=point.time;d.p2.price=point.price;}
     else if(handle==='p2x_p1y'){d.p2.time=point.time;d.p1.price=point.price;}
     else if(['p1_time','p2_time','p1_price','p2_price'].includes(handle))d=DrawingModel.resizeBox(original,handle,point);
@@ -10714,7 +10766,8 @@ class DrawingEditor {
     if(chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe)){this.toolbar.hidden=true;return;}
     this.toolbar.hidden=false;
     const g=DrawingModel.geometry(chart,d);if(!g)return;
-    const points=[g.a];if(d.p2)points.push(g.b);if(d.type==='position'&&g.c)points.push(g.c);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
+    const points=d.type==='position'&&g.c?DrawingModel.positionHandles(g):[g.a];
+    if(d.type!=='position'){if(d.p2)points.push(g.b);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});}
     ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
     points.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
     if(d.type==='box'){
@@ -10936,11 +10989,28 @@ class DrawingManager {
       }
 
       if(this.activeTool==='position'){
-        if(!this.drawingState){this.drawingState={step:3,chart:chartEngine,points:[{time,price}]};return;}
-        this.drawingState.points.push({time,price});
-        if(this.drawingState.points.length<3)return;
-        const [p1,p2,p3]=this.drawingState.points,newDrawing={id:crypto.randomUUID(),type:'position',p1,p2,p3,...DrawingModel.defaults('position')};
-        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);chartEngine.drawings.push(newDrawing);this.editor.select(chartEngine,newDrawing);this.saveDrawings(chartEngine);this.drawingState=null;this.setTool('crosshair');chartEngine.renderDrawings();return;
+        const idx=DrawingModel.logicalIndex(chartEngine,time)??0;
+        const rightTime=DrawingModel.timeAt(chartEngine,idx+12)||time+(chartEngine.tfSeconds||60)*12;
+        const vis=chartEngine.chart?.timeScale?.().getVisibleLogicalRange?.();
+        const from=Math.max(0,Math.floor(vis?.from??0)),to=Math.min((chartEngine.bars?.length||1)-1,Math.ceil(vis?.to??((chartEngine.bars?.length||1)-1)));
+        let hi=-Infinity,lo=Infinity;
+        for(let i=from;i<=to;i++){const b=chartEngine.bars?.[i];if(b){if(b.high>hi)hi=b.high;if(b.low<lo)lo=b.low;}}
+        const span=Number.isFinite(hi)&&Number.isFinite(lo)&&hi>lo?(hi-lo)*0.12:Math.max(Math.abs(price)*0.002,(chartEngine.metadata?.tickSize||0.25)*20);
+        const tick=chartEngine.metadata?.tickSize;
+        const snapTick=v=>Number.isFinite(tick)&&tick>0?Math.round(v/tick)*tick:v;
+        const isShort=this.positionSide==='short';
+        const p1={time,price};
+        const p2={time:rightTime,price:snapTick(isShort?price-span*2:price+span*2)};
+        const p3={time:rightTime,price:snapTick(isShort?price+span:price-span)};
+        const newDrawing={id:crypto.randomUUID(),type:'position',p1,p2,p3,...DrawingModel.defaults('position'),side:isShort?'short':'long'};
+        chartEngine.drawings=chartEngine.drawings.filter(d=>!d.isTemp);
+        chartEngine.drawings.push(newDrawing);
+        this.editor.select(chartEngine,newDrawing);
+        this.saveDrawings(chartEngine);
+        this.drawingState=null;
+        this.setTool('crosshair');
+        chartEngine.renderDrawings();
+        return;
       }
 
       // 2-point tools (line, box, fib, position, measure)
@@ -13452,6 +13522,16 @@ class DesktopShell {
         const h=this.button('Horizontal line','hline',()=>this.drawing.setTool('hline'));h.className='tool-btn';h.dataset.tool='hline';h.innerHTML=TerminalIcons.svg('horizontal');rail.appendChild(h);
       }
       if(key==='measure'||key==='box'){const divider=document.createElement('div');divider.className='tool-separator';rail.appendChild(divider);}
+      if(key==='position'){
+        const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
+        const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');
+        const closeMenu=()=>{menu.hidden=true;b.setAttribute('aria-expanded','false');};
+        const showMenu=()=>{menu.hidden=!menu.hidden;b.setAttribute('aria-expanded',String(!menu.hidden));if(!menu.hidden){const rect=group.getBoundingClientRect();menu.style.left=Math.max(8,Math.min(innerWidth-menu.offsetWidth-8,rect.left))+'px';menu.style.top=Math.max(8,rect.top-menu.offsetHeight-8)+'px';}};
+        b.setAttribute('aria-haspopup','menu');b.setAttribute('aria-expanded','false');
+        b.oncontextmenu=e=>{e.preventDefault();showMenu();};
+        for(const [side,label] of [['long','Long Position'],['short','Short Position']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.setAttribute('role','menuitem');option.onclick=()=>{this.drawing.positionSide=side;this.drawing.setTool('position');b.dataset.positionSide=side;closeMenu();};menu.appendChild(option);}
+        document.body.appendChild(menu);document.addEventListener('click',e=>{if(!group.contains(e.target)&&!menu.contains(e.target))closeMenu();});menu.onkeydown=e=>{if(e.key==='Escape'){closeMenu();b.focus();}};
+      }
       if(key==='magnet'){
         const group=document.createElement('div');group.className='magnet-tool-group';b.before(group);group.appendChild(b);
         const menu=document.createElement('div');menu.className='magnet-menu';menu.hidden=true;menu.setAttribute('role','menu');

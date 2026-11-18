@@ -56,6 +56,10 @@ class DrawingSettings {
         ${tvRow('<label class="tv-check-label"><input data-field="fillEnabled" type="checkbox"><span>Background</span></label>', pillHtml('fill'), 'box,measure')}
         ${tvRow('<span>Profit zone</span>', pillHtml('profit'), 'position')}
         ${tvRow('<span>Stop zone</span>', pillHtml('stop'), 'position')}
+        ${tvRow('<span>Position side</span>', `<select data-field="side" aria-label="Position side">${selectOpts([['long', 'Long'], ['short', 'Short']])}</select>`, 'position')}
+        ${tvRow('<span>Account size</span>', '<input type="number" step="any" min="1" data-field="accountSize" aria-label="Account size">', 'position')}
+        ${tvRow('<span>Risk</span>', `<div class="tv-align-pair"><input type="number" step="any" min="0.01" data-field="risk" aria-label="Risk"><select data-field="riskDisplayMode" aria-label="Risk display mode">${selectOpts([['money', 'Money ($)'], ['percents', 'Percent (%)']])}</select></div>`, 'position')}
+        ${tvRow('<span>Stats display</span>', `<div class="drawing-line-stats">${check('Always show stats', 'alwaysShowStats')}${check('Compact stats', 'compact')}${check('Price labels', 'showPriceLabels')}</div>`, 'position')}
         ${tvRow('<span>Levels</span>', '<input id="drawing-levels" type="text" placeholder="0, 0.236, 0.382, 0.5, 0.618, 0.786, 1">', 'fib')}
         <div data-types="line" class="drawing-stats-group"><div class="tv-section-label">Stats</div><div class="drawing-line-stats">${check('Price range', 'stats.price')}${check('Percent change', 'stats.percent')}${check('Bars range', 'stats.bars')}${check('Date / time range', 'stats.time')}${check('Middle point', 'stats.middle')}</div></div>
       </div>

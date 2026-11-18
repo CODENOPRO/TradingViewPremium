@@ -310,7 +310,18 @@ class DrawingEditor {
       point=DrawingModel.constrainLinePoint(chart,anchor,point,{x,y});
     }
     let d=structuredClone(original);
-    if(handle==='p1'||handle==='p2'||handle==='p3')d[handle]=point;
+    if(d.type==='position'){
+      const isLong=d.side==='short'?false:(d.side==='long'?true:d.p2.price>=d.p1.price);
+      const tick=chart.metadata?.tickSize||0.0001;
+      if(handle==='p1_right'){d.p2.time=point.time;if(d.p3)d.p3.time=point.time;}
+      else if(handle==='p2_price'){d.p2.price=isLong?Math.max(d.p1.price+tick,point.price):Math.min(d.p1.price-tick,point.price);}
+      else if(handle==='p3_price'&&d.p3){d.p3.price=isLong?Math.min(d.p1.price-tick,point.price):Math.max(d.p1.price+tick,point.price);}
+      else if(handle==='p1'){d.p1=point;if(d.p2)d.p2.price=isLong?Math.max(point.price+tick,d.p2.price):Math.min(point.price-tick,d.p2.price);if(d.p3)d.p3.price=isLong?Math.min(point.price-tick,d.p3.price):Math.max(point.price+tick,d.p3.price);}
+      else if(handle==='p2'){d.p2.time=point.time;if(d.p3)d.p3.time=point.time;d.p2.price=isLong?Math.max(d.p1.price+tick,point.price):Math.min(d.p1.price-tick,point.price);}
+      else if(handle==='p3'&&d.p3){d.p3.time=point.time;if(d.p2)d.p2.time=point.time;d.p3.price=isLong?Math.min(d.p1.price-tick,point.price):Math.max(d.p1.price+tick,point.price);}
+      else {const delta=Math.round(DrawingModel.logicalIndex(chart,point.time)-DrawingModel.logicalIndex(chart,start.time));for(const key of original.p3?['p1','p2','p3']:['p1','p2']){d[key].time=DrawingModel.timeAt(chart,DrawingModel.logicalIndex(chart,original[key].time)+delta);d[key].price=original[key].price+point.price-start.price;}}
+    }
+    else if(handle==='p1'||handle==='p2'||handle==='p3')d[handle]=point;
     else if(handle==='p1x_p2y'){d.p1.time=point.time;d.p2.price=point.price;}
     else if(handle==='p2x_p1y'){d.p2.time=point.time;d.p1.price=point.price;}
     else if(['p1_time','p2_time','p1_price','p2_price'].includes(handle))d=DrawingModel.resizeBox(original,handle,point);
@@ -331,7 +342,8 @@ class DrawingEditor {
     if(chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe)){this.toolbar.hidden=true;return;}
     this.toolbar.hidden=false;
     const g=DrawingModel.geometry(chart,d);if(!g)return;
-    const points=[g.a];if(d.p2)points.push(g.b);if(d.type==='position'&&g.c)points.push(g.c);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
+    const points=d.type==='position'&&g.c?DrawingModel.positionHandles(g):[g.a];
+    if(d.type!=='position'){if(d.p2)points.push(g.b);if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});}
     ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
     points.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
     if(d.type==='box'){
