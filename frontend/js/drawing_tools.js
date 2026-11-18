@@ -225,7 +225,9 @@ class DrawingManager {
       if (this.activeTool === 'text') {
         const note = { ...DrawingModel.defaults('text'), id: crypto.randomUUID(), type: 'text', p1: { time, price }, text: 'Text' };
         chartEngine.drawings.push(note); this.saveDrawings(chartEngine);
-        this.setTool('crosshair'); this.editor.select(chartEngine, note); this.editor.open('text');
+        this.setTool('crosshair'); this.editor.select(chartEngine, note);
+        if (typeof this.editor.editInline === 'function') this.editor.editInline(chartEngine, note, true);
+        else this.editor.open('text');
         return;
       }
 

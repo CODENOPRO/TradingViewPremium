@@ -1191,16 +1191,9 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   2. Trong `DrawingEditor`, khi giữ `Ctrl` (hoặc `Cmd`) + kéo chuột trái ở chế độ `crosshair`, vẽ khung khoanh xanh dương mờ và chọn đồng thời tất cả hình vẽ nằm trong vùng đó (`multiSelection`), hiện điểm neo trên toàn bộ hình đã chọn và cho phép xóa nhanh bằng phím `Delete`/`Backspace` hoặc nút thùng rác trên thanh công cụ nổi.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
 
-### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
-- File đã sửa: `frontend/js/chart_engine.js`, `frontend/index.html`, `AGENTS.md`.
-- Thay đổi: thêm `this.futureSeries` (line series ẩn `priceScaleId: ''`) trong `ChartEngine.initChart()` và hàm `updateFutureWhitespace(bars)` tự động nạp 300 mốc whitespace tương lai (`last.time + i * step`) mỗi khi `renderCandleData()` hoặc nến mới vượt tới mốc tương lai; giúp trục thời gian và crosshair tiếp tục hiển thị giờ tương lai khi kéo chart sang phải.
-- Kiểm chứng: `node --test tests/*.test.cjs` đạt **166/166 passed**.
-
-### 2026-11-19 — Giữ `Ctrl` + kéo chuột khoanh vùng chọn nhiều hình vẽ (multi-select) và xóa nhanh
-- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
-- Thay đổi:
-  1. Thêm `DrawingModel.inRect(chart, value, rect)` kiểm tra giao cắt giữa hình vẽ (`hline`, `vline`, `text`, `brush`, `line`, `box`, `position`, `fib`, `measure`) với vùng khoanh chọn.
-  2. Trong `DrawingEditor`, khi giữ `Ctrl` (hoặc `Cmd`) + kéo chuột trái ở chế độ `crosshair`, vẽ khung khoanh xanh dương mờ và chọn đồng thời tất cả hình vẽ nằm trong vùng đó (`multiSelection`), hiện điểm neo trên toàn bộ hình đã chọn và cho phép xóa nhanh bằng phím `Delete`/`Backspace` hoặc nút thùng rác trên thanh công cụ nổi.
+### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
 
 ### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
@@ -1213,6 +1206,28 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi:
   1. Thêm `DrawingModel.inRect(chart, value, rect)` kiểm tra giao cắt giữa hình vẽ (`hline`, `vline`, `text`, `brush`, `line`, `box`, `position`, `fib`, `measure`) với vùng khoanh chọn.
   2. Trong `DrawingEditor`, khi giữ `Ctrl` (hoặc `Cmd`) + kéo chuột trái ở chế độ `crosshair`, vẽ khung khoanh xanh dương mờ và chọn đồng thời tất cả hình vẽ nằm trong vùng đó (`multiSelection`), hiện điểm neo trên toàn bộ hình đã chọn và cho phép xóa nhanh bằng phím `Delete`/`Backspace` hoặc nút thùng rác trên thanh công cụ nổi.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
+
+### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
+
+### 2026-11-19 — Hiển thị mốc thời gian tương lai trên trục X khi kéo/cuộn sang phải vượt quá nến cuối
+- File đã sửa: `frontend/js/chart_engine.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thêm `this.futureSeries` (line series ẩn `priceScaleId: ''`) trong `ChartEngine.initChart()` và hàm `updateFutureWhitespace(bars)` tự động nạp 300 mốc whitespace tương lai (`last.time + i * step`) mỗi khi `renderCandleData()` hoặc nến mới vượt tới mốc tương lai; giúp trục thời gian và crosshair tiếp tục hiển thị giờ tương lai khi kéo chart sang phải.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **166/166 passed**.
+
+### 2026-11-19 — Giữ `Ctrl` + kéo chuột khoanh vùng chọn nhiều hình vẽ (multi-select) và xóa nhanh
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `tests/drawings.test.cjs`, `AGENTS.md`.
+- Thay đổi:
+  1. Thêm `DrawingModel.inRect(chart, value, rect)` kiểm tra giao cắt giữa hình vẽ (`hline`, `vline`, `text`, `brush`, `line`, `box`, `position`, `fib`, `measure`) với vùng khoanh chọn.
+  2. Trong `DrawingEditor`, khi giữ `Ctrl` (hoặc `Cmd`) + kéo chuột trái ở chế độ `crosshair`, vẽ khung khoanh xanh dương mờ và chọn đồng thời tất cả hình vẽ nằm trong vùng đó (`multiSelection`), hiện điểm neo trên toàn bộ hình đã chọn và cho phép xóa nhanh bằng phím `Delete`/`Backspace` hoặc nút thùng rác trên thanh công cụ nổi.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
+
+### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
 - File đã sửa: `frontend/index.html`, `frontend/js/chart_engine.js`, `frontend/js/desktop_shell.js`, `frontend/js/paper_panel.js`, `frontend/js/ui_language.js`, `AGENTS.md`.
 - Thay đổi:
@@ -1231,4 +1246,9 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi:
   1. Thêm `DrawingModel.inRect(chart, value, rect)` kiểm tra giao cắt giữa hình vẽ (`hline`, `vline`, `text`, `brush`, `line`, `box`, `position`, `fib`, `measure`) với vùng khoanh chọn.
   2. Trong `DrawingEditor`, khi giữ `Ctrl` (hoặc `Cmd`) + kéo chuột trái ở chế độ `crosshair`, vẽ khung khoanh xanh dương mờ và chọn đồng thời tất cả hình vẽ nằm trong vùng đó (`multiSelection`), hiện điểm neo trên toàn bộ hình đã chọn và cho phép xóa nhanh bằng phím `Delete`/`Backspace` hoặc nút thùng rác trên thanh công cụ nổi.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.
+
+### 2026-11-19 — Sửa chữ công cụ Text trực tiếp trên chart (inline editor) không cần mở Settings
+- File đã sửa: `frontend/js/drawing_model.js`, `frontend/js/drawing_tools.js`, `frontend/js/drawing_editor.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: thêm `DrawingEditor.prototype.editInline(chart, drawing, isNew)` mở ô `<textarea class="tv-inline-text-editor">` ngay tại vị trí chữ trên chart (đúng font, cỡ chữ, màu, nền và viền chọn `#2962ff`) khi đặt mới công cụ Text hoặc double-click vào chữ đã vẽ; hỗ trợ `Enter` / bấm ra ngoài để lưu, `Shift+Enter` để xuống dòng và `Esc` để hủy.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **167/167 passed**.

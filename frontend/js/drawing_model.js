@@ -602,7 +602,7 @@ const DrawingModel = (() => {
       ctx.fillText(line1, tipX + tipW / 2, tipY + padY + lineH * 0.42);
       ctx.fillText(line2, tipX + tipW / 2, tipY + padY + lineH * 1.42);
     }
-    if((d.text || d.type === 'text') && d.type !== 'vline') {
+    if((d.text || d.type === 'text') && d.type !== 'vline' && !d._editingInline) {
       const style=d.textStyle;
       let effSize=style.size||(d.type==='text'?14:12);
       if(d._qtTrueOpenSpan){

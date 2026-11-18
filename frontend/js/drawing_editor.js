@@ -241,7 +241,7 @@ class DrawingEditor {
     this.toolbar.style.left=`${Math.max(minLeft,Math.min(window.innerWidth-width-12,left))}px`;
     this.toolbar.style.top=`${Math.max(46,Math.min(window.innerHeight-height-12,top))}px`;
   }
-  clear(){this.closeTbPopover();const chart=this.selection?.chart||this.multiSelection?.chart||this.marquee?.chart;this.selection=null;this.multiSelection=null;this.marquee=null;this.toolbar.hidden=true;if(chart){chart.drawingPreview=null;chart.renderDrawings();}}
+  clear(){this.closeInline?.(true);this.closeTbPopover();const chart=this.selection?.chart||this.multiSelection?.chart||this.marquee?.chart;this.selection=null;this.multiSelection=null;this.marquee=null;this.toolbar.hidden=true;if(chart){chart.drawingPreview=null;chart.renderDrawings();}}
   preview(draft){if(!this.selection)return;this.selection.chart.drawingPreview=draft;this.selection.chart.renderDrawings();}
   commit(value){
     if(!this.selection)return;
@@ -274,7 +274,7 @@ class DrawingEditor {
   }
   bind(chart){
     chart.container.addEventListener('pointerdown',event=>{
-      if(event.button!==0||this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select,.indicator-tables,.tv-trade-pill,.chart-nav-controls'))return;
+      if(event.button!==0||this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select,textarea,.indicator-tables,.tv-trade-pill,.chart-nav-controls'))return;
       const rect=chart.container.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
       if(event.ctrlKey||event.metaKey){
         event.preventDefault();event.stopImmediatePropagation();chart.container.dispatchEvent(new CustomEvent('chart-activate'));
@@ -341,9 +341,13 @@ class DrawingEditor {
     chart.container.addEventListener('lostpointercapture',()=>{if(!finishMarquee())this.cancelDrag();},true);
     chart.container.addEventListener('pointerleave',()=>{if(!this.drag){chart.container.style.cursor='';chart.container.style.removeProperty('--drawing-cursor');}});
     chart.container.addEventListener('dblclick',event=>{
-      if(this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select'))return;
+      if(this.manager.activeTool!=='crosshair'||event.target.closest('button,input,select,textarea'))return;
       const rect=chart.container.getBoundingClientRect(),hit=this.find(chart,event.clientX-rect.left,event.clientY-rect.top);
-      if(hit){event.preventDefault();event.stopImmediatePropagation();this.select(chart,hit.drawing);this.open();}
+      if(hit){
+        event.preventDefault();event.stopImmediatePropagation();this.select(chart,hit.drawing);
+        if(hit.drawing.type==='text'&&!hit.drawing.locked&&!this.manager.drawingsLocked)this.editInline(chart,hit.drawing,false);
+        else this.open();
+      }
     },true);
   }
   applyDrag(input){
@@ -382,6 +386,66 @@ class DrawingEditor {
     this.drag.changed=true;this.drag.draft=d;this.preview(d);
     return true;
   }
+  editInline(chart,drawing,isNew=false){
+    this.closeInline(true);
+    const g=DrawingModel.geometry(chart,drawing);if(!g)return;
+    const st=drawing.textStyle||{},sz=st.size||14,pad=sz/6,lh=sz*1.25;
+    const originalText=drawing.text||'';
+    drawing._editingInline=true;chart.renderDrawings();
+    const ta=document.createElement('textarea');
+    ta.className='tv-inline-text-editor';
+    ta.value=originalText;
+    ta.spellcheck=false;
+    ta.style.cssText=`position:absolute;left:${g.a.x-pad}px;top:${g.a.y-pad}px;z-index:30;margin:0;padding:${pad}px;box-sizing:border-box;border:1.5px solid #2962ff;border-radius:2px;outline:none;resize:none;overflow:hidden;min-width:60px;font:${st.italic?'italic ':''}${st.bold?'bold ':''}${sz}px/${lh}px -apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;color:${st.color||'#2962ff'};background:${st.fillBackground?DrawingModel.rgba(st.backgroundColor||'#2962ff',st.backgroundOpacity??25):'transparent'};white-space:${st.wordWrap?'pre-wrap':'pre'};`;
+    const syncSize=()=>{
+      if(st.wordWrap){
+        ta.style.width=((st.wordWrapWidth||200)+pad*2)+'px';
+      }else{
+        ta.style.width='1px';
+        ta.style.width=Math.max(60,ta.scrollWidth+4)+'px';
+      }
+      ta.style.height='1px';
+      ta.style.height=Math.max(lh+pad*2,ta.scrollHeight)+'px';
+    };
+    const cleanup=(commit)=>{
+      if(!this.inlineEdit)return;
+      const cur=this.inlineEdit;this.inlineEdit=null;
+      delete cur.drawing._editingInline;
+      cur.ta.remove();
+      if(commit){
+        const next=cur.ta.value;
+        if(!next.trim()){
+          cur.chart.drawings=cur.chart.drawings.filter(d=>d.id!==cur.drawing.id);
+          this.manager.saveDrawings(cur.chart);
+          if(this.selection?.id===cur.drawing.id){this.selection=null;this.toolbar.hidden=true;}
+        }else{
+          cur.drawing.text=next;
+          this.manager.saveDrawings(cur.chart);
+        }
+      }else if(cur.isNew){
+        cur.chart.drawings=cur.chart.drawings.filter(d=>d.id!==cur.drawing.id);
+        this.manager.saveDrawings(cur.chart);
+        if(this.selection?.id===cur.drawing.id){this.selection=null;this.toolbar.hidden=true;}
+      }else{
+        cur.drawing.text=cur.originalText;
+      }
+      cur.chart.renderDrawings();
+    };
+    this.inlineEdit={chart,drawing,ta,isNew,originalText,cleanup};
+    for(const ev of ['pointerdown','mousedown','click','dblclick'])ta.addEventListener(ev,e=>e.stopPropagation());
+    ta.addEventListener('input',syncSize);
+    ta.addEventListener('keydown',e=>{
+      e.stopPropagation();
+      if(e.key==='Escape'){e.preventDefault();cleanup(false);}
+      else if(e.key==='Enter'&&(!e.shiftKey||e.ctrlKey||e.metaKey)){e.preventDefault();cleanup(true);}
+    });
+    ta.addEventListener('blur',()=>cleanup(true));
+    chart.container.appendChild(ta);
+    syncSize();
+    ta.focus();
+    if(isNew&&originalText==='Text')ta.select();
+  }
+  closeInline(commit=true){this.inlineEdit?.cleanup?.(commit);}
   cancelDrag(){if(!this.drag)return;const {chart,pointer}=this.drag;this.drag=null;if(chart.container.hasPointerCapture(pointer))chart.container.releasePointerCapture(pointer);chart.chart.applyOptions({handleScroll:{pressedMouseMove:true}});chart.drawingPreview=null;chart.renderDrawings();}
   renderHandles(chart,ctx){
     if(this.marquee?.chart===chart){
