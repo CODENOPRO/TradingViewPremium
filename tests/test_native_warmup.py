@@ -43,6 +43,16 @@ class WarmupTests(unittest.IsolatedAsyncioTestCase):
   w=NativeWarmup(read,None,None,None,None,None);w.running=True;w.finished={'D','1h'};w.active='1m';w.queue=['5m']
   w.request(['1m','5m','1h','D','W'])
   self.assertEqual(w.queue,['5m','W'])
+ async def test_keep_one_minute_hands_over_immediately_once_all_three_symbols_have_1m_bars(self):
+  state={'interval':'60'};reports=[]
+  async def read():return state['interval']
+  async def change(expected,value):state['interval']=value
+  async def snapshot():return [{'symbol':s,'resolution':'1','bars':[{'time':60}]} for s in ['NQ1!','ES1!','YM1!']]
+  async def history():return {'complete':False,'loading':True}
+  w=NativeWarmup(read,change,snapshot,history,lambda _:None,reports.append)
+  w.keep_one_minute=True;w.request(['1m']);await w.cycle()
+  self.assertEqual(state['interval'],'1')
+  self.assertEqual(reports[-1]['state'],'complete')
 class DerivedSixHourTests(unittest.TestCase):
  def bars(self,date,hours):
   start=datetime.fromisoformat(date).replace(tzinfo=ZoneInfo('America/Chicago'))

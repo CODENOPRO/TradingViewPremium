@@ -162,7 +162,19 @@ def enqueue_startup():
     if native_warmup is None:
         pending_startup = True
         return
-    native_warmup.request_startup(initial=not startup_preloaded)
+    native_warmup.keep_one_minute = True
+    if not startup_preloaded:
+        with store.lock:
+            missing = [
+                tf for tf in NATIVE_INTERVALS
+                if tf != '1m' and any(len(store.data.get(tf, {}).get(sym, [])) < 2 for sym in ('NQ1!', 'ES1!', 'YM1!'))
+            ]
+        if missing:
+            native_warmup.request(missing)
+        native_warmup.finished.discard('1m')
+        native_warmup.request(['1m'], priority=True)
+    else:
+        native_warmup.request_startup(initial=False)
     startup_preloaded = True
 
 

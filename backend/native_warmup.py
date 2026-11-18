@@ -93,6 +93,11 @@ class NativeWarmup:
                         captured = True
                         last_count = counts
                         growth = self.clock()
+                    if ready and self.keep_one_minute and tf == '1m' and not self.queue:
+                        if {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready}:
+                            reason = 'live_ready'
+                            complete = True
+                            break
                     if ready and self.history:
                         progress = await self.history()
                         all_three = {'NQ1!', 'ES1!', 'YM1!'} <= {e.get('symbol') for e in ready}
