@@ -9425,3 +9425,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — Right-Rail Hover Theme Accent Parity**:
   - Updated `#right-sidebar > button:is(:hover, :focus-visible)` and `#right-sidebar #terminal-edge-dock .edge-handle:is(:hover, :focus-visible)` in `frontend/index.html` to use `background: var(--accent)` and `color: var(--accent-ink)` (plus `.edge-handle.active`) so the bottom two dock tabs (`Calendar`, `Music`) highlight with the active theme accent on hover.
   - Verified in Playwright Edge (`MUSIC_HOVER_BG === TOP_HOVER_BG`) and `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Selection Anchor Handles TV Parity**:
+  - Updated `DrawingEditor.renderHandles` in `frontend/js/drawing_editor.js` and `frontend/index.html` to fill anchor handles with the chart background (`chart.config?.bg || chart.appearance?.bg || '#131722'`) instead of `#fff`, use `1.5px` stroke width, and render box midpoint handles as rounded squares (`roundRect(..., 2)`).
+  - Verified `node --test tests/*.test.cjs` (169/169 passed).

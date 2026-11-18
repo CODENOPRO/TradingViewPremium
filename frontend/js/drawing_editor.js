@@ -479,12 +479,13 @@ class DrawingEditor {
       ctx.save();ctx.fillStyle='rgba(41, 98, 255, 0.12)';ctx.strokeStyle='#2962ff';ctx.lineWidth=1;ctx.setLineDash([4,3]);
       ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);ctx.restore();
     }
+    const anchorFill=chart.config?.bg||chart.appearance?.bg||'#131722';
     if(this.multiSelection?.chart===chart&&this.multiSelection.ids.size>1){
       for(const d of chart.drawings){
         if(!this.multiSelection.ids.has(d.id)||chart.drawingsHidden||!DrawingModel.visible(d,chart.currentTimeframe))continue;
         const g=DrawingModel.geometry(chart,d);if(!g)continue;
         const pts=d.type==='brush'&&d.points?.length?(d.points.length>1?[DrawingModel.point(chart,d.points[0]),DrawingModel.point(chart,d.points.at(-1))]:[DrawingModel.point(chart,d.points[0])]):d.p2?[g.a,g.b]:[g.a];
-        ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
+        ctx.save();ctx.fillStyle=anchorFill;ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
         pts.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();
       }
       if(this.selection?.chart===chart)this.placeToolbar();
@@ -507,19 +508,24 @@ class DrawingEditor {
       if(d.p2)points.push(g.b);
       if(d.type==='box')points.push({x:g.a.x,y:g.b.y},{x:g.b.x,y:g.a.y});
     }
-    ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=2;ctx.setLineDash([]);
+    ctx.save();ctx.fillStyle=anchorFill;ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
     if(d.type==='text'){
       const st=d.textStyle||{},sz=st.size||14,pad=sz/6,lh=sz*1.25;
       ctx.font=`${st.italic?'italic ':''}${st.bold?'bold ':''}${sz}px -apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif`;
       const lines=String(d.text||'Text').split('\n');
       const maxW=Math.max(st.wordWrap?(st.wordWrapWidth||200):0,lines.reduce((m,l)=>Math.max(m,ctx.measureText?ctx.measureText(l).width:l.length*sz*0.6),0));
-      ctx.lineWidth=1.5;ctx.strokeRect(g.a.x-pad,g.a.y-pad,maxW+pad*2,lines.length*lh+pad*2);
-      ctx.lineWidth=2;
+      ctx.strokeRect(g.a.x-pad,g.a.y-pad,maxW+pad*2,lines.length*lh+pad*2);
     }
     points.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();ctx.stroke();});ctx.restore();this.placeToolbar();
     if(d.type==='box'){
-      ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
-      for(const p of DrawingModel.boxEdges(g)){ctx.fillRect(p.x-4,p.y-4,8,8);ctx.strokeRect(p.x-4,p.y-4,8,8);}ctx.restore();
+      ctx.save();ctx.fillStyle=anchorFill;ctx.strokeStyle=d.locked||this.manager.drawingsLocked?'#777':'#2962ff';ctx.lineWidth=1.5;ctx.setLineDash([]);
+      for(const p of DrawingModel.boxEdges(g)){
+        ctx.beginPath();
+        if(ctx.roundRect)ctx.roundRect(p.x-4,p.y-4,8,8,2);
+        else ctx.rect(p.x-4,p.y-4,8,8);
+        ctx.fill();ctx.stroke();
+      }
+      ctx.restore();
     }
   }
 }
