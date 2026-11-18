@@ -1214,6 +1214,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1223,6 +1228,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1236,6 +1246,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1245,6 +1260,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1256,6 +1276,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1265,6 +1290,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1278,6 +1308,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1287,6 +1322,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1298,6 +1338,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1307,6 +1352,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1320,6 +1370,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1329,6 +1384,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1340,6 +1400,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1349,6 +1414,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1362,6 +1432,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1371,6 +1446,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -1382,6 +1462,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1391,6 +1476,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1404,6 +1494,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1413,6 +1508,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1424,6 +1524,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1433,6 +1538,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1446,6 +1556,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1455,6 +1570,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1466,6 +1586,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1475,6 +1600,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1488,6 +1618,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1497,6 +1632,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1508,6 +1648,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1517,6 +1662,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1530,6 +1680,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1539,6 +1694,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1560,6 +1720,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1569,6 +1734,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1582,6 +1752,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1591,6 +1766,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1602,6 +1782,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1611,6 +1796,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1624,6 +1814,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1633,6 +1828,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1644,6 +1844,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1653,6 +1858,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1666,6 +1876,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1675,6 +1890,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1686,6 +1906,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1695,6 +1920,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1708,6 +1938,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1717,6 +1952,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -1728,6 +1968,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1737,6 +1982,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1750,6 +2000,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1759,6 +2014,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1770,6 +2030,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1779,6 +2044,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1792,6 +2062,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1801,6 +2076,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1812,6 +2092,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1821,6 +2106,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1834,6 +2124,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1843,6 +2138,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1854,6 +2154,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1863,6 +2168,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1876,6 +2186,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1885,6 +2200,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1919,6 +2239,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1928,6 +2253,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1941,6 +2271,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1950,6 +2285,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1961,6 +2301,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1970,6 +2315,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -1983,6 +2333,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -1992,6 +2347,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2003,6 +2363,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2012,6 +2377,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2025,6 +2395,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2034,6 +2409,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2045,6 +2425,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2054,6 +2439,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2067,6 +2457,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2076,6 +2471,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -2087,6 +2487,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2096,6 +2501,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2109,6 +2519,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2118,6 +2533,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2129,6 +2549,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2138,6 +2563,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2151,6 +2581,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2160,6 +2595,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2171,6 +2611,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2180,6 +2625,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2193,6 +2643,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2202,6 +2657,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2213,6 +2673,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2222,6 +2687,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2235,6 +2705,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2244,6 +2719,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2265,6 +2745,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2274,6 +2759,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2287,6 +2777,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2296,6 +2791,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2307,6 +2807,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2316,6 +2821,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2329,6 +2839,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2338,6 +2853,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2349,6 +2869,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2358,6 +2883,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2371,6 +2901,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2380,6 +2915,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2391,6 +2931,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2400,6 +2945,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2413,6 +2963,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2422,6 +2977,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -2433,6 +2993,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2442,6 +3007,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2455,6 +3025,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2464,6 +3039,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2475,6 +3055,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2484,6 +3069,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2497,6 +3087,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2506,6 +3101,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2517,6 +3117,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2526,6 +3131,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2539,6 +3149,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2548,6 +3163,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2559,6 +3179,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2568,6 +3193,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2581,6 +3211,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2590,6 +3225,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2631,6 +3271,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2640,6 +3285,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2653,6 +3303,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2662,6 +3317,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2673,6 +3333,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2682,6 +3347,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2695,6 +3365,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2704,6 +3379,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2715,6 +3395,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2724,6 +3409,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2737,6 +3427,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2746,6 +3441,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2757,6 +3457,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2766,6 +3471,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2779,6 +3489,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2788,6 +3503,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -2799,6 +3519,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2808,6 +3533,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2821,6 +3551,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2830,6 +3565,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2841,6 +3581,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2850,6 +3595,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2863,6 +3613,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2872,6 +3627,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2883,6 +3643,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2892,6 +3657,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2905,6 +3675,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2914,6 +3689,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2925,6 +3705,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2934,6 +3719,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2947,6 +3737,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2956,6 +3751,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2977,6 +3777,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -2986,6 +3791,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -2999,6 +3809,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3008,6 +3823,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3019,6 +3839,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3028,6 +3853,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3041,6 +3871,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3050,6 +3885,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3061,6 +3901,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3070,6 +3915,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3083,6 +3933,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3092,6 +3947,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3103,6 +3963,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3112,6 +3977,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3125,6 +3995,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3134,6 +4009,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -3145,6 +4025,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3154,6 +4039,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3167,6 +4057,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3176,6 +4071,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3187,6 +4087,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3196,6 +4101,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3209,6 +4119,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3218,6 +4133,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3229,6 +4149,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3238,6 +4163,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3251,6 +4181,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3260,6 +4195,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3271,6 +4211,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3280,6 +4225,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3293,6 +4243,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3302,6 +4257,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3336,6 +4296,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3345,6 +4310,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3358,6 +4328,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3367,6 +4342,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3378,6 +4358,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3387,6 +4372,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3400,6 +4390,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3409,6 +4404,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3420,6 +4420,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3429,6 +4434,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3442,6 +4452,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3451,6 +4466,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3462,6 +4482,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3471,6 +4496,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3484,6 +4514,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3493,6 +4528,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -3504,6 +4544,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3513,6 +4558,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3526,6 +4576,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3535,6 +4590,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3546,6 +4606,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3555,6 +4620,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3568,6 +4638,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3577,6 +4652,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3588,6 +4668,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3597,6 +4682,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3610,6 +4700,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3619,6 +4714,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3630,6 +4730,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3639,6 +4744,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3652,6 +4762,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3661,6 +4776,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3682,6 +4802,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3691,6 +4816,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3704,6 +4834,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3713,6 +4848,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3724,6 +4864,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3733,6 +4878,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3746,6 +4896,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3755,6 +4910,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3766,6 +4926,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3775,6 +4940,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3788,6 +4958,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3797,6 +4972,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3808,6 +4988,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3817,6 +5002,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3830,6 +5020,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3839,6 +5034,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -3850,6 +5050,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3859,6 +5064,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3872,6 +5082,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3881,6 +5096,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3892,6 +5112,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3901,6 +5126,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3914,6 +5144,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3923,6 +5158,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3934,6 +5174,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3943,6 +5188,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3956,6 +5206,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3965,6 +5220,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3976,6 +5236,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -3985,6 +5250,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -3998,6 +5268,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4007,6 +5282,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4048,6 +5328,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4057,6 +5342,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4070,6 +5360,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4079,6 +5374,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4090,6 +5390,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4099,6 +5404,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4112,6 +5422,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4121,6 +5436,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4132,6 +5452,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4141,6 +5466,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4154,6 +5484,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4163,6 +5498,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4174,6 +5514,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4183,6 +5528,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4196,6 +5546,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4205,6 +5560,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -4216,6 +5576,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4225,6 +5590,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4238,6 +5608,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4247,6 +5622,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4258,6 +5638,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4267,6 +5652,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4280,6 +5670,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4289,6 +5684,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4300,6 +5700,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4309,6 +5714,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4322,6 +5732,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4331,6 +5746,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4342,6 +5762,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4351,6 +5776,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4364,6 +5794,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4373,6 +5808,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4394,6 +5834,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4403,6 +5848,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4416,6 +5866,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4425,6 +5880,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4436,6 +5896,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4445,6 +5910,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4458,6 +5928,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4467,6 +5942,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4478,6 +5958,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4487,6 +5972,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4500,6 +5990,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4509,6 +6004,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4520,6 +6020,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4529,6 +6034,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4542,6 +6052,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4551,6 +6066,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -4562,6 +6082,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4571,6 +6096,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4584,6 +6114,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4593,6 +6128,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4604,6 +6144,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4613,6 +6158,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4626,6 +6176,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4635,6 +6190,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4646,6 +6206,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4655,6 +6220,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4668,6 +6238,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4677,6 +6252,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4688,6 +6268,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4697,6 +6282,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4710,6 +6300,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4719,6 +6314,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4753,6 +6353,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4762,6 +6367,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4775,6 +6385,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4784,6 +6399,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4795,6 +6415,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4804,6 +6429,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4817,6 +6447,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4826,6 +6461,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4837,6 +6477,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4846,6 +6491,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4859,6 +6509,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4868,6 +6523,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4879,6 +6539,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4888,6 +6553,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4901,6 +6571,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4910,6 +6585,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -4921,6 +6601,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4930,6 +6615,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4943,6 +6633,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4952,6 +6647,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4963,6 +6663,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4972,6 +6677,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -4985,6 +6695,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -4994,6 +6709,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5005,6 +6725,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5014,6 +6739,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5027,6 +6757,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5036,6 +6771,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5047,6 +6787,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5056,6 +6801,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5069,6 +6819,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5078,6 +6833,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5099,6 +6859,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5108,6 +6873,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5121,6 +6891,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5130,6 +6905,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5141,6 +6921,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5150,6 +6935,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5163,6 +6953,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5172,6 +6967,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5183,6 +6983,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5192,6 +6997,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5205,6 +7015,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5214,6 +7029,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5225,6 +7045,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5234,6 +7059,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5247,6 +7077,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5256,6 +7091,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -5267,6 +7107,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5276,6 +7121,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5289,6 +7139,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5298,6 +7153,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5309,6 +7169,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5318,6 +7183,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5331,6 +7201,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5340,6 +7215,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5351,6 +7231,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5360,6 +7245,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5373,6 +7263,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5382,6 +7277,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5393,6 +7293,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5402,6 +7307,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5415,6 +7325,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5424,6 +7339,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5471,6 +7391,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5480,6 +7405,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5493,6 +7423,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5502,6 +7437,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5513,6 +7453,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5522,6 +7467,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5535,6 +7485,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5544,6 +7499,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5555,6 +7515,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5564,6 +7529,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5577,6 +7547,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5586,6 +7561,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5597,6 +7577,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5606,6 +7591,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5619,6 +7609,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5628,6 +7623,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -5639,6 +7639,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5648,6 +7653,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5661,6 +7671,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5670,6 +7685,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5681,6 +7701,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5690,6 +7715,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5703,6 +7733,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5712,6 +7747,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5723,6 +7763,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5732,6 +7777,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5745,6 +7795,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5754,6 +7809,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5765,6 +7825,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5774,6 +7839,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5787,6 +7857,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5796,6 +7871,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5817,6 +7897,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5826,6 +7911,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5839,6 +7929,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5848,6 +7943,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5859,6 +7959,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5868,6 +7973,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5881,6 +7991,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5890,6 +8005,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5901,6 +8021,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5910,6 +8035,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5923,6 +8053,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5932,6 +8067,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5943,6 +8083,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5952,6 +8097,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -5965,6 +8115,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5974,6 +8129,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -5985,6 +8145,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -5994,6 +8159,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6007,6 +8177,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6016,6 +8191,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6027,6 +8207,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6036,6 +8221,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6049,6 +8239,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6058,6 +8253,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6069,6 +8269,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6078,6 +8283,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6091,6 +8301,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6100,6 +8315,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6111,6 +8331,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6120,6 +8345,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6133,6 +8363,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6142,6 +8377,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6176,6 +8416,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6185,6 +8430,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6198,6 +8448,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6207,6 +8462,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6218,6 +8478,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6227,6 +8492,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6240,6 +8510,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6249,6 +8524,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6260,6 +8540,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6269,6 +8554,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6282,6 +8572,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6291,6 +8586,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6302,6 +8602,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6311,6 +8616,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6324,6 +8634,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6333,6 +8648,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -6344,6 +8664,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6353,6 +8678,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6366,6 +8696,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6375,6 +8710,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6386,6 +8726,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6395,6 +8740,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6408,6 +8758,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6417,6 +8772,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6428,6 +8788,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6437,6 +8802,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6450,6 +8820,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6459,6 +8834,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6470,6 +8850,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6479,6 +8864,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6492,6 +8882,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6501,6 +8896,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6522,6 +8922,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6531,6 +8936,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6544,6 +8954,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6553,6 +8968,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6564,6 +8984,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6573,6 +8998,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6586,6 +9016,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6595,6 +9030,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6606,6 +9046,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6615,6 +9060,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6628,6 +9078,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6637,6 +9092,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6648,6 +9108,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6657,6 +9122,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6670,6 +9140,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6679,6 +9154,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Dùng `ColorPicker` chuẩn của app cho từng mức Fib và nút `Use one color`, nới rộng ô nhập hệ số Fib
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/css/fixed_shell.css`, `frontend/index.html`, `AGENTS.md`.
@@ -6690,6 +9170,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6699,6 +9184,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6712,6 +9202,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6721,6 +9216,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6732,6 +9232,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6741,6 +9246,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6754,6 +9264,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6763,6 +9278,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Bổ sung tùy chỉnh Text color & Font size trong Style của Position theo TradingView Desktop (`LineToolRiskRewardBase`)
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6774,6 +9294,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6783,6 +9308,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6796,6 +9326,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6805,6 +9340,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa giao diện pill thống kê & điểm neo Position cho gọn đẹp giống TradingView Desktop
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6816,6 +9356,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6825,6 +9370,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa con trỏ `ew-resize` cho nút kéo phải Position và thêm vùng phủ + mũi tên nét đứt nối entry tới nến thoát/đóng lệnh
 - File đã sửa: `frontend/js/drawing_editor.js`, `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
@@ -6838,6 +9388,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
 ### 2026-11-19 — Đặt `compact: true` (Compact stats) làm mặc định cho Position
 - File đã sửa: `frontend/js/drawing_model.js`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: đổi `compact: false` thành `compact: true` trong `DrawingModel.baseDefaults()` và `DrawingModel.defaults()` để các Position vẽ mới luôn hiển thị pill thống kê gọn nhẹ mặc định.
@@ -6847,6 +9402,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - File đã sửa / thêm: `frontend/css/wow_overrides.css` (mới), `frontend/js/wow_overrides.js` (mới), `frontend/css/style.css`, `frontend/css/chart_desktop.css`, `frontend/css/chart_dock.css`, `frontend/css/dialog_redesign.css`, `frontend/css/settings.css`, `frontend/css/terminal_companions.css`, `frontend/css/terminal_polish.css`, `frontend/css/terminal_studio.css`, `frontend/index.html`, `AGENTS.md`.
 - Thay đổi: cập nhật bộ stylesheet UI và `wow_overrides.css` / `wow_overrides.js` (hiệu ứng trượt icon cài đặt QT Mode, giao diện `#qt-settings-modal`, Paper Trade, Buy/Sell, Music, reload dialog, token typography) từ gói bàn giao `TradingViewPremium-UI-Handoff-20261119`, đồng thời giữ nguyên toàn bộ các bản sửa chức năng vẽ (Fib 24 mức, Position, Text inline/Anchor, Brush, Vertical Line, Ctrl+kéo chọn nhiều hình), countdown, thời gian tương lai, mũi tên khớp lệnh xếp tầng và scale hộp Settings (`zoom: var(--toolbar-scale, 1)` cho cả `#settings-modal` và `#qt-settings-modal`).
 - Kiểm chứng: kiểm tra trên Edge qua Playwright không có `pageerror` (`NO ERRORS`); `node --test tests/*.test.cjs` đạt **169/169 passed**.
+
+### 2026-11-19 — Thay icon Long / Short Position giống TradingView Desktop
+- File đã sửa: `frontend/js/terminal_icons.js`, `frontend/index.html`, `AGENTS.md`.
+- Thay đổi: cập nhật SVG `forecast` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `L` ở vùng trên) và `forecast_short` (3 đường ngang có 2 vòng tròn neo bên trái + chữ `S` ở vùng dưới) khớp với icon Long/Short position của TradingView.
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **169/169 passed**.
 
 ### 2026-11-19 — Sửa lỗi `DrawingSettings.bindEvents()` gọi `addEventListener` trên `#drawing-levels` đã gỡ bỏ
 - File đã sửa: `frontend/js/drawing_settings.js`, `frontend/index.html`, `AGENTS.md`.
