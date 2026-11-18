@@ -12,7 +12,7 @@ const DrawingModel = (() => {
       textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
-      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:true, showPriceLabels:true,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
       visibility:defaultVis
     });
   }
@@ -25,6 +25,10 @@ const DrawingModel = (() => {
       textStyle:value.textStyle ? { ...base.textStyle, ...value.textStyle } : base.textStyle,
       visibility:value.visibility ? Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) : base.visibility
     };
+    if(normalized.type==='position'&&!value._statsV2){
+      normalized.alwaysShowStats=false;
+      normalized._statsV2=true;
+    }
     if(normalized.type==='position'&&normalized.p1&&normalized.p2&&!normalized.p3){
       const reward=normalized.p2.price-normalized.p1.price;
       normalized.p3={time:normalized.p2.time,price:normalized.p1.price-reward/Math.max(.1,normalized.riskReward)};
@@ -41,7 +45,7 @@ const DrawingModel = (() => {
       textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
       stats:{price:false,percent:false,bars:false,time:false,middle:false},
       levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
-      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:true, showPriceLabels:true,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:false, _statsV2:true, showPriceLabels:true,
       visibility:Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }])) };
   }
   function normalize(value) {
@@ -49,6 +53,10 @@ const DrawingModel = (() => {
     const normalized={ ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
       stats:{ ...base.stats, ...value.stats }, middleLine:{ ...base.middleLine, ...value.middleLine }, textStyle:{ ...base.textStyle, ...value.textStyle },
       visibility:Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) };
+    if(normalized.type==='position'&&!value._statsV2){
+      normalized.alwaysShowStats=false;
+      normalized._statsV2=true;
+    }
     if(normalized.type==='position'&&normalized.p1&&normalized.p2&&!normalized.p3){
       const reward=normalized.p2.price-normalized.p1.price;
       normalized.p3={time:normalized.p2.time,price:normalized.p1.price-reward/Math.max(.1,normalized.riskReward)};
@@ -370,7 +378,7 @@ const DrawingModel = (() => {
       ctx.fillStyle=rgba(d.stopColor,d.stopOpacity);ctx.fillRect(boxLeft,riskTop,span,Math.max(1,riskBottom-riskTop));
       ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
       const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
-      if(d.alwaysShowStats!==false||isSelected){
+      if(d.alwaysShowStats===true||isSelected||d.isTemp){
         const pill=(text,x,y,fill)=>{ctx.font='600 11px Arial';const w=ctx.measureText(text).width+12;ctx.fillStyle=fill;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-w/2,y-10,w,19,4);else ctx.rect(x-w/2,y-10,w,19);ctx.fill();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(text,x,y+3.5);};
         const tpColor=hex(d.profitColor)||'#089981',slColor=hex(d.stopColor)||'#f23645';
         const tpText=d.compact?`T: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) · ${rewardTicks}`:`Target: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) ${rewardTicks}, Amount: ${((d.accountSize||25000)+rewardAmt).toFixed(2)}`;

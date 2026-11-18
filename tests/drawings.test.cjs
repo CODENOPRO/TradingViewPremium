@@ -38,12 +38,24 @@ test('rectangle mixed corners resize the correct point; invisible shapes cannot 
   shape.hidden=false;assert.equal(DrawingModel.hit(chart,shape,0,50),'p1x_p2y');
 });
 
-test('position upgrades legacy entry/target drawings with an explicit stop and keeps all three handles',()=>{
-  const chart={currentTimeframe:'1m',tfSeconds:60,bars:[{time:60},{time:120}],chart:{timeScale:()=>({logicalToCoordinate:i=>i*100})},series:{priceToCoordinate:p=>p*10}};
-  const position=DrawingModel.normalize({type:'position',p1:{time:60,price:100},p2:{time:120,price:120},riskReward:2});
+test('position upgrades legacy entry/target drawings with an explicit stop, keeps all three handles, and hides stats text when deselected',()=>{
+  const chart={currentTimeframe:'1m',tfSeconds:60,plotHeight:200,container:{clientWidth:400,clientHeight:200},bars:[{time:60,close:105},{time:120,close:110}],chart:{timeScale:()=>({logicalToCoordinate:i=>i*100})},series:{priceToCoordinate:p=>p}};
+  const position=DrawingModel.normalize({id:'pos1',type:'position',p1:{time:60,price:100},p2:{time:120,price:120},riskReward:2,alwaysShowStats:true});
+  assert.equal(position.alwaysShowStats,false,'Legacy un-migrated position drawing resets alwaysShowStats to false');
   assert.deepEqual(position.p3,{time:120,price:90});
   const g=DrawingModel.geometry(chart,position);
   assert.equal(DrawingModel.hit(chart,position,g.c.x,g.c.y),'p3');
+
+  const texts=[];
+  const ctx={save(){},restore(){},setLineDash(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},fillRect(){},rect(){},fill(){},measureText:t=>({width:t.length*6}),fillText:t=>texts.push(t)};
+  global.window={drawingMgr:{editor:{drawing:null}}};
+  DrawingModel.draw(ctx,chart,position);
+  assert.equal(texts.length,0,'Deselected position drawing must not render stats text pills');
+
+  global.window={drawingMgr:{editor:{drawing:{id:'pos1'}}}};
+  DrawingModel.draw(ctx,chart,position);
+  assert.ok(texts.length>=3,'Selected position drawing renders stats pills and price labels');
+  delete global.window;
 });
 
 test('DrawingSettings adapts tabs, labels, coordinates and defaults to each drawing tool type', () => {
