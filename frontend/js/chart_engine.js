@@ -436,10 +436,15 @@ class ChartEngine {
   updateBar(value) {
     const bar = MarketData.clean([value])[0];
     if (!bar) return;
-    const index = this.rawBars.findIndex(b => b.time >= bar.time);
-    if (index < 0) this.rawBars.push(bar);
-    else if (this.rawBars[index].time === bar.time) this.rawBars[index] = bar;
-    else this.rawBars.splice(index, 0, bar);
+    const rawLast = this.rawBars[this.rawBars.length - 1];
+    if (!rawLast || bar.time > rawLast.time) this.rawBars.push(bar);
+    else if (bar.time === rawLast.time) this.rawBars[this.rawBars.length - 1] = bar;
+    else {
+      const index = this.rawBars.findIndex(b => b.time >= bar.time);
+      if (index < 0) this.rawBars.push(bar);
+      else if (this.rawBars[index].time === bar.time) this.rawBars[index] = bar;
+      else this.rawBars.splice(index, 0, bar);
+    }
     this.htfData['1m'] = this.rawBars;
     this.regularBarsByTf=null;
     if (this.replayMode) return;
@@ -447,11 +452,18 @@ class ChartEngine {
       this.renderCurrentTimeframe(false);
       return;
     }
-    const next = this.getBarsForTimeframe(this.currentTimeframe);
     const last = this.bars[this.bars.length - 1];
-    const tail = next[next.length - 1];
     const historical = last && bar.time < last.time;
-    this.bars = next;
+    let next;
+    if (this.currentTimeframe === '1m' && !historical && this.bars.length) {
+      if (bar.time === last.time) this.bars[this.bars.length - 1] = { ...bar };
+      else this.bars.push({ ...bar });
+      next = this.bars;
+    } else {
+      next = this.getBarsForTimeframe(this.currentTimeframe);
+      this.bars = next;
+    }
+    const tail = next[next.length - 1];
     if (tail && (!last || tail.time >= last.time) && !historical) this.series.update(this.appearance?ChartAppearance.candleData(this,next.slice(-2)).at(-1):tail);
     else this.series.setData(this.appearance?ChartAppearance.candleData(this,next):next);
     this.updateLegend(tail);
@@ -825,7 +837,7 @@ class ChartEngine {
     }
     legendEl.hidden=!legendEl.childElementCount;
     if(!bar)return;
-    const index=this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
+    const index=this.bars.at(-1)?.time===bar.time?this.bars.length-1:this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
     const diff=bar.close-previous,diffPct=previous?diff/previous*100:0;
     if(s?.chartValues!==false)add(`O ${format(bar.open)}  H ${format(bar.high)}  L ${format(bar.low)}  C ${format(bar.close)}`,'legend-ohlc');
     if(s?.barChange!==false)add(`${diff>=0?'+':''}${format(diff)} (${diffPct.toFixed(2)}%)`,diff>=0?'price-up':'price-down');
@@ -955,8 +967,12 @@ class ChartEngine {
     if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotBottom){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-this.chart.priceScale('right').width(),y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
     }
     ctx.save();
+    this.onBeforeRenderDrawings?.();
     const rightAxisW = this.chart?.priceScale?.('right')?.width?.() || 65;
-    ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - rightAxisW), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
+    const drawW = Math.max(0, rect.width - rightAxisW);
+    const drawH = Math.max(0, rect.height - (this.paneHeight||0) - 26);
+    this._drawMetrics = { axisW: rightAxisW, width: drawW, plotBottom: drawH };
+    ctx.beginPath(); ctx.rect(0, 0, drawW, drawH); ctx.clip();
     this._qtSsmtDrawn = [];
     this._qtTrBoxes = [];
     this._qtQBoxes = [];
@@ -965,6 +981,7 @@ class ChartEngine {
       const value = this.drawingPreview && original.id && this.drawingPreview.id === original.id ? this.drawingPreview : original;
       DrawingModel.draw(ctx, this, value);
     }
+    this._drawMetrics = null;
     window.drawingMgr?.editor.renderHandles(this, ctx);
     ctx.restore();
   }

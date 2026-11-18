@@ -1,15 +1,25 @@
 /* One source of truth for candle validation, session alignment and chart routing. */
 const MarketData = (() => {
   const durations = { '1m': 60, '5m': 300, '15m': 900, '30m':1800, '2h':7200, '12h':43200, '1M':2592000, '3M':7776000, '1h': 3600, '4h': 14400, '6h': 21600, D: 86400, W: 604800 };
-  const formatters = new Map();
+  const formatters = new Map(), partCache = new Map(), localCache = new Map();
+  let bZone = '', bSess = '', bRth = false, bFrom = 0, bTo = 0, bOpen = 0, bWeekOpen = 0;
   function parts(time, zone) {
+    const key = zone + ':' + Math.floor(time);
+    let p = partCache.get(key);
+    if (p) return p;
     if (!formatters.has(zone)) formatters.set(zone, new Intl.DateTimeFormat('en-CA', {
       timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
     }));
-    return Object.fromEntries(formatters.get(zone).formatToParts(new Date(time * 1000)).filter(p => p.type !== 'literal').map(p => [p.type, Number(p.value)]));
+    p = Object.fromEntries(formatters.get(zone).formatToParts(new Date(time * 1000)).filter(x => x.type !== 'literal').map(x => [x.type, Number(x.value)]));
+    if (partCache.size >= 50000) partCache.clear();
+    partCache.set(key, p);
+    return p;
   }
   function localTime(year, month, day, hour, minute, zone) {
     const target = Date.UTC(year, month - 1, day, hour, minute) / 1000;
+    const key = zone + ':' + target;
+    const hit = localCache.get(key);
+    if (hit !== undefined) return hit;
     let value = target;
     for (let i = 0; i < 4; i++) {
       const p = parts(value, zone);
@@ -18,20 +28,33 @@ const MarketData = (() => {
       value += delta;
       if (!delta) break;
     }
+    if (localCache.size >= 15000) localCache.clear();
+    localCache.set(key, value);
     return value;
   }
   function bucket(time, tf, metadata = {}) {
     if (tf === '1m') return time;
     const seconds = durations[tf];
     const zone = metadata.timezone || 'America/Chicago';
-    const session = /^(\d{2})(\d{2})-/.exec(metadata.session || '1700-1600');
+    const rawSess = metadata.session || '1700-1600';
+    const rth = metadata.sessionType === 'RTH';
+    if (zone === bZone && rawSess === bSess && rth === bRth && time >= bFrom && time < bTo) {
+      return tf === 'W' ? bWeekOpen : tf === 'D' ? bOpen : bOpen + Math.floor((time - bOpen) / seconds) * seconds;
+    }
+    const session = /^(\d{2})(\d{2})-/.exec(rawSess);
     const hour = session ? Number(session[1]) : 17, minute = session ? Number(session[2]) : 0;
     const p = parts(time, zone);
     const date = new Date(Date.UTC(p.year, p.month - 1, p.day));
     if (p.hour * 60 + p.minute < hour * 60 + minute) date.setUTCDate(date.getUTCDate() - 1);
-    if (tf === 'W') date.setUTCDate(date.getUTCDate() - (metadata.sessionType === 'RTH' ? (date.getUTCDay() + 6) % 7 : date.getUTCDay()));
     const open = localTime(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), hour, minute, zone);
-    return tf === 'D' || tf === 'W' ? open : open + Math.floor((time - open) / seconds) * seconds;
+    const nextOpen = localTime(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate() + 1, hour, minute, zone);
+    const wDate = new Date(date.getTime());
+    wDate.setUTCDate(wDate.getUTCDate() - (rth ? (wDate.getUTCDay() + 6) % 7 : wDate.getUTCDay()));
+    const wOpen = localTime(wDate.getUTCFullYear(), wDate.getUTCMonth() + 1, wDate.getUTCDate(), hour, minute, zone);
+    if (time >= open && time < nextOpen) {
+      bZone = zone; bSess = rawSess; bRth = rth; bFrom = open; bTo = nextOpen; bOpen = open; bWeekOpen = wOpen;
+    }
+    return tf === 'W' ? wOpen : tf === 'D' ? open : open + Math.floor((time - open) / seconds) * seconds;
   }
   function clean(values) {
     const result = new Map();

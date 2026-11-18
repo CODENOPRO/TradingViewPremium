@@ -611,4 +611,39 @@ test('HTF chart hides LTF SSMTs (e.g. 15m hides 1m and 5m SSMTs while keeping 15
   assert.ok(tr15m.length > 0, 'Expected 15m+ True Opens on 15m chart');
   assert.equal(tr15m.some(d => d._qtTier < 2), false, '15m chart must hide TMCO (_qtTier=0) and 90m (_qtTier=1) True Opens');
   assert.ok(tr15m.some(d => d._qtTier >= 2), '15m chart must keep TDO+ True Opens');
+
+  // Verify live-tick checkpointing & viewport culling eliminate main-thread stutter (<20ms live tick, 0 strokes for offscreen vertical lines)
+  const tWarm0 = performance.now();
+  const outWarm = QuantaibayEngine.calculate(markets['NQ1!']['1m'], {
+    symbol: 'NQ1!', timeframe: '1m', timeframeSeconds: 60, markets, settings: { showAll: true }
+  });
+  const warmMs = performance.now() - tWarm0;
+  assert.ok(warmMs < 25, `Warm M1 showAll should be <25ms, got ${warmMs.toFixed(2)}ms`);
+
+  const m1Arr = markets['NQ1!']['1m'];
+  const origLast = m1Arr[m1Arr.length - 1];
+  m1Arr[m1Arr.length - 1] = { ...origLast, close: origLast.close + 0.25, high: origLast.high + 0.25 };
+  const tTick0 = performance.now();
+  const outTick = QuantaibayEngine.calculate(m1Arr, {
+    symbol: 'NQ1!', timeframe: '1m', timeframeSeconds: 60, markets, settings: { showAll: true }
+  });
+  const tickMs = performance.now() - tTick0;
+  m1Arr[m1Arr.length - 1] = origLast;
+  assert.ok(tickMs < 35, `Live-tick M1 showAll should be <35ms, got ${tickMs.toFixed(2)}ms`);
+  assert.equal(outTick.tables.length, outWarm.tables.length);
+
+  const DrawingModel = require('../frontend/js/drawing_model.js');
+  let strokeCnt = 0;
+  const cullCtx = { save() {}, restore() {}, setLineDash() {}, beginPath() {}, moveTo() {}, lineTo() {}, stroke() { strokeCnt++; } };
+  const cullChart = {
+    currentTimeframe: '1m', tfSeconds: 60, bars: [{ time: 100 }, { time: 160 }],
+    _drawMetrics: { axisW: 65, width: 500, plotBottom: 350 },
+    container: { clientWidth: 565, clientHeight: 376 },
+    chart: { timeScale: () => ({ logicalToCoordinate: i => i === 0 ? -500 : 200 }) },
+    series: { priceToCoordinate: () => 150 }
+  };
+  DrawingModel.draw(cullCtx, cullChart, { type: 'line', axis: 'vertical', p1: { time: 100, price: 10 }, p2: { time: 100, price: 20 } });
+  assert.equal(strokeCnt, 0, 'Off-screen vertical line at x=-500 must be culled before canvas stroke');
+  DrawingModel.draw(cullCtx, cullChart, { type: 'line', axis: 'vertical', p1: { time: 160, price: 10 }, p2: { time: 160, price: 20 } });
+  assert.equal(strokeCnt, 1, 'On-screen vertical line at x=200 must be drawn');
 });

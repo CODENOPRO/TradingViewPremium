@@ -436,32 +436,71 @@ const QTCore = (() => {
     return sessionStart(wkStart(tSec, tz) + 7 * DAY_SEC + 3 * HOUR_SEC, tz);
   }
 
-  function yearOpen(y, q, tz) {
-    if (q === 1) return timestamp(tz, y, 1, 1, 18, 0, 0);
-    if (q === 2) return timestamp(tz, y, 4, 2, 18, 0, 0);
-    if (q === 3) return timestamp(tz, y, 7, 1, 18, 0, 0);
-    if (q === 4) return timestamp(tz, y, 9, 29, 18, 0, 0);
-    return timestamp(tz, y, 12, 29, 18, 0, 0);
+  const yearBoundsCache = new Map();
+  const qBaseCache = new Map();
+  const seriesCache = new Map();
+  let nextArrId = 1;
+  const arrIdMap = new WeakMap();
+
+  function barSig(arr) {
+    if (!arr || !arr.length) return '0';
+    let id = arrIdMap.get(arr);
+    if (!id) { id = nextArrId++; arrIdMap.set(arr, id); }
+    const n = arr.length, f = arr[0], l = arr[n - 1], p = n > 1 ? arr[n - 2] : f;
+    return `${id}:${n}:${f.time}:${p.time}:${p.high}:${p.low}:${p.close}:${l.time}:${l.open}:${l.high}:${l.low}:${l.close}`;
   }
 
+  function getYearBounds(y, tz) {
+    const key = tz + ':' + y;
+    let b = yearBoundsCache.get(key);
+    if (!b) {
+      b = [
+        timestamp(tz, y, 1, 1, 18, 0, 0),
+        timestamp(tz, y, 4, 2, 18, 0, 0),
+        timestamp(tz, y, 7, 1, 18, 0, 0),
+        timestamp(tz, y, 9, 29, 18, 0, 0),
+        timestamp(tz, y, 12, 29, 18, 0, 0)
+      ];
+      if (yearBoundsCache.size >= 512) yearBoundsCache.clear();
+      yearBoundsCache.set(key, b);
+    }
+    return b;
+  }
+
+  function yearOpen(y, q, tz) {
+    return getYearBounds(y, tz)[q - 1];
+  }
+
+  let yTrackTz = '', yTrackB = null, yTrackNextQ1 = 0;
   function yearQ(tSec, tz) {
-    let y = parts(tSec, tz).year;
-    if (tSec < yearOpen(y, 1, tz)) y -= 1;
-    const q = tSec >= yearOpen(y, 4, tz) ? 4 : tSec >= yearOpen(y, 3, tz) ? 3 : tSec >= yearOpen(y, 2, tz) ? 2 : 1;
-    const start = yearOpen(y, q, tz);
-    const mid = start + Math.trunc((yearOpen(y, q + 1, tz) - start) / 2);
-    const q4End = yearOpen(y, 5, tz);
-    return [start, mid, q, q4End];
+    if (tz !== yTrackTz || !yTrackB || tSec < yTrackB[0] || tSec >= yTrackNextQ1) {
+      let y = parts(tSec, tz).year;
+      let b = getYearBounds(y, tz);
+      if (tSec < b[0]) {
+        y -= 1;
+        b = getYearBounds(y, tz);
+      }
+      yTrackTz = tz;
+      yTrackB = b;
+      yTrackNextQ1 = getYearBounds(y + 1, tz)[0];
+    }
+    const q = tSec >= yTrackB[3] ? 4 : tSec >= yTrackB[2] ? 3 : tSec >= yTrackB[1] ? 2 : 1;
+    const start = yTrackB[q - 1];
+    const mid = start + Math.trunc((yTrackB[q] - start) / 2);
+    return [start, mid, q, yTrackB[4]];
   }
 
   function createSessionTracker(tz) {
-    let cur = null, nxt = null, dow = 1, wStart = 0, wQ = 1;
-    return function getSess(tSec) {
+    let cur = null, nxt = null, dow = 1, wStart = null, wQ = 1;
+    return function getSess(tSec, needWeek = false) {
       if (cur === null || tSec >= nxt || tSec < cur) {
         cur = sessionStart(tSec, tz);
         const cp = parts(cur, tz);
         nxt = timestamp(tz, cp.year, cp.month, cp.day + 1, 18, 0, 0);
         dow = cp.dow;
+        wStart = null;
+      }
+      if (needWeek && wStart === null) {
         const w = weekCycleQ(cur, dow, tz);
         wStart = w[0];
         wQ = w[1];
@@ -474,29 +513,39 @@ const QTCore = (() => {
     const getSess = createSessionTracker(tz);
     return function evalCycle(barTimeSec, tfSec) {
       const evalT = (tfSec === 60 && m1UseMid) ? barTimeSec + 30 : barTimeSec;
-      const { sess, dow, wkStart: ws, wkQ: wq } = getSess(evalT);
-      let qMid = null, qNum = null, segStart = null, extra = null;
+      let qMid = null, qNum = null, segStart = null, extra = null, sess = null;
 
       if (tfSec === 60 || tfSec === 180 || tfSec === 300 || tfSec === 900) {
+        sess = getSess(evalT, false).sess;
         const segSec = tfSec === 60 ? 1350 : tfSec === 900 ? 21600 : 5400;
         const idx = Math.floor((evalT - sess) / segSec);
         segStart = sess + idx * segSec;
         qNum = ((idx % 4) + 4) % 4 + 1;
         qMid = segStart + segSec / 2;
       } else if (tfSec === 3600) {
+        const sObj = getSess(evalT, false);
+        sess = sObj.sess;
         qMid = sess + 12 * HOUR_SEC;
-        qNum = dow <= 4 ? dow : 0;
+        qNum = sObj.dow <= 4 ? sObj.dow : 0;
         segStart = sess;
       } else if (tfSec === 14400) {
-        qMid = ws + 2.5 * DAY_SEC;
-        qNum = wq;
-        segStart = ws;
+        const sObj = getSess(evalT, true);
+        sess = sObj.sess;
+        qMid = sObj.wkStart + 2.5 * DAY_SEC;
+        qNum = sObj.wkQ;
+        segStart = sObj.wkStart;
       } else if (tfSec === 21600) {
         const tp = parts(evalT, tz);
         const qMonth = 3 * Math.floor((tp.month - 1) / 3) + 1;
-        const quarterFirst = timestamp(tz, tp.year, qMonth, 1, 18, 0, 0);
-        const qfDow = parts(quarterFirst, tz).dow;
-        const cycleBase = quarterFirst + ((8 - qfDow) % 7) * DAY_SEC;
+        const qKey = tz + ':' + tp.year + ':' + qMonth;
+        let cycleBase = qBaseCache.get(qKey);
+        if (cycleBase === undefined) {
+          const quarterFirst = timestamp(tz, tp.year, qMonth, 1, 18, 0, 0);
+          const qfDow = parts(quarterFirst, tz).dow;
+          cycleBase = quarterFirst + ((8 - qfDow) % 7) * DAY_SEC;
+          if (qBaseCache.size >= 512) qBaseCache.clear();
+          qBaseCache.set(qKey, cycleBase);
+        }
         const periodSec = 22.75 * DAY_SEC;
         qNum = Math.max(1, Math.min(4, Math.floor((evalT - cycleBase) / periodSec) + 1));
         segStart = cycleBase + Math.trunc((qNum - 1) * periodSec);
@@ -594,33 +643,48 @@ const QTCore = (() => {
     const sym = shortSym(symbol);
     const entry = markets?.[sym] || Object.entries(markets || {}).find(([k]) => shortSym(k) === sym)?.[1];
     if (!entry) return [];
+    const rawNative = entry[tfKey];
+    const rawMins = entry['1m'];
+    const effCut = (Number.isFinite(cutoffTime) && ((rawMins?.length && rawMins[rawMins.length - 1].time > cutoffTime) || (rawNative?.length && rawNative[rawNative.length - 1].time > cutoffTime))) ? cutoffTime : -1;
     const meta = entry.metadata || { timezone: 'America/Chicago', session: '1700-1600' };
+    const cacheKey = `${sym}|${tfKey}|${sessionMode}|${effCut}|${meta.session || ''}|${meta.sessionRegular?.session || ''}|${barSig(rawNative)}|${barSig(rawMins)}`;
+    const hit = seriesCache.get(cacheKey);
+    if (hit) return hit;
 
+    let out;
     if (sessionMode === 'RTH' && meta.sessionRegular?.session && !['D', 'W', '1M', '3M'].includes(tfKey) && typeof MarketData !== 'undefined') {
-      const mins = sliceCutoff(entry['1m'], cutoffTime).filter(b => MarketData.inRegularSession(b, meta));
-      return MarketData.aggregate(mins, tfKey, { ...meta, session: meta.sessionRegular.session, sessionType: 'RTH' });
+      const mins = sliceCutoff(rawMins, cutoffTime).filter(b => MarketData.inRegularSession(b, meta));
+      out = MarketData.aggregate(mins, tfKey, { ...meta, session: meta.sessionRegular.session, sessionType: 'RTH' });
+    } else if (tfKey === '1m') {
+      out = sliceCutoff(rawMins, cutoffTime);
+    } else {
+      const native = sliceCutoff(rawNative, cutoffTime);
+      const mins = sliceCutoff(rawMins, cutoffTime);
+      if (!mins.length || typeof MarketData === 'undefined') out = native;
+      else if (!native.length) out = MarketData.aggregate(mins, tfKey, meta);
+      else {
+        const lastNativeOpen = native[native.length - 1].time;
+        let idx = mins.length;
+        while (idx > 0 && mins[idx - 1].time >= lastNativeOpen) idx--;
+        if (idx >= mins.length) out = native;
+        else {
+          const tailAgg = MarketData.aggregate(mins.slice(idx), tfKey, meta);
+          if (!tailAgg.length) out = native;
+          else {
+            const merged = native.slice(0, -1);
+            if (tailAgg[0].time > lastNativeOpen) merged.push(native[native.length - 1]);
+            for (const b of tailAgg) {
+              if (!merged.length || b.time > merged[merged.length - 1].time) merged.push(b);
+              else if (b.time === merged[merged.length - 1].time) merged[merged.length - 1] = b;
+            }
+            out = merged;
+          }
+        }
+      }
     }
-
-    if (tfKey === '1m') return sliceCutoff(entry['1m'], cutoffTime);
-
-    const native = sliceCutoff(entry[tfKey], cutoffTime);
-    const mins = sliceCutoff(entry['1m'], cutoffTime);
-    if (!mins.length || typeof MarketData === 'undefined') return native;
-    if (!native.length) return MarketData.aggregate(mins, tfKey, meta);
-
-    const lastNativeOpen = native[native.length - 1].time;
-    let idx = mins.length;
-    while (idx > 0 && mins[idx - 1].time >= lastNativeOpen) idx--;
-    if (idx >= mins.length) return native;
-    const tailAgg = MarketData.aggregate(mins.slice(idx), tfKey, meta);
-    if (!tailAgg.length) return native;
-    const merged = native.slice(0, -1);
-    if (tailAgg[0].time > lastNativeOpen) merged.push(native[native.length - 1]);
-    for (const b of tailAgg) {
-      if (!merged.length || b.time > merged[merged.length - 1].time) merged.push(b);
-      else if (b.time === merged[merged.length - 1].time) merged[merged.length - 1] = b;
-    }
-    return merged;
+    if (seriesCache.size >= 256) seriesCache.clear();
+    seriesCache.set(cacheKey, out);
+    return out;
   }
 
   function snapToChartBar(chartBars, tSec, tfSeconds) {
@@ -679,6 +743,7 @@ const QTCore = (() => {
     makeCycleEvaluator,
     createAmdxTracker,
     formatQLabel,
+    barSig,
     getSeriesForRow,
     snapToChartBar,
     firstBarAtOrAfter

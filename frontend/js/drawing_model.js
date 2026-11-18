@@ -2,6 +2,38 @@
 const DrawingModel = (() => {
   const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure',brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
+  const defaultVis = Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }]));
+  const baseDefaultsCache = {};
+  function baseDefaults(type) {
+    return baseDefaultsCache[type] || (baseDefaultsCache[type] = {
+      title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
+      middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
+      textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
+      stats:{price:false,percent:false,bars:false,time:false,middle:false},
+      levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:true, showPriceLabels:true,
+      visibility:defaultVis
+    });
+  }
+  function fastNormalize(value) {
+    const base = baseDefaults(value.type);
+    const normalized = {
+      ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
+      stats:value.stats ? { ...base.stats, ...value.stats } : base.stats,
+      middleLine:value.middleLine ? { ...base.middleLine, ...value.middleLine } : base.middleLine,
+      textStyle:value.textStyle ? { ...base.textStyle, ...value.textStyle } : base.textStyle,
+      visibility:value.visibility ? Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) : base.visibility
+    };
+    if(normalized.type==='position'&&normalized.p1&&normalized.p2&&!normalized.p3){
+      const reward=normalized.p2.price-normalized.p1.price;
+      normalized.p3={time:normalized.p2.time,price:normalized.p1.price-reward/Math.max(.1,normalized.riskReward)};
+    }
+    if(normalized.type==='position'&&!value.side&&normalized.p1&&normalized.p2){
+      normalized.side=normalized.p2.price<normalized.p1.price?'short':'long';
+    }
+    return normalized;
+  }
   function defaults(type) {
     return { title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
       fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
@@ -83,10 +115,20 @@ const DrawingModel = (() => {
     return match ? '#'+match.slice(1,4).map(v=>Number(v).toString(16).padStart(2,'0')).join('') : '#211f1d';
   }
   const dash = style => style === 'dashed' ? [7,5] : style === 'dotted' ? [2,3] : [];
-  function geometry(chart, value) {
-    const normalized=normalize(value),a=point(chart,normalized.p1),b=point(chart,normalized.p2 || normalized.p1),c=normalized.p3?point(chart,normalized.p3):null;
-    if ([a.x,a.y,b.x,b.y,...(c?[c.x,c.y]:[])].some(v=>v === null || !Number.isFinite(v))) return null;
-    const points=value.type==='brush'&&value.points?.length?value.points.map(p=>point(chart,p)).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)):c?[a,b,c]:[a,b];return { a,b,c,left:Math.min(...points.map(p=>p.x)),right:Math.max(...points.map(p=>p.x)),top:Math.min(...points.map(p=>p.y)),bottom:Math.max(...points.map(p=>p.y)) };
+  function geometry(chart, value, preNorm=false) {
+    const normalized=preNorm?value:fastNormalize(value),a=point(chart,normalized.p1),b=normalized.p2?point(chart,normalized.p2):a,c=normalized.p3?point(chart,normalized.p3):null;
+    if (!Number.isFinite(a.x) || !Number.isFinite(a.y) || !Number.isFinite(b.x) || !Number.isFinite(b.y) || (c && (!Number.isFinite(c.x) || !Number.isFinite(c.y)))) return null;
+    if (value.type==='brush'&&value.points?.length) {
+      const points=value.points.map(p=>point(chart,p)).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+      return { a,b,c,left:Math.min(...points.map(p=>p.x)),right:Math.max(...points.map(p=>p.x)),top:Math.min(...points.map(p=>p.y)),bottom:Math.max(...points.map(p=>p.y)) };
+    }
+    return {
+      a,b,c,
+      left:c?Math.min(a.x,b.x,c.x):Math.min(a.x,b.x),
+      right:c?Math.max(a.x,b.x,c.x):Math.max(a.x,b.x),
+      top:c?Math.min(a.y,b.y,c.y):Math.min(a.y,b.y),
+      bottom:c?Math.max(a.y,b.y,c.y):Math.max(a.y,b.y)
+    };
   }
   function distance(x,y,a,b) {
     const dx=b.x-a.x,dy=b.y-a.y, t=Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy || 1)));
@@ -137,11 +179,22 @@ const DrawingModel = (() => {
     return distance(x,y,g.a,g.b)<7 ? 'body' : null;
   }
   function draw(ctx, chart, raw) {
-    const d=normalize(raw);if(!visible(d,chart.currentTimeframe))return;
-    const g=geometry(chart,d);if(!g)return;
-    const axisW=chart.chart?.priceScale?.('right')?.width?.()||65;
-    const width=chart.container.clientWidth-axisW;
-    const plotBottom=(chart.plotHeight??chart.container.clientHeight)-26;
+    const d=fastNormalize(raw);if(!visible(d,chart.currentTimeframe))return;
+    const g=geometry(chart,d,true);if(!g)return;
+    const m=chart._drawMetrics;
+    const axisW=m?m.axisW:(chart.chart?.priceScale?.('right')?.width?.()||65);
+    const width=m?m.width:(chart.container.clientWidth-axisW);
+    const plotBottom=m?m.plotBottom:((chart.plotHeight??chart.container.clientHeight)-26);
+    if(d.type === 'line') {
+      if(d.axis === 'vertical') {
+        if(g.a.x < -2 || g.a.x > width + 2) return;
+      } else if((!d.extend || d.extend === 'none') && (g.right < -40 || g.left > width + 40)) {
+        return;
+      }
+    } else if(d.type === 'text' && d.textStyle?.pine) {
+      if(!d._qtTrueOpenSpan && (g.a.x < -120 || g.a.x > width + 120 || g.a.y < -80 || g.a.y > plotBottom + 80)) return;
+      if(d._qtTrueOpenSpan && (g.a.y < -80 || g.a.y > plotBottom + 80)) return;
+    }
     let {left,right,top,bottom}=g;
     if(d.extend === 'left' || d.extend === 'both') left=0;
     if(d.extend === 'right' || d.extend === 'both') right=width;

@@ -7293,19 +7293,29 @@ Low|Thấp`.split('\n').map(line=>line.split('|'));
 })();
 const ui=TerminalLanguage.text;
 </script>
-  <script>
+    <script>
 /* One source of truth for candle validation, session alignment and chart routing. */
 const MarketData = (() => {
   const durations = { '1m': 60, '5m': 300, '15m': 900, '30m':1800, '2h':7200, '12h':43200, '1M':2592000, '3M':7776000, '1h': 3600, '4h': 14400, '6h': 21600, D: 86400, W: 604800 };
-  const formatters = new Map();
+  const formatters = new Map(), partCache = new Map(), localCache = new Map();
+  let bZone = '', bSess = '', bRth = false, bFrom = 0, bTo = 0, bOpen = 0, bWeekOpen = 0;
   function parts(time, zone) {
+    const key = zone + ':' + Math.floor(time);
+    let p = partCache.get(key);
+    if (p) return p;
     if (!formatters.has(zone)) formatters.set(zone, new Intl.DateTimeFormat('en-CA', {
       timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
     }));
-    return Object.fromEntries(formatters.get(zone).formatToParts(new Date(time * 1000)).filter(p => p.type !== 'literal').map(p => [p.type, Number(p.value)]));
+    p = Object.fromEntries(formatters.get(zone).formatToParts(new Date(time * 1000)).filter(x => x.type !== 'literal').map(x => [x.type, Number(x.value)]));
+    if (partCache.size >= 50000) partCache.clear();
+    partCache.set(key, p);
+    return p;
   }
   function localTime(year, month, day, hour, minute, zone) {
     const target = Date.UTC(year, month - 1, day, hour, minute) / 1000;
+    const key = zone + ':' + target;
+    const hit = localCache.get(key);
+    if (hit !== undefined) return hit;
     let value = target;
     for (let i = 0; i < 4; i++) {
       const p = parts(value, zone);
@@ -7314,20 +7324,33 @@ const MarketData = (() => {
       value += delta;
       if (!delta) break;
     }
+    if (localCache.size >= 15000) localCache.clear();
+    localCache.set(key, value);
     return value;
   }
   function bucket(time, tf, metadata = {}) {
     if (tf === '1m') return time;
     const seconds = durations[tf];
     const zone = metadata.timezone || 'America/Chicago';
-    const session = /^(\d{2})(\d{2})-/.exec(metadata.session || '1700-1600');
+    const rawSess = metadata.session || '1700-1600';
+    const rth = metadata.sessionType === 'RTH';
+    if (zone === bZone && rawSess === bSess && rth === bRth && time >= bFrom && time < bTo) {
+      return tf === 'W' ? bWeekOpen : tf === 'D' ? bOpen : bOpen + Math.floor((time - bOpen) / seconds) * seconds;
+    }
+    const session = /^(\d{2})(\d{2})-/.exec(rawSess);
     const hour = session ? Number(session[1]) : 17, minute = session ? Number(session[2]) : 0;
     const p = parts(time, zone);
     const date = new Date(Date.UTC(p.year, p.month - 1, p.day));
     if (p.hour * 60 + p.minute < hour * 60 + minute) date.setUTCDate(date.getUTCDate() - 1);
-    if (tf === 'W') date.setUTCDate(date.getUTCDate() - (metadata.sessionType === 'RTH' ? (date.getUTCDay() + 6) % 7 : date.getUTCDay()));
     const open = localTime(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), hour, minute, zone);
-    return tf === 'D' || tf === 'W' ? open : open + Math.floor((time - open) / seconds) * seconds;
+    const nextOpen = localTime(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate() + 1, hour, minute, zone);
+    const wDate = new Date(date.getTime());
+    wDate.setUTCDate(wDate.getUTCDate() - (rth ? (wDate.getUTCDay() + 6) % 7 : wDate.getUTCDay()));
+    const wOpen = localTime(wDate.getUTCFullYear(), wDate.getUTCMonth() + 1, wDate.getUTCDate(), hour, minute, zone);
+    if (time >= open && time < nextOpen) {
+      bZone = zone; bSess = rawSess; bRth = rth; bFrom = open; bTo = nextOpen; bOpen = open; bWeekOpen = wOpen;
+    }
+    return tf === 'W' ? wOpen : tf === 'D' ? open : open + Math.floor((time - open) / seconds) * seconds;
   }
   function clean(values) {
     const result = new Map();
@@ -7374,7 +7397,7 @@ const MarketData = (() => {
   return { durations, parts, localTime, bucket, clean, aggregate, inRegularSession };
 })();
 if (typeof module !== 'undefined') module.exports = MarketData;
-</script>
+  </script>
   <script>
 /* Protocol checks prevent a legacy server from looking permanently "connecting". */
 const BridgeProtocol={
@@ -7400,11 +7423,43 @@ const BridgeProtocol={
 };
 if(typeof module!=='undefined')module.exports=BridgeProtocol;
 </script>
-  <script>
+    <script>
 /* Drawing properties are plain data so saved workspaces and templates share one format. */
 const DrawingModel = (() => {
   const names = { box:'Rectangle', line:'Trend Line', hline:'Horizontal Line', fib:'Fib Retracement', text:'Text', position:'Long / Short Position', measure:'Measure',brush:'Brush' };
   const groups = { ticks:1, seconds:59, minutes:59, hours:24, days:366, weeks:52, months:12, ranges:1 };
+  const defaultVis = Object.fromEntries(Object.entries(groups).map(([k,max]) => [k,{ enabled:true,min:1,max }]));
+  const baseDefaultsCache = {};
+  function baseDefaults(type) {
+    return baseDefaultsCache[type] || (baseDefaultsCache[type] = {
+      title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
+      fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
+      middleLine:{ enabled:type === 'box', color:'#ffffff', width:1, style:'solid', opacity:36 }, text:'',
+      textStyle:{ color:type === 'text' ? '#211f1d' : '#ffffff', size:12, bold:false, italic:false, horizontal:'right', vertical:'inside' },
+      stats:{price:false,percent:false,bars:false,time:false,middle:false},
+      levels:[0,0.236,0.382,0.5,0.618,0.786,1], riskReward:2,
+      side:'long', accountSize:25000, risk:100, riskDisplayMode:'money', compact:false, alwaysShowStats:true, showPriceLabels:true,
+      visibility:defaultVis
+    });
+  }
+  function fastNormalize(value) {
+    const base = baseDefaults(value.type);
+    const normalized = {
+      ...base, ...value, borderColor:value.borderColor || value.color || base.borderColor,
+      stats:value.stats ? { ...base.stats, ...value.stats } : base.stats,
+      middleLine:value.middleLine ? { ...base.middleLine, ...value.middleLine } : base.middleLine,
+      textStyle:value.textStyle ? { ...base.textStyle, ...value.textStyle } : base.textStyle,
+      visibility:value.visibility ? Object.fromEntries(Object.entries(base.visibility).map(([k,v])=>[k,{ ...v, ...value.visibility?.[k] }])) : base.visibility
+    };
+    if(normalized.type==='position'&&normalized.p1&&normalized.p2&&!normalized.p3){
+      const reward=normalized.p2.price-normalized.p1.price;
+      normalized.p3={time:normalized.p2.time,price:normalized.p1.price-reward/Math.max(.1,normalized.riskReward)};
+    }
+    if(normalized.type==='position'&&!value.side&&normalized.p1&&normalized.p2){
+      normalized.side=normalized.p2.price<normalized.p1.price?'short':'long';
+    }
+    return normalized;
+  }
   function defaults(type) {
     return { title:'', color:'#211f1d', borderColor:type==='position'?'#dce1e8':'#211f1d', width:1, lineStyle:type==='position'?'dashed':'solid', strokeOpacity:type==='position'?76:100,
       fillEnabled:true, fillColor:'#916966', fillOpacity:32, profitColor:'#089981', profitOpacity:22, stopColor:'#f23645', stopOpacity:22, extend:'none', locked:false,
@@ -7486,10 +7541,20 @@ const DrawingModel = (() => {
     return match ? '#'+match.slice(1,4).map(v=>Number(v).toString(16).padStart(2,'0')).join('') : '#211f1d';
   }
   const dash = style => style === 'dashed' ? [7,5] : style === 'dotted' ? [2,3] : [];
-  function geometry(chart, value) {
-    const normalized=normalize(value),a=point(chart,normalized.p1),b=point(chart,normalized.p2 || normalized.p1),c=normalized.p3?point(chart,normalized.p3):null;
-    if ([a.x,a.y,b.x,b.y,...(c?[c.x,c.y]:[])].some(v=>v === null || !Number.isFinite(v))) return null;
-    const points=value.type==='brush'&&value.points?.length?value.points.map(p=>point(chart,p)).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)):c?[a,b,c]:[a,b];return { a,b,c,left:Math.min(...points.map(p=>p.x)),right:Math.max(...points.map(p=>p.x)),top:Math.min(...points.map(p=>p.y)),bottom:Math.max(...points.map(p=>p.y)) };
+  function geometry(chart, value, preNorm=false) {
+    const normalized=preNorm?value:fastNormalize(value),a=point(chart,normalized.p1),b=normalized.p2?point(chart,normalized.p2):a,c=normalized.p3?point(chart,normalized.p3):null;
+    if (!Number.isFinite(a.x) || !Number.isFinite(a.y) || !Number.isFinite(b.x) || !Number.isFinite(b.y) || (c && (!Number.isFinite(c.x) || !Number.isFinite(c.y)))) return null;
+    if (value.type==='brush'&&value.points?.length) {
+      const points=value.points.map(p=>point(chart,p)).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+      return { a,b,c,left:Math.min(...points.map(p=>p.x)),right:Math.max(...points.map(p=>p.x)),top:Math.min(...points.map(p=>p.y)),bottom:Math.max(...points.map(p=>p.y)) };
+    }
+    return {
+      a,b,c,
+      left:c?Math.min(a.x,b.x,c.x):Math.min(a.x,b.x),
+      right:c?Math.max(a.x,b.x,c.x):Math.max(a.x,b.x),
+      top:c?Math.min(a.y,b.y,c.y):Math.min(a.y,b.y),
+      bottom:c?Math.max(a.y,b.y,c.y):Math.max(a.y,b.y)
+    };
   }
   function distance(x,y,a,b) {
     const dx=b.x-a.x,dy=b.y-a.y, t=Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy || 1)));
@@ -7540,11 +7605,22 @@ const DrawingModel = (() => {
     return distance(x,y,g.a,g.b)<7 ? 'body' : null;
   }
   function draw(ctx, chart, raw) {
-    const d=normalize(raw);if(!visible(d,chart.currentTimeframe))return;
-    const g=geometry(chart,d);if(!g)return;
-    const axisW=chart.chart?.priceScale?.('right')?.width?.()||65;
-    const width=chart.container.clientWidth-axisW;
-    const plotBottom=(chart.plotHeight??chart.container.clientHeight)-26;
+    const d=fastNormalize(raw);if(!visible(d,chart.currentTimeframe))return;
+    const g=geometry(chart,d,true);if(!g)return;
+    const m=chart._drawMetrics;
+    const axisW=m?m.axisW:(chart.chart?.priceScale?.('right')?.width?.()||65);
+    const width=m?m.width:(chart.container.clientWidth-axisW);
+    const plotBottom=m?m.plotBottom:((chart.plotHeight??chart.container.clientHeight)-26);
+    if(d.type === 'line') {
+      if(d.axis === 'vertical') {
+        if(g.a.x < -2 || g.a.x > width + 2) return;
+      } else if((!d.extend || d.extend === 'none') && (g.right < -40 || g.left > width + 40)) {
+        return;
+      }
+    } else if(d.type === 'text' && d.textStyle?.pine) {
+      if(!d._qtTrueOpenSpan && (g.a.x < -120 || g.a.x > width + 120 || g.a.y < -80 || g.a.y > plotBottom + 80)) return;
+      if(d._qtTrueOpenSpan && (g.a.y < -80 || g.a.y > plotBottom + 80)) return;
+    }
     let {left,right,top,bottom}=g;
     if(d.extend === 'left' || d.extend === 'both') left=0;
     if(d.extend === 'right' || d.extend === 'both') right=width;
@@ -7840,7 +7916,7 @@ const DrawingModel = (() => {
   return {names,groups,defaults,normalize,visible,logicalIndex,timeAt,point,fromPixel,constrainLinePoint,hex,rgba,geometry,hit,draw,boxEdges,resizeBox,positionHandles};
 })();
 if(typeof module !== 'undefined')module.exports=DrawingModel;
-</script>
+  </script>
   <script>
 /* Renderer-neutral Pine pane plots and fills, shared by the v4 canvas and v5 primitive. */
 const PinePainter={
@@ -7898,7 +7974,7 @@ const PinePainter={
 };
 if(typeof module!=='undefined')module.exports=PinePainter;
 </script>
-  <script>
+    <script>
 const TF_MAP = MarketData.durations;
 const CHART_CLOCK = new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hour12:false});
 const CHART_DATE = new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York',month:'short',day:'numeric'});
@@ -8337,10 +8413,15 @@ class ChartEngine {
   updateBar(value) {
     const bar = MarketData.clean([value])[0];
     if (!bar) return;
-    const index = this.rawBars.findIndex(b => b.time >= bar.time);
-    if (index < 0) this.rawBars.push(bar);
-    else if (this.rawBars[index].time === bar.time) this.rawBars[index] = bar;
-    else this.rawBars.splice(index, 0, bar);
+    const rawLast = this.rawBars[this.rawBars.length - 1];
+    if (!rawLast || bar.time > rawLast.time) this.rawBars.push(bar);
+    else if (bar.time === rawLast.time) this.rawBars[this.rawBars.length - 1] = bar;
+    else {
+      const index = this.rawBars.findIndex(b => b.time >= bar.time);
+      if (index < 0) this.rawBars.push(bar);
+      else if (this.rawBars[index].time === bar.time) this.rawBars[index] = bar;
+      else this.rawBars.splice(index, 0, bar);
+    }
     this.htfData['1m'] = this.rawBars;
     this.regularBarsByTf=null;
     if (this.replayMode) return;
@@ -8348,11 +8429,18 @@ class ChartEngine {
       this.renderCurrentTimeframe(false);
       return;
     }
-    const next = this.getBarsForTimeframe(this.currentTimeframe);
     const last = this.bars[this.bars.length - 1];
-    const tail = next[next.length - 1];
     const historical = last && bar.time < last.time;
-    this.bars = next;
+    let next;
+    if (this.currentTimeframe === '1m' && !historical && this.bars.length) {
+      if (bar.time === last.time) this.bars[this.bars.length - 1] = { ...bar };
+      else this.bars.push({ ...bar });
+      next = this.bars;
+    } else {
+      next = this.getBarsForTimeframe(this.currentTimeframe);
+      this.bars = next;
+    }
+    const tail = next[next.length - 1];
     if (tail && (!last || tail.time >= last.time) && !historical) this.series.update(this.appearance?ChartAppearance.candleData(this,next.slice(-2)).at(-1):tail);
     else this.series.setData(this.appearance?ChartAppearance.candleData(this,next):next);
     this.updateLegend(tail);
@@ -8726,7 +8814,7 @@ class ChartEngine {
     }
     legendEl.hidden=!legendEl.childElementCount;
     if(!bar)return;
-    const index=this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
+    const index=this.bars.at(-1)?.time===bar.time?this.bars.length-1:this.bars.findIndex(b=>b.time===bar.time),previous=this.bars[index-1]?.close??bar.open;
     const diff=bar.close-previous,diffPct=previous?diff/previous*100:0;
     if(s?.chartValues!==false)add(`O ${format(bar.open)}  H ${format(bar.high)}  L ${format(bar.low)}  C ${format(bar.close)}`,'legend-ohlc');
     if(s?.barChange!==false)add(`${diff>=0?'+':''}${format(diff)} (${diffPct.toFixed(2)}%)`,diff>=0?'price-up':'price-down');
@@ -8856,8 +8944,12 @@ class ChartEngine {
     if(this.appearance?.positions!==false)for(const order of this.pendingOrders||[]){const y=this.series.priceToCoordinate(order.price);if(y!==null&&y>=0&&y<this.plotBottom){ctx.strokeStyle='#e6a23c';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(this.appearance?.extendedLines===false?180:rect.width-this.chart.priceScale('right').width(),y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e6a23c';ctx.font='11px Arial';ctx.fillText(`${order.type} ${order.side} ${order.qty} @ ${order.price}`,this.appearance?.alignment==='Right'?Math.max(8,rect.width-250):8,y-5);}}
     }
     ctx.save();
+    this.onBeforeRenderDrawings?.();
     const rightAxisW = this.chart?.priceScale?.('right')?.width?.() || 65;
-    ctx.beginPath(); ctx.rect(0, 0, Math.max(0, rect.width - rightAxisW), Math.max(0, rect.height - (this.paneHeight||0) - 26)); ctx.clip();
+    const drawW = Math.max(0, rect.width - rightAxisW);
+    const drawH = Math.max(0, rect.height - (this.paneHeight||0) - 26);
+    this._drawMetrics = { axisW: rightAxisW, width: drawW, plotBottom: drawH };
+    ctx.beginPath(); ctx.rect(0, 0, drawW, drawH); ctx.clip();
     this._qtSsmtDrawn = [];
     this._qtTrBoxes = [];
     this._qtQBoxes = [];
@@ -8866,6 +8958,7 @@ class ChartEngine {
       const value = this.drawingPreview && original.id && this.drawingPreview.id === original.id ? this.drawingPreview : original;
       DrawingModel.draw(ctx, this, value);
     }
+    this._drawMetrics = null;
     window.drawingMgr?.editor.renderHandles(this, ctx);
     ctx.restore();
   }
@@ -8911,7 +9004,7 @@ class ChartEngine {
     return this.chart.timeScale().timeToCoordinate(time);
   }
 }
-</script>
+  </script>
   <script>
 /* v5 preview: rendering uses a native series primitive, native scales and separators. */
 class NativeCyclePane {
@@ -16533,12 +16626,12 @@ class AlertChartControls{
 }
 if(typeof module!=='undefined')module.exports=AlertPrice;
 </script>
-  <script src="js/qt_core.js?v=qt-22"></script>
-  <script src="js/qt_cycles_trueopen.js?v=qt-22"></script>
-  <script src="js/qt_ssmt.js?v=qt-22"></script>
-  <script src="js/qt_psp.js?v=qt-22"></script>
-  <script src="js/qt_engine.js?v=qt-22"></script>
-  <script src="js/qt_mode.js?v=qt-22"></script>
+  <script src="js/qt_core.js?v=qt-23"></script>
+  <script src="js/qt_cycles_trueopen.js?v=qt-23"></script>
+  <script src="js/qt_ssmt.js?v=qt-23"></script>
+  <script src="js/qt_psp.js?v=qt-23"></script>
+  <script src="js/qt_engine.js?v=qt-23"></script>
+  <script src="js/qt_mode.js?v=qt-23"></script>
   <script>
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);

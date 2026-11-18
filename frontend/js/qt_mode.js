@@ -471,12 +471,22 @@ class QTMode {
       chart.onIndicatorToggle = () => this.toggleChart(chart);
       chart.onDataChange = () => this.schedule(chart);
 
-      chart.chart.timeScale().subscribeVisibleLogicalRangeChange(range => {
+      const syncPins = range => {
         const meta = this._chartMeta.get(chart);
-        if (!meta || !chart.bars?.length || (!meta.qLabels?.length && !meta.trLabels?.length)) return;
-        if (meta.qLabels?.length) QuantaibayEngine.pinQLabels(meta.qLabels, chart.bars, range, meta.labelPadPct);
-        if (meta.trLabels?.length) QuantaibayEngine.pinTrueOpenLabels?.(meta.trLabels, chart.bars, range, chart.tfSeconds);
-        chart.renderDrawings();
+        if (!meta || !chart.bars?.length || (!meta.qLabels?.length && !meta.trLabels?.length)) return false;
+        const r = range ?? chart.chart.timeScale().getVisibleLogicalRange?.();
+        const rKey = r && Number.isFinite(r.from) && Number.isFinite(r.to)
+          ? `${r.from}:${r.to}:${chart.bars.length}:${meta.labelPadPct}:${chart.tfSeconds}`
+          : '';
+        if (rKey && meta.lastPinKey === rKey) return false;
+        meta.lastPinKey = rKey;
+        if (meta.qLabels?.length) QuantaibayEngine.pinQLabels(meta.qLabels, chart.bars, r, meta.labelPadPct);
+        if (meta.trLabels?.length) QuantaibayEngine.pinTrueOpenLabels?.(meta.trLabels, chart.bars, r, chart.tfSeconds);
+        return true;
+      };
+      chart.onBeforeRenderDrawings = () => { syncPins(); };
+      chart.chart.timeScale().subscribeVisibleLogicalRangeChange(range => {
+        if (syncPins(range)) chart.renderDrawings();
       });
     }
   }
@@ -534,6 +544,8 @@ class QTMode {
       }
       meta.qLabels = [];
       meta.trLabels = [];
+      meta.lastPinKey = '';
+      meta.tableSig = '';
       meta.tableLayer.replaceChildren();
       chart.renderDrawings();
       return;
@@ -599,22 +611,48 @@ class QTMode {
     }
     const nextSig = nextColors.length ? `${chart.symbol}:${chart.currentTimeframe}:${nextColors.length}:${hash >>> 0}` : '';
     if (nextSig !== meta.candleColorSig) {
+      const tailB = chart.bars[chart.bars.length - 1];
+      const prevMap = chart.indicatorCandleColors;
+      const nextMap = new Map(nextColors.map(x => [x.time, x.color]));
+      chart.indicatorCandleColors = nextMap;
+      let onlyTailChanged = false;
+      if (tailB && prevMap instanceof Map && Math.abs(nextMap.size - prevMap.size) <= 1 && typeof chart.series?.update === 'function' && !chart.replayPreview) {
+        onlyTailChanged = true;
+        for (const [t, c] of nextMap) {
+          if (t !== tailB.time && prevMap.get(t) !== c) { onlyTailChanged = false; break; }
+        }
+        if (onlyTailChanged) {
+          for (const [t, c] of prevMap) {
+            if (t !== tailB.time && nextMap.get(t) !== c) { onlyTailChanged = false; break; }
+          }
+        }
+      }
       meta.candleColorSig = nextSig;
-      chart.indicatorCandleColors = new Map(nextColors.map(x => [x.time, x.color]));
-      chart.renderCandleData?.();
+      if (onlyTailChanged && typeof ChartAppearance !== 'undefined') {
+        const item = chart.appearance ? ChartAppearance.candleData(chart, chart.bars.slice(-2)).at(-1) : (nextMap.has(tailB.time) ? { ...tailB, color: nextMap.get(tailB.time) } : tailB);
+        if (item) chart.series.update(item);
+      } else {
+        chart.renderCandleData?.();
+      }
     }
 
     meta.qLabels = out.qLabels || [];
     meta.trLabels = out.trLabels || [];
     meta.labelPadPct = out.labelPadPct ?? 8;
+    meta.lastPinKey = '';
     chart.indicatorDrawings = out.drawings;
-    this._renderTables(meta.tableLayer, out.tables, chart);
+    this._renderTables(meta.tableLayer, out.tables, chart, meta);
     chart.renderDrawings();
   }
 
-  _renderTables(layer, tables, chart) {
-    layer.replaceChildren();
-    if (!tables?.length) return;
+  _renderTables(layer, tables, chart, meta) {
+    if (!tables?.length) {
+      if (!meta || meta.tableSig !== '') {
+        if (meta) meta.tableSig = '';
+        layer.replaceChildren();
+      }
+      return;
+    }
     const axisRight = (chart.chart?.priceScale?.('right')?.width?.() || 65) + 8;
     const axisBottom = (chart.chart?.timeScale?.().height?.() || 26) + 8;
 
@@ -627,6 +665,11 @@ class QTMode {
         topInset = Math.max(10, Math.ceil(tbRect.bottom - chRect.top + 8));
       }
     }
+
+    const sig = `${axisRight}|${axisBottom}|${topInset}|${JSON.stringify(tables)}`;
+    if (meta && meta.tableSig === sig && layer.childElementCount === tables.length) return;
+    if (meta) meta.tableSig = sig;
+    layer.replaceChildren();
 
     for (const desc of tables) {
       const wrap = document.createElement('div');

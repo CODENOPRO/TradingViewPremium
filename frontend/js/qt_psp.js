@@ -2,7 +2,8 @@
 const QTPsp = (() => {
   const Core = typeof QTCore !== 'undefined' ? QTCore : (typeof require === 'function' ? require('./qt_core.js') : null);
   if (!Core) return { computeAdvancedPsp: () => ({ candleColors: [], drawings: [] }) };
-  const { parseColor, sizePx, tfToSeconds, getSeriesForRow } = Core;
+  const { parseColor, sizePx, tfToSeconds, barSig, getSeriesForRow } = Core;
+  const pspCache = new Map();
 
   function computeAdvancedPsp({ bars, tf, chartSec, triad, ownShort, markets, sessionMode, cutoffTime, s }) {
     const candleColors = [];
@@ -21,6 +22,10 @@ const QTPsp = (() => {
 
     const p1Bars = (s.pspShowSmt1 !== false && peer1Sym) ? getSeriesForRow(markets, peer1Sym, tf, sessionMode, cutoffTime) : [];
     const p2Bars = (s.pspShowSmt2 !== false && peer2Sym) ? getSeriesForRow(markets, peer2Sym, tf, sessionMode, cutoffTime) : [];
+    const pspKey = `${tf}|${chartSec}|${ownShort}|${peer1Sym}|${peer2Sym}|${s.pspMode}|${s.pspBullClr}|${s.pspBearClr}|${s.pspBullShape}|${s.pspBearShape}|${s.pspSizeStr}|${s.pspBullBody}|${s.pspBearBody}|${s.maxPspBars}|${s.pspShowSmt1}|${s.pspShowSmt2}|${s.pspInv1}|${s.pspInv2}|${barSig(bars)}|${barSig(p1Bars)}|${barSig(p2Bars)}`;
+    const hit = pspCache.get(pspKey);
+    if (hit) return hit;
+
     const mapP1 = new Map();
     const mapP2 = new Map();
     for (let i = 0; i < p1Bars.length; i++) mapP1.set(p1Bars[i].time, p1Bars[i]);
@@ -76,7 +81,10 @@ const QTPsp = (() => {
     }
 
     if (pspLabels.length) drawings.push(...pspLabels);
-    return { candleColors, drawings };
+    const res = { candleColors, drawings };
+    if (pspCache.size >= 64) pspCache.clear();
+    pspCache.set(pspKey, res);
+    return res;
   }
 
   return { computeAdvancedPsp };

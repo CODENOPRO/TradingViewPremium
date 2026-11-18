@@ -5,8 +5,37 @@ const QTSsmt = (() => {
   const {
     DAY_SEC, HOUR_SEC, TFN, ROW_KEYS, ROW_SEC,
     themeColor, sizePx, lineStyleNorm, sessionStart, wkStart, wkNext,
-    createAmdxTracker, getSeriesForRow, snapToChartBar
+    createAmdxTracker, barSig, getSeriesForRow, snapToChartBar
   } = Core;
+
+  const tblCache = new Map();
+  const ssmtCache = new Map();
+  const ckptCache = new Map();
+
+  function closedSig(s, cutT) {
+    if (!s.length) return '0';
+    const cnt = s[s.length - 1].time > cutT ? s.length - 1 : s.length;
+    if (!cnt) return '0';
+    const f = s[0], b = s[cnt - 1];
+    return `${cnt}:${f.time}:${b.time}:${b.open}:${b.high}:${b.low}:${b.close}`;
+  }
+
+  function cloneState(seg, lv, cyc, nwr) {
+    return {
+      segState: seg.map(s => ({
+        last: s.last, cq: s.cq, pq: s.pq,
+        c: s.c.slice(), p: s.p.slice(), ct: s.ct.slice(), pt: s.pt.slice()
+      })),
+      live: lv.map(o => ({
+        ...o,
+        ref: o.ref.slice(),
+        lat: o.lat.slice(),
+        onlineMask: o.onlineMask ? o.onlineMask.slice() : null
+      })),
+      cycId: cyc,
+      nextWeekReset: nwr
+    };
+  }
 
   // Refine an HTF pivot timestamp onto the exact LTF chart candle inside [htfTime, htfEnd)
   function refineHtfPivotTime(chartBars, htfTime, htfEnd, htfBar, dir, hid) {
@@ -54,20 +83,28 @@ const QTSsmt = (() => {
     const tfKey = ROW_KEYS[r];
     const barsA = getSeriesForRow(markets, triad[0], tfKey, sessionMode, cutoffTime);
     if (!barsA.length) return { ssmts: [], code: null };
+    const sigA = barSig(barsA);
 
     let tableCode = null;
     if (needTable) {
-      const stepAmdx = createAmdxTracker(settings.rangeMode === 'Whole Previous Cycle');
-      let lastQ = null, lastRes = null;
-      const tblStart = Math.max(0, barsA.length - 250);
-      for (let i = tblStart; i < barsA.length; i++) {
-        const b = barsA[i];
-        const cyc = evalCycle(b.time, cs);
-        lastQ = cyc.qNum;
-        lastRes = stepAmdx(b, cyc.qNum, cyc.segStart);
-      }
-      if (lastQ !== null && lastQ !== undefined && lastRes) {
-        tableCode = lastQ * 4 + (lastRes.isX ? 2 : 0) + (lastRes.haveRef ? 1 : 0);
+      const tblKey = `${r}|${cs}|${settings.tz}|${settings.m1Timing}|${settings.rangeMode}|${sigA}`;
+      if (tblCache.has(tblKey)) {
+        tableCode = tblCache.get(tblKey);
+      } else {
+        const stepAmdx = createAmdxTracker(settings.rangeMode === 'Whole Previous Cycle');
+        let lastQ = null, lastRes = null;
+        const tblStart = Math.max(0, barsA.length - 250);
+        for (let i = tblStart; i < barsA.length; i++) {
+          const b = barsA[i];
+          const cyc = evalCycle(b.time, cs);
+          lastQ = cyc.qNum;
+          lastRes = stepAmdx(b, cyc.qNum, cyc.segStart);
+        }
+        if (lastQ !== null && lastQ !== undefined && lastRes) {
+          tableCode = lastQ * 4 + (lastRes.isX ? 2 : 0) + (lastRes.haveRef ? 1 : 0);
+        }
+        if (tblCache.size >= 256) tblCache.clear();
+        tblCache.set(tblKey, tableCode);
       }
     }
 
@@ -75,6 +112,9 @@ const QTSsmt = (() => {
 
     const barsB = getSeriesForRow(markets, triad[1], tfKey, sessionMode, cutoffTime);
     const barsC = getSeriesForRow(markets, triad[2], tfKey, sessionMode, cutoffTime);
+    const ssmtKey = `${r}|${cs}|${settings.tz}|${settings.m1Timing}|${settings.showNorm ? 1 : 0}|${settings.showHid ? 1 : 0}|${settings.maxRow}|${sigA}|${barSig(barsB)}|${barSig(barsC)}`;
+    const exactHit = ssmtCache.get(ssmtKey);
+    if (exactHit) return { ssmts: exactHit.ssmts, code: tableCode, mapA: exactHit.mapA };
 
     const lastBarTime = barsA[barsA.length - 1].time;
     const cutSec = r <= 3 ? wkStart(lastBarTime, settings.tz) - 2 * DAY_SEC : -Infinity;
@@ -104,27 +144,45 @@ const QTSsmt = (() => {
     const maxLastTime = Math.max(lastTimes[0], lastTimes[1], lastTimes[2]);
     const staleGap = Math.max(cs * 2, 600);
 
-    const mapA = new Map(), mapB = new Map(), mapC = new Map();
-    const timeSet = new Set();
-    for (let i = 0; i < sA.length; i++) { mapA.set(sA[i].time, sA[i]); timeSet.add(sA[i].time); }
-    for (let i = 0; i < sB.length; i++) { mapB.set(sB[i].time, sB[i]); timeSet.add(sB[i].time); }
-    for (let i = 0; i < sC.length; i++) { mapC.set(sC[i].time, sC[i]); timeSet.add(sC[i].time); }
-    const timeline = Array.from(timeSet).sort((a, b) => a - b);
+    const timeKey = `${r}|${cs}|${settings.tz}|${settings.m1Timing}|${settings.showNorm ? 1 : 0}|${settings.showHid ? 1 : 0}|${settings.maxRow}|${lastTimes[0]}:${lastTimes[1]}:${lastTimes[2]}`;
+    const cp = ckptCache.get(timeKey);
+    let mapA, mapB, mapC, timeline, segState, live, cycId, nextWeekReset, startStep = 0;
+
+    if (cp && cp.timeline.length >= 2 && cp.sSig === `${closedSig(sA, cp.cutT)}|${closedSig(sB, cp.cutT)}|${closedSig(sC, cp.cutT)}`) {
+      timeline = cp.timeline;
+      mapA = cp.mapA;
+      mapB = cp.mapB;
+      mapC = cp.mapC;
+      if (sA.length) mapA.set(sA[sA.length - 1].time, sA[sA.length - 1]);
+      if (sB.length) mapB.set(sB[sB.length - 1].time, sB[sB.length - 1]);
+      if (sC.length) mapC.set(sC[sC.length - 1].time, sC[sC.length - 1]);
+      const restored = cloneState(cp.segState, cp.live, cp.cycId, cp.nextWeekReset);
+      segState = restored.segState;
+      live = restored.live;
+      cycId = restored.cycId;
+      nextWeekReset = restored.nextWeekReset;
+      startStep = timeline.length - 1;
+    } else {
+      mapA = new Map(); mapB = new Map(); mapC = new Map();
+      const timeSet = new Set();
+      for (let i = 0; i < sA.length; i++) { mapA.set(sA[i].time, sA[i]); timeSet.add(sA[i].time); }
+      for (let i = 0; i < sB.length; i++) { mapB.set(sB[i].time, sB[i]); timeSet.add(sB[i].time); }
+      for (let i = 0; i < sC.length; i++) { mapC.set(sC[i].time, sC[i]); timeSet.add(sC[i].time); }
+      timeline = Array.from(timeSet).sort((a, b) => a - b);
+      segState = [0, 1, 2].map(() => ({
+        last: null,
+        cq: null,
+        pq: null,
+        c: [null, null, null, null],
+        p: [null, null, null, null],
+        ct: [null, null, null, null],
+        pt: [null, null, null, null]
+      }));
+      live = [];
+      cycId = 0;
+      nextWeekReset = 0;
+    }
     const maps = [mapA, mapB, mapC];
-
-    const segState = [0, 1, 2].map(() => ({
-      last: null,
-      cq: null,
-      pq: null,
-      c: [null, null, null, null],
-      p: [null, null, null, null],
-      ct: [null, null, null, null],
-      pt: [null, null, null, null]
-    }));
-
-    let live = [];
-    let cycId = 0;
-    let nextWeekReset = 0;
 
     const capOld = () => {
       let oldCnt = 0;
@@ -139,7 +197,7 @@ const QTSsmt = (() => {
       }
     };
 
-    for (let step = 0; step < timeline.length; step++) {
+    for (let step = startStep; step < timeline.length; step++) {
       const t = timeline[step];
       const { qNum: q, segStart: ss } = evalCycle(t, cs);
 
@@ -173,12 +231,10 @@ const QTSsmt = (() => {
         }
       }
 
-      if (t >= nextWeekReset) {
+      if (r <= 3 && t >= nextWeekReset) {
         nextWeekReset = wkNext(t, settings.tz);
-        if (r <= 3) {
-          live = [];
-          cycId = 0;
-        }
+        live = [];
+        cycId = 0;
       }
 
       const barA = mapA.get(t);
@@ -252,8 +308,23 @@ const QTSsmt = (() => {
           o.py2 = segState[0].c[f];
         }
       }
+
+      if (startStep === 0 && step === timeline.length - 2) {
+        if (ckptCache.size >= 64) ckptCache.clear();
+        ckptCache.set(timeKey, {
+          cutT: t,
+          sSig: `${closedSig(sA, t)}|${closedSig(sB, t)}|${closedSig(sC, t)}`,
+          timeline,
+          mapA,
+          mapB,
+          mapC,
+          ...cloneState(segState, live, cycId, nextWeekReset)
+        });
+      }
     }
 
+    if (ssmtCache.size >= 128) ssmtCache.clear();
+    ssmtCache.set(ssmtKey, { ssmts: live, mapA });
     return { ssmts: live, code: tableCode, mapA };
   }
 

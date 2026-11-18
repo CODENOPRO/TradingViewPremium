@@ -5,8 +5,11 @@ const QTCyclesTrueOpen = (() => {
   const {
     DAY_SEC, HOUR_SEC, MIN_SEC, ROW_KEYS, ROW_SEC,
     parseColor, themeColor, sizePx, lineStyleNorm, sessionStart,
-    createAmdxTracker, formatQLabel, getSeriesForRow, snapToChartBar, firstBarAtOrAfter
+    createAmdxTracker, formatQLabel, barSig, getSeriesForRow, snapToChartBar, firstBarAtOrAfter
   } = Core;
+
+  const cycLoopCache = new Map();
+  const trFoundCache = new Map();
 
   function pinQLabels(qLabels, bars, logicalRange, labelPadPct = 8) {
     if (!qLabels?.length || !bars?.length) return;
@@ -73,113 +76,126 @@ const QTCyclesTrueOpen = (() => {
     if (!bars.length) return { drawings: [], qLabelMeta: [], trLabelMeta: [] };
 
     const stepChartAmdx = createAmdxTracker(s.rangeMode === 'Whole Previous Cycle');
-    const vLines = [];
-    const qLabels = [];
-    const trLines = [];
-    const trLabels = [];
-    const qLabelMeta = [];
-    const trLabelMeta = [];
-
     const cVLine = themeColor(s, 'lineColor', darkBg, '#000000');
     const cOpenLine = themeColor(s, 'cycOpenColor', darkBg, '#2962ff');
     const cQText = themeColor(s, 'qColor', darkBg, '#363a45');
     const qFontPx = sizePx(s.qSizeInput, 11);
     const cycOpenStyle = lineStyleNorm(s.cycOpenStyle);
 
-    let prevSeg = null;
-    let prevBarMid = null;
-    let prevIsX = false;
-    let prevUseLetters = false;
-    let curLbl = null;
-    let curStartIdx = null;
-    let q1Lbl = null;
-    let q1LblCyc = null;
+    const prevB = bars.length > 1 ? bars[bars.length - 2] : bars[0];
+    const lastB = bars[bars.length - 1];
+    const cycKey = `${tfKey}|${chartSec}|${m1UseMid ? 1 : 0}|${s.tz}|${s.rangeMode}|${s.showCycLines ? 1 : 0}|${cVLine.hex}:${cVLine.opacity}:${s.lineWidth}|${cOpenLine.hex}:${cOpenLine.opacity}:${s.cycOpenWidth}:${cycOpenStyle}|${s.maxVL}|${s.showQLabels ? 1 : 0}|${cQText.css}:${qFontPx}:${s.showSub ? 1 : 0}:${s.maxQL}|${s.useAMDX ? 1 : 0}|${bars.length}:${bars[0].time}:${prevB.time}:${prevB.high}:${prevB.low}:${prevB.close}:${lastB.time}`;
+    const cycHit = cycLoopCache.get(cycKey);
 
-    const pushVLine = (tSec, isOpen, refBar) => {
-      const col = isOpen ? cOpenLine : cVLine;
-      vLines.push({
-        type: 'line',
-        axis: 'vertical',
-        p1: { time: tSec, price: refBar.low },
-        p2: { time: tSec, price: refBar.high },
-        borderColor: col.hex,
-        strokeOpacity: col.opacity,
-        width: isOpen ? s.cycOpenWidth : s.lineWidth,
-        lineStyle: isOpen ? cycOpenStyle : 'dotted',
-        extend: 'both'
-      });
-      if (vLines.length > s.maxVL) vLines.shift();
-    };
+    let vLines, qLabels;
+    if (cycHit) {
+      vLines = cycHit.vLines;
+      qLabels = cycHit.qLabels;
+    } else {
+      vLines = [];
+      qLabels = [];
+      let prevSeg = null;
+      let prevBarMid = null;
+      let prevIsX = false;
+      let prevUseLetters = false;
+      let curLbl = null;
+      let curStartIdx = null;
+      let q1Lbl = null;
+      let q1LblCyc = null;
 
-    for (let i = 0; i < bars.length; i++) {
-      const b = bars[i];
-      const prevBar = i > 0 ? bars[i - 1] : null;
-      const { qMid: cQMid, qNum: cQNum, segStart: cSeg, extra: cExtra } = evalCycle(b.time, tfKey);
-      const { isX: cIsX, haveRef: cHave, cycId: cCyc } = stepChartAmdx(b, cQNum, cSeg);
+      const pushVLine = (tSec, isOpen, refBar) => {
+        const col = isOpen ? cOpenLine : cVLine;
+        vLines.push({
+          type: 'line',
+          axis: 'vertical',
+          p1: { time: tSec, price: refBar.low },
+          p2: { time: tSec, price: refBar.high },
+          borderColor: col.hex,
+          strokeOpacity: col.opacity,
+          width: isOpen ? s.cycOpenWidth : s.lineWidth,
+          lineStyle: isOpen ? cycOpenStyle : 'dotted',
+          extend: 'both'
+        });
+        if (vLines.length > s.maxVL) vLines.shift();
+      };
 
-      if (s.showCycLines && cSeg !== null && (i === 0 || cSeg !== prevSeg)) {
-        const lineTime = (tfKey === 60 && m1UseMid && i > 0)
-          ? b.time
-          : (prevBar && cSeg > prevBar.time && cSeg <= b.time ? b.time : cSeg);
-        pushVLine(lineTime, cQNum === 1, b);
-      }
-      if (s.showCycLines && cExtra !== null && cQNum === 4 && b.time >= cExtra && (!prevBar || prevBar.time < cExtra)) {
-        pushVLine(prevBar && cExtra > prevBar.time && cExtra <= b.time ? b.time : cExtra, true, b);
-      }
+      for (let i = 0; i < bars.length; i++) {
+        const b = bars[i];
+        const prevBar = i > 0 ? bars[i - 1] : null;
+        const { qMid: cQMid, qNum: cQNum, segStart: cSeg, extra: cExtra } = evalCycle(b.time, tfKey);
+        const { isX: cIsX, haveRef: cHave, cycId: cCyc } = stepChartAmdx(b, cQNum, cSeg);
 
-      const useLetters = !!(s.useAMDX && cHave);
-      const barMid = b.time + chartSec / 2;
-
-      if (s.showQLabels) {
-        if (cSeg !== null && prevSeg !== null && cSeg !== prevSeg) {
-          if (curLbl && curStartIdx !== null) {
-            const midIdx = Math.round((curStartIdx + i - 1) / 2);
-            curLbl.p1.time = bars[Math.max(0, Math.min(bars.length - 1, midIdx))].time;
-          }
-          curLbl = null;
-          curStartIdx = i;
-        } else if (cSeg !== null && curStartIdx === null) {
-          curStartIdx = i;
+        if (s.showCycLines && cSeg !== null && (i === 0 || cSeg !== prevSeg)) {
+          const lineTime = (tfKey === 60 && m1UseMid && i > 0)
+            ? b.time
+            : (prevBar && cSeg > prevBar.time && cSeg <= b.time ? b.time : cSeg);
+          pushVLine(lineTime, cQNum === 1, b);
+        }
+        if (s.showCycLines && cExtra !== null && cQNum === 4 && b.time >= cExtra && (!prevBar || prevBar.time < cExtra)) {
+          pushVLine(prevBar && cExtra > prevBar.time && cExtra <= b.time ? b.time : cExtra, true, b);
         }
 
-        const hit = cQMid !== null && cQNum !== null && cQNum >= 1 && cQNum <= 4
-          && barMid >= cQMid && prevBarMid !== null && prevBarMid < cQMid;
+        const useLetters = !!(s.useAMDX && cHave);
+        const barMid = b.time + chartSec / 2;
 
-        if (hit) {
-          const newLbl = {
-            type: 'text',
-            _qtQLabel: true,
-            p1: { time: b.time, price: b.low },
-            text: formatQLabel(tfKey, cQNum, cIsX, useLetters, s.showSub),
-            labelBg: null,
-            textStyle: {
-              pine: true,
-              placement: 'center',
-              color: cQText.css,
-              size: qFontPx,
-              horizontal: 'center',
-              vertical: 'inside'
+        if (s.showQLabels) {
+          if (cSeg !== null && prevSeg !== null && cSeg !== prevSeg) {
+            if (curLbl && curStartIdx !== null) {
+              const midIdx = Math.round((curStartIdx + i - 1) / 2);
+              curLbl.p1.time = bars[Math.max(0, Math.min(bars.length - 1, midIdx))].time;
             }
-          };
-          qLabels.push(newLbl);
-          if (qLabels.length > s.maxQL) qLabels.shift();
-          curLbl = newLbl;
-          if (cQNum === 1) {
-            q1Lbl = newLbl;
-            q1LblCyc = cCyc;
+            curLbl = null;
+            curStartIdx = i;
+          } else if (cSeg !== null && curStartIdx === null) {
+            curStartIdx = i;
+          }
+
+          const hit = cQMid !== null && cQNum !== null && cQNum >= 1 && cQNum <= 4
+            && barMid >= cQMid && prevBarMid !== null && prevBarMid < cQMid;
+
+          if (hit) {
+            const newLbl = {
+              type: 'text',
+              _qtQLabel: true,
+              p1: { time: b.time, price: b.low },
+              text: formatQLabel(tfKey, cQNum, cIsX, useLetters, s.showSub),
+              labelBg: null,
+              textStyle: {
+                pine: true,
+                placement: 'center',
+                color: cQText.css,
+                size: qFontPx,
+                horizontal: 'center',
+                vertical: 'inside'
+              }
+            };
+            qLabels.push(newLbl);
+            if (qLabels.length > s.maxQL) qLabels.shift();
+            curLbl = newLbl;
+            if (cQNum === 1) {
+              q1Lbl = newLbl;
+              q1LblCyc = cCyc;
+            }
+          }
+
+          if (q1Lbl && cCyc !== null && cCyc === q1LblCyc && (cIsX !== prevIsX || useLetters !== prevUseLetters)) {
+            q1Lbl.text = formatQLabel(tfKey, 1, cIsX, useLetters, s.showSub);
           }
         }
 
-        if (q1Lbl && cCyc !== null && cCyc === q1LblCyc && (cIsX !== prevIsX || useLetters !== prevUseLetters)) {
-          q1Lbl.text = formatQLabel(tfKey, 1, cIsX, useLetters, s.showSub);
-        }
+        prevSeg = cSeg;
+        prevBarMid = barMid;
+        prevIsX = cIsX;
+        prevUseLetters = useLetters;
       }
-
-      prevSeg = cSeg;
-      prevBarMid = barMid;
-      prevIsX = cIsX;
-      prevUseLetters = useLetters;
+      if (cycLoopCache.size >= 64) cycLoopCache.clear();
+      cycLoopCache.set(cycKey, { vLines, qLabels });
     }
+
+    const trLines = [];
+    const trLabels = [];
+    const qLabelMeta = [];
+    const trLabelMeta = [];
 
     // Unified Multi-TF True Open (TMCO, 90m [TAO/TLO/TNY AM/TNY PM], TDO, TWO, TMO, TQO, TYO)
     const TR_SPANS = [4050, 16200, 64800, 259200, 1814400, 5896800, 23414400];
@@ -235,49 +251,58 @@ const QTCyclesTrueOpen = (() => {
         }
         startIdx = Math.max(0, lo - 2);
       }
-      let pQ = null;
-      let pSeg = null;
-      const found = [];
 
-      for (let i = startIdx; i < srcBars.length; i++) {
-        const b = srcBars[i];
-        const { qNum: cQNum, segStart: cSeg, extra: cExtra, sess: cSess } = evalCycle(b.time, cs);
-        const q2Start = cQNum === 2 && i > startIdx && pQ !== null && (pQ !== 2 || cSeg !== pSeg);
-        if (q2Start) {
-          let endT = null, txt = '';
-          if (r === 0) {
-            endT = cSeg + Math.trunc(67.5 * MIN_SEC);
-            txt = 'TMCO';
-          } else if (r === 1) {
-            const blk = ((Math.floor((b.time - cSess) / (6 * HOUR_SEC)) % 4) + 4) % 4;
-            txt = blk === 0 ? 'TAO' : blk === 1 ? 'TLO' : blk === 2 ? 'TNY AM' : 'TNY PM';
-            endT = cSeg + 270 * MIN_SEC;
-          } else if (r === 2) {
-            endT = cSeg + 18 * HOUR_SEC;
-            txt = 'TDO';
-          } else if (r === 3) {
-            endT = sessionStart(cSeg + 3 * DAY_SEC + 3 * HOUR_SEC, s.tz);
-            txt = 'TWO';
-          } else if (r === 4) {
-            endT = sessionStart(cSeg + 21 * DAY_SEC + 3 * HOUR_SEC, s.tz);
-            txt = 'TMO';
-          } else if (r === 5) {
-            endT = cSeg + Math.trunc(68.25 * DAY_SEC);
-            txt = 'TQO';
-          } else if (r === 6) {
-            endT = cExtra;
-            txt = 'TYO';
+      const lastSrc = srcBars[srcBars.length - 1];
+      const prevSrc = srcBars.length > 1 ? srcBars[srcBars.length - 2] : lastSrc;
+      const trTierKey = `${ownShort}|${r}|${s.tz}|${m1UseMid ? 1 : 0}|${trKeep}|${startIdx}|${srcBars.length}:${srcBars[0].time}:${prevSrc.time}:${prevSrc.open}:${lastSrc.time}:${lastSrc.open}`;
+      let found = trFoundCache.get(trTierKey);
+
+      if (!found) {
+        let pQ = null;
+        let pSeg = null;
+        found = [];
+
+        for (let i = startIdx; i < srcBars.length; i++) {
+          const b = srcBars[i];
+          const { qNum: cQNum, segStart: cSeg, extra: cExtra, sess: cSess } = evalCycle(b.time, cs);
+          const q2Start = cQNum === 2 && i > startIdx && pQ !== null && (pQ !== 2 || cSeg !== pSeg);
+          if (q2Start) {
+            let endT = null, txt = '';
+            if (r === 0) {
+              endT = cSeg + Math.trunc(67.5 * MIN_SEC);
+              txt = 'TMCO';
+            } else if (r === 1) {
+              const blk = ((Math.floor((b.time - cSess) / (6 * HOUR_SEC)) % 4) + 4) % 4;
+              txt = blk === 0 ? 'TAO' : blk === 1 ? 'TLO' : blk === 2 ? 'TNY AM' : 'TNY PM';
+              endT = cSeg + 270 * MIN_SEC;
+            } else if (r === 2) {
+              endT = cSeg + 18 * HOUR_SEC;
+              txt = 'TDO';
+            } else if (r === 3) {
+              endT = sessionStart(cSeg + 3 * DAY_SEC + 3 * HOUR_SEC, s.tz);
+              txt = 'TWO';
+            } else if (r === 4) {
+              endT = sessionStart(cSeg + 21 * DAY_SEC + 3 * HOUR_SEC, s.tz);
+              txt = 'TMO';
+            } else if (r === 5) {
+              endT = cSeg + Math.trunc(68.25 * DAY_SEC);
+              txt = 'TQO';
+            } else if (r === 6) {
+              endT = cExtra;
+              txt = 'TYO';
+            }
+            if (endT !== null) {
+              found.push({ startT: b.time, endT, price: b.open, txt });
+              if (found.length > trKeep) found.shift();
+            }
           }
-          if (endT !== null) {
-            found.push({ startT: b.time, endT, price: b.open, txt });
-            if (found.length > trKeep) found.shift();
-          }
+          pQ = cQNum;
+          pSeg = cSeg;
         }
-        pQ = cQNum;
-        pSeg = cSeg;
+        found.sort((a, b) => b.startT - a.startT);
+        if (trFoundCache.size >= 128) trFoundCache.clear();
+        trFoundCache.set(trTierKey, found);
       }
-
-      found.sort((a, b) => b.startT - a.startT);
       const onLineLbl = trShowLbl && trVert === 'On line';
 
       for (let j = 0; j < found.length; j++) {
