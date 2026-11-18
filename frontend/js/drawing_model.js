@@ -592,7 +592,8 @@ const DrawingModel = (() => {
       ctx.setLineDash(dash(d.lineStyle).length?dash(d.lineStyle):[4,4]);ctx.strokeStyle=rgba(d.borderColor,d.strokeOpacity);ctx.lineWidth=d.width;line(boxLeft,entry,boxLeft+span,entry);ctx.setLineDash([]);
       const isSelected=typeof window!=='undefined'&&window.drawingMgr?.editor?.drawing?.id===d.id;
       if(d.alwaysShowStats===true||isSelected||d.isTemp){
-        const pill=(text,x,y,fill)=>{ctx.font='600 11px Arial';const w=ctx.measureText(text).width+12;ctx.fillStyle=fill;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-w/2,y-10,w,19,4);else ctx.rect(x-w/2,y-10,w,19);ctx.fill();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(text,x,y+3.5);};
+        const posSize=d.textStyle?.size||11,posTextCol=d.textStyle?.color||'#ffffff';
+        const pill=(text,x,y,fill)=>{ctx.font=`600 ${posSize}px ${DEFAULT_FONT}`;const w=ctx.measureText(text).width+12;ctx.fillStyle=fill;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-w/2,y-10,w,19,4);else ctx.rect(x-w/2,y-10,w,19);ctx.fill();ctx.fillStyle=posTextCol;ctx.textAlign='center';ctx.fillText(text,x,y+3.5);};
         const tpColor=hex(d.profitColor)||'#089981',slColor=hex(d.stopColor)||'#f23645';
         const tpText=d.compact?`T: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) · ${rewardTicks}`:`Target: ${reward.toFixed(2)} (${rewardPct.toFixed(2)}%) ${rewardTicks}, Amount: ${((d.accountSize||25000)+rewardAmt).toFixed(2)}`;
         const slText=d.compact?`S: ${risk.toFixed(2)} (${riskPct.toFixed(2)}%) · ${riskTicks}`:`Stop: ${risk.toFixed(2)} (${riskPct.toFixed(2)}%) ${riskTicks}, Amount: ${((d.accountSize||25000)-riskAmt).toFixed(2)}`;

@@ -15,7 +15,7 @@ class DrawingSettings {
     { id: 'fill', label: 'Background', types: 'box,measure,brush', checkPath: 'fillEnabled', colorPath: 'fillColor', opacityPath: 'fillOpacity' },
     { id: 'profit', label: 'Profit zone', types: 'position', colorPath: 'profitColor', opacityPath: 'profitOpacity' },
     { id: 'stop', label: 'Stop zone', types: 'position', colorPath: 'stopColor', opacityPath: 'stopOpacity' },
-    { id: 'text', label: '', types: 'box,line,hline,vline,text', colorPath: 'textStyle.color' },
+    { id: 'text', label: 'Text color', types: 'box,line,hline,vline,text,position', colorPath: 'textStyle.color' },
     { id: 'textBg', label: 'Background', types: 'text', checkPath: 'textStyle.fillBackground', colorPath: 'textStyle.backgroundColor', opacityPath: 'textStyle.backgroundOpacity' },
     { id: 'textBorder', label: 'Border', types: 'text', checkPath: 'textStyle.drawBorder', colorPath: 'textStyle.borderColor' }
   ];
@@ -60,6 +60,7 @@ class DrawingSettings {
         ${tvRow('<span>Show time</span>', '<input type="checkbox" data-field="showTime" aria-label="Show time">', 'vline')}
         ${tvRow('<span>Profit zone</span>', pillHtml('profit'), 'position')}
         ${tvRow('<span>Stop zone</span>', pillHtml('stop'), 'position')}
+        ${tvRow('<span>Text</span>', `<div class="tv-align-pair">${pillHtml('text')}<select data-field="textStyle.size" aria-label="Position font size">${[8, 10, 11, 12, 14, 16, 18, 20, 22, 24].map(n => `<option value="${n}">${n}</option>`).join('')}</select></div>`, 'position')}
         ${tvRow('<span>Position side</span>', `<select data-field="side" aria-label="Position side">${selectOpts([['long', 'Long'], ['short', 'Short']])}</select>`, 'position')}
         ${tvRow('<span>Account size</span>', '<input type="number" step="any" min="1" data-field="accountSize" aria-label="Account size">', 'position')}
         ${tvRow('<span>Risk</span>', `<div class="tv-align-pair"><input type="number" step="any" min="0.01" data-field="risk" aria-label="Risk"><select data-field="riskDisplayMode" aria-label="Risk display mode">${selectOpts([['money', 'Money ($)'], ['percents', 'Percent (%)']])}</select></div>`, 'position')}
@@ -103,12 +104,15 @@ class DrawingSettings {
     document.body.appendChild(this.root);
     if (typeof TerminalLanguage !== 'undefined') TerminalLanguage.markup(this.root);
     for (const spec of DrawingSettings.STROKE_SPECS) {
-      const btn = this.root.querySelector(`[data-pill="${spec.id}"]`);
-      this.pills.set(spec.id, { btn, spec });
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        this.togglePopover(btn, spec);
-      });
+      const btns = [...(this.root.querySelectorAll?.(`[data-pill="${spec.id}"]`) || [])];
+      if (!btns.length) { const b = this.root.querySelector(`[data-pill="${spec.id}"]`); if (b) btns.push(b); }
+      this.pills.set(spec.id, { btn: btns[0], btns, spec });
+      for (const btn of btns) {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          this.togglePopover(btn, spec);
+        });
+      }
     }
     this.bindEvents();
   }
@@ -240,16 +244,18 @@ class DrawingSettings {
   assign(path, value) { const keys = path.split('.'); let target = this.draft; for (const key of keys.slice(0, -1)) target = target[key]; target[keys.at(-1)] = value; }
 
   syncPill(pillEntry) {
-    const { btn, spec } = pillEntry;
+    const { btn, btns, spec } = pillEntry;
     const color = DrawingModel.hex(this.value(spec.colorPath));
     const opacity = spec.opacityPath ? Number(this.value(spec.opacityPath) ?? 100) : 100;
-    btn.querySelector('.tv-swatch-fill').style.background = DrawingModel.rgba(color, opacity);
-    const line = btn.querySelector('.tv-stroke-preview line');
-    if (line) {
-      const width = Math.max(1, Math.min(5, Number(this.value(spec.widthPath) || 1)));
-      const style = this.value(spec.stylePath) || 'solid';
-      line.setAttribute('stroke-width', String(width));
-      line.setAttribute('stroke-dasharray', style === 'dashed' ? '5 4' : style === 'dotted' ? '1.5 3.5' : 'none');
+    for (const b of (btns || [btn]).filter(Boolean)) {
+      b.querySelector('.tv-swatch-fill').style.background = DrawingModel.rgba(color, opacity);
+      const line = b.querySelector('.tv-stroke-preview line');
+      if (line) {
+        const width = Math.max(1, Math.min(5, Number(this.value(spec.widthPath) || 1)));
+        const style = this.value(spec.stylePath) || 'solid';
+        line.setAttribute('stroke-width', String(width));
+        line.setAttribute('stroke-dasharray', style === 'dashed' ? '5 4' : style === 'dotted' ? '1.5 3.5' : 'none');
+      }
     }
   }
 
