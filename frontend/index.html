@@ -16752,14 +16752,8 @@ class ChartContextMenu {
 
       this.divider();
       const drawingCount = chart.drawings?.length || 0;
-      const indicatorCount = chart.runner?.entries?.length || 0;
       const drawingLabel = drawingCount > 0 ? `Remove ${drawingCount} ${drawingCount === 1 ? 'drawing' : 'drawings'}` : 'Remove drawings';
-      const indicatorLabel = indicatorCount > 0 ? `Remove ${indicatorCount} ${indicatorCount === 1 ? 'indicator' : 'indicators'}` : 'Remove indicators';
       this.item(drawingLabel, () => this.drawing.setTool('trash'), '', this.drawing.drawingsLocked || !drawingCount, 'trash');
-      this.item(indicatorLabel, () => {
-        for (const entry of [...(chart.runner?.entries || [])]) chart.runner.remove(entry.record.id);
-        this.desktop?.refresh?.();
-      }, '', !indicatorCount, 'trash');
 
       this.divider();
       this.item('Settings…', () => chart.onChartSettings?.(), '', false, 'settings');

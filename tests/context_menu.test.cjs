@@ -53,7 +53,7 @@ test('context menu renders TV desktop menu layout, copy/paste, cursor lock, coun
   assert.ok(labels.includes('Object tree'));
   assert.ok(labels.includes('Chart template'));
   assert.ok(labels.includes('Remove 3 drawings'));
-  assert.ok(labels.includes('Remove 1 indicator'));
+  assert.ok(!labels.some(l => /Remove .*indicator/i.test(l)));
   const pasteBtn=menu.root.children.find(c=>c.children?.[1]?.textContent==='Paste');
   assert.equal(pasteBtn.disabled,true);
   hitDrawing={drawing:targetChart.drawings[0],handle:'body'};

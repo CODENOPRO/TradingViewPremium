@@ -9428,3 +9428,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — Selection Anchor Handles TV Parity**:
   - Updated `DrawingEditor.renderHandles` in `frontend/js/drawing_editor.js` and `frontend/index.html` to fill anchor handles with the chart background (`chart.config?.bg || chart.appearance?.bg || '#131722'`) instead of `#fff`, use `1.5px` stroke width, and render box midpoint handles as rounded squares (`roundRect(..., 2)`).
   - Verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Remove Context-Menu "Remove indicators" Button**:
+  - Removed the `Remove X indicator(s)` item from `ChartContextMenu.open()` in `frontend/js/chart_context_menu.js` and `frontend/index.html` so accidentally clicking it cannot remove QT Mode's active indicator.
+  - Updated `tests/context_menu.test.cjs` and verified `node --test tests/*.test.cjs` (169/169 passed).
