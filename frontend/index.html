@@ -5761,11 +5761,13 @@ body:not(.reduce-motion) .chart-context-menu[role=menu]{animation:wow-menu-in .2
 #right-sidebar > button:is(:hover, :focus-visible),
 #right-sidebar #terminal-edge-dock .edge-handle:is(:hover, :focus-visible){
   padding:0 !important;
-  background:var(--wow-tint-2) !important;
-  color:var(--text) !important;
+  background:var(--accent) !important;
+  color:var(--accent-ink) !important;
+  box-shadow:0 4px 12px color-mix(in srgb, var(--accent) 32%, transparent) !important;
   transform:scale(1.06) !important;
 }
 #right-sidebar > button.active,
+#right-sidebar #terminal-edge-dock .edge-handle.active,
 #right-sidebar #terminal-edge-dock .edge-handle[aria-expanded="true"]{
   background:var(--accent) !important;
   color:var(--accent-ink) !important;

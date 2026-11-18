@@ -9422,3 +9422,6 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
 - **2026-11-19 — Crisp 1px Drawing Stroke**:
   - Updated `frontend/js/drawing_model.js` and `frontend/index.html` with `crispW(w)` (`0.85` canvas stroke width when `w <= 1`) for trend lines, horizontal/vertical lines, box/middle lines, fib trendline/levels, and position entry lines so `1px` strokes render thin and crisp without anti-aliased heaviness.
   - Verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Right-Rail Hover Theme Accent Parity**:
+  - Updated `#right-sidebar > button:is(:hover, :focus-visible)` and `#right-sidebar #terminal-edge-dock .edge-handle:is(:hover, :focus-visible)` in `frontend/index.html` to use `background: var(--accent)` and `color: var(--accent-ink)` (plus `.edge-handle.active`) so the bottom two dock tabs (`Calendar`, `Music`) highlight with the active theme accent on hover.
+  - Verified in Playwright Edge (`MUSIC_HOVER_BG === TOP_HOVER_BG`) and `node --test tests/*.test.cjs` (169/169 passed).
