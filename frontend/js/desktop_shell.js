@@ -25,7 +25,7 @@ class DesktopShell {
     this.root.querySelector('.desktop-panel-close').onclick=()=>this.open(null);
     this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout')?.focus();}};
     this.rail=document.createElement('nav');this.rail.id='right-sidebar';this.rail.setAttribute('aria-label','Chart panels');
-    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['paper','Paper Trading']]){
+    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['paper','Trading']]){
       const b=this.button(label,key,()=>{
         if(key==='paper'){
           this.onPaperToggle?.();

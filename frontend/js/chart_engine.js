@@ -53,10 +53,7 @@ class ChartEngine {
     // 2. Initialize Overlay Canvas for Trendlines, Boxes, Fib, Measure, etc.
     this.initDrawingOverlay();
 
-    // 3. Navigation Controls
-    this.initNavControls();
-
-    // 4. Legend updates on crosshair move
+    // 3. Legend updates on crosshair move
     this.initLegendListener();
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(this.container);

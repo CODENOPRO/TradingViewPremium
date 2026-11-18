@@ -1178,3 +1178,11 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   6. Áp dụng `zoom: var(--toolbar-scale, 1)` cho `#settings-modal .chart-settings-dialog` và `#drawing-settings .drawing-dialog` để hộp thoại Settings thu nhỏ/phóng to theo thanh kéo `Toolbar scale`.
   7. Đồng bộ ngôn ngữ EN/VI: bổ sung các cặp dịch còn thiếu vào `ui_language.js`, bọc `ui(...)` và gọi `TerminalLanguage.markup(...)` cho các nhãn/thông báo trước đây bị lẫn tiếng Việt/tiếng Anh.
 - Kiểm chứng: `node --test tests/*.test.cjs` đạt **166/166 passed**.
+
+### 2026-11-19 — Xóa thanh điều hướng `- + < > reset` trên chart, sửa hover 2 nút cuối thanh phải, bỏ chữ `Paper` ở tab Trading
+- File đã sửa: `frontend/index.html`, `frontend/js/chart_engine.js`, `frontend/js/desktop_shell.js`, `frontend/js/paper_panel.js`, `frontend/js/ui_language.js`, `AGENTS.md`.
+- Thay đổi:
+  1. Gỡ bỏ 3 khối `.chart-nav-controls` (`-`, `+`, `<`, `>`, `reset`) trong `#box-1`/`#box-2`/`#box-3` và bỏ gọi `this.initNavControls()` trong `chart_engine.js`.
+  2. Sửa selector CSS không hợp lệ `#right-sidebar :is(> button, #terminal-edge-dock .edge-handle):is(:hover, :focus-visible)` và `...active` trong `frontend/index.html` thành selector hợp lệ (`#right-sidebar > button:is(:hover, :focus-visible), #right-sidebar #terminal-edge-dock .edge-handle:is(:hover, :focus-visible)`) để cả 2 nút cuối (Calendar, Music) đổi màu khi hover giống 4 nút đầu.
+  3. Đổi nhãn tab/panel `Paper Trading` / `Paper Trade` thành `Trading` (kèm cặp dịch `Trading|Giao dịch` trong `ui_language.js`).
+- Kiểm chứng: `node --test tests/*.test.cjs` đạt **166/166 passed**.

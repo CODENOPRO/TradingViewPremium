@@ -235,6 +235,7 @@ Layout|Bố cục
 Replay|Phát lại
 Alert|Cảnh báo giá
 Paper Trading|Giao dịch mô phỏng
+Trading|Giao dịch
 Buy|Mua
 Sell|Bán
 Music|Nhạc

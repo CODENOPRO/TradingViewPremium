@@ -5748,13 +5748,15 @@ body:not(.reduce-motion) .chart-context-menu[role=menu]{animation:wow-menu-in .2
 #right-sidebar #terminal-edge-dock .edge-handle span{
   display:none !important;
 }
-#right-sidebar :is(> button, #terminal-edge-dock .edge-handle):is(:hover, :focus-visible){
+#right-sidebar > button:is(:hover, :focus-visible),
+#right-sidebar #terminal-edge-dock .edge-handle:is(:hover, :focus-visible){
   padding:0 !important;
   background:var(--wow-tint-2) !important;
   color:var(--text) !important;
   transform:scale(1.06) !important;
 }
-#right-sidebar :is(> button.active, #terminal-edge-dock .edge-handle[aria-expanded="true"]){
+#right-sidebar > button.active,
+#right-sidebar #terminal-edge-dock .edge-handle[aria-expanded="true"]{
   background:var(--accent) !important;
   color:var(--accent-ink) !important;
   box-shadow:0 4px 12px color-mix(in srgb, var(--accent) 32%, transparent) !important;
@@ -6693,81 +6695,21 @@ body.paper-panel-open #replay-toolbar{
         <!-- Chart Box 1 (NQ1!) -->
         <div id="box-1" class="chart-wrapper active">
           <div class="chart-legend"></div>
-
-          <div class="chart-nav-controls">
-            <button class="nav-btn btn-zoom-out" title="Thu nhỏ (-)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            <button class="nav-btn btn-zoom-in" title="Phóng to (+)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            <button class="nav-btn btn-scroll-left" title="Kéo lùi quá khứ (<)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button class="nav-btn btn-scroll-right" title="Tua về hiện tại (>)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-            <button class="nav-btn btn-reset" title="Reset Chart (Alt + R hoặc Double Click)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-              </svg>
-            </button>
-          </div>
         </div>
 
         <!-- Chart Box 2 (ES1!) -->
         <div id="box-2" class="chart-wrapper">
           <div class="chart-legend"></div>
-
-          <div class="chart-nav-controls">
-            <button class="nav-btn btn-zoom-out" title="Thu nhỏ (-)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            <button class="nav-btn btn-zoom-in" title="Phóng to (+)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            <button class="nav-btn btn-scroll-left" title="Kéo lùi quá khứ (<)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button class="nav-btn btn-scroll-right" title="Tua về hiện tại (>)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-            <button class="nav-btn btn-reset" title="Reset Chart (Alt + R hoặc Double Click)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-              </svg>
-            </button>
-          </div>
         </div>
 
         <!-- Chart Box 3 (YM1! / CL1!) -->
         <div id="box-3" class="chart-wrapper">
           <div class="chart-legend"></div>
-
-          <div class="chart-nav-controls">
-            <button class="nav-btn btn-zoom-out" title="Thu nhỏ (-)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            <button class="nav-btn btn-zoom-in" title="Phóng to (+)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            <button class="nav-btn btn-scroll-left" title="Kéo lùi quá khứ (<)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button class="nav-btn btn-scroll-right" title="Tua về hiện tại (>)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-            <button class="nav-btn btn-reset" title="Reset Chart (Alt + R hoặc Double Click)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-              </svg>
-            </button>
-          </div>
         </div>
       </main>
 
-      <section id="paper-panel" aria-label="Paper Trading">
-        <div class="paper-heading"><strong>Paper Trading</strong><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" class="btn-secondary">+ Tài khoản</button><span id="paper-balance"></span></div>
+      <section id="paper-panel" aria-label="Trading">
+        <div class="paper-heading"><strong>Trading</strong><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" class="btn-secondary">+ Tài khoản</button><span id="paper-balance"></span></div>
         <div class="order-ticket">
           <label>Loại<select id="order-type"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select></label>
           <label>Số lượng<input id="order-qty" type="number" min="1" step="1" value="1"></label>
@@ -7232,6 +7174,7 @@ Layout|Bố cục
 Replay|Phát lại
 Alert|Cảnh báo giá
 Paper Trading|Giao dịch mô phỏng
+Trading|Giao dịch
 Buy|Mua
 Sell|Bán
 Music|Nhạc
@@ -8387,10 +8330,7 @@ class ChartEngine {
     // 2. Initialize Overlay Canvas for Trendlines, Boxes, Fib, Measure, etc.
     this.initDrawingOverlay();
 
-    // 3. Navigation Controls
-    this.initNavControls();
-
-    // 4. Legend updates on crosshair move
+    // 3. Legend updates on crosshair move
     this.initLegendListener();
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(this.container);
@@ -12602,7 +12542,7 @@ if(typeof module!=='undefined')module.exports=ReplayPaper;
 class PaperPanel {
  constructor({paper,charts,getActive,isLive,isReplay,toast,onRender,onToggle}){
   Object.assign(this,{paper,charts,getActive,isLive,isReplay,toast,onRender,onToggle});this.root=document.getElementById('paper-panel');this.tab='positions';this.editing=null;
-  this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Paper Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><span class="paper-dot"></span><strong>Paper Trade</strong><small class="paper-mode-badge">SIM</small></div><div class="paper-account-group"><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" type="button" class="paper-head-btn" title="Tạo tài khoản mới">+ Tài khoản</button></div><div class="paper-head-actions"><button type="button" class="paper-export paper-head-btn" title="Xuất lịch sử giao dịch CSV">CSV</button><button type="button" class="paper-close" aria-label="Close Paper Trading">×</button></div></header><div id="paper-balance" class="paper-summary"></div><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><div class="paper-sym-pill"><strong id="paper-symbol"></strong></div><span id="paper-quote-status"></span></div><div class="paper-type-seg" role="tablist" aria-label="Loại lệnh"><button type="button" data-order-type="market" class="active">Market</button><button type="button" data-order-type="limit">Limit</button><button type="button" data-order-type="stop">Stop</button></div><select id="order-type" hidden aria-hidden="true"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select><div class="paper-ticket-grid"><div class="paper-field paper-qty-field"><div class="paper-field-top"><span>Hợp đồng</span><div class="paper-qty-chips"><button type="button" data-qty-chip="1">1</button><button type="button" data-qty-chip="2">2</button><button type="button" data-qty-chip="5">5</button><button type="button" data-qty-chip="10">10</button></div></div><div class="paper-qty-stepper"><button type="button" data-qty-step="-1" aria-label="Giảm hợp đồng">−</button><input id="order-qty" type="number" min="1" step="1" value="1" aria-label="Hợp đồng"><button type="button" data-qty-step="1" aria-label="Tăng hợp đồng">+</button></div></div><label class="paper-field paper-price-label"><span>Giá đặt lệnh</span><input id="order-price" type="number" step="any" placeholder="Nhập mức giá"></label><label class="paper-field"><span>Stop Loss</span><input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label><label class="paper-field"><span>Take Profit</span><input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell"><span>Sell / Short</span></button><button type="button" id="paper-buy" class="paper-side buy"><span>Buy / Long</span></button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Lưu thay đổi</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer"></p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button type="button" data-paper-tab="positions">Vị thế <span>0</span></button><button type="button" data-paper-tab="orders">Lệnh chờ <span>0</span></button><button type="button" data-paper-tab="history">Lịch sử <span>0</span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
+  this.root.innerHTML=`<div class="paper-resize" role="separator" aria-label="Resize Paper Trading" tabindex="0"></div><header class="paper-heading"><div class="paper-brand"><span class="paper-dot"></span><strong>Paper Trade</strong><small class="paper-mode-badge">SIM</small></div><div class="paper-account-group"><select id="paper-account" aria-label="Tài khoản"></select><button id="btn-new-account" type="button" class="paper-head-btn" title="Tạo tài khoản mới">+ Tài khoản</button></div><div class="paper-head-actions"><button type="button" class="paper-export paper-head-btn" title="Xuất lịch sử giao dịch CSV">CSV</button><button type="button" class="paper-close" aria-label="Close Trading">×</button></div></header><div id="paper-balance" class="paper-summary"></div><div class="paper-workspace"><form class="paper-ticket"><div class="paper-ticket-title"><div class="paper-sym-pill"><strong id="paper-symbol"></strong></div><span id="paper-quote-status"></span></div><div class="paper-type-seg" role="tablist" aria-label="Loại lệnh"><button type="button" data-order-type="market" class="active">Market</button><button type="button" data-order-type="limit">Limit</button><button type="button" data-order-type="stop">Stop</button></div><select id="order-type" hidden aria-hidden="true"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop</option></select><div class="paper-ticket-grid"><div class="paper-field paper-qty-field"><div class="paper-field-top"><span>Hợp đồng</span><div class="paper-qty-chips"><button type="button" data-qty-chip="1">1</button><button type="button" data-qty-chip="2">2</button><button type="button" data-qty-chip="5">5</button><button type="button" data-qty-chip="10">10</button></div></div><div class="paper-qty-stepper"><button type="button" data-qty-step="-1" aria-label="Giảm hợp đồng">−</button><input id="order-qty" type="number" min="1" step="1" value="1" aria-label="Hợp đồng"><button type="button" data-qty-step="1" aria-label="Tăng hợp đồng">+</button></div></div><label class="paper-field paper-price-label"><span>Giá đặt lệnh</span><input id="order-price" type="number" step="any" placeholder="Nhập mức giá"></label><label class="paper-field"><span>Stop Loss</span><input id="order-sl" type="number" step="any" placeholder="Tùy chọn"></label><label class="paper-field"><span>Take Profit</span><input id="order-tp" type="number" step="any" placeholder="Tùy chọn"></label></div><div class="paper-estimate" id="paper-estimate"></div><div class="paper-submit"><button type="button" id="paper-sell" class="paper-side sell"><span>Sell / Short</span></button><button type="button" id="paper-buy" class="paper-side buy"><span>Buy / Long</span></button><button type="button" id="paper-save-edit" class="btn-primary" hidden>Lưu thay đổi</button><button type="button" id="paper-cancel-edit" class="btn-secondary" hidden>Hủy</button></div><p id="paper-error" role="status"></p><p class="paper-disclaimer"></p></form><div class="paper-manager"><nav class="paper-tabs" aria-label="Paper Trading views"><button type="button" data-paper-tab="positions">Vị thế <span>0</span></button><button type="button" data-paper-tab="orders">Lệnh chờ <span>0</span></button><button type="button" data-paper-tab="history">Lịch sử <span>0</span></button></nav><div id="paper-positions" class="paper-table-scroll"></div></div></div>`;
   this.$=id=>document.getElementById(id);
   if(typeof TerminalLanguage!=='undefined')TerminalLanguage.markup(this.root);
   this.root.querySelector('.paper-close').onclick=()=>this.open(false);this.$('btn-new-account').onclick=()=>{const modal=document.getElementById('account-modal');modal.dataset.opener='btn-new-account';modal.classList.add('show');modal.querySelector('input').focus();};
@@ -14052,7 +13992,7 @@ class DesktopShell {
     this.root.querySelector('.desktop-panel-close').onclick=()=>this.open(null);
     this.root.onkeydown=e=>{if(e.key==='Escape'){this.open(null);$('btn-layout')?.focus();}};
     this.rail=document.createElement('nav');this.rail.id='right-sidebar';this.rail.setAttribute('aria-label','Chart panels');
-    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['paper','Paper Trading']]){
+    for(const [key,label] of [['chart','Biểu đồ'],['watch','Theo dõi'],['alerts','Cảnh báo'],['paper','Trading']]){
       const b=this.button(label,key,()=>{
         if(key==='paper'){
           this.onPaperToggle?.();
