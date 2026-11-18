@@ -130,6 +130,9 @@ Horizontal grid lines|Đường lưới ngang
 Pane separators|Đường phân cách các vùng
 Crosshair|Con trỏ chữ thập
 Watermark|Hình mờ
+Drawing layer|Lớp công cụ vẽ
+Under candles|Dưới nến (sắc nét)
+Above candles|Trên nến (cũ)
 Ticker|Mã
 Name|Tên
 Scales|Thang giá

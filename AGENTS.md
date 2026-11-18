@@ -9455,3 +9455,7 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   - Added `logicalToX(ts, logical)` in `frontend/js/drawing_model.js` and `frontend/index.html` to linearly interpolate between `Math.floor(logical)` and `Math.floor(logical) + 1` (Lightweight Charts `logicalToCoordinate()` returns `0` for fractional logical indices when 1m drawing anchors fall mid-bar on 5m/15m/1h).
   - Updated `position` exit-bar scanning to include the containing HTF bar (`barEnd > d.p1.time`) and clamp `exX` to `[boxLeft, boxLeft + span]`.
   - Verified in Playwright Edge (`1m -> 5m` position `ax: 189, bx: 208.2`, `ERRORS: []`) and `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Drawing Layer Mode Setting (`Under candles` / `Above candles`)**:
+  - Added `drawingLayerMode` (`'Under candles'` default / `'Above candles'`) to `ChartAppearance.defaults()` and `Canvas` tab in `frontend/js/chart_settings.js` (with EN/VI labels in `frontend/js/ui_language.js`).
+  - Wired `ChartEngine.renderDrawingsBg()` and `renderDrawings()` in `frontend/js/chart_engine.js` and `frontend/index.html` to switch live between bottom-layer fills (sharp candles on top) and legacy overlay fills.
+  - Verified `node --test tests/*.test.cjs` (169/169 passed).

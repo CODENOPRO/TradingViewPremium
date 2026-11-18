@@ -967,7 +967,7 @@ class ChartEngine {
 
   // DRAWINGS RENDERING
   renderDrawingsBg(ctx) {
-    if (!ctx) return;
+    if (!ctx || this.appearance?.drawingLayerMode === 'Above candles') return;
     const rect = this.container.getBoundingClientRect();
     const rightAxisW = this.chart?.priceScale?.('right')?.width?.() || 65;
     const drawW = Math.max(0, rect.width - rightAxisW);
@@ -1049,7 +1049,7 @@ class ChartEngine {
     this._qtTrBoxes = [];
     this._qtQBoxes = [];
     const drawings = [...(this.indicatorDrawings || []), ...(this.drawingsHidden ? [] : this.drawings || [])];
-    const pass = this._hasBgPrimitive ? 'fg' : 'all';
+    const pass = (this._hasBgPrimitive && this.appearance?.drawingLayerMode !== 'Above candles') ? 'fg' : 'all';
     for (const original of drawings) {
       const value = this.drawingPreview && original.id && this.drawingPreview.id === original.id ? this.drawingPreview : original;
       DrawingModel.draw(ctx, this, value, pass);
