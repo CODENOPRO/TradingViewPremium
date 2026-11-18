@@ -98,3 +98,29 @@ test('hiding music panel keeps music playing in the background without pausing',
  assert.equal(paused,0);
  assert.equal(stopped,0);
 });
+test('YouTube popup wow stylesheet and track wave delay (--dly) are wired in both modular files and index.html',()=>{
+ const fs=require('node:fs');
+ const css=fs.readFileSync('frontend/css/terminal_companions.css','utf8');
+ const js=fs.readFileSync('frontend/js/terminal_companions.js','utf8');
+ const html=fs.readFileSync('frontend/index.html','utf8');
+ assert.match(css,/@keyframes wow-pop/);
+ assert.match(css,/@keyframes wow-out/);
+ assert.match(css,/@keyframes wow-in/);
+ assert.match(css,/transform:\s*translateX\(-50%\);/);
+ assert.match(js,/spreadTrackWave/);
+ assert.match(html,/@keyframes wow-out/);
+ assert.match(html,/spreadTrackWave/);
+});
+test('Music docked panel removes Hide video button, Open original link, and clips docked video while Popup shows full video',()=>{
+ const fs=require('node:fs');
+ const css=fs.readFileSync('frontend/css/terminal_companions.css','utf8');
+ const js=fs.readFileSync('frontend/js/terminal_companions.js','utf8');
+ const html=fs.readFileSync('frontend/index.html','utf8');
+ assert.doesNotMatch(js,/hideVideoButton/);
+ assert.doesNotMatch(js,/this\.sourceLink/);
+ assert.doesNotMatch(html,/hideVideoButton/);
+ assert.doesNotMatch(html,/this\.sourceLink/);
+ assert.match(css,/#music-panel:not\(\.music-mini\):is\(\[data-provider="youtube"\],\[data-provider="tiktok"\]\)\s+\.music-player-host/);
+ assert.match(html,/#music-panel:not\(\.music-mini\):is\(\[data-provider="youtube"\],\[data-provider="tiktok"\]\)\s+\.music-player-host/);
+ assert.match(css,/#music-panel\.music-mini:is\(\[data-provider="youtube"\],\[data-provider="tiktok"\]\):has\(\.music-player-host iframe\)\s+\.music-player-host/);
+});

@@ -1088,3 +1088,26 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   - Backend Python: `python -m unittest discover -s tests -p "test_*.py" -v` đạt **40/40 passed**; đã khởi động lại `bridge_server.py` mới trên cổng `3000`/`8080`.
   - Frontend & QT Engine Node: `node --test tests/*.test.cjs` đạt **159/159 passed**; `node --check` trên toàn bộ file `frontend/js/*.js` và cả 37 khối `<script>` inline trong `frontend/index.html` đều pass.
 - Giới hạn: chưa bấm xác nhận luồng `-ForceRestart` thật trong lúc kiểm thử tự động để tuân thủ quy tắc không tự tắt cửa sổ TradingView đang mở của người dùng khi chưa được bấm từ UI.
+
+### 2026-11-18 — Khóa triệt để lỗi vỡ layout 16 hàng & chồng đè topbar khi khởi tạo
+- Nguyên nhân gốc: (1) khi trình duyệt tải bản `index.html` cũ hoặc thiếu module phụ `qt_*.js`, lệnh `require(...)` trần trong `qt_engine.js` / `qt_*.js` ném `ReferenceError: require is not defined` khiến `new QTMode()` làm đứt ngang `DOMContentLoaded` ngay sau khi nhân bản `#box-4..16` (lúc đó chưa đặt `hidden`); (2) `.topbar-left` kế thừa `margin-left: auto` trong khi `.topbar-right` đặt `position: absolute` khiến khi chưa chạy `fitToolbar()` thì cụm trái bị đẩy chồng lên cụm phải.
+- File đã sửa: `frontend/js/qt_engine.js`, `frontend/js/qt_cycles_trueopen.js`, `frontend/js/qt_ssmt.js`, `frontend/js/qt_psp.js`, `frontend/js/app.js`, `frontend/js/desktop_shell.js`, `frontend/htmlcss.css`, `frontend/index.html`, `tests/toolbar_clusters.test.cjs`.
+- Thay đổi: bọc an toàn `typeof require === 'function'` + fallback cho `QuantaibayEngine`, bọc `try/catch` khi khởi tạo `QTMode` và chuẩn hóa `Workspace.read(...) || {}`; ẩn ngay `node.hidden = true; node.style.display = 'none'` khi tạo `#box-4..16` kèm khóa CSS `#chart-grid:not(.terminal-layout) > .chart-wrapper:nth-of-type(n+4) { display: none !important }`; đặt `margin: 0` + `justify-content: flex-start` cho `#topbar` và cân đối khoảng cách hai bên trong `fitToolbar()`, tăng cache-bust `?v=qt-16`.
+- Kiểm chứng: `node --test tests/toolbar_clusters.test.cjs tests/desktop_shell.test.cjs tests/chart_settings.test.cjs tests/frontend.test.cjs tests/terminal_features.test.cjs` đạt **27/27 passed**.
+
+### 2026-11-18 — Tích hợp giao diện YouTube Popup Wow (`youtube-popup-wow.css` & hiệu ứng sóng `--dly`)
+- Yêu cầu: đọc `c:\Users\Admin\Downloads\ez` (`youtube-popup-wow.css` + `youtube-popup.html`) và tích hợp đúng chỗ cho trình phát YouTube thu nhỏ (`#music-panel.music-mini[data-provider="youtube"]`).
+- File đã sửa: `frontend/css/terminal_companions.css`, `frontend/js/terminal_companions.js`, `frontend/index.html`, `tests/scheduled_features.test.cjs`.
+- Thay đổi: thêm toàn bộ CSS `youtube-popup-wow` ngay sau khối YouTube/TikTok PiP (viền mask kính mảnh, 2 nút tròn trên cùng, nút Play squircle đổi trạng thái kính mờ khi phát, thanh tiến trình mảnh 2px sát đáy nở 5px khi chạm, tooltip viên kính tối có mũi tên, hiệu ứng `wow-out`/`wow-in` lan từ chuột qua biến `--dly`), sửa cú pháp `transform: translateX(-50%)` cho `.music-tip` và giữ `z-index: 12` cho góc kéo `.resizer-se`/`.resizer-sw`; gắn hàm `spreadTrackWave` trên `pointerenter`/`pointerleave` của `.music-track`.
+
+### 2026-11-18 — Gọn bảng Music (bỏ nút Hide video, bỏ link dưới cùng & ẩn khung video ở chế độ bảng thường) + Xuất gói Full Source `.topbar-left`
+- Yêu cầu:
+  1. Bỏ nút `Hide video`, bỏ liên kết `Open original link` ở dưới cùng và không hiển thị khung video bên dưới bảng `Music` (`#music-panel` khi neo bên phải), vì khi muốn xem video người dùng đã bấm `Popup`.
+  2. Xuất trọn bộ Full Source Frontend + Backend của thanh công cụ góc trái (`.topbar-left`) ra ngoài để chỉnh sửa độc lập ở môi trường khác.
+- Backup trước sửa: `.backups/backup-20261118-123210-before-music-and-topbar-export.zip`.
+- File đã sửa trong repo: `frontend/js/terminal_companions.js`, `frontend/css/terminal_companions.css`, `frontend/index.html`, `tests/scheduled_features.test.cjs`.
+- Gói xuất ngoài repo: `../topbar-source/` (`topbar_standalone_preview.html`, `INTEGRATION.md`, `frontend/`, `backend/`).
+- Hành vi thay đổi:
+  1. Gỡ `hideVideoButton` khỏi header `#music-panel` (chỉ giữ `Popup` và `×`) và gỡ `sourceLink` (`Open original link`) ở đáy bảng.
+  2. Ở chế độ bảng neo `#music-panel:not(.music-mini)` với `youtube`/`tiktok`, luôn thu gọn trực quan `.music-player-host` (`width: 1px; height: 1px; clip-path: inset(50%); opacity: 0; pointer-events: none` — không dùng `display: none` để trình duyệt không ngắt tiếng phát nền); khi chuyển sang `Popup` (`#music-panel.music-mini`), khung video hiển thị đầy đủ bình thường.
+- Kiểm chứng: `python -m unittest discover -s tests -p "test_*.py"` đạt **40/40 passed**; `node --test tests/*.test.cjs` đạt **162/162 passed**; toàn bộ `frontend/js/*.js`, 37 khối `<script>` inline của `frontend/index.html` và 4 khối `<script>` của `topbar_standalone_preview.html` pass `node --check`.

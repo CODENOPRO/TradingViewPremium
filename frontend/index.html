@@ -789,7 +789,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
 #music-panel .music-controls button[data-command=toggle]:hover:not(:disabled) {filter:brightness(1.06);background:var(--accent,#fff)}
 #music-panel .music-controls button[data-command=toggle] svg {width:20px;height:20px}
 #music-panel .music-controls button.music-mute-btn[aria-pressed="true"] {color:#ff6b6b}
-.music-notice:empty,.music-player-host:empty {display:none}
+.music-notice:empty,.music-metadata-status:empty,.music-player-host:empty {display:none}
 
 #music-panel {
   color: var(--text);
@@ -810,7 +810,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
   border: 1px solid var(--line);
 }
 #music-panel :is(.music-notice,.music-metadata-status,.music-now p,.music-clock) { color: var(--muted); }
-#music-panel .music-source-link { color: var(--text); font-size: 12px; text-underline-offset: 3px; }
+#music-panel .music-source-link { display: none !important; }
 #music-panel .music-tab-audio {
   align-self: flex-start;
   margin: 6px 0;
@@ -872,7 +872,8 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
 }
 #music-panel.music-mini:hover .resizer-se { opacity: .95; }
 
-/* Clip hidden video visually while keeping iframe mounted and audio playing. */
+/* Clip docked video visually while keeping iframe mounted and audio playing; Popup (.music-mini) displays the video. */
+#music-panel:not(.music-mini):is([data-provider="youtube"],[data-provider="tiktok"]) .music-player-host,
 #music-panel.music-video-hidden .music-player-host {
   position: absolute;
   width: 1px;
@@ -1011,6 +1012,160 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{tran
   #music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]):has(.music-player-host iframe) :is(.video-popup-tools,.music-hud) { opacity: 1; }
   #music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]):has(.music-player-host iframe) .video-popup-tools,
   #music-panel.music-mini:is([data-provider="youtube"],[data-provider="tiktok"]):has(.music-player-host iframe) .music-hud :is(.music-progress-row,.music-controls button) { pointer-events: auto; }
+}
+
+/* youtube-popup-wow — gọn, không nền, ít che video (load sau youtube-popup base) */
+#music-panel.music-mini[data-provider="youtube"],
+#music-panel.music-mini[data-provider="youtube"]:has(.music-player-host iframe) {
+  border: 0 !important; border-radius: 20px; background: #050507 !important;
+  box-shadow: 0 22px 50px rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.4);
+}
+#music-panel.music-mini[data-provider="youtube"].open { animation: wow-pop .5s cubic-bezier(.2,1.15,.35,1) both !important; }
+@keyframes wow-pop { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: none; } }
+#music-panel.music-mini[data-provider="youtube"]::before {
+  content: ""; position: absolute; inset: 0; z-index: 9; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.3), rgba(255,255,255,.05) 45%, rgba(255,255,255,.12));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* ===== nút trên cùng: 2 chấm kính nhỏ ===== */
+#music-panel.music-mini[data-provider="youtube"]:has(.music-player-host iframe) .video-popup-tools {
+  inset: 0 0 auto 0; height: 42px; padding: 8px 10px; background: none;
+}
+#music-panel.music-mini[data-provider="youtube"] .video-popup-tools button {
+  width: 26px; height: 26px; min-width: 26px; padding: 0; border-radius: 50%;
+  color: #fff; background: rgba(10,10,14,.35); border: 1px solid rgba(255,255,255,.22);
+  backdrop-filter: blur(12px); transition: background .15s, color .15s, transform .2s cubic-bezier(.2,1.3,.4,1);
+}
+#music-panel.music-mini[data-provider="youtube"] .video-popup-tools button svg { width: 12px; height: 12px; }
+#music-panel.music-mini[data-provider="youtube"] .video-popup-tools button:hover { background: #fff; color: #0a0a0e; transform: scale(1.1); }
+
+/* ===== HUD: một dải mỏng sát đáy, không nền ===== */
+#music-panel.music-mini[data-provider="youtube"]:has(.music-player-host iframe) .music-hud {
+  inset: 0; z-index: 10; padding: 0; margin: 0; gap: 0; background: none; border: 0; box-shadow: none; backdrop-filter: none;
+  opacity: 1 !important; pointer-events: none !important; cursor: default;
+}
+#music-panel.music-mini[data-provider="youtube"] .music-progress-row { display: contents; }
+#music-panel.music-mini[data-provider="youtube"] .music-controls {
+  position: absolute; z-index: 5; left: 10px; bottom: 12px; gap: 0; justify-content: flex-start;
+  opacity: 0; transform: translateY(6px); pointer-events: none;
+  transition: opacity .22s ease, transform .3s cubic-bezier(.2,1,.4,1);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-controls button {
+  width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%;
+  color: #fff; background: transparent !important; box-shadow: none; backdrop-filter: none;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.85));
+  transition: background .15s, color .15s, transform .18s cubic-bezier(.2,1.3,.4,1);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-controls button svg { width: 13px; height: 13px; }
+#music-panel.music-mini[data-provider="youtube"] .music-controls button:hover:not(:disabled) {
+  background: rgba(255,255,255,.22) !important; color: #fff; transform: scale(1.1);
+}
+/* Play: ô bo góc (squircle). Tạm dừng = đặc trắng, đang phát = kính mờ. Hover: bo tròn hẳn */
+#music-panel.music-mini[data-provider="youtube"] .music-controls button[data-command=toggle] {
+  order: -1; width: 28px; height: 28px; margin-right: 6px; border-radius: 9px; filter: none;
+  background: #fff !important; color: #0a0a0e; border: 1px solid rgba(255,255,255,.9);
+  box-shadow: 0 4px 14px rgba(0,0,0,.45);
+  transition: border-radius .3s cubic-bezier(.2,1.2,.4,1), transform .2s cubic-bezier(.2,1.3,.4,1), background .2s, color .2s, border-color .2s, box-shadow .2s;
+  transition-delay: 0s;
+}
+#music-panel.music-mini[data-provider="youtube"].music-playing .music-controls button[data-command=toggle] {
+  background: rgba(255,255,255,.16) !important; color: #fff; border-color: rgba(255,255,255,.38);
+  backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow: 0 4px 14px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.3);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-controls button[data-command=toggle]:hover:not(:disabled) {
+  border-radius: 14px; transform: scale(1.08); background: #fff !important; color: #0a0a0e; border-color: #fff;
+  box-shadow: 0 0 0 5px rgba(255,255,255,.14), 0 6px 18px rgba(0,0,0,.45);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-controls button[data-command=toggle]:active:not(:disabled) { transform: scale(.93); }
+#music-panel.music-mini[data-provider="youtube"] .music-controls button[data-command=toggle] svg {
+  width: 14px; height: 14px; animation: wow-icon .3s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes wow-icon { from { opacity: 0; transform: scale(.35) rotate(-50deg); } to { opacity: 1; transform: none; } }
+#music-panel.music-mini[data-provider="youtube"] .music-controls button.music-mute-btn[aria-pressed="true"] { opacity: .5; color: #fff; }
+
+/* thời gian: chữ nổi, dưới phải */
+#music-panel.music-mini[data-provider="youtube"] .music-clock {
+  position: absolute; z-index: 5; right: 12px; bottom: 18px; font-size: 10.5px; font-weight: 600; letter-spacing: .03em;
+  color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.7);
+  opacity: 0; transform: translateY(6px); transition: opacity .22s, transform .3s;
+}
+#music-panel.music-mini[data-provider="youtube"]:is(:hover,:focus-within,.music-popup-interacting) .music-controls,
+#music-panel.music-mini[data-provider="youtube"]:is(:hover,:focus-within,.music-popup-interacting) .music-clock { opacity: 1; transform: none; }
+#music-panel.music-mini[data-provider="youtube"]:not(.music-playing) .music-controls { opacity: 1; transform: none; }
+#music-panel.music-mini[data-provider="youtube"]:is(:hover,:focus-within,:not(.music-playing),.music-popup-interacting) .music-controls { pointer-events: auto; }
+
+/* ===== tiến trình: sợi chỉ sát đáy, luôn hiện ===== */
+#music-panel.music-mini[data-provider="youtube"] :is(.music-progress-row .music-track, .music-track) {
+  position: absolute; z-index: 10; left: 0; right: 0; bottom: 0; width: auto; padding: 12px 0 0; border-radius: 0; pointer-events: auto;
+}
+#music-panel.music-mini[data-provider="youtube"] .music-rail { height: 2px; border-radius: 0; background: rgba(255,255,255,.22); transition: height .18s ease; }
+#music-panel.music-mini[data-provider="youtube"] .music-rail :is(.music-buf, .music-fill) { border-radius: 0; }
+#music-panel.music-mini[data-provider="youtube"] .music-rail .music-buf { background: rgba(255,255,255,.28); }
+#music-panel.music-mini[data-provider="youtube"] .music-rail .music-fill { background: #fff; }
+#music-panel.music-mini[data-provider="youtube"] .music-track:hover .music-rail,
+#music-panel.music-mini[data-provider="youtube"] .music-track.drag .music-rail { height: 5px; }
+#music-panel.music-mini[data-provider="youtube"] .music-rail .music-dot {
+  width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; background: #fff; transform: scale(0); box-shadow: 0 2px 8px rgba(0,0,0,.5);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-track:hover .music-dot,
+#music-panel.music-mini[data-provider="youtube"] .music-track.drag .music-dot { transform: scale(1); box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+#music-panel.music-mini[data-provider="youtube"] .music-track,
+#music-panel.music-mini[data-provider="youtube"] .music-track:focus,
+#music-panel.music-mini[data-provider="youtube"] .music-track:focus-visible { outline: none; }
+#music-panel.music-mini[data-provider="youtube"] .music-track:focus-visible .music-rail { height: 5px; }
+#music-panel.music-mini[data-provider="youtube"] .music-track:focus-visible .music-dot { transform: scale(1); }
+
+/* tooltip thời gian: viên kính tối + mũi nhỏ */
+#music-panel.music-mini[data-provider="youtube"] .music-tip {
+  z-index: 20; bottom: calc(100% + 10px); padding: 4px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em; color: #fff; font-variant-numeric: tabular-nums;
+  background: rgba(14,14,18,.92); border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow: 0 6px 18px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14);
+  transform: translateX(-50%) translateY(4px) scale(.92); transform-origin: 50% 100%;
+  transition: opacity .14s ease, transform .2s cubic-bezier(.2,1.3,.4,1);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-tip::after {
+  content: ""; position: absolute; left: 50%; bottom: -4px; width: 7px; height: 7px; margin-left: -3.5px;
+  background: rgba(14,14,18,.92); border: solid rgba(255,255,255,.18); border-width: 0 1px 1px 0;
+  transform: rotate(45deg); border-bottom-right-radius: 2px;
+}
+#music-panel.music-mini[data-provider="youtube"] .music-track:hover .music-tip,
+#music-panel.music-mini[data-provider="youtube"] .music-track.drag .music-tip { transform: translateX(-50%); }
+
+/* ---- rê/kéo thanh time: các nút nảy lên rồi biến mất, lan từ vị trí chuột ra hai bên ---- */
+#music-panel.music-mini[data-provider="youtube"]:has(.music-track:hover,.music-track.drag) .music-controls button:not([data-command=toggle]),
+#music-panel.music-mini[data-provider="youtube"]:has(.music-track:hover,.music-track.drag) .music-clock {
+  pointer-events: none !important;
+  animation: wow-out .36s both; animation-delay: var(--dly, 0s);
+}
+#music-panel.music-mini[data-provider="youtube"] .music-controls button:not([data-command=toggle]),
+#music-panel.music-mini[data-provider="youtube"] .music-clock {
+  animation: wow-in .6s backwards; animation-delay: var(--dly, 0s);
+}
+@keyframes wow-out {
+  0%   { opacity: 1; transform: none; filter: blur(0) drop-shadow(0 1px 3px rgba(0,0,0,.85)); animation-timing-function: cubic-bezier(.2,.9,.3,1); }
+  38%  { opacity: 1; transform: translateY(-6px) scale(1.3); filter: blur(0) drop-shadow(0 4px 6px rgba(0,0,0,.6)); animation-timing-function: cubic-bezier(.6,0,.9,.5); }
+  100% { opacity: 0; transform: translateY(4px) scale(.15); filter: blur(5px) drop-shadow(0 1px 3px rgba(0,0,0,0)); }
+}
+@keyframes wow-in {
+  0%   { opacity: 0; transform: translateY(4px) scale(.15); filter: blur(5px) drop-shadow(0 1px 3px rgba(0,0,0,0)); animation-timing-function: cubic-bezier(.2,.9,.3,1); }
+  60%  { opacity: 1; transform: translateY(-5px) scale(1.2); filter: blur(0) drop-shadow(0 4px 6px rgba(0,0,0,.6)); animation-timing-function: cubic-bezier(.4,0,.2,1); }
+  100% { opacity: 1; transform: none; filter: blur(0) drop-shadow(0 1px 3px rgba(0,0,0,.85)); }
+}
+#music-panel.music-mini[data-provider="youtube"]:has(.music-track:hover,.music-track.drag) .music-controls button[data-command=toggle]:not(:hover) {
+  box-shadow: 0 0 0 5px rgba(255,255,255,.12), 0 4px 14px rgba(0,0,0,.4); transition-duration: .6s; transition-delay: .2s;
+}
+#music-panel.music-mini[data-provider="youtube"] :is(.resizer-se, .resizer-sw) { z-index: 12; }
+#music-panel.music-mini .resizer-se { opacity: 0; transition: opacity .2s; }
+#music-panel.music-mini:hover .resizer-se { opacity: .6; }
+body.reduce-motion #music-panel.music-mini[data-provider="youtube"] :is(.music-controls button, .music-clock) { animation: none !important; }
+@media (hover: none) {
+  #music-panel.music-mini[data-provider="youtube"] .music-controls { opacity: 1; transform: none; pointer-events: auto; }
+  #music-panel.music-mini[data-provider="youtube"] .music-clock { opacity: 1; transform: none; }
 }
 .calendar-day-protocols {display: flex; flex-direction: column; gap: 10px; margin: 6px 0 12px}
 .calendar-protocol-card {
@@ -6092,7 +6247,10 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
   font-weight:600;
 }
 
-/* ---------- 11. Toolbar Scale (--toolbar-scale) ---------- */
+/* ---------- 11. Toolbar Scale (--toolbar-scale) & Grid Guard ---------- */
+#chart-grid:not(.terminal-layout) > .chart-wrapper:nth-of-type(n+4){
+  display:none !important;
+}
 #topbar .topbar-left{
   scale:var(--toolbar-scale, 1);
   transform-origin:left top;
@@ -6102,11 +6260,16 @@ body:has(#desktop-panel:not([hidden]), .companion-panel.open) #right-sidebar [da
   transform-origin:right top;
 }
 @media (min-width: 720px){
+  #topbar{
+    justify-content:flex-start !important;
+  }
   #topbar .topbar-left{
     position:static !important;
     left:auto !important;
     transform:none !important;
     flex:0 0 auto !important;
+    margin:0;
+    max-width:calc((100% - 320px * var(--toolbar-scale, 1)) / var(--toolbar-scale, 1));
   }
   #topbar .topbar-right{
     position:absolute !important;
@@ -6185,7 +6348,7 @@ body.paper-panel-open .edge-panel-dock{
   right:calc(var(--paper-push) - 6px) !important;
 }
 body.paper-panel-open :is(#desktop-panel, .companion-panel:not(.music-mini)){
-  right:calc(var(--paper-push) + 66px) !important;
+  right:calc(var(--paper-push) + var(--right-rail-inset, 72px) - 6px) !important;
 }
 body.paper-panel-open #replay-toolbar{
   right:calc(var(--paper-push) + 8px) !important;
@@ -13267,14 +13430,14 @@ class DesktopShell {
       }
       if(!stacked&&header.getBoundingClientRect&&right?.getBoundingClientRect){
         const hRect=header.getBoundingClientRect(),rRect=right.getBoundingClientRect();
-        const freeVisual=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left-12);
+        const span=Math.max(0,(rRect.width?rRect.left:hRect.right)-hRect.left);
         const visualW=left.offsetWidth*scale;
         const idealCenter=(hRect.width-visualW)/2;
-        const margin=idealCenter+visualW<=freeVisual?idealCenter:(freeVisual-visualW)/2;
-        left.style.marginLeft=Math.max(0,Math.round(margin))+'px';
+        const margin=hRect.width>=1800&&idealCenter+visualW+48<=span?idealCenter:(span-visualW)/2;
+        left.style.marginLeft=Math.max(0,Math.min(Math.max(0,span-visualW-12),Math.round(margin)))+'px';
       }
     };
-    this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);this.fitToolbar();
+    this.toolbarObserver=new ResizeObserver(()=>{cancelAnimationFrame(this.toolbarFrame);this.toolbarFrame=requestAnimationFrame(this.fitToolbar);});this.toolbarObserver.observe(header);this.toolbarObserver.observe(right);const statusPill=document.getElementById('dock-market-status');if(statusPill)this.toolbarObserver.observe(statusPill);this.fitToolbar();
   }
   button(label,icon,action){const b=document.createElement('button');b.type='button';b.title=ui(label);b.setAttribute('aria-label',ui(label));b.innerHTML=DesktopShell.icon(icon);b.onclick=action;return b;}
   installTools(){
@@ -15047,6 +15210,7 @@ class TerminalCompanions{
     if(key==='music'){
       this.panels.music.classList.remove('music-mini','music-popup-interacting');
       if(this.panels.music.style)this.panels.music.style.right='72px';
+      this.setVideoHidden?.(true);
       this.updateMusicPopupButton();
     }
     this.panels[key].classList.toggle('open',show);this.panels[key].inert=!show;document.getElementById('edge-'+key)?.setAttribute('aria-expanded',String(show));
@@ -15081,14 +15245,10 @@ class TerminalCompanions{
   }
   isVideoProvider(){return ['youtube','tiktok'].includes(this.link?.provider);}
   setVideoHidden(hidden){
-    if(!this.hideVideoButton)return;
     const panel=this.panels.music;
-    const enabled=this.isVideoProvider()&&!!this.iframe;
+    const enabled=this.isVideoProvider()&&!!this.iframe&&!panel.classList.contains('music-mini');
     panel.classList.toggle('music-video-hidden',enabled&&hidden);
-    if(this.link?.provider==='tiktok'&&this.iframe)this.iframe.tabIndex=hidden?-1:0;
-    this.hideVideoButton.hidden=!enabled;
-    this.hideVideoButton.textContent=ui(hidden?'Show video':'Hide video');
-    this.hideVideoButton.setAttribute('aria-pressed',String(enabled&&hidden));
+    if(this.link?.provider==='tiktok'&&this.iframe)this.iframe.tabIndex=enabled&&hidden?-1:0;
   }
   getPopupRatioEntry(){
     return POPUP_RATIOS.find(r=>r.key===this.popupRatio)||POPUP_RATIOS[0];
@@ -15604,24 +15764,8 @@ class TerminalCompanions{
     this.popupButton.disabled=true;
     this.popupButton.onclick=event=>this.setMusicMini(!panel.classList.contains('music-mini'),event.detail===0);
     header.lastElementChild.before(this.popupButton);
-    this.hideVideoButton=document.createElement('button');
-    this.hideVideoButton.type='button';this.hideVideoButton.className='music-popup-button';
-    this.hideVideoButton.hidden=true;
-    this.hideVideoButton.textContent=ui('Hide video');
-    this.hideVideoButton.onclick=()=>{
-      const hide=!panel.classList.contains('music-video-hidden');
-      this.setVideoHidden(hide);
-    };
-    this.popupButton.before(this.hideVideoButton);
     this.installVideoPopup(panel);
     this.updateMusicPopupButton();
-    this.sourceLink=document.createElement('a');
-    this.sourceLink.className='music-source-link';
-    this.sourceLink.target='_blank';
-    this.sourceLink.rel='noopener noreferrer';
-    this.sourceLink.textContent=ui('Open original link');
-    this.sourceLink.hidden=true;
-    this.musicNotice.after(this.sourceLink);
     const fileInput=this.form.querySelector('input[type=file]');
     fileInput.accept+=',video/mp4,.mp4';
     this.form.querySelector('[data-audio-file]').onclick=()=>fileInput.click();
@@ -15629,7 +15773,7 @@ class TerminalCompanions{
     this.tiktokFileButton.type='button';this.tiktokFileButton.hidden=true;
     this.tiktokFileButton.textContent=ui('Play saved video or audio');
     this.tiktokFileButton.onclick=()=>fileInput.click();
-    this.sourceLink.after(this.tiktokFileButton);
+    this.musicNotice.after(this.tiktokFileButton);
     this.tabAudioRequest=0;
     this.tabAudioButton=document.createElement('button');
     this.tabAudioButton.type='button';
@@ -15640,7 +15784,7 @@ class TerminalCompanions{
       if(this.tabAudioStream)this.stopTabAudio();
       else void this.startTabAudio();
     };
-    this.sourceLink.after(this.tabAudioButton);
+    this.musicNotice.after(this.tabAudioButton);
     window.addEventListener('pagehide',()=>{
       this.tabAudioRequest++;
       this.stopTabAudio();
@@ -15689,6 +15833,15 @@ class TerminalCompanions{
     this.track.addEventListener('pointerup',endTrack);
     this.track.addEventListener('pointercancel',endTrack);
     this.track.addEventListener('lostpointercapture',endTrack);
+    const spreadTrackWave=clientX=>{
+      if(!panel.classList.contains('music-mini')||this.link?.provider!=='youtube')return;
+      [...panel.querySelectorAll('.music-controls button:not([data-command=toggle]):not([hidden]), .music-clock')]
+        .map(el=>{const r=el.getBoundingClientRect();return {el,d:Math.abs(r.left+r.width/2-clientX)};})
+        .sort((a,b)=>a.d-b.d)
+        .forEach((o,i)=>o.el.style.setProperty('--dly',(i*0.04).toFixed(2)+'s'));
+    };
+    this.track.addEventListener('pointerenter',event=>spreadTrackWave(event.clientX));
+    this.track.addEventListener('pointerleave',event=>spreadTrackWave(event.clientX));
     this.track.addEventListener('keydown',event=>{
       if(this.seek.disabled||!(this.duration>0))return;
       const step={ArrowLeft:-5,ArrowRight:5,ArrowDown:-5,ArrowUp:5,Home:-this.duration,End:this.duration}[event.key];
@@ -15764,9 +15917,7 @@ class TerminalCompanions{
     this.musicMute.hidden=true;
     this.setTikTokMuted(false);
     this.tiktokFileButton.hidden=true;
-    this.setVideoHidden(false);
-    this.sourceLink.hidden=!!file;
-    if(!file)this.sourceLink.href=link.url;
+    this.setVideoHidden(true);
     this.setCommands(false);
     this.seek.disabled=true;
     this.seek.value=0;
@@ -15785,10 +15936,6 @@ class TerminalCompanions{
       if(epoch!==this.epoch)return;
     }
     this.link=link;
-    if(link.provider==='tiktok'){
-      this.sourceLink.href=link.url;
-      this.sourceLink.textContent=ui('Open TikTok source tab');
-    }else this.sourceLink.textContent=ui('Open original link');
     this.panels.music.dataset.provider=link.provider;
     if(this.panels.music.classList.contains('music-mini')){
       if(this.popupRatioProvider!==link.provider){this.popupRatio='free';this.popupRatioProvider=link.provider;}
@@ -15872,7 +16019,7 @@ class TerminalCompanions{
     this.setTikTokMuted(false);
     this.frame(src.href,360);
     this.popupButton.disabled=false;
-    this.setVideoHidden(!native);
+    this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));
     if(native)this.tiktokPlayPrompt();
     else this.playerReadyTimer=setTimeout(()=>{
       if(epoch===this.epoch&&!this.tiktokStarted)this.tiktokPlayPrompt();
@@ -16039,12 +16186,11 @@ class TerminalCompanions{
     const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1',controls:'0',rel:'0',modestbranding:'1',iv_load_policy:'3'});
     if(link.list){params.set('listType','playlist');params.set('list',link.list);}
     const frame=this.frame('https://www.youtube.com/embed/'+(link.id||'videoseries')+'?'+params,240);
-    this.musicNotice.textContent='Bấm Play trong trình phát YouTube.';
     await this.script('https://www.youtube.com/iframe_api',()=>typeof window.YT?.Player==='function');
     if(epoch!==this.epoch)return;
     this.youtube=new window.YT.Player(frame,{
       events:{
-        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(false);this.panels.music.classList.add('music-shield-active');}},
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent='';}},
         onStateChange:({data})=>{
           if(epoch!==this.epoch)return;
           this.setPlaying(data===1,data===1||data===3);
@@ -16296,17 +16442,17 @@ class AlertChartControls{
 }
 if(typeof module!=='undefined')module.exports=AlertPrice;
 </script>
-  <script src="js/qt_core.js?v=qt-15"></script>
-  <script src="js/qt_cycles_trueopen.js?v=qt-15"></script>
-  <script src="js/qt_ssmt.js?v=qt-15"></script>
-  <script src="js/qt_psp.js?v=qt-15"></script>
-  <script src="js/qt_engine.js?v=qt-15"></script>
-  <script src="js/qt_mode.js?v=qt-15"></script>
+  <script src="js/qt_core.js?v=qt-16"></script>
+  <script src="js/qt_cycles_trueopen.js?v=qt-16"></script>
+  <script src="js/qt_ssmt.js?v=qt-16"></script>
+  <script src="js/qt_psp.js?v=qt-16"></script>
+  <script src="js/qt_engine.js?v=qt-16"></script>
+  <script src="js/qt_mode.js?v=qt-16"></script>
   <script>
 document.addEventListener('DOMContentLoaded', () => {
   const $ = id => document.getElementById(id);
-  const saved = Workspace.read('terminal_workspace_v1', {});
-  const colors = { bg: '#c2baae', grid: '#a8a194', bodyUp: '#e8e4dc', borderUp: '#211f1d', wickUp: '#211f1d', bodyDown: '#211f1d', borderDown: '#211f1d', wickDown: '#211f1d', textColor: '#202020', ...Workspace.read('tv_candle_config', {}) };
+  const saved = Workspace.read('terminal_workspace_v1', {}) || {};
+  const colors = { bg: '#c2baae', grid: '#a8a194', bodyUp: '#e8e4dc', borderUp: '#211f1d', wickUp: '#211f1d', bodyDown: '#211f1d', borderDown: '#211f1d', wickDown: '#211f1d', textColor: '#202020', ...(Workspace.read('tv_candle_config', {}) || {}) };
   const symbols = ['NQ1!', 'ES1!', 'YM1!', 'CL1!'];
   const cache = new Map();
   let bridge = { state: 'connecting', symbols: [] };
@@ -16319,7 +16465,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pendingNative.has(key))return;pendingNative.set(key,requirement);
     if(socket?.readyState===WebSocket.OPEN)socket.send(JSON.stringify({action:'request_native',charts:[requirement]}));
   };
-  for(let i=4;i<=16;i++){const node=$('box-1').cloneNode(true);node.id=`box-${i}`;node.classList.remove('active');$('chart-grid').appendChild(node);}
+  for(let i=4;i<=16;i++){const node=$('box-1').cloneNode(true);node.id=`box-${i}`;node.hidden=true;node.style.display='none';node.classList.remove('active');$('chart-grid').appendChild(node);}
   let features,replay,paperPanel;
   const charts = Array.from({length:16},(_,i)=>['NQ1!','ES1!','YM1!'][i%3]).map((symbol, i) => {
     const Engine=window.TERMINAL_ENGINE_V5?ChartEngineV5:ChartEngine;
@@ -16462,16 +16608,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     chart.chart.timeScale().subscribeVisibleLogicalRangeChange(() => { saveWorkspace(); });
   }
-  const qtMode = new QTMode({
-    charts,
-    getActive: () => active,
-    getMarkets: () => replay?.running ? replay.markets(cache) : cache,
-    isReplay: () => !!replay?.running,
-    requestNative,
-    toast
-  });
-  window.qtMode = qtMode;
-  qtMode.mountTopbar($('btn-indicator'));
+  let qtMode = null;
+  try {
+    if (typeof QTMode === 'function') {
+      qtMode = new QTMode({
+        charts,
+        getActive: () => active,
+        getMarkets: () => replay?.running ? replay.markets(cache) : cache,
+        isReplay: () => !!replay?.running,
+        requestNative,
+        toast
+      });
+      window.qtMode = qtMode;
+      qtMode.mountTopbar($('btn-indicator'));
+    }
+  } catch (err) {
+    console.error('[QTMode] initialization failed:', err);
+  }
   activate(active);
   const changeTimeframe=tf=>{
     if(tf==='12h')return toast('Nguồn TradingView hiện chặn custom interval 12h; các chart khác vẫn cập nhật.','alert');
@@ -16732,18 +16885,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Local accounts retain the existing storage key and legacy positions.
-  const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }), state => Workspace.write('terminal_paper_v1', state));
+  const paper = new PaperTrading(Workspace.read('terminal_paper_v1', { accounts: [], active: null }) || { accounts: [], active: null }, state => Workspace.write('terminal_paper_v1', state));
   paperPanel=new PaperPanel({paper,charts,getActive:()=>active,isLive:live,isReplay:()=>!!replay?.running,toast,onToggle:()=>{desktop?.syncRailActive?.();desktop?.fitToolbar?.();}});
   function renderPaper(){paperPanel.render();}
   $('create-account').addEventListener('click',()=>paperPanel.action(()=>{paperPanel.paper.create($('account-name').value,Number($('account-balance').value),Number($('account-margin')?.value||0));closeModal($('account-modal'));}));
   $('btn-trade-buy').addEventListener('click',()=>paperPanel.quickMarket('buy'));
   $('btn-trade-sell').addEventListener('click',()=>paperPanel.quickMarket('sell'));
 
-  function toggleIndicator(chart){qtMode.toggleChart(chart);}
+  function toggleIndicator(chart){qtMode?.toggleChart(chart);}
   charts.forEach(c=>c.onIndicatorToggle=()=>toggleIndicator(c));
 
   // Settings and scale controls.
-  const appearanceStore=Workspace.read('terminal_chart_settings_v1',{});
+  const appearanceStore=Workspace.read('terminal_chart_settings_v1',{})||{};
   const oldProfiles=structuredClone(appearanceStore);
   for (const chart of charts) {
     const profile = ChartAppearance.desktopProfile(appearanceStore[chart.id], colors, chart.symbol);
@@ -16956,9 +17109,9 @@ document.addEventListener('DOMContentLoaded', () => {
     [ui('Lớp & dữ liệu'), () => desktop.open('objects')],
     ['Lịch', () => $('edge-calendar')?.click()],
     ['Nhạc', () => $('edge-music')?.click()],
-    ['QT Mode · Bật / Tắt', () => $('btn-indicator').click()],
-    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode.openSettings(active)],
-    ['Layout', () => $('btn-layout').click()],
+    ['QT Mode · Bật / Tắt', () => $('btn-indicator')?.click()],
+    ['QT Mode · Cài đặt (Quantaibay)', () => qtMode?.openSettings(active)],
+    ['Layout', () => $('btn-layout')?.click()],
     ['Alerts', () => openAlert(active)],
     ['Replay', () => $('btn-replay').click()],
     ['Paper Trading', () => paperPanel.open(!$('paper-panel').classList.contains('open'))],

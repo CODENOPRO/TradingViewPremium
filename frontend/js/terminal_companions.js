@@ -86,6 +86,7 @@ class TerminalCompanions{
     if(key==='music'){
       this.panels.music.classList.remove('music-mini','music-popup-interacting');
       if(this.panels.music.style)this.panels.music.style.right='72px';
+      this.setVideoHidden?.(true);
       this.updateMusicPopupButton();
     }
     this.panels[key].classList.toggle('open',show);this.panels[key].inert=!show;document.getElementById('edge-'+key)?.setAttribute('aria-expanded',String(show));
@@ -120,14 +121,10 @@ class TerminalCompanions{
   }
   isVideoProvider(){return ['youtube','tiktok'].includes(this.link?.provider);}
   setVideoHidden(hidden){
-    if(!this.hideVideoButton)return;
     const panel=this.panels.music;
-    const enabled=this.isVideoProvider()&&!!this.iframe;
+    const enabled=this.isVideoProvider()&&!!this.iframe&&!panel.classList.contains('music-mini');
     panel.classList.toggle('music-video-hidden',enabled&&hidden);
-    if(this.link?.provider==='tiktok'&&this.iframe)this.iframe.tabIndex=hidden?-1:0;
-    this.hideVideoButton.hidden=!enabled;
-    this.hideVideoButton.textContent=ui(hidden?'Show video':'Hide video');
-    this.hideVideoButton.setAttribute('aria-pressed',String(enabled&&hidden));
+    if(this.link?.provider==='tiktok'&&this.iframe)this.iframe.tabIndex=enabled&&hidden?-1:0;
   }
   getPopupRatioEntry(){
     return POPUP_RATIOS.find(r=>r.key===this.popupRatio)||POPUP_RATIOS[0];
@@ -643,24 +640,8 @@ class TerminalCompanions{
     this.popupButton.disabled=true;
     this.popupButton.onclick=event=>this.setMusicMini(!panel.classList.contains('music-mini'),event.detail===0);
     header.lastElementChild.before(this.popupButton);
-    this.hideVideoButton=document.createElement('button');
-    this.hideVideoButton.type='button';this.hideVideoButton.className='music-popup-button';
-    this.hideVideoButton.hidden=true;
-    this.hideVideoButton.textContent=ui('Hide video');
-    this.hideVideoButton.onclick=()=>{
-      const hide=!panel.classList.contains('music-video-hidden');
-      this.setVideoHidden(hide);
-    };
-    this.popupButton.before(this.hideVideoButton);
     this.installVideoPopup(panel);
     this.updateMusicPopupButton();
-    this.sourceLink=document.createElement('a');
-    this.sourceLink.className='music-source-link';
-    this.sourceLink.target='_blank';
-    this.sourceLink.rel='noopener noreferrer';
-    this.sourceLink.textContent=ui('Open original link');
-    this.sourceLink.hidden=true;
-    this.musicNotice.after(this.sourceLink);
     const fileInput=this.form.querySelector('input[type=file]');
     fileInput.accept+=',video/mp4,.mp4';
     this.form.querySelector('[data-audio-file]').onclick=()=>fileInput.click();
@@ -668,7 +649,7 @@ class TerminalCompanions{
     this.tiktokFileButton.type='button';this.tiktokFileButton.hidden=true;
     this.tiktokFileButton.textContent=ui('Play saved video or audio');
     this.tiktokFileButton.onclick=()=>fileInput.click();
-    this.sourceLink.after(this.tiktokFileButton);
+    this.musicNotice.after(this.tiktokFileButton);
     this.tabAudioRequest=0;
     this.tabAudioButton=document.createElement('button');
     this.tabAudioButton.type='button';
@@ -679,7 +660,7 @@ class TerminalCompanions{
       if(this.tabAudioStream)this.stopTabAudio();
       else void this.startTabAudio();
     };
-    this.sourceLink.after(this.tabAudioButton);
+    this.musicNotice.after(this.tabAudioButton);
     window.addEventListener('pagehide',()=>{
       this.tabAudioRequest++;
       this.stopTabAudio();
@@ -728,6 +709,15 @@ class TerminalCompanions{
     this.track.addEventListener('pointerup',endTrack);
     this.track.addEventListener('pointercancel',endTrack);
     this.track.addEventListener('lostpointercapture',endTrack);
+    const spreadTrackWave=clientX=>{
+      if(!panel.classList.contains('music-mini')||this.link?.provider!=='youtube')return;
+      [...panel.querySelectorAll('.music-controls button:not([data-command=toggle]):not([hidden]), .music-clock')]
+        .map(el=>{const r=el.getBoundingClientRect();return {el,d:Math.abs(r.left+r.width/2-clientX)};})
+        .sort((a,b)=>a.d-b.d)
+        .forEach((o,i)=>o.el.style.setProperty('--dly',(i*0.04).toFixed(2)+'s'));
+    };
+    this.track.addEventListener('pointerenter',event=>spreadTrackWave(event.clientX));
+    this.track.addEventListener('pointerleave',event=>spreadTrackWave(event.clientX));
     this.track.addEventListener('keydown',event=>{
       if(this.seek.disabled||!(this.duration>0))return;
       const step={ArrowLeft:-5,ArrowRight:5,ArrowDown:-5,ArrowUp:5,Home:-this.duration,End:this.duration}[event.key];
@@ -803,9 +793,7 @@ class TerminalCompanions{
     this.musicMute.hidden=true;
     this.setTikTokMuted(false);
     this.tiktokFileButton.hidden=true;
-    this.setVideoHidden(false);
-    this.sourceLink.hidden=!!file;
-    if(!file)this.sourceLink.href=link.url;
+    this.setVideoHidden(true);
     this.setCommands(false);
     this.seek.disabled=true;
     this.seek.value=0;
@@ -824,10 +812,6 @@ class TerminalCompanions{
       if(epoch!==this.epoch)return;
     }
     this.link=link;
-    if(link.provider==='tiktok'){
-      this.sourceLink.href=link.url;
-      this.sourceLink.textContent=ui('Open TikTok source tab');
-    }else this.sourceLink.textContent=ui('Open original link');
     this.panels.music.dataset.provider=link.provider;
     if(this.panels.music.classList.contains('music-mini')){
       if(this.popupRatioProvider!==link.provider){this.popupRatio='free';this.popupRatioProvider=link.provider;}
@@ -911,7 +895,7 @@ class TerminalCompanions{
     this.setTikTokMuted(false);
     this.frame(src.href,360);
     this.popupButton.disabled=false;
-    this.setVideoHidden(!native);
+    this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));
     if(native)this.tiktokPlayPrompt();
     else this.playerReadyTimer=setTimeout(()=>{
       if(epoch===this.epoch&&!this.tiktokStarted)this.tiktokPlayPrompt();
@@ -1078,12 +1062,11 @@ class TerminalCompanions{
     const params=new URLSearchParams({enablejsapi:'1',origin:location.origin,playsinline:'1',controls:'0',rel:'0',modestbranding:'1',iv_load_policy:'3'});
     if(link.list){params.set('listType','playlist');params.set('list',link.list);}
     const frame=this.frame('https://www.youtube.com/embed/'+(link.id||'videoseries')+'?'+params,240);
-    this.musicNotice.textContent='Bấm Play trong trình phát YouTube.';
     await this.script('https://www.youtube.com/iframe_api',()=>typeof window.YT?.Player==='function');
     if(epoch!==this.epoch)return;
     this.youtube=new window.YT.Player(frame,{
       events:{
-        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(false);this.panels.music.classList.add('music-shield-active');}},
+        onReady:()=>{if(epoch===this.epoch){this.setCommands(true,!!link.list);this.musicMute.hidden=false;this.musicMute.disabled=false;this.updateMuteButton(!!this.youtube?.isMuted?.());this.setVideoHidden(!this.panels.music.classList.contains('music-mini'));this.panels.music.classList.add('music-shield-active');this.musicNotice.textContent='';}},
         onStateChange:({data})=>{
           if(epoch!==this.epoch)return;
           this.setPlaying(data===1,data===1||data===3);
