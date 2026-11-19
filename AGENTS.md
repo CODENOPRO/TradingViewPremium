@@ -9459,3 +9459,13 @@ Các vấn đề bên dưới ghi lại trạng thái ban đầu. Nhiều mục 
   - Added `drawingLayerMode` (`'Under candles'` default / `'Above candles'`) to `ChartAppearance.defaults()` and `Canvas` tab in `frontend/js/chart_settings.js` (with EN/VI labels in `frontend/js/ui_language.js`).
   - Wired `ChartEngine.renderDrawingsBg()` and `renderDrawings()` in `frontend/js/chart_engine.js` and `frontend/index.html` to switch live between bottom-layer fills (sharp candles on top) and legacy overlay fills.
   - Verified `node --test tests/*.test.cjs` (169/169 passed).
+- **2026-11-19 — Paper Trading & Paper-Entry-UI v11 Integration**:
+  - Integrated Paper-Entry-UI v11 into both standalone `Paper-Trading-Claude-UI-v5` and `TradingViewPremium-main` chart overlay.
+  - Upgraded `PaperChartOrders` in `frontend/js/paper_panel.js` and `frontend/index.html` (script #24):
+    - Replaced ghost `+TP` / `+SL` buttons with direct drag-to-set from position PnL box (drag up = TP, drag down = SL for Long; inverted for Short).
+    - Added direction lock during creation drag to prevent crossing over entry line into opposite order type.
+    - Added snap-to-cancel / deletion: dragging TP/SL line back to coincide with entry line (< 1 tick) deletes the TP/SL order or cancels creation preview.
+    - Updated axis tags with emerald/crimson badges, live PnL preview, and dashed price lines.
+  - Appended v11 styling overrides into `frontend/css/wow_overrides.css` and `frontend/index.html`.
+  - Added comprehensive unit test in `tests/paper_trading.test.cjs` verifying creation, direction locking, and cancellation on coincidence.
+  - Verified `node --test tests/*.test.cjs` (170/170 passed) and `python -m unittest discover tests` (43/43 passed).

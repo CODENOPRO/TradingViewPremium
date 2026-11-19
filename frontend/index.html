@@ -7697,6 +7697,117 @@ body:not(.reduce-motion) .terminal-select-menu:popover-open { animation:paper-ac
     transition: right .42s var(--dock-reveal-ease, ease), transform .4s cubic-bezier(.18,.75,.24,1), opacity .4s, visibility .4s;
   }
 }
+
+/* ===== Paper-Entry-UI v11: Entry overlay & Drag-to-set TP/SL styles ===== */
+:root {
+  --green: #20a860;
+  --red: #e0301e;
+  --tp: var(--ok, var(--green));
+  --sl: var(--pt-sell, var(--red));
+  --close-bg: #c8c8c8;
+  --cell-h: 24px;
+  --line: 1px;
+  --w-pnl: 108px;
+  --w-qty: 30px;
+  --w-close: 28px;
+}
+:root[data-dock-theme="light"] {
+  --tp: #059669;
+  --sl: #d63a50;
+  --close-bg: #e2e4e9;
+}
+.entry-preview {
+  --entry-y: 280px;
+  --tag-w: 85px;
+  --tag-gap: 16px;
+  --tags-right: calc(var(--paper-width, 390px) + var(--tag-w) + var(--tag-gap) + 24px);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: transparent;
+  pointer-events: none;
+}
+.entry-preview > * { pointer-events: auto; }
+.entry-line, .entry-price { pointer-events: none; }
+.entry-line {
+  position: absolute; top: var(--entry-y); left: 0; right: 0; height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(222, 227, 234, .85) 0 7px, transparent 7px 12px);
+}
+.entry-price, .order-price {
+  position: absolute; top: var(--entry-y); right: var(--tag-gap);
+  width: var(--tag-w); height: calc(var(--cell-h) + 2 * var(--line)); margin-top: calc(-0.5 * (var(--cell-h) + 2 * var(--line)));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font: 500 13px "JetBrains Mono", monospace; font-variant-numeric: tabular-nums;
+}
+.entry-price { background: #5b1812; border: var(--line) solid #d9362b; }
+.entry-preview[data-pnl="win"] .entry-price { background: #0f3d2a; border-color: #2ecc82; }
+.entry-controls {
+  position: absolute; top: var(--entry-y); z-index: 3;
+  right: var(--tags-right); margin-top: calc(-0.5 * (var(--cell-h) + 2 * var(--line)));
+  display: inline-flex;
+}
+.entry-position, .order-tag {
+  position: relative; display: inline-flex; align-items: stretch;
+  height: calc(var(--cell-h) + 2 * var(--line));
+  border-radius: 2px;
+  font: 700 12.5px "JetBrains Mono", monospace;
+}
+.entry-position > :first-child, .order-tag > :first-child { border-radius: 2px 0 0 2px; }
+.entry-position > :last-child, .order-tag > :last-child { border-radius: 0 2px 2px 0; }
+.entry-position::after, .order-tag::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  border: var(--line) solid #000; border-radius: 2px;
+}
+.entry-position > *, .order-tag > * {
+  display: inline-flex; align-items: center; justify-content: center;
+  align-self: stretch; height: auto; margin: 0; padding: var(--line) 8px; border: 0; border-radius: 0;
+  font: inherit; line-height: 1; white-space: nowrap;
+}
+.entry-preview.px-snap .entry-position, .entry-preview.px-snap .order-tag,
+.entry-preview.px-snap .entry-position::after, .entry-preview.px-snap .order-tag::after,
+.entry-preview.px-snap .entry-position > *, .entry-preview.px-snap .order-tag > * { border-radius: 0; }
+.entry-pnl, .order-pnl {
+  position: relative; min-width: var(--w-pnl); padding: 0 16px; cursor: ns-resize; touch-action: none; user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+.entry-position > * + *, .order-tag > * + * { border-left: var(--line) solid #000; }
+.entry-quantity, .order-qty { flex: none; min-width: var(--w-qty); padding: 0 8px; }
+.entry-close, .order-close { flex: none; width: var(--w-close); padding: var(--line) 0 0; position: relative; font-size: 0; cursor: pointer; background: var(--close-bg); color: #222; }
+.entry-close:hover, .order-close:hover { background: #fff; }
+.entry-close::before, .entry-close::after, .order-close::before, .order-close::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; background: currentColor;
+}
+.entry-close::before, .order-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.entry-close::after, .order-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.entry-position button { cursor: pointer; }
+.entry-position .entry-pnl { cursor: ns-resize; }
+.entry-position button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.entry-pnl { background: var(--green); color: #fff; }
+.entry-preview[data-pnl="loss"] .entry-pnl { background: var(--red); }
+.entry-quantity { background: var(--green); color: #111; }
+.entry-preview[data-pnl="loss"] .entry-quantity { background: var(--red); }
+.entry-grip, .order-grip {
+  position: absolute; left: 4px; top: 50%; width: 3px; height: 18px; margin: 0; transform: translateY(-50%);
+  background: radial-gradient(circle, #000 .62px, transparent .92px) 0 0 / 3px 3px;
+}
+.order { --c: var(--tp); --pbg: #0f3d2a; position: absolute; left: 0; right: 0; top: var(--y); height: 0; z-index: 2; }
+.order.sl { --c: var(--sl); --pbg: #5b1812; }
+.order-line {
+  position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: repeating-linear-gradient(90deg, var(--c) 0 6px, transparent 6px 10px);
+}
+.order-tag { position: absolute; top: 0; right: var(--tags-right); margin-top: calc(-0.5 * (var(--cell-h) + 2 * var(--line))); }
+.order-pnl, .order-qty { background: var(--c); }
+.order-pnl { color: #fff; }
+.order-qty { color: #111; }
+.order-price { top: 0; background: var(--pbg); border: var(--line) solid var(--c); }
+.entry-preview.closed .entry-controls, .entry-preview.closed .entry-line,
+.entry-preview.closed .entry-price, .entry-preview.closed .order { display: none; }
+body.entry-dragging { cursor: ns-resize; user-select: none; }
+@media (max-width: 520px) { .entry-preview { --tags-right: calc(var(--tag-w) + var(--tag-gap) + 8px); } }
+
 </style>
 </head>
 
@@ -14756,11 +14867,12 @@ class PaperChartOrders {
   ctx.textAlign='left';
   return {boxes,totalW:cur-x};
  }
- drawAxisTag(ctx,width,axisW,height,y,price,bg,fg='#111'){
+ drawAxisTag(ctx,width,axisW,height,y,price,bg,borderCol=null,fg='#fff'){
   if(y===null||y<0||y>height||axisW<=4)return;
   ctx.save();ctx.beginPath();ctx.rect(width,0,axisW,height);ctx.clip();
   const top=Math.max(0,Math.min(height-16,y-8));
   ctx.fillStyle=bg;ctx.fillRect(width+1,top,axisW-2,16);
+  if(borderCol){ctx.strokeStyle=borderCol;ctx.lineWidth=1;ctx.strokeRect(width+1.5,top+.5,axisW-3,15);}
   ctx.fillStyle=fg;ctx.font='bold 11px "JetBrains Mono", monospace';ctx.textBaseline='middle';ctx.textAlign='left';
   ctx.fillText(this.formatAxisPrice(price),width+5,top+8.5,axisW-8);
   ctx.restore();
@@ -14815,7 +14927,7 @@ class PaperChartOrders {
 
     // 1. Bracket Lines, Labels & Axis Tags (SL & TP)
     const drawBracket=(kind,price,y,lineCol,badgeBg,qtyBg,qtyText)=>{
-     if(y===null||y<0||y>height)return;
+     if(y===null||y<0||y>height||price==null)return;
      const v=this.panel.paper.pnl(p,price);
      const vStr=settings.bracketValue&&settings.bracketValue!=='Money'?this.pnlText(p,price,settings.bracketValue):'~ '+(v<0?'-':'+')+'$'+Math.abs(v).toFixed(2);
      const segs=[];
@@ -14829,7 +14941,7 @@ class PaperChartOrders {
      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
      const {boxes}=this.drawSegmented(ctx,bx,y,segs);
      ctx.restore();
-     this.drawAxisTag(ctx,width,axisW,height,y,price,badgeBg);
+     this.drawAxisTag(ctx,width,axisW,height,y,price,badgeBg,kind==='tp'?'#2ecc82':'#d9362b','#fff');
      const bodyBoxes=boxes.filter(b=>b.seg.kind===kind);
      const bodyW=bodyBoxes.reduce((n,b)=>n+b.w,0);
      const delBox=boxes.find(b=>b.seg.kind==='del'+kind);
@@ -14845,29 +14957,17 @@ class PaperChartOrders {
     if(slPrice!=null)drawBracket('sl',slPrice,ysl,red,red,red,(p.side==='buy'?'-':'')+p.qty);
     if(tpPrice!=null)drawBracket('tp',tpPrice,ytp,tpLineCol,green,green,(p.side==='buy'?'-':'')+p.qty);
 
-    // 3. Entry Line, Label, Close/Reverse & Ghost +SL/+TP (placed to the left of Entry so Entry stays near price axis)
+    // 3. Entry Line, Label, Close/Reverse & Direct drag-to-set TP/SL from PnL
     if(ye!==null&&ye>=0&&ye<=height){
      hline(ye,entryLineCol,null,settings.extendedLines===false?entryX:0,settings.extendedLines===false?entryX+entryTotalW:width);
      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
      const {boxes}=this.drawSegmented(ctx,entryX,ye,entrySegs);
-     let gx=entryX-4;
-     for(const [gkind,gcol] of [['tp',green],['sl',red]]){
-      if(p[gkind]!=null||(this.drag?.id===p.id&&this.drag.kind===gkind))continue;
-      const gsegs=[{text:'+'+gkind.toUpperCase(),bg:'#1e242d',fg:gcol,minW:32,pad:4,center:true,kind:gkind}];
-      const gw=measureSegs(gsegs);
-      if(gx-gw>=safeLeft){
-       this.drawSegmented(ctx,gx-gw,ye,gsegs);
-       const gk=p.id+':'+gkind;seen.add(gk);
-       this.hitButton(gk,p,gkind,p.price,gx-gw,Math.max(0,ye-9),gw,18,'+'+gkind.toUpperCase(),'Kéo để đặt '+gkind.toUpperCase(),'ns-resize');
-      }
-      gx-=gw+3;
-     }
      ctx.restore();
-     this.drawAxisTag(ctx,width,axisW,height,ye,p.price,green);
+     this.drawAxisTag(ctx,width,axisW,height,ye,p.price,pl>=0?'#0f3d2a':'#5b1812',pl>=0?'#2ecc82':'#d9362b','#fff');
      const entryBoxes=boxes.filter(b=>b.seg.kind==='entry');
      if(entryBoxes.length){
       const ek=p.id+':entry';seen.add(ek);
-      this.hitButton(ek,p,'entry',p.price,entryBoxes[0].x,Math.max(0,ye-9),entryBoxes.reduce((n,b)=>n+b.w,0),18,`${p.side.toUpperCase()} ${p.qty} · ${plStr}`,'Sửa SL/TP vị thế','pointer');
+      this.hitButton(ek,p,'entry',p.price,entryBoxes[0].x,Math.max(0,ye-9),entryBoxes.reduce((n,b)=>n+b.w,0),18,`${p.side.toUpperCase()} ${p.qty} · ${plStr}`,'Kéo lên/xuống để đặt TP/SL · Bấm để sửa vị thế','ns-resize');
      }
      const closeBox=boxes.find(b=>b.seg.kind==='close');
      if(closeBox){
@@ -14899,7 +14999,7 @@ class PaperChartOrders {
     ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
     const {boxes}=this.drawSegmented(ctx,ox,y,segs);
     ctx.restore();
-    this.drawAxisTag(ctx,width,axisW,height,y,price,gray);
+    this.drawAxisTag(ctx,width,axisW,height,y,price,gray,null,'#111');
     const bodyBoxes=boxes.filter(b=>b.seg.kind==='price');
     if(bodyBoxes.length){
      const ok=o.id+':price';seen.add(ok);
@@ -15020,20 +15120,97 @@ class PaperChartOrders {
  find(id){const values=this.records();return values.positions.find(p=>p.id===id)||values.orders.find(p=>p.id===id);}
  start(e,id,kind){
   if(e.button!==0)return;e.preventDefault();e.stopPropagation();const item=this.find(id);if(!item)return;
-  if(kind==='entry'){this.panel.edit('position',item);return;}
   if(kind==='close'){if(this.chart.appearance?.oneClick!==false)this.panel.action(()=>{this.panel.guard(item.symbol,this.chart);this.panel.paper.close(item.id,'manual');});else this.panel.closeDialog(item);return;}
   if(kind==='reverse'){this.panel.reverse(this.chart,item);return;}
   if(kind==='delsl'){this.panel.action(()=>{this.panel.guard(item.symbol,this.chart);this.panel.paper.amendPosition(item.id,{sl:null});});return;}
   if(kind==='deltp'){this.panel.action(()=>{this.panel.guard(item.symbol,this.chart);this.panel.paper.amendPosition(item.id,{tp:null});});return;}
   if(kind==='cancel'){this.panel.action(()=>{this.panel.paper.cancel(item.id);});return;}
   try{this.panel.guard(item.symbol,this.chart);this.panel.paper.quote(item.symbol);}catch(error){this.panel.toast?.(error.message,'alert');return;}
-  this.drag={id,kind,symbol:item.symbol,account:this.panel.paper.state.active,startY:e.clientY,price:item[kind]??item.price,button:e.currentTarget,pointer:e.pointerId,changed:false};this.drag.button.setPointerCapture(e.pointerId);
+  const mode=kind==='entry'?'create':'move';
+  this.drag={id,kind,mode,targetKind:null,symbol:item.symbol,account:this.panel.paper.state.active,startY:e.clientY,basePrice:item.price,price:item[kind]??item.price,button:e.currentTarget,pointer:e.pointerId,changed:false,canceled:false};
+  if(e.currentTarget?.setPointerCapture)e.currentTarget.setPointerCapture(e.pointerId);
  }
- move(e){if(!this.drag)return;e.preventDefault();e.stopPropagation();const rect=this.chart.container.getBoundingClientRect(),price=this.chart.coordinateToPrice(e.clientY-rect.top);if(!Number.isFinite(price)||price<=0)return;const tick=this.chart.metadata.tickSize||this.find(this.drag.id)?.tickSize||.01;this.drag.price=Number((Math.round(price/tick)*tick).toFixed(8));this.drag.changed ||= Math.abs(e.clientY-this.drag.startY)>3;this.chart.renderDrawings();}
- end(e){if(!this.drag)return;e.preventDefault();e.stopPropagation();const drag=this.drag;this.drag=null;if(drag.button.hasPointerCapture(drag.pointer))drag.button.releasePointerCapture(drag.pointer);const item=this.find(drag.id);if(!item){this.chart.renderDrawings();return;}if(!drag.changed){this.panel.edit(drag.kind==='price'?'order':'position',item,drag.kind==='price'?'price':drag.kind);return;}
-  this.panel.action(()=>{if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');this.panel.guard(item.symbol,this.chart);if(drag.kind==='price'){const ref=this.panel.paper.quote(item.symbol);this.panel.paper.checkMargin?.({...item,price:drag.price},item,ref);this.panel.paper.amendOrder(drag.id,{price:drag.price});}else this.panel.paper.amendPosition(drag.id,{[drag.kind]:drag.price});});
+ move(e){
+  if(!this.drag)return;e.preventDefault();e.stopPropagation();
+  const rect=this.chart.container.getBoundingClientRect(),price=this.chart.coordinateToPrice(e.clientY-rect.top);
+  if(!Number.isFinite(price)||price<=0)return;
+  const tick=this.chart.metadata?.tickSize||this.find(this.drag.id)?.tickSize||.01;
+  this.drag.changed ||= Math.abs(e.clientY-this.drag.startY)>3;
+  if(!this.drag.changed)return;
+  const item=this.find(this.drag.id);if(!item)return;
+  const roundedPrice=Number((Math.round(price/tick)*tick).toFixed(8));
+  if(this.drag.mode==='create'){
+   const inPnlZone=Math.abs(roundedPrice-item.price)<tick;
+   if(inPnlZone){this.drag.price=null;this.chart.renderDrawings();return;}
+   const isLong=item.side==='buy';
+   const lineType=((roundedPrice>item.price)===isLong)?'tp':'sl';
+   if(!this.drag.targetKind)this.drag.targetKind=lineType;
+   if(lineType!==this.drag.targetKind){this.drag.price=null;this.chart.renderDrawings();return;}
+   const dir=this.drag.targetKind==='tp'?(isLong?1:-1):(isLong?-1:1);
+   let p=roundedPrice;
+   if((p-item.price)*dir<tick)p=item.price+dir*tick;
+   this.drag.kind=this.drag.targetKind;
+   this.drag.price=Number((Math.round(p/tick)*tick).toFixed(8));
+   this.chart.renderDrawings();
+   return;
+  }
+  if(this.drag.kind==='sl'||this.drag.kind==='tp'){
+   const isLong=item.side==='buy';
+   const inPnlZone=Math.abs(roundedPrice-item.price)<tick;
+   const lineType=((roundedPrice>item.price)===isLong)?'tp':'sl';
+   if(inPnlZone||lineType!==this.drag.kind){this.drag.canceled=true;this.drag.price=null;this.chart.renderDrawings();return;}
+   this.drag.canceled=false;
+   const dir=this.drag.kind==='tp'?(isLong?1:-1):(isLong?-1:1);
+   let p=roundedPrice;
+   if((p-item.price)*dir<tick)p=item.price+dir*tick;
+   this.drag.price=Number((Math.round(p/tick)*tick).toFixed(8));
+   this.chart.renderDrawings();
+   return;
+  }
+  this.drag.price=roundedPrice;
+  this.chart.renderDrawings();
  }
- cancel(){const drag=this.drag;this.drag=null;if(drag?.button.hasPointerCapture(drag.pointer))drag.button.releasePointerCapture(drag.pointer);this.chart.renderDrawings();}
+ end(e){
+  if(!this.drag)return;e.preventDefault();e.stopPropagation();
+  const drag=this.drag;this.drag=null;
+  if(drag.button?.hasPointerCapture?.(drag.pointer))drag.button.releasePointerCapture(drag.pointer);
+  const item=this.find(drag.id);if(!item){this.chart.renderDrawings();return;}
+  if(!drag.changed){this.panel.edit(drag.kind==='price'?'order':'position',item,drag.kind==='price'?'price':drag.kind);return;}
+  if(drag.mode==='create'){
+   if(drag.price!=null&&drag.targetKind){
+    this.panel.action(()=>{
+     if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+     this.panel.guard(item.symbol,this.chart);
+     this.panel.paper.amendPosition(item.id,{[drag.targetKind]:drag.price});
+    });
+   }else{this.chart.renderDrawings();}
+   return;
+  }
+  if(drag.kind==='sl'||drag.kind==='tp'){
+   if(drag.canceled||drag.price==null){
+    this.panel.action(()=>{
+     if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+     this.panel.guard(item.symbol,this.chart);
+     this.panel.paper.amendPosition(item.id,{[drag.kind]:null});
+    });
+   }else{
+    this.panel.action(()=>{
+     if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+     this.panel.guard(item.symbol,this.chart);
+     this.panel.paper.amendPosition(item.id,{[drag.kind]:drag.price});
+    });
+   }
+   return;
+  }
+  this.panel.action(()=>{
+   if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+   this.panel.guard(item.symbol,this.chart);
+   const ref=this.panel.paper.quote(item.symbol);
+   this.panel.paper.checkMargin?.({...item,price:drag.price},item,ref);
+   this.panel.paper.amendOrder(drag.id,{price:drag.price});
+  });
+ }
+ cancel(){const drag=this.drag;this.drag=null;if(drag?.button?.hasPointerCapture?.(drag.pointer))drag.button.releasePointerCapture(drag.pointer);this.chart.renderDrawings();}
 }
 </script>
   <script>

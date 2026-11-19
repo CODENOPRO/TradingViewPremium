@@ -115,3 +115,64 @@ test('TopstepX PaperChartOrders draws zones, right-aligned badges, execution arr
   assert.equal(closeDialogs,0);
   assert.equal(paper.account.positions.length,0);
 });
+
+test('Paper-Entry-UI v11: dragging from entry PnL box sets TP/SL, locks direction, and dragging back to entry line cancels/deletes', () => {
+  const fs=require('node:fs'),vm=require('node:vm');
+  const makeNode=(tag='div')=>({tagName:tag.toUpperCase(),children:[],style:{},dataset:{},attributes:{},hidden:false,
+    setAttribute(k,v){this.attributes[k]=String(v);},appendChild(x){this.children.push(x);return x;},remove(){}});
+  const fakeDoc={createElement:tag=>makeNode(tag),getElementById:()=>null};
+  const ctx=vm.createContext({document:fakeDoc,ChartContextMenu:{formatPrice:p=>Number(p).toFixed(2)},TerminalTime:{end:b=>b.time+60}});
+  vm.runInContext(fs.readFileSync('frontend/js/paper_panel.js','utf8')+';this.PaperChartOrders=PaperChartOrders;',ctx);
+  const paper=setup();
+  paper.place(order('buy',2),meta);
+  let amended=null;
+  const origAmend=paper.amendPosition.bind(paper);
+  paper.amendPosition=(id,ch)=>{amended=[id,ch];return origAmend(id,ch);};
+  const chart={symbol:'NQ1!',plotBottom:400,replayMode:false,bars:[{time:0,low:98,high:102,close:100}],metadata:meta,
+    appearance:{bg:'#050505',bracketPnl:true,oneClick:true},
+    container:{appendChild(){},getBoundingClientRect:()=>({left:0,top:0,right:800,bottom:420})},
+    chart:{priceScale:()=>({width:()=>70}),timeScale:()=>({timeToCoordinate:()=>100,getVisibleLogicalRange:()=>({from:0,to:10})})},
+    series:{priceToCoordinate:p=>300-(p-85)*10},coordinateToPrice:y=>85+(300-y)/10,renderDrawings(){}};
+  const panel={paper,isReplay:()=>false,money:v=>'$'+v.toFixed(2),price:v=>String(v),
+    guard(){},action(fn){fn();},edit(){},closeDialog(){}};
+  const overlay=new ctx.PaperChartOrders(panel,chart);
+  const posId=paper.account.positions[0].id;
+
+  // 1. Drag up from entry PnL (Long) -> creates TP
+  overlay.start({button:0,clientY:150,preventDefault(){},stopPropagation(){}},posId,'entry');
+  assert.equal(overlay.drag.mode,'create');
+  overlay.move({clientY:100,preventDefault(){},stopPropagation(){}});
+  assert.equal(overlay.drag.targetKind,'tp');
+  assert.equal(overlay.drag.price,105);
+
+  // 2. Lock direction: moving down past entry does not switch to SL
+  overlay.move({clientY:200,preventDefault(){},stopPropagation(){}});
+  assert.equal(overlay.drag.price,null);
+
+  // Move back up -> TP reappears
+  overlay.move({clientY:110,preventDefault(){},stopPropagation(){}});
+  assert.equal(overlay.drag.price,104);
+  overlay.end({preventDefault(){},stopPropagation(){}});
+  assert.equal(amended[0],posId);
+  assert.equal(amended[1].tp,104);
+  assert.equal(paper.account.positions[0].tp,104);
+
+  // 3. Move existing TP: drag back to coincide with entry line (< 1 tick) -> DELETES TP
+  overlay.start({button:0,clientY:110,preventDefault(){},stopPropagation(){}},posId,'tp');
+  assert.equal(overlay.drag.mode,'move');
+  overlay.move({clientY:150,preventDefault(){},stopPropagation(){}});
+  assert.equal(overlay.drag.canceled,true);
+  assert.equal(overlay.drag.price,null);
+  overlay.end({preventDefault(){},stopPropagation(){}});
+  assert.equal(amended[1].tp,null);
+  assert.equal(paper.account.positions[0].tp,null);
+
+  // 4. Drag down from entry PnL (Long) -> creates SL
+  overlay.start({button:0,clientY:150,preventDefault(){},stopPropagation(){}},posId,'entry');
+  overlay.move({clientY:200,preventDefault(){},stopPropagation(){}});
+  assert.equal(overlay.drag.targetKind,'sl');
+  assert.equal(overlay.drag.price,95);
+  overlay.end({preventDefault(){},stopPropagation(){}});
+  assert.equal(amended[1].sl,95);
+  assert.equal(paper.account.positions[0].sl,95);
+});

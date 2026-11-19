@@ -473,11 +473,12 @@ class PaperChartOrders {
   ctx.textAlign='left';
   return {boxes,totalW:cur-x};
  }
- drawAxisTag(ctx,width,axisW,height,y,price,bg,fg='#111'){
+ drawAxisTag(ctx,width,axisW,height,y,price,bg,borderCol=null,fg='#fff'){
   if(y===null||y<0||y>height||axisW<=4)return;
   ctx.save();ctx.beginPath();ctx.rect(width,0,axisW,height);ctx.clip();
   const top=Math.max(0,Math.min(height-16,y-8));
   ctx.fillStyle=bg;ctx.fillRect(width+1,top,axisW-2,16);
+  if(borderCol){ctx.strokeStyle=borderCol;ctx.lineWidth=1;ctx.strokeRect(width+1.5,top+.5,axisW-3,15);}
   ctx.fillStyle=fg;ctx.font='bold 11px "JetBrains Mono", monospace';ctx.textBaseline='middle';ctx.textAlign='left';
   ctx.fillText(this.formatAxisPrice(price),width+5,top+8.5,axisW-8);
   ctx.restore();
@@ -532,7 +533,7 @@ class PaperChartOrders {
 
     // 1. Bracket Lines, Labels & Axis Tags (SL & TP)
     const drawBracket=(kind,price,y,lineCol,badgeBg,qtyBg,qtyText)=>{
-     if(y===null||y<0||y>height)return;
+     if(y===null||y<0||y>height||price==null)return;
      const v=this.panel.paper.pnl(p,price);
      const vStr=settings.bracketValue&&settings.bracketValue!=='Money'?this.pnlText(p,price,settings.bracketValue):'~ '+(v<0?'-':'+')+'$'+Math.abs(v).toFixed(2);
      const segs=[];
@@ -546,7 +547,7 @@ class PaperChartOrders {
      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
      const {boxes}=this.drawSegmented(ctx,bx,y,segs);
      ctx.restore();
-     this.drawAxisTag(ctx,width,axisW,height,y,price,badgeBg);
+     this.drawAxisTag(ctx,width,axisW,height,y,price,badgeBg,kind==='tp'?'#2ecc82':'#d9362b','#fff');
      const bodyBoxes=boxes.filter(b=>b.seg.kind===kind);
      const bodyW=bodyBoxes.reduce((n,b)=>n+b.w,0);
      const delBox=boxes.find(b=>b.seg.kind==='del'+kind);
@@ -562,29 +563,17 @@ class PaperChartOrders {
     if(slPrice!=null)drawBracket('sl',slPrice,ysl,red,red,red,(p.side==='buy'?'-':'')+p.qty);
     if(tpPrice!=null)drawBracket('tp',tpPrice,ytp,tpLineCol,green,green,(p.side==='buy'?'-':'')+p.qty);
 
-    // 3. Entry Line, Label, Close/Reverse & Ghost +SL/+TP (placed to the left of Entry so Entry stays near price axis)
+    // 3. Entry Line, Label, Close/Reverse & Direct drag-to-set TP/SL from PnL
     if(ye!==null&&ye>=0&&ye<=height){
      hline(ye,entryLineCol,null,settings.extendedLines===false?entryX:0,settings.extendedLines===false?entryX+entryTotalW:width);
      ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
      const {boxes}=this.drawSegmented(ctx,entryX,ye,entrySegs);
-     let gx=entryX-4;
-     for(const [gkind,gcol] of [['tp',green],['sl',red]]){
-      if(p[gkind]!=null||(this.drag?.id===p.id&&this.drag.kind===gkind))continue;
-      const gsegs=[{text:'+'+gkind.toUpperCase(),bg:'#1e242d',fg:gcol,minW:32,pad:4,center:true,kind:gkind}];
-      const gw=measureSegs(gsegs);
-      if(gx-gw>=safeLeft){
-       this.drawSegmented(ctx,gx-gw,ye,gsegs);
-       const gk=p.id+':'+gkind;seen.add(gk);
-       this.hitButton(gk,p,gkind,p.price,gx-gw,Math.max(0,ye-9),gw,18,'+'+gkind.toUpperCase(),'Kéo để đặt '+gkind.toUpperCase(),'ns-resize');
-      }
-      gx-=gw+3;
-     }
      ctx.restore();
-     this.drawAxisTag(ctx,width,axisW,height,ye,p.price,green);
+     this.drawAxisTag(ctx,width,axisW,height,ye,p.price,pl>=0?'#0f3d2a':'#5b1812',pl>=0?'#2ecc82':'#d9362b','#fff');
      const entryBoxes=boxes.filter(b=>b.seg.kind==='entry');
      if(entryBoxes.length){
       const ek=p.id+':entry';seen.add(ek);
-      this.hitButton(ek,p,'entry',p.price,entryBoxes[0].x,Math.max(0,ye-9),entryBoxes.reduce((n,b)=>n+b.w,0),18,`${p.side.toUpperCase()} ${p.qty} · ${plStr}`,'Sửa SL/TP vị thế','pointer');
+      this.hitButton(ek,p,'entry',p.price,entryBoxes[0].x,Math.max(0,ye-9),entryBoxes.reduce((n,b)=>n+b.w,0),18,`${p.side.toUpperCase()} ${p.qty} · ${plStr}`,'Kéo lên/xuống để đặt TP/SL · Bấm để sửa vị thế','ns-resize');
      }
      const closeBox=boxes.find(b=>b.seg.kind==='close');
      if(closeBox){
@@ -616,7 +605,7 @@ class PaperChartOrders {
     ctx.save();ctx.beginPath();ctx.rect(0,0,width,height);ctx.clip();
     const {boxes}=this.drawSegmented(ctx,ox,y,segs);
     ctx.restore();
-    this.drawAxisTag(ctx,width,axisW,height,y,price,gray);
+    this.drawAxisTag(ctx,width,axisW,height,y,price,gray,null,'#111');
     const bodyBoxes=boxes.filter(b=>b.seg.kind==='price');
     if(bodyBoxes.length){
      const ok=o.id+':price';seen.add(ok);
@@ -737,18 +726,95 @@ class PaperChartOrders {
  find(id){const values=this.records();return values.positions.find(p=>p.id===id)||values.orders.find(p=>p.id===id);}
  start(e,id,kind){
   if(e.button!==0)return;e.preventDefault();e.stopPropagation();const item=this.find(id);if(!item)return;
-  if(kind==='entry'){this.panel.edit('position',item);return;}
   if(kind==='close'){if(this.chart.appearance?.oneClick!==false)this.panel.action(()=>{this.panel.guard(item.symbol,this.chart);this.panel.paper.close(item.id,'manual');});else this.panel.closeDialog(item);return;}
   if(kind==='reverse'){this.panel.reverse(this.chart,item);return;}
   if(kind==='delsl'){this.panel.action(()=>{this.panel.guard(item.symbol,this.chart);this.panel.paper.amendPosition(item.id,{sl:null});});return;}
   if(kind==='deltp'){this.panel.action(()=>{this.panel.guard(item.symbol,this.chart);this.panel.paper.amendPosition(item.id,{tp:null});});return;}
   if(kind==='cancel'){this.panel.action(()=>{this.panel.paper.cancel(item.id);});return;}
   try{this.panel.guard(item.symbol,this.chart);this.panel.paper.quote(item.symbol);}catch(error){this.panel.toast?.(error.message,'alert');return;}
-  this.drag={id,kind,symbol:item.symbol,account:this.panel.paper.state.active,startY:e.clientY,price:item[kind]??item.price,button:e.currentTarget,pointer:e.pointerId,changed:false};this.drag.button.setPointerCapture(e.pointerId);
+  const mode=kind==='entry'?'create':'move';
+  this.drag={id,kind,mode,targetKind:null,symbol:item.symbol,account:this.panel.paper.state.active,startY:e.clientY,basePrice:item.price,price:item[kind]??item.price,button:e.currentTarget,pointer:e.pointerId,changed:false,canceled:false};
+  if(e.currentTarget?.setPointerCapture)e.currentTarget.setPointerCapture(e.pointerId);
  }
- move(e){if(!this.drag)return;e.preventDefault();e.stopPropagation();const rect=this.chart.container.getBoundingClientRect(),price=this.chart.coordinateToPrice(e.clientY-rect.top);if(!Number.isFinite(price)||price<=0)return;const tick=this.chart.metadata.tickSize||this.find(this.drag.id)?.tickSize||.01;this.drag.price=Number((Math.round(price/tick)*tick).toFixed(8));this.drag.changed ||= Math.abs(e.clientY-this.drag.startY)>3;this.chart.renderDrawings();}
- end(e){if(!this.drag)return;e.preventDefault();e.stopPropagation();const drag=this.drag;this.drag=null;if(drag.button.hasPointerCapture(drag.pointer))drag.button.releasePointerCapture(drag.pointer);const item=this.find(drag.id);if(!item){this.chart.renderDrawings();return;}if(!drag.changed){this.panel.edit(drag.kind==='price'?'order':'position',item,drag.kind==='price'?'price':drag.kind);return;}
-  this.panel.action(()=>{if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');this.panel.guard(item.symbol,this.chart);if(drag.kind==='price'){const ref=this.panel.paper.quote(item.symbol);this.panel.paper.checkMargin?.({...item,price:drag.price},item,ref);this.panel.paper.amendOrder(drag.id,{price:drag.price});}else this.panel.paper.amendPosition(drag.id,{[drag.kind]:drag.price});});
+ move(e){
+  if(!this.drag)return;e.preventDefault();e.stopPropagation();
+  const rect=this.chart.container.getBoundingClientRect(),price=this.chart.coordinateToPrice(e.clientY-rect.top);
+  if(!Number.isFinite(price)||price<=0)return;
+  const tick=this.chart.metadata?.tickSize||this.find(this.drag.id)?.tickSize||.01;
+  this.drag.changed ||= Math.abs(e.clientY-this.drag.startY)>3;
+  if(!this.drag.changed)return;
+  const item=this.find(this.drag.id);if(!item)return;
+  const roundedPrice=Number((Math.round(price/tick)*tick).toFixed(8));
+  if(this.drag.mode==='create'){
+   const inPnlZone=Math.abs(roundedPrice-item.price)<tick;
+   if(inPnlZone){this.drag.price=null;this.chart.renderDrawings();return;}
+   const isLong=item.side==='buy';
+   const lineType=((roundedPrice>item.price)===isLong)?'tp':'sl';
+   if(!this.drag.targetKind)this.drag.targetKind=lineType;
+   if(lineType!==this.drag.targetKind){this.drag.price=null;this.chart.renderDrawings();return;}
+   const dir=this.drag.targetKind==='tp'?(isLong?1:-1):(isLong?-1:1);
+   let p=roundedPrice;
+   if((p-item.price)*dir<tick)p=item.price+dir*tick;
+   this.drag.kind=this.drag.targetKind;
+   this.drag.price=Number((Math.round(p/tick)*tick).toFixed(8));
+   this.chart.renderDrawings();
+   return;
+  }
+  if(this.drag.kind==='sl'||this.drag.kind==='tp'){
+   const isLong=item.side==='buy';
+   const inPnlZone=Math.abs(roundedPrice-item.price)<tick;
+   const lineType=((roundedPrice>item.price)===isLong)?'tp':'sl';
+   if(inPnlZone||lineType!==this.drag.kind){this.drag.canceled=true;this.drag.price=null;this.chart.renderDrawings();return;}
+   this.drag.canceled=false;
+   const dir=this.drag.kind==='tp'?(isLong?1:-1):(isLong?-1:1);
+   let p=roundedPrice;
+   if((p-item.price)*dir<tick)p=item.price+dir*tick;
+   this.drag.price=Number((Math.round(p/tick)*tick).toFixed(8));
+   this.chart.renderDrawings();
+   return;
+  }
+  this.drag.price=roundedPrice;
+  this.chart.renderDrawings();
  }
- cancel(){const drag=this.drag;this.drag=null;if(drag?.button.hasPointerCapture(drag.pointer))drag.button.releasePointerCapture(drag.pointer);this.chart.renderDrawings();}
+ end(e){
+  if(!this.drag)return;e.preventDefault();e.stopPropagation();
+  const drag=this.drag;this.drag=null;
+  if(drag.button?.hasPointerCapture?.(drag.pointer))drag.button.releasePointerCapture(drag.pointer);
+  const item=this.find(drag.id);if(!item){this.chart.renderDrawings();return;}
+  if(!drag.changed){this.panel.edit(drag.kind==='price'?'order':'position',item,drag.kind==='price'?'price':drag.kind);return;}
+  if(drag.mode==='create'){
+   if(drag.price!=null&&drag.targetKind){
+    this.panel.action(()=>{
+     if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+     this.panel.guard(item.symbol,this.chart);
+     this.panel.paper.amendPosition(item.id,{[drag.targetKind]:drag.price});
+    });
+   }else{this.chart.renderDrawings();}
+   return;
+  }
+  if(drag.kind==='sl'||drag.kind==='tp'){
+   if(drag.canceled||drag.price==null){
+    this.panel.action(()=>{
+     if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+     this.panel.guard(item.symbol,this.chart);
+     this.panel.paper.amendPosition(item.id,{[drag.kind]:null});
+    });
+   }else{
+    this.panel.action(()=>{
+     if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+     this.panel.guard(item.symbol,this.chart);
+     this.panel.paper.amendPosition(item.id,{[drag.kind]:drag.price});
+    });
+   }
+   return;
+  }
+  this.panel.action(()=>{
+   if(drag.account!==this.panel.paper.state.active||drag.symbol!==this.chart.symbol)throw Error('Tài khoản hoặc chart đã đổi; bỏ thay đổi giá.');
+   this.panel.guard(item.symbol,this.chart);
+   const ref=this.panel.paper.quote(item.symbol);
+   this.panel.paper.checkMargin?.({...item,price:drag.price},item,ref);
+   this.panel.paper.amendOrder(drag.id,{price:drag.price});
+  });
+ }
+ cancel(){const drag=this.drag;this.drag=null;if(drag?.button?.hasPointerCapture?.(drag.pointer))drag.button.releasePointerCapture(drag.pointer);this.chart.renderDrawings();}
 }
